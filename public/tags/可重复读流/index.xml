@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>可重复读流 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E6%B5%81/</link>
+    <description>Recent content in 可重复读流 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 03 May 2024 11:48:02 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E6%B5%81/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何构建一个可重复读流 InputStream 的 HttpServletRequest？</title>
+      <link>http://localhost:1313/posts/2024-05-03-%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E6%B5%81-inputstream-%E7%9A%84-httpservletrequest/</link>
+      <pubDate>Fri, 03 May 2024 11:48:02 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2024-05-03-%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E6%B5%81-inputstream-%E7%9A%84-httpservletrequest/</guid>
+      <description>&lt;p&gt;之前在某公司工作的时候，领导要求所有前端向后端传递的参数都要经过前端加密，后端解密。说一句题外话：个人认为这种操作纯属脱裤子放屁，没啥用。因为前端代码都是公开的，无论你采用对称加密、非对称加密，或者摘要算法验签等等，对于稍懂技术的人来说，稍稍分析一下就能找到前端加密的方法，然后直接用相同的方式加密就行，所以这就是障眼法，只能骗骗不懂技术的人。不过领导的要求吗，既然定下来了，那么我们总要服从。因为每个方法都需要有这个解密或者验签的过程，我们自然而然想要到了通过 Filter、Interceptor 或者 AOP 等技术统一来做，不可能在各个方法中做这件事，在但是我们都知道，对于 post、put 等请求，参数都是放在请求体中的，需要通过流读出来，而流是不可以重复读的，所以我们应该怎么来解决这个问题，来构造一个可以重复读流 InputStream 的 HttpServletRequest。&lt;/p&gt;
+&lt;p&gt;解决方法：使用自定义类来缓存 stream 即可 RequestWrapper 类：缓存字节数据&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.filter;
+
+import cn.bridgeli.utils.http.HttpHelper;
+
+import javax.servlet.ReadListener;  
+import javax.servlet.ServletInputStream;  
+import javax.servlet.http.HttpServletRequest;  
+import javax.servlet.http.HttpServletRequestWrapper;  
+import java.io.BufferedReader;  
+import java.io.ByteArrayInputStream;  
+import java.io.IOException;  
+import java.io.InputStreamReader;  
+import java.nio.charset.StandardCharsets;
+
+/**  
+* 构建可重复读取inputStream的request  
+*  
+* @author BridgeLi  
+*/  
+public class RepeatedlyRequestWrapper extends HttpServletRequestWrapper {  
+private final byte[] body;
+
+public RepeatedlyRequestWrapper(HttpServletRequest request) {  
+super(request);  
+body = HttpHelper.getBodyString(request).getBytes(StandardCharsets.UTF_8);  
+}
+
+@Override  
+public BufferedReader getReader() throws IOException {  
+return new BufferedReader(new InputStreamReader(getInputStream()));  
+}
+
+@Override  
+public ServletInputStream getInputStream() throws IOException {  
+final ByteArrayInputStream bais = new ByteArrayInputStream(body);  
+return new ServletInputStream() {  
+@Override  
+public int read() throws IOException {  
+return bais.read();  
+}
+
+@Override  
+public int available() throws IOException {  
+return body.length;  
+}
+
+@Override  
+public boolean isFinished() {  
+return false;  
+}
+
+@Override  
+public boolean isReady() {  
+return false;  
+}
+
+@Override  
+public void setReadListener(ReadListener readListener) {
+
+}  
+};  
+}  
+}
+
+package cn.bridgeli.utils.http;
+
+import org.slf4j.Logger;  
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletRequest;  
+import java.io.BufferedReader;  
+import java.io.IOException;  
+import java.io.InputStream;  
+import java.io.InputStreamReader;  
+import java.nio.charset.StandardCharsets;
+
+/**  
+* 通用http工具封装  
+*  
+* @author BridgeLi  
+*/  
+public class HttpHelper {  
+private static final Logger LOGGER = LoggerFactory.getLogger(HttpHelper.class);
+
+public static String getBodyString(ServletRequest request) {  
+StringBuilder sb = new StringBuilder();  
+try (InputStream inputStream = request.getInputStream()) {  
+BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));  
+String line = &amp;#34;&amp;#34;;  
+while ((line = reader.readLine()) != null) {  
+sb.append(line);  
+}  
+} catch (IOException e) {  
+LOGGER.error(&amp;#34;getBodyString出现问题！&amp;#34;, e);  
+}  
+return sb.toString();  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后，可以在 Servlet 或 Filter 中使用 RepeatableFilter 替换原始的 HttpServletRequest。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

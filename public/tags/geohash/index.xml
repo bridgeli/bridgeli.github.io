@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>GeoHash on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/geohash/</link>
+    <description>Recent content in GeoHash on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 25 Sep 2021 06:02:54 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/geohash/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GeoHash 算法的 Java 版实现</title>
+      <link>http://localhost:1313/posts/2021-09-25-geohash-%E7%AE%97%E6%B3%95%E7%9A%84-java-%E7%89%88%E5%AE%9E%E7%8E%B0/</link>
+      <pubDate>Sat, 25 Sep 2021 06:02:54 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2021-09-25-geohash-%E7%AE%97%E6%B3%95%E7%9A%84-java-%E7%89%88%E5%AE%9E%E7%8E%B0/</guid>
+      <description>&lt;p&gt;之前曾经做过一个类 LBS 的小需求，当时是用 redis 做的，就是&lt;a href=&#34;http://www.bridgeli.cn/archives/618&#34;&gt;这篇文章&lt;/a&gt;，其实 GeoHash 算法，我们也可以自己实现，具体如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo;
+
+import java.util.ArrayList;  
+import java.util.BitSet;  
+import java.util.HashMap;
+
+public class GeoHash {  
+public static final double MINLAT = -90;  
+public static final double MAXLAT = 90;  
+public static final double MINLNG = -180;  
+public static final double MAXLNG = 180;
+
+private static int numbits = 5 * 5; //经纬度单独编码长度
+
+private static double minLat;  
+private static double minLng;
+
+private final static char[] digits = {&amp;amp;#8216;0&amp;amp;#8217;, &amp;amp;#8216;1&amp;amp;#8217;, &amp;amp;#8216;2&amp;amp;#8217;, &amp;amp;#8216;3&amp;amp;#8217;, &amp;amp;#8216;4&amp;amp;#8217;, &amp;amp;#8216;5&amp;amp;#8217;, &amp;amp;#8216;6&amp;amp;#8217;, &amp;amp;#8216;7&amp;amp;#8217;, &amp;amp;#8216;8&amp;amp;#8217;,  
+&amp;amp;#8216;9&amp;amp;#8217;, &amp;amp;#8216;b&amp;amp;#8217;, &amp;amp;#8216;c&amp;amp;#8217;, &amp;amp;#8216;d&amp;amp;#8217;, &amp;amp;#8216;e&amp;amp;#8217;, &amp;amp;#8216;f&amp;amp;#8217;, &amp;amp;#8216;g&amp;amp;#8217;, &amp;amp;#8216;h&amp;amp;#8217;, &amp;amp;#8216;j&amp;amp;#8217;, &amp;amp;#8216;k&amp;amp;#8217;, &amp;amp;#8216;m&amp;amp;#8217;, &amp;amp;#8216;n&amp;amp;#8217;, &amp;amp;#8216;p&amp;amp;#8217;,  
+&amp;amp;#8216;q&amp;amp;#8217;, &amp;amp;#8216;r&amp;amp;#8217;, &amp;amp;#8216;s&amp;amp;#8217;, &amp;amp;#8216;t&amp;amp;#8217;, &amp;amp;#8216;u&amp;amp;#8217;, &amp;amp;#8216;v&amp;amp;#8217;, &amp;amp;#8216;w&amp;amp;#8217;, &amp;amp;#8216;x&amp;amp;#8217;, &amp;amp;#8216;y&amp;amp;#8217;, &amp;amp;#8216;z&amp;amp;#8217;};
+
+//定义编码映射关系  
+final static HashMap&amp;lt;Character, Integer&amp;gt; lookup = new HashMap&amp;lt;Character, Integer&amp;gt;();
+
+//初始化编码映射内容  
+static {  
+int i = 0;  
+for (char c : digits) {  
+lookup.put(c, i++);  
+}  
+}
+
+public GeoHash() {  
+setMinLatLng();  
+}
+
+public String encode(double lat, double lon) {  
+BitSet latbits = getBits(lat, -90, 90);  
+BitSet lonbits = getBits(lon, -180, 180);  
+StringBuilder buffer = new StringBuilder();  
+for (int i = 0; i &amp;lt; numbits; i++) {  
+buffer.append((lonbits.get(i)) ? &amp;amp;#8216;1&amp;amp;#8217; : &amp;amp;#8216;0&amp;amp;#8217;);  
+buffer.append((latbits.get(i)) ? &amp;amp;#8216;1&amp;amp;#8217; : &amp;amp;#8216;0&amp;amp;#8217;);  
+}  
+String code = base32(Long.parseLong(buffer.toString(), 2));  
+//Log.i(&amp;#34;okunu&amp;#34;, &amp;#34;encode lat = &amp;#34; + lat + &amp;#34; lng = &amp;#34; + lon + &amp;#34; code = &amp;#34; + code);  
+return code;  
+}
+
+public ArrayList&amp;lt;String&amp;gt; getAroundGeoHash(double lat, double lon) {  
+//Log.i(&amp;#34;okunu&amp;#34;, &amp;#34;getArroundGeoHash lat = &amp;#34; + lat + &amp;#34; lng = &amp;#34; + lon);  
+ArrayList&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;&amp;gt;();  
+double uplat = lat + minLat;  
+double downLat = lat &amp;amp;#8211; minLat;
+
+double leftlng = lon &amp;amp;#8211; minLng;  
+double rightLng = lon + minLng;
+
+String leftUp = encode(uplat, leftlng);  
+list.add(leftUp);
+
+String leftMid = encode(lat, leftlng);  
+list.add(leftMid);
+
+String leftDown = encode(downLat, leftlng);  
+list.add(leftDown);
+
+String midUp = encode(uplat, lon);  
+list.add(midUp);
+
+String midMid = encode(lat, lon);  
+list.add(midMid);
+
+String midDown = encode(downLat, lon);  
+list.add(midDown);
+
+String rightUp = encode(uplat, rightLng);  
+list.add(rightUp);
+
+String rightMid = encode(lat, rightLng);  
+list.add(rightMid);
+
+String rightDown = encode(downLat, rightLng);  
+list.add(rightDown);
+
+//Log.i(&amp;#34;okunu&amp;#34;, &amp;#34;getArroundGeoHash list = &amp;#34; + list.toString());  
+return list;  
+}
+
+//根据经纬度和范围，获取对应的二进制  
+private BitSet getBits(double lat, double floor, double ceiling) {  
+BitSet buffer = new BitSet(numbits);  
+for (int i = 0; i &amp;lt; numbits; i++) {  
+double mid = (floor + ceiling) / 2;  
+if (lat &amp;gt;= mid) {  
+buffer.set(i);  
+floor = mid;  
+} else {  
+ceiling = mid;  
+}  
+}  
+return buffer;  
+}
+
+//将经纬度合并后的二进制进行指定的32位编码  
+private String base32(long i) {  
+char[] buf = new char[65];  
+int charPos = 64;  
+boolean negative = (i &amp;lt; 0);  
+if (!negative) {  
+i = -i;  
+}  
+while (i &amp;lt;= -32) {  
+buf[charPos&amp;amp;#8211;] = digits[(int) (-(i % 32))];  
+i /= 32;  
+}  
+buf[charPos] = digits[(int) (-i)];  
+if (negative) {  
+buf[&amp;amp;#8211;charPos] = &amp;amp;#8216;-&amp;amp;#8216;;  
+}  
+return new String(buf, charPos, (65 &amp;amp;#8211; charPos));  
+}
+
+private void setMinLatLng() {  
+minLat = MAXLAT &amp;amp;#8211; MINLAT;  
+for (int i = 0; i &amp;lt; numbits; i++) {  
+minLat /= 2.0;  
+}  
+minLng = MAXLNG &amp;amp;#8211; MINLNG;  
+for (int i = 0; i &amp;lt; numbits; i++) {  
+minLng /= 2.0;  
+}  
+}
+
+//根据二进制和范围解码  
+private double decode(BitSet bs, double floor, double ceiling) {  
+double mid = 0;  
+for (int i = 0; i &amp;lt; bs.length(); i++) {  
+mid = (floor + ceiling) / 2;  
+if (bs.get(i)) {  
+floor = mid;  
+} else {  
+ceiling = mid;  
+}  
+}  
+return mid;  
+}
+
+//对编码后的字符串解码  
+public double[] decode(String geohash) {  
+StringBuilder buffer = new StringBuilder();  
+for (char c : geohash.toCharArray()) {  
+int i = lookup.get(c) + 32;  
+buffer.append(Integer.toString(i, 2).substring(1));  
+}
+
+BitSet lonset = new BitSet();  
+BitSet latset = new BitSet();
+
+//偶数位，经度  
+int j = 0;  
+for (int i = 0; i &amp;lt; numbits * 2; i += 2) {  
+boolean isSet = false;  
+if (i &amp;lt; buffer.length()) {  
+isSet = buffer.charAt(i) == &amp;amp;#8216;1&amp;amp;#8217;;  
+}  
+lonset.set(j++, isSet);  
+}
+
+//奇数位，纬度  
+j = 0;  
+for (int i = 1; i &amp;lt; numbits * 2; i += 2) {  
+boolean isSet = false;  
+if (i &amp;lt; buffer.length()) {  
+isSet = buffer.charAt(i) == &amp;amp;#8216;1&amp;amp;#8217;;  
+}  
+latset.set(j++, isSet);  
+}
+
+double lon = decode(lonset, -180, 180);  
+double lat = decode(latset, -90, 90);
+
+return new double[]{lat, lon};  
+}
+
+public static void main(String[] args) {  
+GeoHash geohash = new GeoHash();  
+String s = geohash.encode(39.923201, 116.390705);  
+System.out.println(&amp;#34;geohash：&amp;#34; + s);  
+ArrayList&amp;lt;String&amp;gt; aroundGeoHash = geohash.getAroundGeoHash(39.923201, 116.390705);  
+for (String s1 : aroundGeoHash) {  
+System.out.println(&amp;#34;aroundGeoHash：&amp;#34; + s1);  
+}  
+double[] geo = geohash.decode(s);  
+System.out.println(geo[0] + &amp;#34; &amp;#34; + geo[1]);  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参考：https://www.jianshu.com/p/2fd0cf12e5ba&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Redis GeoHash 的一个小示例</title>
+      <link>http://localhost:1313/posts/2019-05-19-redis-geohash-%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%A4%BA%E4%BE%8B/</link>
+      <pubDate>Sun, 19 May 2019 09:38:46 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2019-05-19-redis-geohash-%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%A4%BA%E4%BE%8B/</guid>
+      <description>&lt;p&gt;上周产品经理提了一个类似于 LBS 的应用，第一时间想到了忘记了之前什么时候看 Redis 的 API，发现 Redis 自 3.2 版本之后，新增了一类关于地理位置相关的 API，于是拿来测试一下，发现特别好用，写一个小例子作为笔记。&lt;/p&gt;
+&lt;p&gt;首先需要说明的是，由于我们公司的 JDK 的版本是 1.7，所以我采用的 spring-data-redis 的版本是：1.8.20.RELEASE，最新二点几的版本已经不支持 JDK 1.7，而一点几和二点几的版本的 API 有略微的差异（下面会说明，还有一点点我的小感悟），废话不多说，直接看例子：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+@Override  
+public Long geoAdd(String key, List&amp;lt;Entity&amp;gt; entities) {  
+redisTemplate.delete(key);  
+GeoOperations geoOperations = redisTemplate.opsForGeo();  
+Map&amp;lt;String, Point&amp;gt; map = new HashMap&amp;lt;&amp;gt;();  
+Point point = null;  
+for (Entity entity : entities) {  
+point = new Point(entity.getLongitude(), entity.getLatitude());  
+map.put(gson.toJson(entity), point);  
+}
+
+Long add = geoOperations.geoAdd(key, map);
+
+return add;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参数就两个很简单，一个是 key，一个是数据集，我们将在这个集合中找出符合条件的数据，需要说明的是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;第一行我先调用了一个 delete 方法，是将上次放进去的数据删除，因为这个命令是 add，也就是新增，但是 redis 并没有提供直接删除这个 key 的命令（有一个 remove 的方法，但是需要传入删除哪些数据，也就是不能只给一个 key，把这个 key 对应的数据都删除，个人感觉不太好用），当然你也可以在计算后取得相应的数据之后删除，个人感觉都一样，不要忘记清理数据就行，另一个方法就是设置过期时间，也都行；&lt;/li&gt;
+&lt;li&gt;为什么要清理数据？因为这个 add，不同的情况，放进去的数据应该不同的，如果 entities 已经发生变更，而一直 add，那么数据将会乱掉，所以先把之前的数据删掉再说；&lt;/li&gt;
+&lt;li&gt;我个人采用的是把数据放到了 Map 中，其中 key 是对象序列化之后的 json 串，目的是为了下面找到对应的数据之后，直接反序列化成对象进行返回，当然也可以采用其他的方案，还有就是 add 还有一些其他的 API，这个大家可以自己看文档，选择合适的就行;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;数据放进去之后就是计算了，我们的需求就是算一个人旁边几公里内有多少符合条件的数据，代码如下：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

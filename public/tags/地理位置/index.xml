@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>地理位置 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E5%9C%B0%E7%90%86%E4%BD%8D%E7%BD%AE/</link>
+    <description>Recent content in 地理位置 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 19 May 2019 09:38:46 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%9C%B0%E7%90%86%E4%BD%8D%E7%BD%AE/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Redis GeoHash 的一个小示例</title>
+      <link>http://localhost:1313/posts/2019-05-19-redis-geohash-%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%A4%BA%E4%BE%8B/</link>
+      <pubDate>Sun, 19 May 2019 09:38:46 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2019-05-19-redis-geohash-%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%A4%BA%E4%BE%8B/</guid>
+      <description>&lt;p&gt;上周产品经理提了一个类似于 LBS 的应用，第一时间想到了忘记了之前什么时候看 Redis 的 API，发现 Redis 自 3.2 版本之后，新增了一类关于地理位置相关的 API，于是拿来测试一下，发现特别好用，写一个小例子作为笔记。&lt;/p&gt;
+&lt;p&gt;首先需要说明的是，由于我们公司的 JDK 的版本是 1.7，所以我采用的 spring-data-redis 的版本是：1.8.20.RELEASE，最新二点几的版本已经不支持 JDK 1.7，而一点几和二点几的版本的 API 有略微的差异（下面会说明，还有一点点我的小感悟），废话不多说，直接看例子：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+@Override  
+public Long geoAdd(String key, List&amp;lt;Entity&amp;gt; entities) {  
+redisTemplate.delete(key);  
+GeoOperations geoOperations = redisTemplate.opsForGeo();  
+Map&amp;lt;String, Point&amp;gt; map = new HashMap&amp;lt;&amp;gt;();  
+Point point = null;  
+for (Entity entity : entities) {  
+point = new Point(entity.getLongitude(), entity.getLatitude());  
+map.put(gson.toJson(entity), point);  
+}
+
+Long add = geoOperations.geoAdd(key, map);
+
+return add;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参数就两个很简单，一个是 key，一个是数据集，我们将在这个集合中找出符合条件的数据，需要说明的是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;第一行我先调用了一个 delete 方法，是将上次放进去的数据删除，因为这个命令是 add，也就是新增，但是 redis 并没有提供直接删除这个 key 的命令（有一个 remove 的方法，但是需要传入删除哪些数据，也就是不能只给一个 key，把这个 key 对应的数据都删除，个人感觉不太好用），当然你也可以在计算后取得相应的数据之后删除，个人感觉都一样，不要忘记清理数据就行，另一个方法就是设置过期时间，也都行；&lt;/li&gt;
+&lt;li&gt;为什么要清理数据？因为这个 add，不同的情况，放进去的数据应该不同的，如果 entities 已经发生变更，而一直 add，那么数据将会乱掉，所以先把之前的数据删掉再说；&lt;/li&gt;
+&lt;li&gt;我个人采用的是把数据放到了 Map 中，其中 key 是对象序列化之后的 json 串，目的是为了下面找到对应的数据之后，直接反序列化成对象进行返回，当然也可以采用其他的方案，还有就是 add 还有一些其他的 API，这个大家可以自己看文档，选择合适的就行;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;数据放进去之后就是计算了，我们的需求就是算一个人旁边几公里内有多少符合条件的数据，代码如下：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

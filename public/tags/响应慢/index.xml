@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>响应慢 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E5%93%8D%E5%BA%94%E6%85%A2/</link>
+    <description>Recent content in 响应慢 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 02 Feb 2026 06:10:09 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%93%8D%E5%BA%94%E6%85%A2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>一次系统响应慢的排查</title>
+      <link>http://localhost:1313/posts/2026-02-02-%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%93%8D%E5%BA%94%E6%85%A2%E7%9A%84%E6%8E%92%E6%9F%A5/</link>
+      <pubDate>Mon, 02 Feb 2026 06:10:09 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2026-02-02-%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%93%8D%E5%BA%94%E6%85%A2%E7%9A%84%E6%8E%92%E6%9F%A5/</guid>
+      <description>&lt;p&gt;先说一下，系统的相关信息，一共两个系统分别称呼是 A 和 B 吧。1. 两个系统都没有源码；2. A 是 springboot 项目，B 是传统的 Tomcat；3. 两者都是使用内网 IP 地址连接同一个数据库；4. 两个系统包括数据库都是一个月前老服务器迁移到了新服务器。表现是 A 系统也就是 springboot 系统响应速度正常，B 系统也就是那个 Tomcat 系统响应速度相对正常，就是有一点慢，但是一直没有放在心上，内部系统，能用，有一天发现 B 系统的某个接口特别特别慢，以至于会响应超时，然后排查这个问题，还有就是目前只发现了这一个接口慢，A 系统有一个类似功能的接口，响应速度也正常。&lt;/p&gt;
+&lt;p&gt;当时看到这个响应，第一反应：B 系统有个配置错了，因为一个月前刚迁移了系统，而 B 系统一共有三个配置文件，需要配置数据库连接，有个地方忘记修改了，刚好这个接口用的是这个系统的配置文件的连接地址，所以调用数据库连接超时报错，经排查发现三个地址的配置均修改了，是正确的。&lt;/p&gt;
+&lt;p&gt;在上一步的排查中也没有发现有任何报错日志，所以第二反应，出现了慢查询，但是感觉不太应该，数据库是完整迁移的，以前也不慢啊，而且 A 系统有个功能类似的接口，响应速度也算正常。其实正常是看慢查询日志，看有没有相关的 SQL，但是系统没有记录，所以通过 SQL 语句查询：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+SELECT trx_id AS 事务ID, trx_state AS 状态, trx_started AS 开始时间, trx_mysql_thread_id AS 线程ID, TIME_TO_SEC(TIMEDIFF(NOW(), trx_started)) AS 已运行秒数, trx_query AS 当前SQL FROM information_schema.INNODB_TRX ORDER BY trx_started\G
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;经查询，调用这个接口的时候，没有超长执行的 SQL 语句所以排除。&lt;/p&gt;
+&lt;p&gt;然后下一个排查方向是不是 jdbc 的驱动版本不对，B 系统的 jdbc 版本还是 5 点几，而数据库的版本已经是 8 点几，这有点对不上啊，大模型说 8 点几的认证方式修改了，所以那就修改 jdbc 的版本测试，然后没有任何变化。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

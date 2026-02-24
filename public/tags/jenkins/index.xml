@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Jenkins on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/jenkins/</link>
+    <description>Recent content in Jenkins on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 17 May 2025 07:42:46 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/jenkins/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gradle 项目打包构建中的两个小问题</title>
+      <link>http://localhost:1313/posts/2025-05-17-gradle-%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E6%9E%84%E5%BB%BA%E4%B8%AD%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Sat, 17 May 2025 07:42:46 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-05-17-gradle-%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E6%9E%84%E5%BB%BA%E4%B8%AD%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98/</guid>
+      <description>&lt;ol&gt;
+&lt;li&gt;打包的时候报错，提示 jar 重复，具体详情：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+* What went wrong:  
+Execution failed for task &amp;amp;#8216;:web-admin:bootJar&amp;amp;#8217;.  
+&amp;gt; Entry BOOT-INF/lib/jaxb-core-4.0.3.jar is a duplicate but no duplicate handling strategy has been set. Please refer to https://docs.gradle.org/7.6.3/dsl/org.gradle.api.tasks.Copy.html#org.gradle.api.tasks.Copy:duplicatesStrategy for details.
+
+* Try:  
+&amp;gt; Run with &amp;amp;#8211;stacktrace option to get the stack trace.  
+&amp;gt; Run with &amp;amp;#8211;info or &amp;amp;#8211;debug option to get more log output.  
+&amp;gt; Run with &amp;amp;#8211;scan to get full insights.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在打包Spring Boot应用时，BOOT-INF/lib/jaxb-core-4.0.3.jar 文件出现了重复项，而构建脚本中没有设置处理重复文件的策略。Gradle不允许默认情况下存在重复文件，因此构建失败。要解决这个问题，只修改构建配置：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+bootJar {  
+duplicatesStrategy = DuplicatesStrategy.EXCLUDE  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这段代码告诉 Gradle 在发现重复文件时排除它们。根据你的需求，你也可以选择其他策略如 DuplicatesStrategy.INCLUDE 或者 DuplicatesStrategy.WARN。然后清理和重新构建项目即可。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

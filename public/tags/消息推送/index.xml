@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>消息推送 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/</link>
+    <description>Recent content in 消息推送 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 27 Feb 2025 01:26:08 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Spring MVC 通过 SSE 实现消息推送</title>
+      <link>http://localhost:1313/posts/2025-02-27-spring-mvc-%E9%80%9A%E8%BF%87-sse-%E5%AE%9E%E7%8E%B0%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/</link>
+      <pubDate>Thu, 27 Feb 2025 01:26:08 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-02-27-spring-mvc-%E9%80%9A%E8%BF%87-sse-%E5%AE%9E%E7%8E%B0%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/</guid>
+      <description>&lt;p&gt;又好久没有写文章了，自从有了大模型之后写文章的态度越来越提不起兴趣了，有问题，直接问大模型即可。前几天公司有个需求，想用 SSE 实现，之前从没写过，所以让大模型直接写，然后实现超级简单：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;编写 SSE 服务，来进行创建链接和发送消息&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo;
+
+import lombok.Getter;  
+import lombok.extern.slf4j.Slf4j;  
+import org.apache.commons.collections4.CollectionUtils;  
+import org.springframework.stereotype.Service;  
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.io.IOException;  
+import java.util.List;  
+import java.util.Map;  
+import java.util.concurrent.ConcurrentHashMap;
+
+@Slf4j  
+@Getter  
+@Service  
+public class SseService {
+
+private final Map&amp;lt;String, SseEmitter&amp;gt; emitters = new ConcurrentHashMap&amp;lt;&amp;gt;();
+
+public SseEmitter stream(String usrId) {  
+SseEmitter emitter = emitters.computeIfAbsent(usrId, k -&amp;gt; new SseEmitter(Long.MAX_VALUE));
+
+emitter.onCompletion(() -&amp;gt; {  
+log.info(&amp;#34;SSE emitter completed&amp;#34;);  
+emitters.remove(usrId);  
+});
+
+emitter.onError((throwable) -&amp;gt; {  
+log.error(&amp;#34;Error occurred in SSE emitter&amp;#34;, throwable);  
+emitter.complete();  
+emitters.remove(usrId);  
+});
+
+emitter.onTimeout(() -&amp;gt; {  
+log.warn(&amp;#34;SSE emitter timed out&amp;#34;);  
+emitter.complete();  
+emitters.remove(usrId);  
+});  
+// 可选：连接成功时向客户端发送一个初始事件  
+try {  
+emitter.send(SseEmitter.event().name(&amp;#34;connect&amp;#34;).data(&amp;#34;连接成功&amp;#34;));  
+} catch (IOException e) {  
+log.error(&amp;#34;Error occurred while sending initial event&amp;#34;, e);  
+emitter.completeWithError(e);  
+}
+
+return emitter;  
+}
+
+public void send(List&amp;lt;String&amp;gt; userIds, String name, Object object) {  
+if (!emitters.isEmpty()) {  
+// 遍历所有用户的 SseEmitter，推送数据  
+if (CollectionUtils.isEmpty(userIds)) {  
+emitters.forEach((userId, emitter) -&amp;gt; {  
+try {  
+emitter.send(SseEmitter.event().name(name).data(object));  
+} catch (IOException e) {  
+// 如果发送失败，则移除该用户的 emitter  
+log.error(&amp;#34;Error occurred while sending event to user {}&amp;#34;, userId, e);  
+emitter.completeWithError(e);  
+emitters.remove(userId);  
+}  
+});  
+} else {  
+userIds.forEach(userId -&amp;gt; {  
+SseEmitter emitter = emitters.get(userId);  
+if (emitter != null) {  
+try {  
+emitter.send(SseEmitter.event().name(name).data(object));  
+} catch (IOException e) {  
+// 如果发送失败，则移除该用户的 emitter  
+log.error(&amp;#34;Error occurred while sending event to user {}&amp;#34;, userId, e);  
+emitter.completeWithError(e);  
+emitters.remove(userId);  
+}  
+}  
+});  
+}  
+}  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;编写对应的 Controller 给前端提供接口：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo;
+
+import cn.bridgeli.BaseAuthController;  
+import io.swagger.v3.oas.annotations.tags.Tag;  
+import jakarta.annotation.Resource;  
+import lombok.extern.slf4j.Slf4j;  
+import org.springframework.http.MediaType;  
+import org.springframework.web.bind.annotation.GetMapping;  
+import org.springframework.web.bind.annotation.RequestMapping;  
+import org.springframework.web.bind.annotation.RestController;  
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+@Slf4j  
+@RestController  
+@Tag(name = &amp;#34;SSE 推送服务&amp;#34;)  
+@RequestMapping(&amp;#34;/auth/common/sse&amp;#34;)  
+public class SseController extends BaseAuthController {
+
+@Resource  
+private SseService sseService;
+
+@GetMapping(value = &amp;#34;/stream&amp;#34;, produces = MediaType.TEXT_EVENT_STREAM_VALUE)  
+public SseEmitter stream() {  
+return sseService.stream(getLoginUsr().getUsrId());  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;消息推送具体实现：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo;
+
+import cn.bridgeli.common.SseService;  
+import cn.bridgeli.monitor.MonitorService;  
+import cn.bridgeli.vo.CpuInfoVo;  
+import jakarta.annotation.Resource;  
+import lombok.extern.slf4j.Slf4j;  
+import org.springframework.scheduling.annotation.Scheduled;  
+import org.springframework.stereotype.Component;  
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.util.Map;
+
+@Component  
+@Slf4j  
+public class ScheduledTask {
+
+@Resource  
+private MonitorService monitorService;  
+@Resource  
+private SseService sseService;
+
+/**  
+* 每分钟执行一次  
+*/  
+@Scheduled(cron = &amp;#34;0 0/1 \* \* * ?&amp;#34;)  
+public void updateOrderStatus() {  
+log.info(&amp;#34;=============定时任务=============&amp;#34;);  
+Map&amp;lt;String, SseEmitter&amp;gt; emitters = sseService.getEmitters();  
+if (null == emitters || emitters.isEmpty()) {  
+log.info(&amp;#34;sse emitters is empty&amp;#34;);  
+return;  
+}  
+CpuInfoVo cpuData = monitorService.getCpuData();  
+sseService.send(null, &amp;#34;cpu&amp;#34;, cpuData);  
+}
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其实就是前端连接之后创建一个连接，保存连接，然后别的地方产生消息，推送消息，我的实例是通过 oshi 获取 CPU 使用率，实现对 CPU 的实时监控。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

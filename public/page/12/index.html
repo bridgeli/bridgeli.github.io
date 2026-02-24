@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head>
+	<meta name="generator" content="Hugo 0.156.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>分享技术带来的喜悦</title>
+<meta name="keywords" content="博客, 技术, Java">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>今天这篇文章比较简单，写一个老夫近期工作中遇到的一个问题，这个问题困扰了老夫几个月了，虽然借助强大的Google百度了好久，但一直没有彻底解决，一直感觉挺简单一问题，也挺常见的一问题（网上问这个问题的还挺多），怎么就没有一个靠谱点的解决方案呢，刚好上个周呢时间稍有空闲，于是仔细研究了一下，终于找到了问题的根源，然后同事一言点醒梦中人，豁然开朗，一举解决，所以记录一下，先说一下异常：MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效，详细的堆栈信息如下：
+严重: StandardWrapper.Throwable org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from file [D:J2EEapache-tomcat-7.0.62webappscrm-v1.0WEB-INFclassesspring-kafka-consumer.xml]; nested exception is com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效。 at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:409) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:335) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:303) at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:180) at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:216) at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:187) at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:125) at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:94) at org.springframework.context.support.AbstractRefreshableApplicationContext.refreshBeanFactory(AbstractRefreshableApplicationContext.java:129) at org.springframework.context.support.AbstractApplicationContext.obtainFreshBeanFactory(AbstractApplicationContext.java:540) at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:454) at org.springframework.web.servlet.FrameworkServlet.configureAndRefreshWebApplicationContext(FrameworkServlet.java:658) at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:624) at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:672) at org.springframework.web.servlet.FrameworkServlet.initWebApplicationContext(FrameworkServlet.java:543) at org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:484) at org.springframework.web.servlet.HttpServletBean.init(HttpServletBean.java:136) at javax.servlet.GenericServlet.init(GenericServlet.java:158) at org.apache.catalina.core.StandardWrapper.initServlet(StandardWrapper.java:1284) at org.apache.catalina.core.StandardWrapper.loadServlet(StandardWrapper.java:1197) at org.apache.catalina.core.StandardWrapper.allocate(StandardWrapper.java:864) at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:134) at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:122) at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:505) at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:170) at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:103) at org.apache.catalina.valves.AccessLogValve.invoke(AccessLogValve.java:957) at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:116) at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:423) at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1079) at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:620) at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:316) at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145) at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615) at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) at java.lang.Thread.run(Thread.java:745) Caused by: com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效。 at com.sun.org.apache.xerces.internal.impl.io.UTF8Reader.invalidByte(UTF8Reader.java:687) at com.sun.org.apache.xerces.internal.impl.io.UTF8Reader.read(UTF8Reader.java:408) at com.sun.org.apache.xerces.internal.impl.XMLEntityScanner.load(XMLEntityScanner.java:1735) at com.sun.org.apache.xerces.internal.impl.XMLEntityScanner.scanData(XMLEntityScanner.java:1234) at com.sun.org.apache.xerces.internal.impl.XMLScanner.scanComment(XMLScanner.java:778) at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanComment(XMLDocumentFragmentScannerImpl.java:1038) at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(XMLDocumentFragmentScannerImpl.java:2988) at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(XMLDocumentScannerImpl.java:606) at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.next(XMLNSDocumentScannerImpl.java:117) at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:510) at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:848) at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:777) at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:141) at com.sun.org.apache.xerces.internal.parsers.DOMParser.parse(DOMParser.java:243) at com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl.parse(DocumentBuilderImpl.java:347) at org.springframework.beans.factory.xml.DefaultDocumentLoader.loadDocument(DefaultDocumentLoader.java:76) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadDocument(XmlBeanDefinitionReader.java:428) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:390) &amp;#8230; 35 more 三月 16, 2016 5:41:59 下午 org.apache.catalina.core.StandardWrapperValve invoke 严重: Allocate exception for servlet springServlet com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效。 at com.sun.org.apache.xerces.internal.impl.io.UTF8Reader.invalidByte(UTF8Reader.java:687) at com.sun.org.apache.xerces.internal.impl.io.UTF8Reader.read(UTF8Reader.java:408) at com.sun.org.apache.xerces.internal.impl.XMLEntityScanner.load(XMLEntityScanner.java:1735) at com.sun.org.apache.xerces.internal.impl.XMLEntityScanner.scanData(XMLEntityScanner.java:1234) at com.sun.org.apache.xerces.internal.impl.XMLScanner.scanComment(XMLScanner.java:778) at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanComment(XMLDocumentFragmentScannerImpl.java:1038) at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(XMLDocumentFragmentScannerImpl.java:2988) at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(XMLDocumentScannerImpl.java:606) at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.next(XMLNSDocumentScannerImpl.java:117) at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:510) at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:848) at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:777) at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:141) at com.sun.org.apache.xerces.internal.parsers.DOMParser.parse(DOMParser.java:243) at com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl.parse(DocumentBuilderImpl.java:347) at org.springframework.beans.factory.xml.DefaultDocumentLoader.loadDocument(DefaultDocumentLoader.java:76) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadDocument(XmlBeanDefinitionReader.java:428) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:390) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:335) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:303) at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:180) at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:216) at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:187) at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:125) at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:94) at org.springframework.context.support.AbstractRefreshableApplicationContext.refreshBeanFactory(AbstractRefreshableApplicationContext.java:129) at org.springframework.context.support.AbstractApplicationContext.obtainFreshBeanFactory(AbstractApplicationContext.java:540) at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:454) at org.springframework.web.servlet.FrameworkServlet.configureAndRefreshWebApplicationContext(FrameworkServlet.java:658) at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:624) at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:672) at org.springframework.web.servlet.FrameworkServlet.initWebApplicationContext(FrameworkServlet.java:543) at org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:484) at org.springframework.web.servlet.HttpServletBean.init(HttpServletBean.java:136) at javax.servlet.GenericServlet.init(GenericServlet.java:158) at org.apache.catalina.core.StandardWrapper.initServlet(StandardWrapper.java:1284) at org.apache.catalina.core.StandardWrapper.loadServlet(StandardWrapper.java:1197) at org.apache.catalina.core.StandardWrapper.allocate(StandardWrapper.java:864) at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:134) at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:122) at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:505) at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:170) at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:103) at org.apache.catalina.valves.AccessLogValve.invoke(AccessLogValve.java:957) at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:116) at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:423) at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1079) at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:620) at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:316) at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145) at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615) at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) at java.lang.Thread.run(Thread.java:745) 看完堆栈信息，我相信遇到这个问题的同学，已经知道咋回事了。说起来也很简单，就是tomcat跑一个web项目时，报这个异常，导致项目起不来。在仔细看之后，应该是编码问题导致的，对，就是编码的问题了，看报错的那个XML文件编译之后的情况如下：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-03-20 14:23:00 +0000 +0000'>March 20, 2016</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>284 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效" href="http://localhost:1313/posts/2016-03-20-malformedbytesequenceexception-3-%E5%AD%97%E8%8A%82%E7%9A%84-utf-8-%E5%BA%8F%E5%88%97%E7%9A%84%E5%AD%97%E8%8A%82-2-%E6%97%A0%E6%95%88/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">POI解析Excel示例
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在Java的世界里，对于解析Excel，目前市场上有两个不错的框架，一个是jxl另一个是poi，之前老夫曾对jxl可以说是倍加赞赏（当时老夫还为了它而写了一篇文章，详见这里），因为一直认为它虽然有bug，虽然兼容性不好，但是它简单易用啊，只要自己够仔细认真就能避开这些坑，但是从这周起，老夫决定jxl一生黑，因为随着时间的推移，现在Excel的版本越来越新，而jxl只支持2003之前的版本，可以说解析起来异常麻烦，而poi有Apache做保证，表现越来越好，使用起来其实也不是很复杂，所以老夫决定之后再次遇到解析Excel的只用poi。
+下面是老夫写的一个解析Excel的一个工具类，希望对大家有所帮助。
+解析Excel所需的类库的maven依赖 &lt;dependency&gt; &lt;groupId&gt;org.apache.poi&lt;/groupId&gt; &lt;artifactId&gt;poi&lt;/artifactId&gt; &lt;version&gt;3.14&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.apache.poi&lt;/groupId&gt; &lt;artifactId&gt;poi-ooxml&lt;/artifactId&gt; &lt;version&gt;3.14&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.apache.commons&lt;/groupId&gt; &lt;artifactId&gt;commons-io&lt;/artifactId&gt; &lt;version&gt;1.3.2&lt;/version&gt; &lt;/dependency&gt; 解析的具体方法 package cn.bridgeli.demo; import java.io.FileInputStream; import java.util.Date; import java.util.HashMap; import java.util.LinkedList; import java.util.List; import java.util.Map; import org.apache.commons.io.FilenameUtils; import org.apache.poi.hssf.usermodel.HSSFWorkbook; import org.apache.poi.ss.usermodel.Cell; import org.apache.poi.ss.usermodel.DataFormatter; import org.apache.poi.ss.usermodel.DateUtil; import org.apache.poi.ss.usermodel.Row; import org.apache.poi.ss.usermodel.Sheet; import org.apache.poi.ss.usermodel.Workbook; import org.apache.poi.xssf.usermodel.XSSFWorkbook; import org.junit.Test; public class ExcelReader { protected static final String dateTimeFmtPattern = &#34;yyyy-MM-dd HH:mm:ss&#34;; protected static final String dateFmtPattern = &#34;yyyy-MM-dd&#34;; protected static final DataFormatter formatter = new DataFormatter(); @Test public void testReader() throws Exception { List&lt;Map&lt;String, String&gt;&gt; list = readExcel(&#34;E:/test1.xls&#34;); List&lt;Map&lt;String, String&gt;&gt; list2 = readExcel(&#34;E:/test1.xlsx&#34;); } /** * 读取excel文件（同时支持2003和2007格式） * * @param fileName * 文件名，绝对路径 * @return list中的map的key是列的序号 * @throws Exception * io异常等 */ public static List&lt;Map&lt;String, String&gt;&gt; readExcel(String fileName) throws Exception { FileInputStream fis = null; Workbook wb = null; List&lt;Map&lt;String, String&gt;&gt; list = null; try { String extension = FilenameUtils.getExtension(fileName); fis = new FileInputStream(fileName); list = read(fis, extension); return list; } finally { if (null != wb) { wb.close(); } if (null != fis) { fis.close(); } } } /** * 读取excel文件（同时支持2003和2007格式） * * @param fis * 文件输入流 * @param extension * 文件名扩展名: xls 或 xlsx 不区分大小写 * @return list中的map的key是列的序号 * @throws Exception * io异常等 */ public static List&lt;Map&lt;String, String&gt;&gt; read(FileInputStream fis, String extension) throws Exception { Workbook wb = null; List&lt;Map&lt;String, String&gt;&gt; list = null; try { if (&#34;xls&#34;.equalsIgnoreCase(extension)) { wb = new HSSFWorkbook(fis); } else if (&#34;xlsx&#34;.equalsIgnoreCase(extension)) { wb = new XSSFWorkbook(fis); } else { throw new Exception(&#34;file is not office excel&#34;); } list = readWorkbook(wb); return list; } finally { if (null != wb) { wb.close(); } } } protected static List&lt;Map&lt;String, String&gt;&gt; readWorkbook(Workbook wb) throws Exception { List&lt;Map&lt;String, String&gt;&gt; list = new LinkedList&lt;Map&lt;String, String&gt;&gt;(); for (int k = 0; k &lt; wb.getNumberOfSheets(); k&#43;&#43;) { Sheet sheet = wb.getSheetAt(k); int rows = sheet.getPhysicalNumberOfRows(); for (int r = 0; r &lt; rows; r&#43;&#43;) { Row row = sheet.getRow(r); if (row == null) { continue; } Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;(); int cells = row.getPhysicalNumberOfCells(); for (int c = 0; c &lt; cells; c&#43;&#43;) { Cell cell = row.getCell(c); if (cell == null) { continue; } String value = getCellValue(cell); map.put(String.valueOf(cell.getColumnIndex() &#43; 1), value); } list.add(map); } } return list; } protected static String getCellValue(Cell cell) { String value = null; switch (cell.getCellType()) { case Cell.CELL_TYPE_FORMULA: // 公式 case Cell.CELL_TYPE_NUMERIC: // 数字 double doubleVal = cell.getNumericCellValue(); short format = cell.getCellStyle().getDataFormat(); String formatString = cell.getCellStyle().getDataFormatString(); if (format == 14 || format == 31 || format == 57 || format == 58 || (format &gt;= 176 &amp;&amp; format &lt;= 183)) { // 日期 Date date = DateUtil.getJavaDate(doubleVal); value = formatDate(date, dateFmtPattern); } else if (format == 20 || format == 32 || (format &gt;= 184 &amp;&amp; format &lt;= 187)) { // 时间 Date date = DateUtil.getJavaDate(doubleVal); value = formatDate(date, &#34;HH:mm&#34;); } else { value = String.valueOf(doubleVal); } break; case Cell.CELL_TYPE_STRING: // 字符串 value = cell.getStringCellValue(); break; case Cell.CELL_TYPE_BLANK: // 空白 value = &#34;&#34;; break; case Cell.CELL_TYPE_BOOLEAN: // Boolean value = String.valueOf(cell.getBooleanCellValue()); break; case Cell.CELL_TYPE_ERROR: // Error，返回错误码 value = String.valueOf(cell.getErrorCellValue()); break; default: value = &#34;&#34;; break; } return value; } @SuppressWarnings(&#34;deprecation&#34;) private static String formatDate(Date d, String sdf) { String value = null; if (d.getSeconds() == 0 &amp;&amp; d.getMinutes() == 0 &amp;&amp; d.getHours() == 0) { // value = DateTimeUtil.getFormatedDate(d, dateFmtPattern); } else { // value = DateTimeUtil.getFormatedDate(d, sdf); } return value; } } 对于这些第三方工具类的框架来说，老夫一直认为我们没有必要每次都自己去一步一步的写，只要写一次就够了，所以本文就是老夫的一个笔记而已，希望做到无论是老夫还是渎职今后只要需要解析Excel的时候，找到这里，把这里的方法copy出去，改吧改吧就能用了，另外本文也只牵涉到对Excel的解析而已，并没有生成的部分，一方面我在工作中解析多余生成，另一方面我相信大家只要会解析生成也一定不是大问题，网上资料这么多，所以就留给读者自己去探索了
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-03-13 14:13:56 +0000 +0000'>March 13, 2016</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>559 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to POI解析Excel示例" href="http://localhost:1313/posts/2016-03-13-poi%E8%A7%A3%E6%9E%90excel%E7%A4%BA%E4%BE%8B/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Junit Test之Easy Mock Test入门
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>这一段时间公司的项目进行分模块分层进行专人维护开发，所以就会有不同的service和dao有不同的人来开发，这里我们假设service和dao不同的人开发，service是依赖dao的，如果我们的dao开发人员比较忙并没有把dao模块开发好，service如果要对自己的模块进行测试该怎么做呢？这个时候我们的Easy Mock Test就可以派上用场了。
+首先开发service的和dao的会讨论商量出来一套接口，假设dao的接口如下：
+package cn.bridgeli.dao; import cn.bridgeli.model.User; public interface UserDao { public User getUserById(int id); public User getUserByUsername(String username); //&amp;#8230; } dao模块的小朋友把它打成一个jar包，扔给service开发人员，然后我们亲爱的service开发人员就自己玩去了，最后我们的service开发人员完成了自己的任务，写下了如下的代码，当然这只是一个demo而已：
+package cn.bridgeli.service.impl; import cn.bridgeli.dao.UserDao; import cn.bridgeli.model.User; import cn.bridgeli.service.UserService; public class UserServiceImpl implements UserService { private UserDao userDao; public void setUserDao(UserDao userDao) { this.userDao = userDao; } @Override public boolean login(String username, String password) { User user = userDao.getUserByUsername(username); System.out.println(&#34;id==&#34; &#43; user.getId()); if (user != null) { String passwordInDao = user.getPassword(); if (passwordInDao != null &amp;&amp; passwordInDao.equalsIgnoreCase(password)) { return true; } } return false; } @Override public User getUserById(int userId) { return userDao.getUserById(userId); } } 但是我们的service怎么知道自己写的有没有问题呢？现在我们的service想对自己的模块进行测试，但dao开发人员还没开始，这肯定是没办法开始的，那么怎么办呢？很简单，只需要这么做就可以了：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-02-29 14:37:48 +0000 +0000'>February 29, 2016</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>206 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Junit Test之Easy Mock Test入门" href="http://localhost:1313/posts/2016-02-29-junit-test%E4%B9%8Beasy-mock-test%E5%85%A5%E9%97%A8/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Maven私服之Nexus入门图文教程
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>老夫相信看到这篇文章的人一定已经知道maven和nexus分别是什么东西了，所以就不多做介绍了，下面直接从下载安装开始讲。
+下载安装 大家可以直接从这个链接http://www.sonatype.org/nexus/go/下载系统，下载完成之后解压到系统的任何文件夹下就可以了，老夫下载是：nexus-2.8.1-01，然后可就是安装了。
+解压一路进到nexus-2.8.1-01/bin/jsw。然后选择适合自己的系统的文件夹进去，老夫的电脑是win32，所以进去之后是这个样子
+然后用管理员身份先运行install-nexus.bat安装服务，然后运行console-nexus.bat，等起来之后直接在浏览器中输入：http://localhost:8081/nexus，我们看到下图就是成功了，忘了是不是需要安装服务：wrapper了，大家试一试就知道了。
+配置nexus 要管理Nexus，你首先需要以管理员身份登陆，点击界面右上角的login，输入默认的登录名和密码：admin/admin123，登陆成功后，你会看到左边的导航栏增加了很多内容，变成了下面这个样子
+这里，可以管理仓库，配置Nexus系统，管理任务，管理用户，角色，权限，查看系统的RSS源，管理及查看系统日志，等等。你会看到Nexus的功能十分丰富和强大，本文，老夫只介绍一些最基本的管理和操作。
+因为是老夫习惯于让大伙看了这篇文章就知道怎么做，所以这里多内容咱就不说了，直接上配置，点击左边Administration菜单下面的Repositories，找到右边仓库列表中的三个仓库Apache Snapshots，Codehaus Snapshots和Maven Central，然后再没有仓库的configuration下把Download Remote Indexes修改为true。如下图：
+然后在Apache Snapshots，Codehaus Snapshots和Maven Central这三个仓库上分别右键，选择Repari Index，这样Nexus就会去下载远程的索引文件。
+这样设置以后, Nexus会自动从远程中央仓库下载索引文件, 为了检验索引文件自动下载是否生效,可以切换到Browse Index看看是否生成了这些索引文件。
+添加一个代理仓库 加入我们想要代理Sonatype的公共仓库，其地址为：http://repository.sonatype.org/content/groups/public/。步骤如下，在Repositories面板的上方，点击Add，然后选择Proxy Repository，在下方的配置部分，我们填写如下的信息：Repository ID – sonatype；Repository Name – Sonatype Repository；Remote Storage Location – http://repository.sonatype.org/content/groups/public/。其余的保持默认值，需要注意的是Repository Policy，我们不要代理snapshot构件，至于原因老夫相信读者应该已经很清楚了，然后点击Save。因为比较简单就不上图了。
+管理宿主仓库 Nexus预定义了3个本地仓库，分别为Releases，Snapshots，和3rd Party。这三个仓库都有各自明确的目的。Releases用于部署我们自己的release构件，Snapshots用于部署我们自己的snapshot构件，而3rd Party用于部署第三方构件，有些构件如Oracle的JDBC驱动，我们不能从公共仓库下载到，我们就需要将其部署到自己的仓库中。
+当然你也可以创建自己的本地仓库，步骤和创建代理仓库类似，点击Repository面板上方的Add按钮，然后选择Hosted Repository，然后在下方的配置面板中输入id和name，注意这里我们不再需要填写远程仓库地址，Repository Type则为不可修改的hosted，而关于Repository Policy，你可以根据自己的需要选择Release或者Snapshot。
+管理Maven仓库组 Nexus 中仓库组的概念是Maven没有的，在Maven看来，不管你是hosted也好，proxy也好，或者group也好，对我都是一样的，我只管根据 groupId，artifactId，version等信息向你要构件。为了方便Maven的配置，Nexus能够将多个仓库，hosted或者 proxy合并成一个group，这样，Maven只需要依赖于一个group，便能使用所有该group包含的仓库的内容。
+最新neuxs默认自带了一个名为“Public Repositories”组，点击该组可以对他保护的仓库进行调整，把刚才建立的仓库Sonatype Repository加入其中，这样就不需要再在maven中明确指定仓库的地址了。同时创建一个Group ID为public-snapshots、Group Name为Public Snapshots Repositories的组，把Apache Snapshots、Codehaus Snapshots、Snapshots和Sonatype Repository也加入其中。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-01-31 14:03:25 +0000 +0000'>January 31, 2016</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>207 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Maven私服之Nexus入门图文教程" href="http://localhost:1313/posts/2016-01-31-maven%E7%A7%81%E6%9C%8D%E4%B9%8Bnexus%E5%9B%BE%E6%96%87%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">集群Quartz的配置方法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>一般系统随着用户量的增长，慢慢的都会由单机走向集群，而很多时候我们又需要跑一些定时任务，Quartz就是为此而生，那么单机好办，集群中的Quartz又该如何配置呢？集群中的Quartz各节点之间是通过同一个数据库实例(准确的说是同一个数据库实例的同一套表)来感知彼此的，既然是通过数据库，那么就先看看数SQL文件
+SQL文件 # \# Quartz seems to work best with the driver mm.mysql-2.0.7-bin.jar # \# In your Quartz properties file, you&amp;#8217;ll need to set \# org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate # DROP TABLE IF EXISTS QRTZ_JOB_LISTENERS; DROP TABLE IF EXISTS QRTZ_TRIGGER_LISTENERS; DROP TABLE IF EXISTS QRTZ_FIRED_TRIGGERS; DROP TABLE IF EXISTS QRTZ_PAUSED_TRIGGER_GRPS; DROP TABLE IF EXISTS QRTZ_SCHEDULER_STATE; DROP TABLE IF EXISTS QRTZ_LOCKS; DROP TABLE IF EXISTS QRTZ_SIMPLE_TRIGGERS; DROP TABLE IF EXISTS QRTZ_CRON_TRIGGERS; DROP TABLE IF EXISTS QRTZ_BLOB_TRIGGERS; DROP TABLE IF EXISTS QRTZ_TRIGGERS; DROP TABLE IF EXISTS QRTZ_JOB_DETAILS; DROP TABLE IF EXISTS QRTZ_CALENDARS; CREATE TABLE QRTZ_JOB_DETAILS ( JOB_NAME VARCHAR(200) NOT NULL, JOB_GROUP VARCHAR(200) NOT NULL, DESCRIPTION VARCHAR(250) NULL, JOB_CLASS_NAME VARCHAR(250) NOT NULL, IS_DURABLE VARCHAR(1) NOT NULL, IS_VOLATILE VARCHAR(1) NOT NULL, IS_STATEFUL VARCHAR(1) NOT NULL, REQUESTS_RECOVERY VARCHAR(1) NOT NULL, JOB_DATA BLOB NULL, PRIMARY KEY (JOB_NAME,JOB_GROUP) ); CREATE TABLE QRTZ_JOB_LISTENERS ( JOB_NAME VARCHAR(200) NOT NULL, JOB_GROUP VARCHAR(200) NOT NULL, JOB_LISTENER VARCHAR(200) NOT NULL, PRIMARY KEY (JOB_NAME,JOB_GROUP,JOB_LISTENER), FOREIGN KEY (JOB_NAME,JOB_GROUP) REFERENCES QRTZ_JOB_DETAILS(JOB_NAME,JOB_GROUP) ); CREATE TABLE QRTZ_TRIGGERS ( TRIGGER_NAME VARCHAR(200) NOT NULL, TRIGGER_GROUP VARCHAR(200) NOT NULL, JOB_NAME VARCHAR(200) NOT NULL, JOB_GROUP VARCHAR(200) NOT NULL, IS_VOLATILE VARCHAR(1) NOT NULL, DESCRIPTION VARCHAR(250) NULL, NEXT_FIRE_TIME BIGINT(13) NULL, PREV_FIRE_TIME BIGINT(13) NULL, PRIORITY INTEGER NULL, TRIGGER_STATE VARCHAR(16) NOT NULL, TRIGGER_TYPE VARCHAR(8) NOT NULL, START_TIME BIGINT(13) NOT NULL, END_TIME BIGINT(13) NULL, CALENDAR_NAME VARCHAR(200) NULL, MISFIRE_INSTR SMALLINT(2) NULL, JOB_DATA BLOB NULL, PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP), FOREIGN KEY (JOB_NAME,JOB_GROUP) REFERENCES QRTZ_JOB_DETAILS(JOB_NAME,JOB_GROUP) ); CREATE TABLE QRTZ_SIMPLE_TRIGGERS ( TRIGGER_NAME VARCHAR(200) NOT NULL, TRIGGER_GROUP VARCHAR(200) NOT NULL, REPEAT_COUNT BIGINT(7) NOT NULL, REPEAT_INTERVAL BIGINT(12) NOT NULL, TIMES_TRIGGERED BIGINT(10) NOT NULL, PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP), FOREIGN KEY (TRIGGER_NAME,TRIGGER_GROUP) REFERENCES QRTZ_TRIGGERS(TRIGGER_NAME,TRIGGER_GROUP) ); CREATE TABLE QRTZ_CRON_TRIGGERS ( TRIGGER_NAME VARCHAR(200) NOT NULL, TRIGGER_GROUP VARCHAR(200) NOT NULL, CRON_EXPRESSION VARCHAR(200) NOT NULL, TIME_ZONE_ID VARCHAR(80), PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP), FOREIGN KEY (TRIGGER_NAME,TRIGGER_GROUP) REFERENCES QRTZ_TRIGGERS(TRIGGER_NAME,TRIGGER_GROUP) ); CREATE TABLE QRTZ_BLOB_TRIGGERS ( TRIGGER_NAME VARCHAR(200) NOT NULL, TRIGGER_GROUP VARCHAR(200) NOT NULL, BLOB_DATA BLOB NULL, PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP), FOREIGN KEY (TRIGGER_NAME,TRIGGER_GROUP) REFERENCES QRTZ_TRIGGERS(TRIGGER_NAME,TRIGGER_GROUP) ); CREATE TABLE QRTZ_TRIGGER_LISTENERS ( TRIGGER_NAME VARCHAR(200) NOT NULL, TRIGGER_GROUP VARCHAR(200) NOT NULL, TRIGGER_LISTENER VARCHAR(200) NOT NULL, PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP,TRIGGER_LISTENER), FOREIGN KEY (TRIGGER_NAME,TRIGGER_GROUP) REFERENCES QRTZ_TRIGGERS(TRIGGER_NAME,TRIGGER_GROUP) ); CREATE TABLE QRTZ_CALENDARS ( CALENDAR_NAME VARCHAR(200) NOT NULL, CALENDAR BLOB NOT NULL, PRIMARY KEY (CALENDAR_NAME) ); CREATE TABLE QRTZ_PAUSED_TRIGGER_GRPS ( TRIGGER_GROUP VARCHAR(200) NOT NULL, PRIMARY KEY (TRIGGER_GROUP) ); CREATE TABLE QRTZ_FIRED_TRIGGERS ( ENTRY_ID VARCHAR(95) NOT NULL, TRIGGER_NAME VARCHAR(200) NOT NULL, TRIGGER_GROUP VARCHAR(200) NOT NULL, IS_VOLATILE VARCHAR(1) NOT NULL, INSTANCE_NAME VARCHAR(200) NOT NULL, FIRED_TIME BIGINT(13) NOT NULL, PRIORITY INTEGER NOT NULL, STATE VARCHAR(16) NOT NULL, JOB_NAME VARCHAR(200) NULL, JOB_GROUP VARCHAR(200) NULL, IS_STATEFUL VARCHAR(1) NULL, REQUESTS_RECOVERY VARCHAR(1) NULL, PRIMARY KEY (ENTRY_ID) ); CREATE TABLE QRTZ_SCHEDULER_STATE ( INSTANCE_NAME VARCHAR(200) NOT NULL, LAST_CHECKIN_TIME BIGINT(13) NOT NULL, CHECKIN_INTERVAL BIGINT(13) NOT NULL, PRIMARY KEY (INSTANCE_NAME) ); CREATE TABLE QRTZ_LOCKS ( LOCK_NAME VARCHAR(40) NOT NULL, PRIMARY KEY (LOCK_NAME) ); INSERT INTO QRTZ_LOCKS values(&amp;#8216;TRIGGER_ACCESS&amp;#8217;); INSERT INTO QRTZ_LOCKS values(&amp;#8216;JOB_ACCESS&amp;#8217;); INSERT INTO QRTZ_LOCKS values(&amp;#8216;CALENDAR_ACCESS&amp;#8217;); INSERT INTO QRTZ_LOCKS values(&amp;#8216;STATE_ACCESS&amp;#8217;); INSERT INTO QRTZ_LOCKS values(&amp;#8216;MISFIRE_ACCESS&amp;#8217;); commit; 其实这个文件在Quartz的文档中是可以找到的，这里贴出来只是为了大家方便，建好数据库之后，接下来肯定就是看看数据源的问题了
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-01-03 13:23:26 +0000 +0000'>January 3, 2016</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>747 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 集群Quartz的配置方法" href="http://localhost:1313/posts/2016-01-03-%E9%9B%86%E7%BE%A4quartz%E7%9A%84%E9%85%8D%E5%88%B6%E6%96%B9%E6%B3%95/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">maven打包dubbo接口之最佳实践
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>之前刚开始学习dubbo的时候，曾写过一个入门的小例子，当时生产者也是用tomcat去跑的，其实dubbo只需要提供service层接口就好了，并不需要和http相关的东西，所以其实并不需要用tomcat去跑，我们完全打成其他的包直接去跑，这样dubbo接口也不会tomcat性能的限制，而打包可以说是maven最擅长的事情之一，今天就记录一下我们公司的实际项目中使用maven-assembly-plugin打包的方法。
+首先在pom文件中，添加maven-assembly-plugin插件 &lt;plugin&gt; &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt; &lt;configuration&gt; &lt;descriptor&gt;src/main/assembly/assembly.xml&lt;/descriptor&gt; &lt;/configuration&gt; &lt;executions&gt; &lt;execution&gt; &lt;id&gt;make-assembly&lt;/id&gt; &lt;phase&gt;package&lt;/phase&gt; &lt;goals&gt; &lt;goal&gt;single &lt;/goal&gt; &lt;/goals&gt; &lt;/execution&gt; &lt;/executions&gt; &lt;/plugin&gt; 在该插件的第四行我们指定了一个assembly.xml文件，下面我们就看看assembly.xml的内容
+assembly.xml文件 &lt;assembly&gt; &lt;id&gt;assembly&lt;/id&gt; &lt;formats&gt; &lt;format&gt;tar.gz&lt;/format&gt; &lt;/formats&gt; &lt;includeBaseDirectory&gt;true&lt;/includeBaseDirectory&gt; &lt;fileSets&gt; &lt;fileSet&gt; &lt;outputDirectory&gt;/&lt;/outputDirectory&gt; &lt;includes&gt; &lt;include&gt;README.txt&lt;/include&gt; &lt;/includes&gt; &lt;/fileSet&gt; &lt;fileSet&gt; &lt;directory&gt;src/main/scripts&lt;/directory&gt; &lt;outputDirectory&gt;/bin&lt;/outputDirectory&gt; &lt;/fileSet&gt; &lt;/fileSets&gt; &lt;dependencySets&gt; &lt;dependencySet&gt; &lt;useProjectArtifact&gt;true&lt;/useProjectArtifact&gt; &lt;outputDirectory&gt;lib&lt;/outputDirectory&gt; &lt;/dependencySet&gt; &lt;/dependencySets&gt; &lt;/assembly&gt; 该文件的第四行中的tar.gz指的就是打包的文件格式，对于Linux用户，对这个格式一定非常熟悉，当然大家也可以指定为zip格式，另外在该文件的第十五行，指定了一个scripts文件夹，那么这里面放的又是什么呢？我们知道打包之后的系统我们要跑起来才能用，那么这里面放的就是对我们的系统操作的一些脚本，打包之后，我们的系统都是一些jar文件，放在了倒数第四行指定的lib文件中，而这些脚本则放在了和lib同级的bin文件中，下面就让我们一一看看scripts中几个文件的内容
+scripts文件夹 ①. start.bat
+@echo off &amp; setlocal enabledelayedexpansion set LIB_JARS=&#34;&#34; cd ..lib for %%i in (*) do set LIB_JARS=!LIB_JARS!;..lib%%i cd ..bin if &#34;&#34;%1&#34;&#34; == &#34;&#34;debug&#34;&#34; goto debug if &#34;&#34;%1&#34;&#34; == &#34;&#34;jmx&#34;&#34; goto jmx java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main goto end :debug java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main goto end :jmx java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main :end pause ②. start.sh
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-12-20 13:56:50 +0000 +0000'>December 20, 2015</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>948 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to maven打包dubbo接口之最佳实践" href="http://localhost:1313/posts/2015-12-20-maven%E6%89%93%E5%8C%85%E4%B9%8Bdubbo%E6%8E%A5%E5%8F%A3%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">工作流Activiti5入门（下）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>看了工作流上和中的人，相信已经在慢慢入门了，因为本教程也只是致力于做一个入门而已，然后在用的过程中再慢慢学习，用来工作也许是一点问题都没有了，如果没有看过请看这篇和这篇，所以本没有必要再写下了，但实在感觉留下一个小尾巴：数据库还没有给大家介绍，这个入门实在是太过简陋，所以今天就把这篇文章来一个扫尾，下面先看最后一个想用的task
+六. 组任务
+流程图：
+其实和用户任务看起来并无差别，下面看实现
+分配组任务方式一（直接指定办理人） 具体配置：
+完成任务：
+/*\*查询当前人的个人任务\*/ @Test public void findMyPersonalTask(){ String assignee = &#34;小A&#34;; List&lt;Task&gt; list = processEngine.getTaskService()//与正在执行的任务管理相关的Service .createTaskQuery()//创建任务查询对象 /*\*查询条件（where部分）\*/ .taskAssignee(assignee)//指定个人任务查询，指定办理人 // .taskCandidateUser(candidateUser)//组任务的办理人查询 /*\*排序\*/ .orderByTaskCreateTime().asc()//使用创建时间的升序排列 /*\*返回结果集\*/ .list();//返回列表 if(list!=null &amp;&amp; list.size()&gt;0){ for(Task task:list){ System.out.println(&#34;任务ID:&#34;&#43;task.getId()); System.out.println(&#34;任务名称:&#34;&#43;task.getName()); System.out.println(&#34;任务的创建时间:&#34;&#43;task.getCreateTime()); System.out.println(&#34;任务的办理人:&#34;&#43;task.getAssignee()); System.out.println(&#34;流程实例ID：&#34;&#43;task.getProcessInstanceId()); System.out.println(&#34;执行对象ID:&#34;&#43;task.getExecutionId()); System.out.println(&#34;流程定义ID:&#34;&#43;task.getProcessDefinitionId()); System.out.println(&#34;########################################################&#34;); } } } /*\*查询当前人的组任务\*/ @Test public void findMyGroupTask(){ String candidateUser = &#34;大大&#34;; List&lt;Task&gt; list = processEngine.getTaskService()//与正在执行的任务管理相关的Service .createTaskQuery()//创建任务查询对象 /*\*查询条件（where部分）\*/ .taskCandidateUser(candidateUser)//组任务的办理人查询 /*\*排序\*/ .orderByTaskCreateTime().asc()//使用创建时间的升序排列 /*\*返回结果集\*/ .list();//返回列表 if(list!=null &amp;&amp; list.size()&gt;0){ for(Task task:list){ System.out.println(&#34;任务ID:&#34;&#43;task.getId()); System.out.println(&#34;任务名称:&#34;&#43;task.getName()); System.out.println(&#34;任务的创建时间:&#34;&#43;task.getCreateTime()); System.out.println(&#34;任务的办理人:&#34;&#43;task.getAssignee()); System.out.println(&#34;流程实例ID：&#34;&#43;task.getProcessInstanceId()); System.out.println(&#34;执行对象ID:&#34;&#43;task.getExecutionId()); System.out.println(&#34;流程定义ID:&#34;&#43;task.getProcessDefinitionId()); System.out.println(&#34;########################################################&#34;); } } } /*\*完成我的任务\*/ @Test public void completeMyPersonalTask(){ //任务ID String taskId = &#34;6905&#34;; processEngine.getTaskService()//与正在执行的任务管理相关的Service .complete(taskId); System.out.println(&#34;完成任务：任务ID：&#34;&#43;taskId); } /*\*查询正在执行的任务办理人表\*/ @Test public void findRunPersonTask(){ //任务ID String taskId = &#34;6204&#34;; List&lt;IdentityLink&gt; list = processEngine.getTaskService()// .getIdentityLinksForTask(taskId); if(list!=null &amp;&amp; list.size()&gt;0){ for(IdentityLink identityLink:list){ System.out.println(identityLink.getTaskId()&#43;&#34; &#34;&#43;identityLink.getType()&#43;&#34; &#34;&#43;identityLink.getProcessInstanceId()&#43;&#34; &#34;&#43;identityLink.getUserId()); } } } /*\*查询历史任务的办理人表\*/ @Test public void findHistoryPersonTask(){ //流程实例ID String processInstanceId = &#34;6201&#34;; List&lt;HistoricIdentityLink&gt; list = processEngine.getHistoryService()// .getHistoricIdentityLinksForProcessInstance(processInstanceId); if(list!=null &amp;&amp; list.size()&gt;0){ for(HistoricIdentityLink identityLink:list){ System.out.println(identityLink.getTaskId()&#43;&#34; &#34;&#43;identityLink.getType()&#43;&#34; &#34;&#43;identityLink.getProcessInstanceId()&#43;&#34; &#34;&#43;identityLink.getUserId()); } } } /*\*拾取任务，将组任务分给个人任务，指定任务的办理人字段\*/ @Test public void claim(){ //将组任务分配给个人任务 //任务ID String taskId = &#34;6905&#34;; //分配的个人任务（可以是组任务中的成员，也可以是非组任务的成员） String userId = &#34;大大&#34;; processEngine.getTaskService()// .claim(taskId, userId); } /*\*将个人任务回退到组任务，前提，之前一定是个组任务\*/ @Test public void setAssigee(){ //任务ID String taskId = &#34;6204&#34;; processEngine.getTaskService()// .setAssignee(taskId, null); } /*\*向组任务中添加成员\*/ @Test public void addGroupUser(){ //任务ID String taskId = &#34;6204&#34;; //成员办理人 String userId = &#34;大H&#34;; processEngine.getTaskService()// .addCandidateUser(taskId, userId); } /*\*从组任务中删除成员\*/ @Test public void deleteGroupUser(){ //任务ID String taskId = &#34;6204&#34;; //成员办理人 String userId = &#34;小B&#34;; processEngine.getTaskService()// .deleteCandidateUser(taskId, userId); } 分配组任务方式二（使用流程变量） 具体配置：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-11-29 14:20:15 +0000 +0000'>November 29, 2015</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>455 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 工作流Activiti5入门（下）" href="http://localhost:1313/posts/2015-11-29-%E5%B7%A5%E4%BD%9C%E6%B5%81activiti5%E5%85%A5%E9%97%A8%E4%B8%8B/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">工作流Activiti5入门（中）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>时光匆匆，没想到转眼离上次写工作流Activiti5入门（上）已经过去快四个月了，上次主要写了有关环境的搭建、工作流的部署、启动、查询、认领、完成任务以及查询流程状态和删除流程等，今天我们看看一些更高级也是非常经常用到的一些功能。
+一. 连线
+一个流程图不可能都是一些孤立的点，点和点之间需要一些线连接，那么这些线该如何连接呢？
+一个活动中可以指定一个或多个SequenceFlow。
+开始活动中有一个SequenceFlow 。
+结束活动中没有SequenceFlow 。
+其他活动中有1条或多条SequenceFlow 如果只有一个，则可以不使用流程变量设置codition的名称； 如果有多个，则需要使用流程变量设置codition的名称。message表示流程变量的名称，‘不重要’表示流程变量的值，${}中间的内容要使用boolean类型的表达式，用来判断应该执行的连线。例如可以这样，如果${}成立，则会按照这个方向走
+流程图 完成任务 /*\*完成我的任务\*/ @Test public void completeMyPersonalTask(){ //任务ID String taskId = &#34;3103&#34;; //完成任务的同时，设置流程变量，使用流程变量用来指定完成任务后，下一个连线，对应sequenceFlow.bpmn文件中${message==&amp;#8217;不重要&amp;#8217;} Map&lt;String, Object&gt; variables = new HashMap&lt;String, Object&gt;(); variables.put(&#34;message&#34;, &#34;重要&#34;); processEngine.getTaskService()//与正在执行的任务管理相关的Service .complete(taskId,variables); System.out.println(&#34;完成任务：任务ID：&#34;&#43;taskId); } 连线比较简单，既不多做介绍了
+二. 排他网关
+一个排他网关对应一个以上的顺序流
+由排他网关流出的顺序流都有个conditionExpression元素，在内部维护返回boolean类型的决策结果。
+决策网关只会返回一条结果。当流程执行到排他网关时，流程引擎会自动检索网关出口，从上到下检索如果发现第一条决策结果为true或者没有设置条件的(默认为成立)，则流出。
+如果没有任何一个出口符合条件，则抛出异常
+使用流程变量，设置连线的条件，并按照连线的条件执行工作流，如果没有条件符合的条件，则以默认的连线离开。
+流程图
+完成个人任务 /*\*完成我的任务\*/ @Test public void completeMyPersonalTask(){ //任务ID String taskId = &#34;3904&#34;; //完成任务的同时，设置流程变量，使用流程变量用来指定完成任务后，下一个连线，对应exclusiveGateWay.bpmn文件中${money&gt;1000} Map&lt;String, Object&gt; variables = new HashMap&lt;String, Object&gt;(); variables.put(&#34;money&#34;, 200); processEngine.getTaskService()//与正在执行的任务管理相关的Service .complete(taskId,variables); System.out.println(&#34;完成任务：任务ID：&#34;&#43;taskId); } 三. 并行网关
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-11-22 13:21:25 +0000 +0000'>November 22, 2015</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>379 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 工作流Activiti5入门（中）" href="http://localhost:1313/posts/2015-11-22-fdsfdsf/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">运维之maven版Git上线脚本
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>之前的文章曾写了Git怎么用和Git服务器怎么搭建，一个公司仅仅只有这些还是远远不够的，这些仅仅是对源码的管理，程序猿开发好的源码怎么编译、打包、部署上线呢？下面就需要运维来解决这个问题了，不过这一段时间公司老大让老夫负责公司的源码由SVN迁Git，有幸接触到一点这块的知识，今天记录一下，万一老夫哪天失业了转行去做运维了呢！
+在开始正式文章之前，首先感谢一下我在小马金融的同事：张学军，此脚本原始版本是由学军提供的，然后加上老夫的优化，可以说没有学军的无私帮助，老夫不可能完成这个脚本的，所以，谢谢，学军！
+#!/bin/bash export JAVA_HOME=/usr/local/jdk1.7.0_67 export JRE_HOME=${JAVA_HOME}/jre export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib export PATH=${JAVA_HOME}/bin:$PATH dir_path=&#34;/apps/project/project_name&#34; work=&#34;project_name&#34; DATE=\`date &#43;%Y%m%d%H%M\` tomcat=&#34;apache-tomcat-6.0.41_project_name&#34; cd $dir_path if [ ! -d wars ];then mkdir wars fi if [ -d ROOT ];then tar cfz ROOT-$DATE.tar.gz ROOT mv ROOT-$DATE.tar.gz wars/ fi git_update(){ tag_version=$1 cd $dir_path/$work git checkout master git pull echo $tag_version git_tag=\`git tag|grep -x $tag_version\` if [ &#34;$git_tag&#34; = &#34;$tag_version&#34; ];then git checkout -b \`date &#43;%Y%m%d%H%M\` $git_tag else printf &#34;tag number input error n&#34; exit 1 fi git_id1=\`git log -1 &amp;#8211;format=%H\` git_id2=\`git show $git_tag |grep commit |awk &amp;#8216;{print $2}&amp;#8217; |head -1\` if [ &#34;$git_id1&#34; != &#34;$git_id2&#34; ];then printf &#34;The current git branch where inconsistent tag number is correct , please check the tag number n&#34; exit 1 fi } tag_version=$1 if [ &#34;$tag_version&#34; = &#34;&#34; ];then printf &#34;Please enter the version number n&#34; exit 1 else git_update $1 echo $1 &gt;&gt; ${dir_path}/tag.txt fi build(){ dir_path=$1 work=$2 cd $dir_path/$work mvn package -DskipTests if [ -d $dir_path/$work/target ];then cd $dir_path/$work/target else echo &#34;build $dir_path/$work failed&#34; exit fi return 1 } build $dir_path $work type=$? if [ $type -eq 1 ];then cd $dir_path/$work/target work_name=\`ls |grep $work |grep -v &#34;war|jar|gz&#34;\` else echo &#34;build failure&#34; exit 1 fi if [ -d $dir_path/ROOT ];then rm -rf $dir_path/ROOT fi cd $dir_path/$work/target/ mv $work_name $dir_path/ROOT if [ -d $dir_path/ROOT ];then scp $dir_path/config.properties $dir_path/ROOT/WEB-INF/classes/ scp $dir_path/redis.properties $dir_path/ROOT/WEB-INF/classes/ scp $dir_path/jdbc.properties $dir_path/ROOT/WEB-INF/classes/ fi tomcat_status=\`ps aux |grep $tomcat |grep -v &#34;gerp&#34;&gt;/dev/null;echo $?\` if [ $tomcat_status -eq 0 ];then kill -9 \`ps aux |grep $tomcat |grep -v &#34;grep&#34;|awk &amp;#8216;{print $2}&amp;#8217;\`;rm -rf /usr/local/$tomcat/work/\*;rm -rf /usr/local/$tomcat/temp/\*;/usr/local/$tomcat/bin/startup.sh else rm -rf /usr/local/$tomcat/work/\*;rm -rf /usr/local/$tomcat/temp/\*;/usr/local/$tomcat/bin/startup.sh fi 注：里面的project_name是项目名，老夫隐藏了公司的实际项目名，就以project_name代替了，实际用的时候请根据实际情况修改
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-10-24 14:26:16 +0000 +0000'>October 24, 2015</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>321 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 运维之maven版Git上线脚本" href="http://localhost:1313/posts/2015-10-24-%E8%BF%90%E7%BB%B4%E4%B9%8Bmaven%E7%89%88git%E4%B8%8A%E7%BA%BF%E8%84%9A%E6%9C%AC/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Git服务器之Gerrit的搭建及第一次使用注意事项
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>公司的代码托管打算由SVN迁移到Git，刚好老大让老夫全权负责这个事(感谢老大信任)，老夫根据自己使用Git的经验，选择了Gerrit作为服务器，下面介绍一下老夫搭建Gerrit服务器的过程及第一次使用时需要注意的事项，如果以前没有用过Git可以参考老夫之前写的这篇文章和这篇文章。
+环境准备 ①. Linux，Gerrit需要Linux环境，至于是哪个发行版本就不重要了，ubuntu还是centos随意；
+②. JDK，这个怎么安装就不说了，Java程序猿都会，就是不会网上一搜一堆，不做赘述；
+③. MySQL，其实这个非必须，Gerrit自带的有H2数据库，但没法老夫就是喜欢MySQL；
+④. nginx，作为认证和反向代理服务器；
+⑤. Maven, 在安装的过程中会下载一些jar文件；
+⑥. Git，这个忘了是不是必须的了，但还是装上吧，反正也不多，大家可以自己试一下需不需要（欢迎留言指出）；
+数据准备 ①. 自己去Gerrit的官网：http://gerrit-releases.storage.googleapis.com/index.html，下载一个合适的版本，就是一个war包，这也就是我们为什么需要先装JDK的原因，需要说明的是Gerrit的1.X版本是Python写的，2.X改成了Java，变成了一个war包；
+②. 为Gerrit创建一个数据库，库名您随意，最好有意义，例如就叫reviewdb
+开始安装 开始安装之前，有人建议专门为Gerrit创建一个用户用户运行Gerrit，并且禁止登陆，这里从简，如果你非要这么做可以这么做：
+adduser gerrit2 passwd &amp;#8211;delete gerrit2 然后以gerrit2运行安装，老夫就从简了，直接敲一下命令：
+java -jar gerrit-xxx.war init -d review gerrit-xxx.war就是你之前下载的war包，review是一个路径，就是安装到这下面，你可以随意定义，敲完这个命令，就进入一下交互(你的可能不太一样)，在里面我加了一些注释：
+Gerrit Code Review xxx 选项中大写字母为默认选项,如使用默认选项回车即可 Create &amp;#8216;/home/review&amp;#8217; [Y/n]? Git Repositories gerrit用于存储git仓库的目录,相对于根目录review #就是之前-d后面的路径 Location of Git repositories [git]: SQL Database Database server type [h2]: mysql #数据库选mysql Server hostname [localhost]: Server port [(mysql default)]: Database name [reviewdb]: Database username [root]: root&amp;#8217;s password : confirm password : User Authentication 使用HTTP认证,OPENID需要服务器连接互联网,还可以使用LDAP认证服务 Authentication method [OPENID/?]: http #这里建议选http Get username from custom HTTP header [y/N]? SSO logout URL : Email Delivery gerrit发送邮件设置,可以使用本地或远程SMTP服务器, 只要在smtp服务器上有帐号即可。 SMTP server hostname [localhost]: #这里我并没有选择邮件发送服务器和其他的配置，不知道为什么也可以发邮件 SMTP server port [(default)]: #事实上发邮件是必须的，有知道为什么，可以告知，谢谢 SMTP encryption [NONE/?]: SMTP username [root]: root@localhost.localdomain&amp;#8217;s password : confirm password : Container Process 使用root用户运行gerrit Run as [root]: Java runtime [/usr/lib/jvm/java-7-openjdk-amd64/jre]: Copy gerrit-2.8.1.war to /home/review/bin/gerrit-xxx.war [Y/n]? Copying gerrit-2.8.1.war to /home/review/bin/gerrit-xxx.war SSH Daemon gerrit自带的ssh服务,与服务器自身的ssh服务无关,监听默认端口即可 注意:如要使用低于1024的特权端口,需authbind授权,否则ssh会绑定端口失败 Listen on address [*]: Listen on port [29418]: Gerrit Code Review is not shipped with Bouncy Castle Crypto v144 If available, Gerrit can take advantage of features in the library, but will also function without it. Download and install it now [Y/n]? Downloading http://www.bouncycastle.org/download/bcprov-jdk16-144.jar &amp;#8230; OK Checksum bcprov-jdk16-144.jar OK Generating SSH host key &amp;#8230; rsa&amp;#8230; dsa&amp;#8230; done HTTP Daemon 这里使用nginx反向代理gerrit,所以只在loop接口监听即可。 如果使用域名访问gerrit,最好将规范URL设置为域名形式,发送校验邮件时会使用到 Behind reverse proxy [y/N]? y Proxy uses SSL (https://) [y/N]? Subdirectory on proxy server [/]: Listen on address [*]: 127.0.0.1 Listen on port [8081]: Canonical URL [http://127.0.0.1/]: Plugins 选装插件 Install plugin download-commands version v2.8.1 [y/N]? Install plugin reviewnotes version v2.8.1 [y/N]? Install plugin replication version v2.8.1 [y/N]? Install plugin commit-message-length-validator version v2.8.1 [y/N]? Initialized /home/review Executing /home/review/bin/gerrit.sh start Starting Gerrit Code Review: 因为为ssh服务选在了低于1024的端口,且没有authbind端口授权,所以会出现如下错误,高于1024端口不会。 FAILED error: cannot start Gerrit: exit status 1 Waiting for server on 127.0.0.1:80 &amp;#8230; OK 服务器上没有X,所以使用浏览器打开连接失败 Opening http://127.0.0.1/#/admin/projects/ &amp;#8230;FAILED Open Gerrit with a JavaScript capable browser: http://127.0.0.1/#/admin/projects/ 到了这里只能说好了一半，如果你直接通过域名访问，会报一个认证失败的错误，错误就不贴了，大家自己看看就知道了
+需要说明的是，以上这些配置，也可以通过修改：review/etc/gerrit.config 进行修改，修改之后重启就好了
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-10-17 09:03:35 +0000 +0000'>October 17, 2015</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>833 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Git服务器之Gerrit的搭建及第一次使用注意事项" href="http://localhost:1313/posts/2015-10-17-git%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B9%8Bgerrit%E7%9A%84%E6%90%AD%E5%BB%BA%E5%8F%8A%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/page/11/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="http://localhost:1313/page/13/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

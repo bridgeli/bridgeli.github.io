@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>CMSScavengeBeforeRemark on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/cmsscavengebeforeremark/</link>
+    <description>Recent content in CMSScavengeBeforeRemark on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 17 Dec 2017 09:22:35 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/cmsscavengebeforeremark/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>你假笨JVM参数 – 005 CMSScavengeBeforeRemark</title>
+      <link>http://localhost:1313/posts/2017-12-17-%E4%BD%A0%E5%81%87%E7%AC%A8jvm%E5%8F%82%E6%95%B0-005-cmsscavengebeforeremark/</link>
+      <pubDate>Sun, 17 Dec 2017 09:22:35 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2017-12-17-%E4%BD%A0%E5%81%87%E7%AC%A8jvm%E5%8F%82%E6%95%B0-005-cmsscavengebeforeremark/</guid>
+      <description>&lt;p&gt;你假笨的第五次分享：&lt;/p&gt;
+&lt;p&gt;序号：005&lt;br&gt;
+时间：2017-07-24&lt;br&gt;
+参数：-XX:CMSScavengeBeforeRemark&lt;br&gt;
+含义：&lt;br&gt;
+Enable scavenging attempts before the CMS remark step.&lt;br&gt;
+开启或关闭在CMS重新标记阶段之前的清除（YGC）尝试&lt;br&gt;
+CMS并发标记阶段与用户线程并发进行，此阶段会产生已经被标记了的对象又发生变化的情况，若打开此开关，可在一定程度上降低CMS重新标记阶段对上述“又发生变化”对象的扫描时间，当然，“清除尝试”也会消耗一些时间&lt;br&gt;
+注，开启此开关并不会保证在标记阶段前一定会进行清除操作&lt;/p&gt;
+&lt;p&gt;小程序截图：&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2017/12/CMSScavengeBeforeRemark_JVMPocket-334x1024.png&#34; alt=&#34;&#34; width=&#34;334&#34; height=&#34;1024&#34; class=&#34;alignnone size-medium wp-image-474&#34; /&gt; 
+&lt;p&gt;分享记录：&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2017/12/CMSScavengeBeforeRemark-228x1024.png&#34; alt=&#34;&#34; width=&#34;228&#34; height=&#34;1024&#34; class=&#34;alignnone size-medium wp-image-473&#34; /&gt;</description>
+    </item>
+  </channel>
+</rss>

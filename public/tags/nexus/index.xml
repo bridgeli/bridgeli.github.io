@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Nexus on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/nexus/</link>
+    <description>Recent content in Nexus on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 31 Jan 2016 14:03:25 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/nexus/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Maven私服之Nexus入门图文教程</title>
+      <link>http://localhost:1313/posts/2016-01-31-maven%E7%A7%81%E6%9C%8D%E4%B9%8Bnexus%E5%9B%BE%E6%96%87%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</link>
+      <pubDate>Sun, 31 Jan 2016 14:03:25 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-01-31-maven%E7%A7%81%E6%9C%8D%E4%B9%8Bnexus%E5%9B%BE%E6%96%87%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</guid>
+      <description>&lt;p&gt;老夫相信看到这篇文章的人一定已经知道maven和nexus分别是什么东西了，所以就不多做介绍了，下面直接从下载安装开始讲。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;下载安装&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;大家可以直接从这个链接&lt;a href=&#34;http://www.sonatype.org/nexus/go/&#34; target=&#34;_blank&#34; title=&#34;nexus下载地址&#34;&gt;&lt;a href=&#34;http://www.sonatype.org/nexus/go/&#34;&gt;http://www.sonatype.org/nexus/go/&lt;/a&gt;&lt;/a&gt;下载系统，下载完成之后解压到系统的任何文件夹下就可以了，老夫下载是：nexus-2.8.1-01，然后可就是安装了。&lt;br&gt;
+解压一路进到nexus-2.8.1-01/bin/jsw。然后选择适合自己的系统的文件夹进去，老夫的电脑是win32，所以进去之后是这个样子&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/1.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/1-300x87.png&#34; alt=&#34;1&#34; width=&#34;300&#34; height=&#34;87&#34; class=&#34;alignnone size-medium wp-image-242&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;然后用管理员身份先运行install-nexus.bat安装服务，然后运行console-nexus.bat，等起来之后直接在浏览器中输入：http://localhost:8081/nexus，我们看到下图就是成功了，忘了是不是需要安装服务：wrapper了，大家试一试就知道了。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/2.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/2-300x65.png&#34; alt=&#34;2&#34; width=&#34;300&#34; height=&#34;65&#34; class=&#34;alignnone size-medium wp-image-243&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;配置nexus&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;要管理Nexus，你首先需要以管理员身份登陆，点击界面右上角的login，输入默认的登录名和密码：admin/admin123，登陆成功后，你会看到左边的导航栏增加了很多内容，变成了下面这个样子&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/3.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/3-300x92.png&#34; alt=&#34;3&#34; width=&#34;300&#34; height=&#34;92&#34; class=&#34;alignnone size-medium wp-image-244&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这里，可以管理仓库，配置Nexus系统，管理任务，管理用户，角色，权限，查看系统的RSS源，管理及查看系统日志，等等。你会看到Nexus的功能十分丰富和强大，本文，老夫只介绍一些最基本的管理和操作。&lt;/p&gt;
+&lt;p&gt;因为是老夫习惯于让大伙看了这篇文章就知道怎么做，所以这里多内容咱就不说了，直接上配置，点击左边Administration菜单下面的Repositories，找到右边仓库列表中的三个仓库Apache Snapshots，Codehaus Snapshots和Maven Central，然后再没有仓库的configuration下把Download Remote Indexes修改为true。如下图：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/4.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/4-300x99.png&#34; alt=&#34;4&#34; width=&#34;300&#34; height=&#34;99&#34; class=&#34;alignnone size-medium wp-image-245&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;然后在Apache Snapshots，Codehaus Snapshots和Maven Central这三个仓库上分别右键，选择Repari Index，这样Nexus就会去下载远程的索引文件。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/5.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/5-300x113.png&#34; alt=&#34;5&#34; width=&#34;300&#34; height=&#34;113&#34; class=&#34;alignnone size-medium wp-image-246&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这样设置以后, Nexus会自动从远程中央仓库下载索引文件, 为了检验索引文件自动下载是否生效,可以切换到Browse Index看看是否生成了这些索引文件。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;添加一个代理仓库&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;加入我们想要代理Sonatype的公共仓库，其地址为：http://repository.sonatype.org/content/groups/public/。步骤如下，在Repositories面板的上方，点击Add，然后选择Proxy Repository，在下方的配置部分，我们填写如下的信息：Repository ID – sonatype；Repository Name – Sonatype Repository；Remote Storage Location – &lt;a href=&#34;http://repository.sonatype.org/content/groups/public/&#34;&gt;http://repository.sonatype.org/content/groups/public/&lt;/a&gt;。其余的保持默认值，需要注意的是Repository Policy，我们不要代理snapshot构件，至于原因老夫相信读者应该已经很清楚了，然后点击Save。因为比较简单就不上图了。&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;管理宿主仓库&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Nexus预定义了3个本地仓库，分别为Releases，Snapshots，和3rd Party。这三个仓库都有各自明确的目的。Releases用于部署我们自己的release构件，Snapshots用于部署我们自己的snapshot构件，而3rd Party用于部署第三方构件，有些构件如Oracle的JDBC驱动，我们不能从公共仓库下载到，我们就需要将其部署到自己的仓库中。&lt;br&gt;
+当然你也可以创建自己的本地仓库，步骤和创建代理仓库类似，点击Repository面板上方的Add按钮，然后选择Hosted Repository，然后在下方的配置面板中输入id和name，注意这里我们不再需要填写远程仓库地址，Repository Type则为不可修改的hosted，而关于Repository Policy，你可以根据自己的需要选择Release或者Snapshot。&lt;/p&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;管理Maven仓库组&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Nexus 中仓库组的概念是Maven没有的，在Maven看来，不管你是hosted也好，proxy也好，或者group也好，对我都是一样的，我只管根据 groupId，artifactId，version等信息向你要构件。为了方便Maven的配置，Nexus能够将多个仓库，hosted或者 proxy合并成一个group，这样，Maven只需要依赖于一个group，便能使用所有该group包含的仓库的内容。&lt;br&gt;
+最新neuxs默认自带了一个名为“Public Repositories”组，点击该组可以对他保护的仓库进行调整，把刚才建立的仓库Sonatype Repository加入其中，这样就不需要再在maven中明确指定仓库的地址了。同时创建一个Group ID为public-snapshots、Group Name为Public Snapshots Repositories的组，把Apache Snapshots、Codehaus Snapshots、Snapshots和Sonatype Repository也加入其中。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

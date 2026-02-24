@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Workflow on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/workflow/</link>
+    <description>Recent content in Workflow on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 02 Aug 2015 14:28:34 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/workflow/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>工作流Activiti5入门（上）</title>
+      <link>http://localhost:1313/posts/2015-08-02-%E5%B7%A5%E4%BD%9C%E6%B5%81activiti5%E5%85%A5%E9%97%A8%E4%B8%8A/</link>
+      <pubDate>Sun, 02 Aug 2015 14:28:34 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-08-02-%E5%B7%A5%E4%BD%9C%E6%B5%81activiti5%E5%85%A5%E9%97%A8%E4%B8%8A/</guid>
+      <description>&lt;p&gt;刚工作的时候曾经用Activiti5，但由于当时介于水平，对Activiti5并没有很深的理解，而且知识也没有形成一个体系，前一段时间偶然发现传智播客公布了一个关于Activiti5的教学视频，自己跟着看了一下，感觉有很多收获，所以打算写几篇博文，整理一下，以供将来如有需要的话可以查阅，今天记下学习的前一部分，称为Activiti5上。&lt;/p&gt;
+&lt;p&gt;一. Activiti5开发环境搭建和配置&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;开发环境搭建&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Activiti5开发一个工作流系统，首先肯定是要搭建环境的，关于搭建环境老夫窃以为这篇文章：http://www.zhengmenbb.com/archives/98.htm，写的很不错，这篇文章不仅写了怎么搭建环境，还有一个小小的例子，大家可以先看一下，看了这篇文章，我相信大家搭建好环境不是问题，因为就是装一个插件而已，很简单。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;现在的任何框架几乎都要和spring相整合，否则几乎可以说是玩不转，所以我们的Activiti5要想流行起来也不能例外，下面我们先看看他们怎么整合的。&lt;br&gt;
+spring的整合肯定要引入spring的jar包，这个老夫默认大家都会了，如果不会的话，我相信也不会看到这篇文章，至于Activiti5要引入那些jar文件，可以参考这个&lt;/p&gt;
+&lt;p&gt;(1). 部分pom文件&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;org.activiti&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;activiti-engine&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;5.11&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;  
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;org.activiti&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;activiti-spring&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;5.11&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我们可以先把最基本的引入，如果不够肯定会报classnotfoundexception，到时候我们就知道缺少哪个了，老夫的原则是能少引入绝不多引入，原因一是怕冲突，二是文件大小和启动速度&lt;/p&gt;
+&lt;p&gt;(2). 和spring集成的配置文件activiti.cfg.xml&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34;  
+xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34; xmlns:tx=&amp;#34;http://www.springframework.org/schema/tx&amp;#34;  
+xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;  
+xsi:schemaLocation=&amp;#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd  
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd&amp;#34;&amp;gt;
+
+&amp;lt;bean id=&amp;#34;processEngineConfiguration&amp;#34; class=&amp;#34;org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration&amp;#34;&amp;gt;  
+&amp;lt;!&amp;amp;#8211; 连接数据的配置 &amp;amp;#8211;&amp;gt;  
+&amp;lt;property name=&amp;#34;jdbcDriver&amp;#34; value=&amp;#34;com.mysql.jdbc.Driver&amp;#34;&amp;gt;&amp;lt;/property&amp;gt;  
+&amp;lt;property name=&amp;#34;jdbcUrl&amp;#34; value=&amp;#34;jdbc:mysql://localhost:3306/itcast0711activiti?useUnicode=true&amp;amp;characterEncoding=utf8&amp;#34;&amp;gt;&amp;lt;/property&amp;gt;  
+&amp;lt;property name=&amp;#34;jdbcUsername&amp;#34; value=&amp;#34;root&amp;#34;&amp;gt;&amp;lt;/property&amp;gt;  
+&amp;lt;property name=&amp;#34;jdbcPassword&amp;#34; value=&amp;#34;root&amp;#34;&amp;gt;&amp;lt;/property&amp;gt;  
+&amp;lt;!&amp;amp;#8211; 没有表创建表 &amp;amp;#8211;&amp;gt;  
+&amp;lt;property name=&amp;#34;databaseSchemaUpdate&amp;#34; value=&amp;#34;true&amp;#34;&amp;gt;&amp;lt;/property&amp;gt;  
+&amp;lt;/bean&amp;gt;
+
+&amp;lt;/beans&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个集成文件简单吧？对，就是这么简单，至于spring等其他的配置文件啊，log的配置文件就不多说了，接下来我们要开始Activiti5的实战：开始写代码。&lt;/p&gt;
+&lt;p&gt;二. Activiti5实战&lt;/p&gt;
+&lt;p&gt;Activiti5实战，所以第一步肯定是画图，但装好了环境之后，其实上面那篇文章是有怎么画图的，所以画图这个就先讲怎么花了，大家可以画一个最简单的练手，本文作为一个入门教程，也不会涉及到那些复杂的图，所以第一步，咱直接开始启动流程定义。&lt;/p&gt;
+&lt;p&gt;因为Activiti5所有的操作都和ProcessEngine相关，所以所有的操作都和ProcessEngine相关，我们就先获取这个对象，当做第0步吧：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+&lt;/code&gt;&lt;/pre&gt;&lt;ol&gt;
+&lt;li&gt;部署流程定义&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;部署流程定义，有两种，1. 从zip部署，也就是把我们的流程图压缩成zip，然后上传到项目的根目录，部署流程。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

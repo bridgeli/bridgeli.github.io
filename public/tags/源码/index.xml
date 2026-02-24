@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>源码 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E6%BA%90%E7%A0%81/</link>
+    <description>Recent content in 源码 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 31 Oct 2021 03:24:36 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E6%BA%90%E7%A0%81/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>神奇的 (a == (Integer) 1 &amp;&amp; a == (Integer) 2 &amp;&amp; a == (Integer) 3) = true</title>
+      <link>http://localhost:1313/posts/2021-10-31-%E7%A5%9E%E5%A5%87%E7%9A%84-a-integer-1-a-integer-2-a-integer-3-true/</link>
+      <pubDate>Sun, 31 Oct 2021 03:24:36 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2021-10-31-%E7%A5%9E%E5%A5%87%E7%9A%84-a-integer-1-a-integer-2-a-integer-3-true/</guid>
+      <description>&lt;p&gt;前一段时间看了一篇文章 (a == (Integer) 1 &amp;amp;&amp;amp; a == (Integer) 2 &amp;amp;&amp;amp; a == (Integer) 3) 是否可以为 true，当时第一反应怎么可能，谁知道再往下看，作者竟然给出来如下代码，一运行神奇的事出现了，真的为 true，代码如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo;
+
+import java.lang.reflect.Field;
+
+public class Magic {
+
+public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {  
+Class cache = Integer.class.getDeclaredClasses()[0];  
+Field c = cache.getDeclaredField(&amp;#34;cache&amp;#34;);  
+c.setAccessible(true);  
+Integer[] array = (Integer[]) c.get(cache);  
+// array[129] is 1  
+array[130] = array[129];  
+// Set 2 to be 1  
+array[131] = array[129];  
+// Set 3 to be 1  
+Integer a = 1;  
+if (a == (Integer) 1 &amp;amp;&amp;amp; a == (Integer) 2 &amp;amp;&amp;amp; a == (Integer) 3) {  
+System.out.println(true);  
+} else {  
+System.out.println(false);  
+}
+
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;因为作者没有给出解释，所以就研究了一番，发现需要基础非常扎实才能写出这段代码，这段代码之所以为 true，要理解如下几个问题：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

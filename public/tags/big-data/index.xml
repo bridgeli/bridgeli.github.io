@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Big Data on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/big-data/</link>
+    <description>Recent content in Big Data on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 28 Jun 2015 14:18:20 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/big-data/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hadoop集群搭建及运行初步</title>
+      <link>http://localhost:1313/posts/2015-06-28-hadoop%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E5%8F%8A%E8%BF%90%E8%A1%8C%E5%88%9D%E6%AD%A5/</link>
+      <pubDate>Sun, 28 Jun 2015 14:18:20 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-06-28-hadoop%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E5%8F%8A%E8%BF%90%E8%A1%8C%E5%88%9D%E6%AD%A5/</guid>
+      <description>&lt;p&gt;一直以来对Hadoop都非常有兴趣，所以这一段时间研究可以下Hadoop集群的搭建，今天写一篇小文章，主要是当做自己的笔记，因为写Hadoop怎么搭建的太多了，好了废话不多说，下面开始正文&lt;/p&gt;
+&lt;p&gt;一、环境准备&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;系统环境&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;因为我个人比较喜欢Linux，另外很多资料都是基于Linux的，所以本文也不能例外，系统当然是Linux啦，开发是老夫最喜欢的Ubuntu，当然这个是看自己喜欢那个版本&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;安装JDK&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;运行Hadoop需要jre环境，所以如果你的机器没有装JDK，那么就装吧，Ubuntu可以用apt-get install安装，也可以到这个地方：http://www.oracle.com/technetwork/java/javase/downloads/index.html下载然后安装，我个人比较喜欢后一种，因为这么我们可以自己选择装到哪个地方，有利于我们自己配JAVA_HOME、CLASSPATH以及PATH，配置如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+vim /etc/profile
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后在里面添加：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+export JAVA_HOME=/home/jdk1.7.0_40  
+export CLASSPATH=&amp;#34;.:$JAVA_HOME/lib:$CLASSPATH&amp;#34;  
+export PATH=&amp;#34;$JAVA_HOME/:$JAVA_HOME/bin:$PATH&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后执行生效&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+source /etc/profile
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我们可以任何目录下面测试JDK安装是否成功&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;实现SSH无密码登陆&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;因为hadoop namenode要悄悄的SSH到各datanode中去启动相应的JVM进程，所以必须实现namenode能无密码登陆到datanode所在机器&lt;/p&gt;
+&lt;p&gt;配置命令如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+sudo apt-get install ssh  
+ssh-keygen -t rsa -P &amp;amp;#8221; -f ~/.ssh/id_rsa  
+cat /home/.ssh/id_rsa.pub &amp;gt;&amp;gt; ~/.ssh/authorized_keys
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以用命令：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+ssh localhost
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;检查是否配置成功，如果有提示授权成功等字样，则表示配置成功。&lt;/p&gt;
+&lt;p&gt;二、安装Hadoop&lt;/p&gt;
+&lt;p&gt;环境准备好之后，就要开始安装Hadoop，Hadoop有很多版本，我们是以hadoop-1.2.1为基础，首先下载Hadoop，下载地址：http://www.apache.org/dyn/closer.cgi/hadoop/common/，下载之后我们把它copy到/home下，解压：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+tar -zxvf hadoop-1.2.1-bin.tar.gz
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;解压之后我们找到Hadoop的conf文件夹，下面我们的配置都将在这个文件夹下&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;首先要配置的文件是：hadoop-env.sh，我们打开这个文件，找到配置JVAV_HOME的那一行，把注释打开，写上我们安装的JDK的路径&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;配置core-site.xml，打开该文件，在文件中添加：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;configuration&amp;gt;
+
+&amp;lt;property&amp;gt;  
+&amp;lt;name&amp;gt;hadoop.tmp.dir&amp;lt;/name&amp;gt;  
+&amp;lt;value&amp;gt;/hadoop&amp;lt;/value&amp;gt;  
+&amp;lt;/property&amp;gt;
+
+&amp;lt;property&amp;gt;  
+&amp;lt;name&amp;gt;dfs.name.dir&amp;lt;/name&amp;gt;  
+&amp;lt;value&amp;gt;/hadoop/name&amp;lt;/value&amp;gt;  
+&amp;lt;/property&amp;gt;
+
+&amp;lt;property&amp;gt;  
+&amp;lt;name&amp;gt;fs.default.name&amp;lt;/name&amp;gt;  
+&amp;lt;value&amp;gt;hdfs://localhost:9000&amp;lt;/value&amp;gt;  
+&amp;lt;/property&amp;gt;
+
+&amp;lt;/configuration&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;配置hdfs-site.xml，同样添加：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;configuration&amp;gt;  
+&amp;lt;property&amp;gt;  
+&amp;lt;name&amp;gt;dfs.data.dir&amp;lt;/name&amp;gt;  
+&amp;lt;value&amp;gt;/hadoop/data&amp;lt;/value&amp;gt;  
+&amp;lt;/property&amp;gt;  
+&amp;lt;/configuration&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;配置mapred-site.xml，也是添加&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;configuration&amp;gt;  
+&amp;lt;property&amp;gt;  
+&amp;lt;name&amp;gt;mapred.job.tracker&amp;lt;/name&amp;gt;  
+&amp;lt;value&amp;gt;localhost:9001&amp;lt;/value&amp;gt;  
+&amp;lt;/property&amp;gt;  
+&amp;lt;/configuration&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;下面我们同样需要配置hadoop_home，同样是打开&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+vim /etc/profile
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在里面添加：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

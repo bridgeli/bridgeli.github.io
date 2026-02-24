@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>覆盖率 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E8%A6%86%E7%9B%96%E7%8E%87/</link>
+    <description>Recent content in 覆盖率 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 12 Apr 2015 14:22:02 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E8%A6%86%E7%9B%96%E7%8E%87/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Maven项目如何生成测试报告</title>
+      <link>http://localhost:1313/posts/2015-04-12-maven%E9%A1%B9%E7%9B%AE%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/</link>
+      <pubDate>Sun, 12 Apr 2015 14:22:02 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-04-12-maven%E9%A1%B9%E7%9B%AE%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/</guid>
+      <description>&lt;p&gt;刚工作的时候，当时公司对代码质量要求比较高，每一个人的代码都要写junit，而且要生成测试报告，项目经理要看行覆盖率和分支覆盖率，记得当时的项目是用ant编译的，生成测试报告那个复杂啊，不会写，现在用了maven，发现这在maven下根本不是事，只需要在pom.xml中配置一个插件即可，废话不多说，直接上代码：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;build&amp;gt;
+    &amp;lt;finalName&amp;gt;Demo&amp;lt;/finalName&amp;gt;
+
+    &amp;lt;plugins&amp;gt;
+        &amp;lt;plugin&amp;gt;
+            &amp;lt;groupId&amp;gt;org.codehaus.mojo&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;cobertura-maven-plugin&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;2.5.2&amp;lt;/version&amp;gt;
+            &amp;lt;configuration&amp;gt;
+                &amp;lt;encoding&amp;gt;UTF-8&amp;lt;/encoding&amp;gt;
+                &amp;lt;formats&amp;gt;
+                    &amp;lt;format&amp;gt;html&amp;lt;/format&amp;gt;
+                    &amp;lt;format&amp;gt;xml&amp;lt;/format&amp;gt;
+                &amp;lt;/formats&amp;gt;
+            &amp;lt;/configuration&amp;gt;
+        &amp;lt;/plugin&amp;gt;
+    &amp;lt;/plugins&amp;gt;
+
+&amp;lt;/build&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后打开cmd切到pom.xml所在文件夹，运行命令：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;mvn cobertura:cobertura  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;即可，然后我们打开{project}targetsitecoberuraindex.html就可以看到测试报告了，这个测试报告里面不仅有行覆盖率还有分支覆盖率，例如：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/04/QQ20150412205334.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/04/QQ20150412205334-300x69.png&#34; alt=&#34;20150412205334&#34; width=&#34;300&#34; height=&#34;69&#34; class=&#34;alignnone size-medium wp-image-161&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;相信不用我解释，看这篇文章的人一定能看懂是什么意思。&lt;br&gt;
+下面是一些cobertura插件的常用命令&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;mvn cobertura:help 查看cobertura插件的帮助  
+mvn cobertura:clean 清空cobertura插件运行结果  
+mvn cobertura:check 运行cobertura的检查任务  
+mvn cobertura:cobertura 运行cobertura的检查任务并生成报表，报表生成在target/site/cobertura目录下  
+cobertura:dump-datafile Cobertura Datafile Dump Mojo  
+mvn cobertura:instrument Instrument the compiled classes  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;至于有什么效果，请大家自己写一个例子，跑一下就可以了。&lt;/p&gt;
+&lt;p&gt;最后多说一点，关于maven的插件其实非常多，用法也相对都比较简单，网上的资料也比较多，今天这篇文章算是抛砖引玉，所以推荐大家今后尽量用maven编译项目&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

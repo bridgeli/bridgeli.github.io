@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>BloomFilter on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/bloomfilter/</link>
+    <description>Recent content in BloomFilter on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 06 Jun 2020 10:36:09 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/bloomfilter/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Redis 实现布隆过滤器</title>
+      <link>http://localhost:1313/posts/2020-06-06-redis-%E5%AE%9E%E7%8E%B0%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
+      <pubDate>Sat, 06 Jun 2020 10:36:09 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2020-06-06-redis-%E5%AE%9E%E7%8E%B0%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
+      <description>&lt;p&gt;昨天听马士兵教育张福刚讲公开课，里面讲解了布隆过滤器，今天无聊没事干，整理了一下笔记。关于布隆过滤器是什么东西，有什么应用场景就不做讨论了，网上有很多，大家可以自行了解，只记录实现：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;pom 依赖&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;redis.clients&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;jedis&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;3.3.0&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;com.google.guava&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;guava&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;18.0&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;具体实现&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo;
+
+import com.google.common.hash.Funnels;  
+import com.google.common.hash.Hashing;  
+import org.junit.Before;  
+import org.junit.Test;  
+import redis.clients.jedis.Jedis;  
+import redis.clients.jedis.JedisPool;  
+import redis.clients.jedis.Pipeline;
+
+import java.nio.charset.StandardCharsets;
+
+/**  
+* @author BridgeLi  
+* @date 2020/6/6 16:38  
+*/  
+public class BloomFilter {
+
+private Jedis jedis = null;
+
+/**  
+* 预估的数据量  
+*/  
+private static long n = 10000;
+
+/**  
+* 容忍的错误率  
+*/  
+private static double fpp = 0.01;
+
+private static long numBits = optimalNumOfBits(n, fpp);  
+private static int numHashFunctions = optimalNumOfHashFunctions(n, numBits);
+
+/**  
+* 根据预估数据量 n 和允许的错误率 fpp 计算需要的 bit 数组的长度  
+*  
+* @param n  
+* @param fpp  
+* @return  
+*/  
+private static long optimalNumOfBits(long n, double fpp) {  
+if (0 == fpp) {  
+fpp = Double.MIN_VALUE;  
+}  
+return (long) (-n \* Math.log(fpp) / (Math.log(2) \* Math.log(2)));  
+}
+
+/**  
+* 根据预估的数据量和计算出来的需要的 bit 数组的长度，计算所需要的 hash 函数的个数  
+*  
+* @param n  
+* @param numBits  
+* @return  
+*/  
+private static int optimalNumOfHashFunctions(long n, long numBits) {  
+return Math.max(1, (int) Math.round((double) numBits / n * Math.log(2)));  
+}
+
+/**  
+* 预热数据  
+*/  
+@Before  
+public void testBloomFilterBefore() {  
+BloomFilter bloomFilter = new BloomFilter();  
+bloomFilter.init();
+
+for (int i = 0; i &amp;lt; n; i++) {  
+bloomFilter.put(&amp;#34;bf&amp;#34;, String.valueOf(i + 100));  
+}  
+}
+
+/**  
+* 过滤数据  
+*/  
+@Test  
+public void testBloomFilter() {  
+BloomFilter bloomFilter = new BloomFilter();  
+bloomFilter.init();
+
+int ex_count = 0;  
+int ne_count = 0;  
+for (int i = 0; i &amp;lt; 2 * n; i++) {  
+boolean exist = bloomFilter.isExist(&amp;#34;bf&amp;#34;, String.valueOf(i + 100));  
+if (exist) {  
+ex_count++;  
+} else {  
+ne_count++;  
+}  
+}
+
+System.out.println(&amp;#34;ex_count: &amp;#34; + ex_count + &amp;#34;, ne_count: &amp;#34; + ne_count);  
+}
+
+private void init() {  
+JedisPool jedisPool = new JedisPool(&amp;#34;127.0.0.1&amp;#34;, 6379);  
+jedis = jedisPool.getResource();  
+}
+
+public boolean isExist(String where, String key) {  
+long[] indexs = getIndexs(key);
+
+boolean result = false;  
+try (Pipeline pipeline = jedis.pipelined()) {  
+for (long index : indexs) {  
+pipeline.getbit(where, index);  
+}  
+// 只要有一个位置为 false，即代表该数据不存在  
+result = !pipeline.syncAndReturnAll().contains(false);  
+} catch (Exception e) {
+
+}
+
+return result;  
+}
+
+public void put(String where, String key) {  
+long[] indexs = getIndexs(key);
+
+try (Pipeline pipeline = jedis.pipelined()) {  
+for (long index : indexs) {  
+pipeline.setbit(where, index, true);  
+}  
+pipeline.sync();  
+} catch (Exception e) {
+
+}
+
+}
+
+private long[] getIndexs(String key) {
+
+long hash1 = Hashing.murmur3_128().hashObject(key, Funnels.stringFunnel(StandardCharsets.UTF_8)).asLong();  
+long hash2 = hash1 &amp;gt;&amp;gt;&amp;gt; 16;
+
+long[] result = new long[numHashFunctions];
+
+for (int i = 0; i &amp;lt; numHashFunctions; i++) {  
+long combinedHash = hash1 + i * hash2;  
+if (combinedHash &amp;lt; 0) {  
+combinedHash = ~combinedHash;  
+}  
+result[i] = combinedHash % numBits;  
+}  
+return result;  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+  </channel>
+</rss>

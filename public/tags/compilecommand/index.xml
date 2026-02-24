@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>CompileCommand on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/compilecommand/</link>
+    <description>Recent content in CompileCommand on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 25 Nov 2017 10:15:16 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/compilecommand/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>你假笨JVM参数 – 003 CompileCommand</title>
+      <link>http://localhost:1313/posts/2017-11-25-%E4%BD%A0%E5%81%87%E7%AC%A8jvm%E5%8F%82%E6%95%B0-003-compilecommand/</link>
+      <pubDate>Sat, 25 Nov 2017 10:15:16 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2017-11-25-%E4%BD%A0%E5%81%87%E7%AC%A8jvm%E5%8F%82%E6%95%B0-003-compilecommand/</guid>
+      <description>&lt;p&gt;你假笨的第三次分享：&lt;/p&gt;
+&lt;p&gt;序号：003&lt;br&gt;
+时间：2017-07-19&lt;br&gt;
+参数：-XX:CompileCommand&lt;br&gt;
+含义：&lt;br&gt;
+Specifies a command to perform on a method.&lt;br&gt;
+该参数用于定制编译需求，比如过滤某个方法不做JIT编译&lt;br&gt;
+若未指定方法描述符，则对全部同名方法执行命令操作，具体如何指定见下文[举例]&lt;br&gt;
+可使用星号通配符（*）指定类或方法，具体如何使用见下文[举例]&lt;br&gt;
+该参数可多次指定，或使用 换行符（\n）分隔参数后的多个命令&lt;br&gt;
+解析完该命令后，JIT编译器会读取.hotspot_compiler文件中的命令，该参数也可写在.hotspot_compiler文件中&lt;br&gt;
+可使用-XX:CompileCommandFile指定.hotspot_compiler文件为其他文件&lt;br&gt;
+用法：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+-XX:CompileCommand=command,method[,option]  
+命令：  
+exclude，跳过编译指定的方法  
+compileonly，只编译指定的方法  
+inline/dontinline，设置是否内联指定方法  
+print，打印生成的汇编代码  
+break，JVM以debug模式运行时，在方法编译开始处设置断点  
+quiet，不打印在此命令之后、通过-XX:CompileCommand指定的编译选项  
+log，记录指定方法的编译日志，若未指定，则记录所有方法的编译日志  
+其他命令，option，help
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;举例：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;设置编译器跳过编译com.jvmpocket.Dummy类test方法的4种写法&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+-XX:CompileCommand=exclude,com/jvmpocket/Dummy.test  
+-XX:CompileCommand=exclude,com/jvmpocket/Dummy::test  
+-XX:CompileCommand=exclude,com.jvmpocket.Dummy::test  
+-XX:CompileCommand=&amp;#34;exclude com/jvmpocket/Dummy test&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;设置编译器只跳过编译java.lang.String类int indexOf(String)方法&lt;br&gt;
+-XX:CompileCommand=”exclude,java/lang/String.indexOf,(Ljava/lang/String;)I”&lt;/li&gt;
+&lt;li&gt;设置编译器跳过编译所有类的indexOf方法&lt;br&gt;
+-XX:CompileCommand=exclude,*.indexOf&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;小程序截图：&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2017/11/CompileCommand_JVMPocket-522x1024.png&#34; alt=&#34;&#34; width=&#34;522&#34; height=&#34;1024&#34; class=&#34;alignnone size-medium wp-image-463&#34; /&gt; 
+&lt;p&gt;分享记录：&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2017/11/CompileCommand-213x1024.png&#34; alt=&#34;&#34; width=&#34;213&#34; height=&#34;1024&#34; class=&#34;alignnone size-medium wp-image-462&#34; /&gt;</description>
+    </item>
+  </channel>
+</rss>

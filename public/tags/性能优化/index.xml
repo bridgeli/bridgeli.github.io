@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>性能优化 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</link>
+    <description>Recent content in 性能优化 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 14 Jun 2015 14:10:47 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MySQL优化初步</title>
+      <link>http://localhost:1313/posts/2015-06-14-mysql%E4%BC%98%E5%8C%96%E5%88%9D%E6%AD%A5/</link>
+      <pubDate>Sun, 14 Jun 2015 14:10:47 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-06-14-mysql%E4%BC%98%E5%8C%96%E5%88%9D%E6%AD%A5/</guid>
+      <description>&lt;p&gt;这一段时间看了学长推荐的一本书：《高性能MySQL》，感觉还不错，今天写一篇读书笔记，供自己和需要的人参考。&lt;/p&gt;
+&lt;p&gt;一、数据库优化简介&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;数据库优化的目的&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;①. 避免出现页面访问错误，主要是数据库连接timeout产生页面5XX错误、由于慢查询造成页面无法加载和由于阻塞造成数据无法提交；&lt;br&gt;
+②. 增加数据库的稳定性，很多数据库问题都是由于低效的查询引起的；&lt;br&gt;
+③. 优化用户体验，流畅页面的访问速度、良好的网站功能体验&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;从哪几个方面对数据库优化&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;所谓一图胜千言，所以我们先看一下，下面这张图：&lt;br&gt;
+&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/06/20150614220801.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/06/20150614220801-300x188.png&#34; alt=&#34;20150614220801&#34; width=&#34;300&#34; height=&#34;188&#34; class=&#34;alignnone size-medium wp-image-188&#34; /&gt;&lt;/a&gt;&lt;br&gt;
+从这张图上，我们可以清晰的看到，我们优化的重点和代价，另外这几个方面我们分别可以做些什么呢？&lt;br&gt;
+①．在SQL及索引层面，首先是我们要写出一些结构良好的SQL和建立有效的索引&lt;br&gt;
+②．数据库表结构，我们应该根据数据库的一些范式，减少冗余，建立一个利于查询的库表结构&lt;br&gt;
+③．系统配置，例如TCP/IP的连接数、文件的打开数等等&lt;br&gt;
+④. 硬件，包括内存、CPU等，IO设备等等&lt;/p&gt;
+&lt;p&gt;二、SQL语句优化&lt;/p&gt;
+&lt;p&gt;在SQL优化之前，我们首先肯定是要查询到哪些SQL需要优化，所以下面让我们先打开MySQL的慢查询日志&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;MySQL慢查日志的开启方式和存储格式&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;我们先看几个命令：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+show variables like &amp;amp;#8216;slow_query_log&amp;amp;#8217;;
+
+set global slow_query_log=on;
+
+set global slow_query_log_file=&amp;amp;#8217;/home/mysql/sql_log/mysql-slow.log&amp;amp;#8217;;
+
+set global log_queries_not_using_indexes=on;
+
+set global long_query_time=1;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这几条命令相信不用说，大家都能看得懂，需要说明的是最后一条的时间单位是“秒”，本例中意思是说大于“1秒”的都认为是慢查询，当然实际情况下“1秒”很多时候也是太长了，记录下来这些信息之后我们就可以分析和查看这些日志了，分析和查看MySQL的慢查询日志有两个常见的工具，分别是mysqldumpslow和pt-query-digest，第一个是MySQL官方提供的，第二个是一个商业软件，至于他们怎么用，这里就不多说了，找到这些用问题的SQL之后，我们就可以对这些SQL进行优化了，一般有问题的SQL主要是一下这些：&lt;/p&gt;
+&lt;p&gt;①. 查询次数多且每次查询占用时间长的SQL，通常是pt-query-digest分析的前几个查询；&lt;br&gt;
+②. IO大的SQL，注意pt-query-digest分析中的Rows examine项&lt;br&gt;
+③. 未命中索引的SQL，注意pt-query-digest分析中Rows examine和Rows Send的对比&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;通过explain查询和分析SQL的执行计划&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;explain返回各列的含义&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+table： 显示这一行数据是关于那张表的  
+type： 这是重要的列，显示连接使用了何种类型。从最好到最差的连接类型为const、eq_reg、ref、range、index和All  
+possible_keys 显示可能应用在这张表中的索引。如果为空，没有可能的索引。  
+key： 实际使用的索引  
+key_len： 使用索引的长度，在不损失精确性的情况下，长度越短越好  
+ref： 显示索引的哪一列被使用了，如果可能的话，是一个常数  
+rows： MySQL认为必须检查的用来返回请求数据的行数  
+extra： 看到Using filesort和Using temporary的时候，查询就需要优化了，Using temporary需要MySQL常见一个临时表来存储结果，这通常发生在不同的列集进行ORDER BY上，而不是GROUP BY上
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;count()和max()的优化&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;max函数通常是查询最后一个数据，我们可以对max函数包含的列添加一个索引；&lt;br&gt;
+count函数是用来计数的，我们只需要了解count(*)和count(id)的差别就好了，count(*)返回的是有多少行，count(id)返回的是id不为null的有多少行，所以这是有差别的&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>ElasticSearch on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/elasticsearch/</link>
+    <description>Recent content in ElasticSearch on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 28 Aug 2025 09:26:14 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/elasticsearch/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 docker 一键部署 ELK(包含中文分词) 服务脚本</title>
+      <link>http://localhost:1313/posts/2025-08-28-%E4%BD%BF%E7%94%A8-docker-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2-elk-%E6%9C%8D%E5%8A%A1%E8%84%9A%E6%9C%AC/</link>
+      <pubDate>Thu, 28 Aug 2025 09:26:14 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-08-28-%E4%BD%BF%E7%94%A8-docker-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2-elk-%E6%9C%8D%E5%8A%A1%E8%84%9A%E6%9C%AC/</guid>
+      <description>&lt;p&gt;前几天公司有个需求要做全文索引，于是写了一个脚本使用 docker 一键部署 ELK 服务，内容如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+#!/bin/bash  
+set -e
+
+echo &amp;#34;==================================================&amp;#34;  
+echo &amp;#34;🚀 开始部署 ELK + MySQL 同步（中文分词 + 固定索引）&amp;#34;  
+echo &amp;#34;==================================================&amp;#34;
+
+\# ==================== 配置区（请修改）====================  
+MYSQL_HOST=&amp;#34;192.168.124.6&amp;#34; # ✏️ 修改为你的 MySQL IP  
+MYSQL_USER=&amp;#34;root&amp;#34; # 读取权限用户  
+MYSQL_PASSWORD=&amp;#34;123456&amp;#34; # 用户密码  
+MYSQL_DB=&amp;#34;ams&amp;#34; # 数据库名
+
+ELASTIC_PASSWORD=&amp;#34;i*B4j6eD+g0e&amp;#34; # ES 密码（至少 8 位，含大小写+数字）
+
+ES_VERSION=&amp;#34;8.11.3&amp;#34; # 必须与 IK 插件版本一致  
+LOGSTASH_VERSION=&amp;#34;8.11.3&amp;#34;  
+\# ========================================================
+
+\# 项目路径  
+ROOT_DIR=&amp;#34;/project/elastic-sync&amp;#34;  
+mkdir -p &amp;#34;$ROOT_DIR&amp;#34;  
+cd &amp;#34;$ROOT_DIR&amp;#34;
+
+echo &amp;#34;📁 创建项目目录结构&amp;#34;  
+mkdir -p config/mysql config data/es data/kibana logs/logstash plugins/ik
+
+\# &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;- 下载 IK 分词插件 &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;  
+IK_URL=&amp;#34;https://release.infinilabs.com/analysis-ik/stable/elasticsearch-analysis-ik-ik-${ES_VERSION}.zip&amp;#34;  
+IK_DIR=&amp;#34;$ROOT_DIR/plugins/ik&amp;#34;
+
+if [ ! -f &amp;#34;$IK_DIR/plugin-descriptor.properties&amp;#34; ]; then  
+echo &amp;#34;📥 正在下载 IK 分词插件 v${ES_VERSION}&amp;amp;#8230;&amp;#34;  
+wget -q &amp;#34;$IK_URL&amp;#34; -O /tmp/ik.zip  
+unzip -q /tmp/ik.zip -d &amp;#34;$IK_DIR&amp;#34;  
+rm /tmp/ik.zip  
+chown -R 1000:1000 &amp;#34;$IK_DIR&amp;#34;  
+echo &amp;#34;✅ IK 插件安装完成&amp;#34;  
+else  
+echo &amp;#34;ℹ️ IK 插件已存在，跳过安装&amp;#34;  
+fi
+
+\# &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;- 生成 elasticsearch.yml &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;-  
+cat &amp;gt; config/elasticsearch.yml &amp;lt;&amp;lt; EOF  
+cluster.name: production-cluster  
+node.name: node-1  
+node.roles: [ data, master, ingest ]
+
+path:  
+data: /usr/share/elasticsearch/data  
+logs: /usr/share/elasticsearch/logs
+
+network.host: 0.0.0.0  
+http.port: 9200
+
+http.cors.enabled: true  
+http.cors.allow-origin: &amp;#34;*&amp;#34;
+
+discovery.type: single-node
+
+xpack.security.enabled: true  
+xpack.security.http.ssl.enabled: false
+
+xpack.monitoring.collection.enabled: true  
+EOF
+
+\# &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;- 生成 logstash.yml &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;-  
+cat &amp;gt; config/logstash.yml &amp;lt;&amp;lt; EOF  
+http.host: &amp;#34;0.0.0.0&amp;#34;  
+xpack.monitoring.enabled: false  
+config.reload.automatic: false  
+EOF
+
+\# &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;- 生成 logstash.conf &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;-  
+cat &amp;gt; config/logstash.conf &amp;lt;&amp;lt; EOF  
+input {  
+jdbc {  
+jdbc_connection_string =&amp;gt; &amp;#34;jdbc:mysql://$MYSQL_HOST:3306/$MYSQL_DB?useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;amp;useSSL=false&amp;amp;serverTimezone=Asia/Shanghai&amp;#34;  
+jdbc_user =&amp;gt; &amp;#34;$MYSQL_USER&amp;#34;  
+jdbc_password =&amp;gt; &amp;#34;$MYSQL_PASSWORD&amp;#34;  
+jdbc_driver_library =&amp;gt; &amp;#34;/usr/share/logstash/mysql/mysql-connector-java-8.0.30.jar&amp;#34;  
+jdbc_driver_class =&amp;gt; &amp;#34;com.mysql.cj.jdbc.Driver&amp;#34;
+
+jdbc_default_timezone =&amp;gt; &amp;#34;Asia/Shanghai&amp;#34;
+
+statement =&amp;gt; &amp;#34;  
+SELECT * FROM article  
+WHERE updated_at &amp;gt;= :sql_last_value  
+ORDER BY updated_at ASC  
+&amp;#34;
+
+use_column_value =&amp;gt; true  
+tracking_column =&amp;gt; &amp;#34;updated_at&amp;#34;  
+tracking_column_type =&amp;gt; &amp;#34;timestamp&amp;#34;  
+last_run_metadata_path =&amp;gt; &amp;#34;/usr/share/logstash/.logstash_jdbc_last_run&amp;#34;
+
+schedule =&amp;gt; &amp;#34;\*/2 \* \* \* *&amp;#34;  
+}  
+}
+
+filter {
+
+\# 清洗 content 字段中的 HTML 标签  
+if [content] {  
+mutate {  
+gsub =&amp;gt; [  
+&amp;#34;content&amp;#34;, &amp;#34;&amp;lt;[^&amp;gt;]*&amp;gt;&amp;#34;, &amp;#34;&amp;#34; # 删除所有 HTML 标签：&amp;lt;p&amp;gt;、&amp;lt;div&amp;gt;、&amp;lt;span&amp;gt; 等  
+]  
+}  
+\# 可选：进一步清理多余的空白字符  
+mutate {  
+gsub =&amp;gt; [  
+&amp;#34;content&amp;#34;, &amp;#34;\s+&amp;#34;, &amp;#34; &amp;#34; # 多个空白字符（空格、换行、制表符）合并为一个空格  
+]  
+}  
+mutate {  
+strip =&amp;gt; [&amp;#34;content&amp;#34;] # 去除首尾空格  
+}  
+}
+
+\# 如果 del_flag 是 1，标记该记录用于删除  
+if [del_flag] == 1 {  
+mutate {  
+add_tag =&amp;gt; [&amp;#34;delete_document&amp;#34;]  
+}  
+}  
+}
+
+output {  
+if &amp;#34;delete_document&amp;#34; in [tags] {  
+elasticsearch {  
+hosts =&amp;gt; [&amp;#34;http://elasticsearch:9200&amp;#34;]  
+user =&amp;gt; &amp;#34;elastic&amp;#34;  
+password =&amp;gt; &amp;#34;$ELASTIC_PASSWOR&amp;#34;  
+action =&amp;gt; &amp;#34;delete&amp;#34;  
+document_id =&amp;gt; &amp;#34;%{id}&amp;#34;  
+index =&amp;gt; &amp;#34;articles&amp;#34;  
+}  
+} else {  
+elasticsearch {  
+hosts =&amp;gt; [&amp;#34;http://elasticsearch:9200&amp;#34;]  
+user =&amp;gt; &amp;#34;elastic&amp;#34;  
+password =&amp;gt; &amp;#34;$ELASTIC_PASSWOR&amp;#34;  
+index =&amp;gt; &amp;#34;articles&amp;#34; # ✅ 固定索引  
+document_id =&amp;gt; &amp;#34;%{id}&amp;#34; # 支持 varchar id  
+doc_as_upsert =&amp;gt; true # 更新覆盖  
+}  
+}
+
+stdout { codec =&amp;gt; rubydebug }  
+}  
+EOF
+
+\# &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;- 生成 docker-compose.yml &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;-  
+cat &amp;gt; docker-compose.yml &amp;lt;&amp;lt; EOF  
+services:  
+elasticsearch:  
+image: docker.elastic.co/elasticsearch/elasticsearch:$ES_VERSION  
+container_name: elasticsearch  
+environment:  
+&amp;amp;#8211; discovery.type=single-node  
+&amp;amp;#8211; ES_JAVA_OPTS=-Xms2g -Xmx2g  
+&amp;amp;#8211; xpack.security.enabled=true  
+&amp;amp;#8211; xpack.security.http.ssl.enabled=false  
+&amp;amp;#8211; ELASTIC_PASSWORD=$ELASTIC_PASSWORD  
+ports:  
+&amp;amp;#8211; &amp;#34;9200:9200&amp;#34;  
+volumes:  
+&amp;amp;#8211; ./data/es:/usr/share/elasticsearch/data  
+&amp;amp;#8211; ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml  
+&amp;amp;#8211; ./plugins/ik:/usr/share/elasticsearch/plugins/ik  
+networks:  
+&amp;amp;#8211; elastic  
+restart: unless-stopped  
+healthcheck:  
+test: [&amp;#34;CMD-SHELL&amp;#34;, &amp;#34;curl -f http://localhost:9200 || exit 1&amp;#34;]  
+interval: 30s  
+timeout: 10s  
+retries: 3
+
+kibana:  
+image: docker.elastic.co/kibana/kibana:$LOGSTASH_VERSION  
+container_name: kibana  
+depends_on:  
+elasticsearch:  
+condition: service_healthy  
+environment:  
+&amp;amp;#8211; ELASTICSEARCH_HOSTS=[&amp;#34;http://elasticsearch:9200&amp;#34;]  
+&amp;amp;#8211; ELASTICSEARCH_USERNAME=elastic  
+&amp;amp;#8211; ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD  
+&amp;amp;#8211; SERVER_NAME=kibana.example.com  
+&amp;amp;#8211; I18N_LOCALE=zh-CN  
+ports:  
+&amp;amp;#8211; &amp;#34;5601:5601&amp;#34;  
+volumes:  
+&amp;amp;#8211; ./data/kibana:/usr/share/kibana/data  
+networks:  
+&amp;amp;#8211; elastic  
+restart: unless-stopped
+
+logstash:  
+image: docker.elastic.co/logstash/logstash:$LOGSTASH_VERSION  
+container_name: logstash  
+depends_on:  
+&amp;amp;#8211; elasticsearch  
+volumes:  
+&amp;amp;#8211; ./config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf  
+&amp;amp;#8211; ./config/logstash.yml:/usr/share/logstash/config/logstash.yml  
+&amp;amp;#8211; ./logs/logstash:/var/log/logstash  
+&amp;amp;#8211; ./config/mysql:/usr/share/logstash/mysql  
+networks:  
+&amp;amp;#8211; elastic  
+restart: unless-stopped
+
+networks:  
+elastic:  
+driver: bridge  
+EOF
+
+\# &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;- 下载 MySQL JDBC 驱动 &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;-  
+JDBC_JAR=&amp;#34;config/mysql/mysql-connector-java-8.0.30.jar&amp;#34;  
+if [ ! -f &amp;#34;$JDBC_JAR&amp;#34; ]; then  
+echo &amp;#34;📥 下载 MySQL JDBC 驱动&amp;amp;#8230;&amp;#34;  
+mkdir -p config/mysql  
+wget -q https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30.jar -O &amp;#34;$JDBC_JAR&amp;#34;  
+echo &amp;#34;✅ JDBC 驱动下载完成&amp;#34;  
+fi
+
+\# &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;- 设置权限 &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;-  
+echo &amp;#34;🔐 设置目录权限&amp;#34;  
+chown -R 1000:1000 data/es plugins/ik  
+chmod -R 755 config logs  
+chmod -R 777 data/kibana
+
+\# &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;- 生成创建索引脚本 &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;-  
+cat &amp;gt; create-index.sh &amp;lt;&amp;lt; &amp;amp;#8216;EOF&amp;amp;#8217;  
+#!/bin/bash  
+echo &amp;#34;🔄 正在创建索引 &amp;amp;#8216;articles&amp;amp;#8217; 并配置 IK 分词器&amp;amp;#8230;&amp;#34;
+
+curl -X PUT &amp;#34;http://localhost:9200/articles&amp;#34; \  
+-u elastic:$ELASTIC_PASSWORD \  
+-H &amp;#34;Content-Type: application/json&amp;#34; \  
+-d &amp;amp;#8216;  
+{  
+&amp;#34;settings&amp;#34;: {  
+&amp;#34;index&amp;#34;: {  
+&amp;#34;number_of_shards&amp;#34;: 1,  
+&amp;#34;number_of_replicas&amp;#34;: 1  
+},  
+&amp;#34;analysis&amp;#34;: {  
+&amp;#34;analyzer&amp;#34;: {  
+&amp;#34;ik_analyzer&amp;#34;: {  
+&amp;#34;type&amp;#34;: &amp;#34;custom&amp;#34;,  
+&amp;#34;tokenizer&amp;#34;: &amp;#34;ik_max_word&amp;#34;,  
+&amp;#34;filter&amp;#34;: [&amp;#34;lowercase&amp;#34;]  
+}  
+}  
+}  
+},  
+&amp;#34;mappings&amp;#34;: {  
+&amp;#34;properties&amp;#34;: {  
+&amp;#34;id&amp;#34;: { &amp;#34;type&amp;#34;: &amp;#34;keyword&amp;#34; },  
+&amp;#34;title&amp;#34;: {  
+&amp;#34;type&amp;#34;: &amp;#34;text&amp;#34;,  
+&amp;#34;analyzer&amp;#34;: &amp;#34;ik_max_word&amp;#34;,  
+&amp;#34;search_analyzer&amp;#34;: &amp;#34;ik_smart&amp;#34;  
+},  
+&amp;#34;content&amp;#34;: {  
+&amp;#34;type&amp;#34;: &amp;#34;text&amp;#34;,  
+&amp;#34;analyzer&amp;#34;: &amp;#34;ik_max_word&amp;#34;,  
+&amp;#34;search_analyzer&amp;#34;: &amp;#34;ik_smart&amp;#34;  
+},  
+&amp;#34;author&amp;#34;: { &amp;#34;type&amp;#34;: &amp;#34;keyword&amp;#34; },  
+&amp;#34;created_at&amp;#34;: { &amp;#34;type&amp;#34;: &amp;#34;date&amp;#34; },  
+&amp;#34;updated_at&amp;#34;: { &amp;#34;type&amp;#34;: &amp;#34;date&amp;#34; }  
+}  
+}  
+}&amp;amp;#8217; &amp;amp;&amp;amp; echo &amp;#34;✅ 索引 &amp;amp;#8216;articles&amp;amp;#8217; 创建成功！&amp;#34;  
+EOF
+
+chmod +x create-index.sh
+
+\# &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;- 完成 &amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;&amp;amp;#8212;-  
+echo &amp;#34;==================================================&amp;#34;  
+echo &amp;#34;🎉 部署准备完成！&amp;#34;  
+echo &amp;#34;==================================================&amp;#34;  
+echo &amp;#34;&amp;#34;  
+echo &amp;#34;📌 下一步操作：&amp;#34;  
+echo &amp;#34;1. 检查配置：nano setup-elastic-sync.sh （修改 MySQL 地址、用户、密码）&amp;#34;  
+echo &amp;#34;2. 增加权限：chmod +x setup-elastic-sync.sh&amp;#34;  
+echo &amp;#34;3. 执行脚本：sudo ./setup-elastic-sync.sh&amp;#34;  
+echo &amp;#34;4. 启动服务：sudo docker compose up -d&amp;#34;  
+echo &amp;#34;5. 创建索引：bash ./create-index.sh&amp;#34;  
+echo &amp;#34;6. 访问 Kibana：http://你的服务器IP:5601&amp;#34;  
+echo &amp;#34; &amp;amp;#8211; 用户：elastic&amp;#34;  
+echo &amp;#34; &amp;amp;#8211; 密码：$ELASTIC_PASSWORD&amp;#34;  
+echo &amp;#34;&amp;#34;  
+echo &amp;#34;💡 首次运行会全量同步 articles 表，之后每 2 分钟增量同步&amp;#34;  
+echo &amp;#34;🔍 在 Kibana 中搜索中文（如“阿里巴巴”），应能命中结果&amp;#34;  
+echo &amp;#34;&amp;#34;  
+echo &amp;#34;⚠️ 注意：必须先运行 create-index.sh 再让 Logstash 写入，否则分词无效！&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果 kibana 用 elastic 用户连不上，通过 Elasticsearch 的 Security API 为内置用户 kibana_system 修改密码：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

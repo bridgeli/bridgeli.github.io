@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>UTF-8 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/utf-8/</link>
+    <description>Recent content in UTF-8 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 04 Aug 2018 06:49:19 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/utf-8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于 MySQL 中 utf8 的问题</title>
+      <link>http://localhost:1313/posts/2018-08-04-%E5%85%B3%E4%BA%8E-mysql-%E4%B8%AD-utf8-%E7%9A%84%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Sat, 04 Aug 2018 06:49:19 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2018-08-04-%E5%85%B3%E4%BA%8E-mysql-%E4%B8%AD-utf8-%E7%9A%84%E9%97%AE%E9%A2%98/</guid>
+      <description>&lt;p&gt;有一个段子，我每次看了都头皮发麻，这个段子是：&lt;/p&gt;
+&lt;p&gt;手持两把锟斤拷，口中疾呼烫烫烫，脚踏千朵屯屯屯，笑看万物锘锘锘&lt;/p&gt;
+&lt;p&gt;我相信凡是和我有一样感觉的应该都知道这是啥，所以为了避免这个问题，我们工作的建议就是，所有的地方都设置成：UTF-8，确实我们这样工作了很多年，不知道哪一年 emoji 突然火了，于是在上家公司做论坛的时候，有一个小伙伴遇到了类似于下面的一个小问题（我找不到原报错日志了）：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+Incorrect string value: ‘\xF0\x9F\x98\x83 &amp;lt;…’ for column ‘summary’ at row 1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当时问我，我也不知道原因，然后经过一番搜索之后，发现原来是 MySQL 存储 emoji 时出错了，存储 emoji 的时候，不应该用 utf8，而是用 utf8mb4。&lt;/p&gt;
+&lt;p&gt;随着移动互联网的到来，emoji 的应用越来越广泛，本以为这个问题大家都知道了，所以就没有深究过，想着自己记着就行了，但是不知道为什么最近这个问题突然火了，原来不是所有人都知道这个问题，甚至有人说，在做微信开发的时候，天知道微信用户会取什么昵称，所以不得已把用户的昵称都 base64 编码一下，展示的时候再解码，我只能表示：厉害，人民群众的智慧是无穷的。&lt;/p&gt;
+&lt;p&gt;其实产生这个问题的原因也很简单，据说是 MySQL 的一个 bug：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;MySQL 的 utf8mb4 是真正的utf8。&lt;/li&gt;
+&lt;li&gt;MySQL 的 utf8 是一种专属的编码，它能够编码的 Unicode 字符并不多。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;关于什么是编码，我相信大家应该都知道了，如果不知道请自行搜索（当年曾经给一个计算机在读博的学姐科普什么是 GBK、GB2312、GB18030、UTF-8、BIG5、ISO-8859-1 等等，也是心累），至于为什么 MySQL 的 utf8 不是真正的 utf8，这是一个历史原因，我搜索的资料是：MySQL 从 4.1 版本开始支持 UTF-8，也就是 2003 年，而今天使用的 UTF-8 标准（RFC 3629）是随后才出现的。&lt;/p&gt;
+&lt;p&gt;所以现在我们看到的很多 MySQL（或者 MySQL 的分支：MariaDB）资料依然在建议，MySQL 的编码使用 utf8，这在绝大多数的情况下，确实也没有问题，但确实是错误的，最好的选择是，选用真正的 utf8，也就是：utf8mb4。对于已经选用 utf8 需要改用 utf8mb4 的项目，这有一个指南：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

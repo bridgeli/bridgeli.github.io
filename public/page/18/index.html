@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head>
+	<meta name="generator" content="Hugo 0.156.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>分享技术带来的喜悦</title>
+<meta name="keywords" content="博客, 技术, Java">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">反射机制入门
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Java程序允许在执行期间获取一个已知名称的类的详细内部构造，这种机制被称为“反射”，反射在struts2、Spring、hibernate等Java常见框架中有着许多经典运用，下面是Java反射机制的入门代码，看了这些代码，相信读者应该对Java的反射机制会有一个入门级的了解，再看那些框架源码时会省力不少。
+import java.lang.reflect.InvocationTargetException; import java.lang.reflect.Method; import java.lang.reflect.TypeVariable; public class TestReflection { public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { String str = &#34;T&#34;; Class c = Class.forName(str); Object o = c.newInstance(); T t = (T) c.newInstance(); t.m(); Method[] methods = c.getMethods(); for (Method method : methods) { if (&#34;m&#34;.equals(method.getName())) { method.invoke(o); } if (&#34;getS&#34;.equals(method.getName())) { TypeVariable&lt;Method&gt;[] typeParameters = method.getTypeParameters(); Class returnType = method.getReturnType(); } } } } class T { int i; String s; static { System.out.println(&#34;T loaded&amp;#8230;&#34;); } public T() { System.out.println(&#34;T Constructed&amp;#8230;&#34;); } public String getS() { return s; } public void setI(int i) { this.i = i; } public void m() { System.out.println(&#34;m invoked&amp;#8230;&#34;); } } </p>
+  </div>
+  <footer class="entry-footer"><span title='2014-08-31 14:12:35 +0000 +0000'>August 31, 2014</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>113 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 反射机制入门" href="http://localhost:1313/posts/2014-08-31-%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E5%85%A5%E9%97%A8/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">JSP自定义标签
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>虽然html很好，尤其是html5越来越火，但仍有很多网站是用JSP做的，JSP里面虽然有很多标签，但我们是否可以自己定义自己的呢？当然可以，参考代码如下：
+写自己的taglib类，并重写里面的方法 public class DropDownBoxTaglib extends TagSupport { private static final long serialVersionUID = 1L; @Override public int doStartTag() throws JspTagException { return SKIP_BODY; } @Override public int doEndTag() throws JspTagException { HttpServletRequest request = (HttpServletRequest) pageContext.getRequest(); ApplicationContext applicationContext = new ClassPathXmlApplicationContext(&#34;applicationContext.xml&#34;); RequestTypeService requestTypeService = (RequestTypeService) applicationContext.getBean(&#34;requestTypeService&#34;); List&lt;RequestType&gt; requestTypes = requestTypeService.query(); request.setAttribute(&#34;REQUESTTYPES&#34;, requestTypes); try { pageContext.include(&#34;/component/request_type_select.jsp&#34;); } catch (ServletException e) { e.printStackTrace(); } catch (IOException e) { e.printStackTrace(); } return EVAL_PAGE; } @Override public void release() { super.release(); } } 对应的tld文件 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;taglib xmlns=&#34;http://java.sun.com/xml/ns/j2ee&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xsi:schemaLocation=&#34;http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd&#34; version=&#34;2.0&#34;&gt; &lt;tlib-version&gt;1.0&lt;/tlib-version&gt; &lt;jsp-version&gt;1.1&lt;/jsp-version&gt; &lt;short-name&gt;aug&lt;/short-name&gt; &lt;tag&gt; &lt;name&gt;select&lt;/name&gt; &lt;tag-class&gt;cn.bridgeli.DropDownBoxTaglib&lt;/tag-class&gt; &lt;body-content&gt;empty&lt;/body-content&gt; &lt;!&amp;#8211; &lt;attribute&gt; &lt;name&gt;formatKey&lt;/name&gt; &lt;required&gt;false&lt;/required&gt; &lt;rtexprvalue&gt;true&lt;/rtexprvalue&gt; &lt;/attribute&gt; &amp;#8211;&gt; &lt;/tag&gt; &lt;/taglib&gt; 具体哪个文件使用该taglib &lt;%@ page language=&#34;java&#34; contentType=&#34;text/html; charset=UTF-8&#34; pageEncoding=&#34;UTF-8&#34;%&gt; &lt;%@ taglib uri=&#34;http://java.sun.com/jsp/jstl/core&#34; prefix=&#34;c&#34; %&gt; &lt;% List&lt;RequestType&gt;requestTypes = (List &lt;RequestType&gt;)request.getAttribute(&#34;REQUESTTYPES&#34;); %&gt; &lt;select name=&#34;requestTypeId&#34; id=&#34;requestTypeId&#34; style=&#34;width: 608px;&#34;&gt; &lt;option&gt;&amp;#8211;Select a request type Please&amp;#8211;&lt;/option&gt; &lt;% for(int i = 0; i&lt; requestTypes.size(); i&#43;&#43;) { RequestType requestType = requestTypes.get(i); %&gt; &lt;option value= &lt;%= requestType.getId() %&gt;&gt;&lt;%= requestType.getName() %&gt; &lt;/option&gt; &lt;% } %&gt; &lt;/select&gt; </p>
+  </div>
+  <footer class="entry-footer"><span title='2014-08-30 06:10:16 +0000 +0000'>August 30, 2014</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>160 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to JSP自定义标签" href="http://localhost:1313/posts/2014-08-30-jsp%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">软件分层的一般方法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>1. 软件设计的目的：高内聚、低耦合，为了达到这一目的：（1）. 模块化； （2）. 分层
+软件分层依据：（1）. 逻辑分层；（2）. 物理分层
+命名空间：（1）. 类：属性和方法；（2）. 包：其实就是一个文件夹
+包名命名规范：域名倒写&#43;项目名&#43;逻辑或模块，例如：cn.bridgeli.weixin.service
+DB Web的死四层结构：view、servlet、service、dao
+servlet向service传递DTO或者VO，service向DAO传递model，dao直接保存数据到数据库
+类的命名规范：实体名&#43;包的最后一层，但model除外
+例如：UserService、User
+2. 哪些代码写到哪一层
+（1）. 一个表对应一个model类
+（2）. 一个表对应一个dao（四个方法）
+Create、update、getById、delete（可能没有，markfordelete，但依然会这么命名），其他方法一般都以：create、update、delete、get（返回一个对象）、save、find或者query（返回一个list，统一用一个就行）等关键字打头
+（3）. Service由界面操作的都有service，但log没有service层
+（4）servlet接受用户请求
+在开发中，不能跨层调用，不能调上层，只能调下层或者本层的方法
+（5）. Util工具包，所有方法全部是static的，只放一些常用工具，例如StringUtil，检验字符串是否为空、一个字符串是否包含另一个字符串；jdbc中的DBUtil，getConn、getPstmt、getRs以及close等方法
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-08-30 03:07:17 +0000 +0000'>August 30, 2014</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>30 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 软件分层的一般方法" href="http://localhost:1313/posts/2014-08-30-%E8%BD%AF%E4%BB%B6%E5%88%86%E5%B1%82%E7%9A%84%E4%B8%80%E8%88%AC%E6%96%B9%E6%B3%95/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">日志的配置
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在系统开发中，尤其是上线后，没有日志那绝对是一件不可想象的事，但日志的配置却很简单，一般配置后只要做少量的修改，几乎可以永远到处都可以用了，下面给出日志配置的一般方法。
+注：该配置的Jar包为：log4j、slf4j-api、slf-log4j，即使用slf日志接口，log4j的实现（当然你也可以使用其他的实现，例如hibernate自带的slf的实现）这一目前为止的最佳实践。
+log4j.rootCategory=INFO, stdout, logfile, errorLog log4j.appender.stdout=org.apache.log4j.ConsoleAppender log4j.appender.stdout.layout=org.apache.log4j.PatternLayout log4j.appender.stdout.layout.ConversionPattern=%d{ABSOLUTE} %5p %t %c{2}:%L &amp;#8211; %m%n #log4j.category.org.springframework.beans.factory=info log4j.appender.consoleAppender.layout.ConversionPattern =ProcessDefinitionId=%X{mdcProcessDefinitionID} executionId=%X{mdcExecutionId} mdcProcessInstanceID=%X{mdcProcessInstanceID} mdcBusinessKey=%X{mdcBusinessKey} %m%n&#34; log4j.appender.logfile=org.apache.log4j.DailyRollingFileAppender log4j.appender.logfile.file=C:/invoice/log/log.log log4j.appender.logfile.layout=org.apache.log4j.PatternLayout log4j.appender.logfile.DatePattern=&amp;#8217;.&amp;#8217;yyyy-MM-dd #log4j.appender.logfile.layout.ConversionPattern=[%d %6p at %C.%M(%F:%L)] %m%n log4j.appender.logfile.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %l %m%n log4j.appender.logfile.Threshold=INFO log4j.appender.errorLog=org.apache.log4j.DailyRollingFileAppender log4j.appender.errorLog.file=C:/invoice/log/error.log log4j.appender.errorLog.layout=org.apache.log4j.PatternLayout log4j.appender.errorLog.DatePattern=&amp;#8217;.&amp;#8217;yyyy-MM-dd log4j.appender.errorLog.layout.ConversionPattern=[%d %6p at %C.%M(%F:%L)] %m%n log4j.appender.errorLog.Threshold=ERROR # SQL: #log4j.logger.com.ibatis=DEBUG #log4j.logger.com.ibatis.common.jdbc.SimpleDataSource=DEBUG #log4j.logger.com.ibatis.sqlmap.engine.cache.CacheModel=DEBUG #log4j.logger.com.ibatis.sqlmap.engine.impl.SqlMapClientImpl=DEBUG #log4j.logger.com.ibatis.sqlmap.engine.builder.xml.SqlMapParser=DEBUG #log4j.logger.com.ibatis.common.util.StopWatch=DEBUG #log4j.logger.java.sql.Connection=DEBUG #log4j.logger.java.sql.Statement=DEBUG #log4j.logger.java.sql.PreparedStatement=DEBUG #log4j.logger.java.sql.ResultSet=DEBUG 注：这是一最简单的一种配置，还有很多其他的配置项可以灵活配置，例如打印hibernate的SQL语句，而且还可以配置当产生error级别的日志时，自动发送邮件到指定邮箱，具体请参考：http://futeng.iteye.com/blog/2109231
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-08-29 13:57:41 +0000 +0000'>August 29, 2014</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>58 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 日志的配置" href="http://localhost:1313/posts/2014-08-29-%E6%97%A5%E5%BF%97%E7%9A%84%E9%85%8D%E7%BD%AE/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">简单邮件的解析
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>昨天讲了邮件的发送（这是一个个人笔记，如果有人要参考的话，估计需要做大量的修改才行，但整体逻辑是不会错），既然有发送，肯定会有邮件的解析，那么今天大桥就再写一个例子程序，关于邮件怎么解析。
+@Service(&#34;parseMailService&#34;) public class ParseMailServiceImpl { private static final Logger LOG = LoggerFactory.getLogger(ParseMailServiceImpl.class); private static final String[] flagOfMailEnds = {&#34;&lt;DIV&gt;&lt;BR&gt;&lt;/DIV&gt;&#34;, &#34;From:&lt;&#34;, &#34;From: &lt;&#34;, &#34;Sent: &#34;, &#34;Kind regards,&#34;, &#34;Kind Regards,&#34;, &#34;Best regards,&#34;, &#34;Best Regards,&#34;, &#34;Kind regards,&#34;, &#34;Regards,&#34;, &#34;Thanks&#34;, &#34;&amp;#8212;&amp;#8211; Original Message &amp;#8212;&amp;#8211;&#34;, &#34;&gt; &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-&#34;, &#34;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&#34;}; private static final String[] flagOfMailStarts = {&#34;Hi,&#34;, &#34;&lt;/HEAD&gt;&#34;}; private static final String[] regExHtmls = {&#34;&lt;[^&gt;]&#43;&gt;&#34;, &#34;&lt;[^&gt;]&#43;&#34;}; @Autowired private MailServerService mailServerService; public void parseMail() throws Exception { LOG.info(&#34;==Start parse Mail==&#34;); Session session = mailServerService.getSession(); Store store = session.getStore(“pop3”); store.connect(MAIL_SERVER_HOST, MAIL_ADDRESS, MAIL_SERVER_PASSWORD); Folder folder = store.getFolder(&#34;INBOX&#34;); folder.open(Folder.READ_WRITE); Message[] messages = folder.getMessages(); int mailNo = Integer.parseInt((String) execution.getVariable(SystemConstant.MAIL_NO)); Message message = messages[mailNo]; Map&lt;String, String&gt; contents = parseMessage(message); message.setFlag(Flags.Flag.DELETED, true); // message.saveChanges(); mailServerService.closeConn(folder, store); LOG.info(&#34;==Mail parse success, this mail from: &#34; &#43; contents.get(&#34;user&#34;) &#43; &#34;==&#34;); } private String splitContentBySpecialCharacter(String context) { // Remove mail bottom for (String flagOfMailEnd : flagOfMailEnds) { int endIndex = context.indexOf(flagOfMailEnd); if (endIndex &gt; -1) { context = context.substring(0, endIndex); } } // Remove mail top for (String flagOfMailStart : flagOfMailStarts) { int startIndex = context.indexOf(flagOfMailStart); if (startIndex &gt; -1) { context = context.substring(startIndex &#43; flagOfMailStart.length()); } } // Filter the HTML tags for (String regExHtml : regExHtmls) { Pattern p_html = Pattern.compile(regExHtml, Pattern.CASE_INSENSITIVE); Matcher m_html = p_html.matcher(context); context = m_html.replaceAll(&#34;&#34;); } context.replaceAll(&#34; &#34;, &#34;&#34;); // Filter &#34;rn&#34; Pattern CRLF1 = Pattern.compile(&#34;(rn|r|n|nr){3,}&#34;); Matcher m1 = CRLF1.matcher(context); context = m1.replaceAll(&#34;&#34;); Pattern CRLF = Pattern.compile(&#34;(rn|r|n|nr)&#34;); Matcher m = CRLF.matcher(context); context = m.replaceAll(&#34; &#34;); return context; } public Map&lt;String, String&gt; parseMessage(Message message) throws MessagingException, IOException { Map&lt;String, String&gt; contents = new HashMap&lt;String, String&gt;(); StringBuffer content = new StringBuffer(300); content = getMailTextContent(message, content); contents.put(&#34;comment&#34;, splitContentBySpecialCharacter(content.toString())); return contents; } public StringBuffer getMailTextContent(Part part, StringBuffer content) throws MessagingException, IOException { boolean isContainTextAttach = part.getContentType().indexOf(&#34;name&#34;) &gt; 0; if (part.isMimeType(&#34;text/*&#34;) &amp;&amp; !isContainTextAttach) { if (content.length() &gt; 0) { content.setLength(0); } content.append(part.getContent().toString()); } else if (part.isMimeType(&#34;message/rfc822&#34;)) { getMailTextContent((Part) part.getContent(), content); } else if (part.isMimeType(&#34;multipart/*&#34;)) { Multipart multipart = (Multipart) part.getContent(); int partCount = multipart.getCount(); for (int i = 0; i &lt; partCount; i&#43;&#43;) { BodyPart bodyPart = multipart.getBodyPart(i); getMailTextContent(bodyPart, content); } } return content; } } @Service(&#34;mailServerService&#34;) public class MailServerServiceImpl implements MailServerService { private static final Logger LOG = LoggerFactory.getLogger(MailServerServiceImpl.class); @Override public Session getSession() { Properties props = System.getProperties(); props.put(&#34;mail.smtp.port&#34;, 25); Session session = Session.getDefaultInstance(props); return session; } @Override public void closeConn(Folder folder, Store store) { try { if (null != folder) { folder.close(true); } if (null != store) { store.close(); } } catch (MessagingException e) { LOG.error(&#34;Close connection fail with mail server&#34;, e); } } } </p>
+  </div>
+  <footer class="entry-footer"><span title='2014-08-29 03:21:37 +0000 +0000'>August 29, 2014</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>411 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 简单邮件的解析" href="http://localhost:1313/posts/2014-08-29-%E7%AE%80%E5%8D%95%E9%82%AE%E4%BB%B6%E7%9A%84%E8%A7%A3%E6%9E%90/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">如何利用模板发送邮件
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>目前web应用很多时候都需要像用户发送邮件，尤其是在我们注册的时候，其实这些邮件很多时候内容都是类似的，仅仅是一些有户名等不同，那么我们是否可以利用一个模板呢，模板里面有一些占位符，当我们要发送邮件的时候，仅仅把这些占位符做一替换就行了呢？答案肯定是可以的，请看下面的例子程序：
+1. 邮件模板mailTemplate.xml
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;email&gt; &lt;ProjectMail&gt; &lt;subject id=&#34;ProjectSubject&#34;&gt; &lt;![CDATA[Hello%toUsername%]]&gt;&lt;/subject&gt; &lt;content id=&#34;ProjectMailBody&#34;&gt; &lt;![CDATA[&lt;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.0 Transitional//EN&#34;&gt; &lt;HTML&gt; &lt;HEAD&gt; &lt;META http-equiv=Content-Type content=&#34;text/html; charset=UTF-8&#34;&gt; &lt;META content=&#34;MSHTML 6.00.6000.17063&#34; name=GENERATOR&gt; &lt;STYLE&gt; TABLE { MARGIN-LEFT: 20px; } TD { border: 1px solid #CBCBCB; } .dataString { text-align:left; padding-left:3px; } .tableTittle{ background-color: #FF9900; } &lt;/STYLE&gt; &lt;/HEAD&gt; &lt;BODY bgColor=#ffffff&gt; &lt;DIV&gt; &lt;FONT face=Arial size=2&gt;&lt;/FONT&gt; &lt;/DIV&gt; &lt;DIV&gt; &lt;FONT face=Arial size=2&gt; Hi %name%, &lt;/FONT&gt; &lt;/DIV&gt; &lt;br&gt; &lt;DIV&gt; &lt;FONT face=Arial size=2&gt; 欢迎注册 &lt;/FONT&gt; &lt;/DIV&gt; &lt;br&gt; &lt;DIV&gt; &lt;FONT face=Arial size=2&gt; 该邮件是系统自动发出，请不要直接回复，谢谢 &lt;/FONT&gt; &lt;/DIV&gt; &lt;br&gt; &lt;table width=&#34;800&#34; border=&#34;1&#34; cellspacing=&#34;0&#34; cellpadding=&#34;0&#34;&gt; &lt;tr class=&#34;tableTittle&#34;&gt; &lt;th width=&#34;25%&#34;&gt; &lt;font size=&#34;2&#34; face=&#34;Arial&#34; class=&#34;dataString&#34; &gt; &lt;p align=&#34;center&#34;&gt; Name &lt;/p&gt; &lt;/font&gt; &lt;/th&gt; &lt;th width=&#34;25%&#34;&gt; &lt;font size=&#34;2&#34; face=&#34;Arial&#34; class=&#34;dataString&#34; &gt; &lt;p align=&#34;center&#34;&gt; Date and time &lt;/p&gt; &lt;/font&gt; &lt;/th&gt; &lt;/tr&gt; &lt;#listItems&gt;&lt;/#listItems&gt; &lt;/table&gt; &lt;br&gt; &lt;DIV&gt; &lt;FONT face=Arial size=2&gt;&lt;/FONT&gt; &lt;/DIV&gt; &lt;DIV&gt; &lt;FONT face=Arial size=2&gt; Kind regards, &lt;/FONT&gt; &lt;/DIV&gt; &lt;DIV&gt; &lt;FONT face=Arial size=2&gt; Bridge &lt;/FONT&gt; &lt;/DIV&gt; ]]&gt; &lt;/content&gt; &lt;/ProjectMail&gt; &lt;/email&gt; Java代码： @Service(&#34;mailService&#34;) public class MailServiceImpl implements MailService { private static final Logger LOG = LoggerFactory.getLogger(MailServiceImpl.class); private static final String DO_INVOICE_ITMES =&#34;&lt;#listItems&gt;&lt;/#listItems&gt;&#34;; private static final String NAME = &#34;%name%&#34;; @Override public void sendMail() { List&lt;String&gt; mailCCList = new ArrayList&lt;String&gt;(); String attachmentPath = null； Map&lt;String, String&gt; mail = buildMail(receiverName); String emailContent = mail.get(&#34;mailContent&#34;); String subject = mail.get(&#34;emailSubject&#34;); toSendMail(receiverMailAddress, mailCCList, emailContent, subject, attachmentPath, attachmentName); } private void toSendMail(String toAddress, List&lt;String&gt; mailCCList, String emailContent, String subject, String attachmentPath, String attachmentName) { Properties props = new Properties(); // Set the attribute of mail server props.put(&#34;mail.smtp.host&#34;, MAIL_SERVER_HOST)); // Need to be authorized, such ability through validation (must have this one) props.put(&#34;mail.smtp.auth&#34;, &#34;true&#34;); // Build a session with props objects Session session = Session.getDefaultInstance(props); // Using the session as parameters define the message object MimeMessage message = new MimeMessage(session); Transport transport = null; try { // Load the sender&amp;#8217;s address message.setFrom(new InternetAddress(MAIL_ADDRESS); // Load the recipient address message.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddress)); if (StringUtil.isNotEmpty(mailCCList)) { InternetAddress[] to_mail = new InternetAddress[mailCCList.size()]; for (int i = 0; i &lt; mailCCList.size(); i&#43;&#43;) { to_mail[i] = new InternetAddress(mailCCList.get(i)); } message.addRecipients(Message.RecipientType.CC, to_mail); } // Load the subject message.setSubject(subject); // Add mail each part to the multipart, including the text content // and accessories MimeMultipart multipart = new MimeMultipart(); // Set the HTML content of the message BodyPart contentPart = new MimeBodyPart(); // To set the content and format/encoding of BodyPart contentPart.setContent(emailContent, &#34;text/html;charset=UTF-8&#34;); multipart.setSubType(&#34;related&#34;); multipart.addBodyPart(contentPart); // Add attachment if (!StringUtil.isNullOrEmpty(attachmentName)) { contentPart = new MimeBodyPart(); DataSource source = new FileDataSource(attachmentPath); // Add attachment&amp;#8217;s content contentPart.setDataHandler(new DataHandler(source)); // Add attachment&amp;#8217;s title contentPart.setFileName(attachmentName); multipart.addBodyPart(contentPart); } // Add multipart object to the message message.setContent(multipart); // Save the mail message.saveChanges(); transport = session.getTransport(&#34;smtp&#34;); // Connect the mail server transport.connect(MAIL_SERVER_HOST, MAIL_SERVER_USERNAME, MAIL_SERVER_PASSWORD); // Send mail transport.sendMessage(message, message.getAllRecipients()); LOG.info(&#34;Send mail to: &#34; &#43; toAddress &#43; &#34;,success&#34;); } catch (AddressException e) { LOG.error(e); } catch (NoSuchProviderException e) { LOG.error(e); } catch (MessagingException e) { LOG.error(e); } finally { try { if (null != transport) { transport.close(); } } catch (MessagingException e) { LOG.error(e); } } } private Map&lt;String, String&gt; buildMail(String receiverName) { StringBuilder itemsBuilder = new StringBuilder(); Element emailTemplateRoot = getXMLRootElement(&#34;mailTemplate.xml&#34;); String emailSubject = emailTemplateRoot.selectSingleNode(&#34;//*[@id=&amp;#8217;ProjectSubject&amp;#8217;]&#34;).getText().replace(TOUSERNAME, receiverName.toUpperCase()); StringBuilder content = new StringBuilder(); String mailTemplateContent = emailTemplateRoot.selectSingleNode(&#34;//*[@id=&amp;#8217;ProjectMailBody&amp;#8217;]&#34;).getText(); mailTemplateContent = mailTemplateContent.replace(NAME, receiverName).replace(DO_INVOICE_ITMES, itemsBuilder.toString()); content.append(mailTemplateContent); Map&lt;String, String&gt; mail = new HashMap&lt;String, String&gt;(); mail.put(&#34;emailSubject&#34;, emailSubject); mail.put(&#34;mailContent&#34;, content.toString()); return mail; } private String getColumnDataString(String data) { String columnData = null; columnData = &#34;&lt;td class=&amp;#8217;dataString&amp;#8217;&gt;&lt;font size=&amp;#8217;2&amp;#8242; face=&amp;#8217;Arial&amp;#8217;&gt;&lt;p align=&amp;#8217;center&amp;#8217;&gt;&#34; &#43; data &#43; &#34;&lt;/p&gt;&lt;/font&gt;&lt;/td&gt;&#34; &#43; &#34;n&#34;; return columnData; } private Element getXMLRootElement(String emailFile) { SAXReader reader = new SAXReader(); InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(emailFile); Document document = null; try { document = reader.read(inputStream); } catch (DocumentException e) { LOG.error(&#34;Get XML Root Element fail, DocumentException&#34;, e); } return document.getRootElement(); } } 2015.05.25补记：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-08-28 11:39:26 +0000 +0000'>August 28, 2014</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>945 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 如何利用模板发送邮件" href="http://localhost:1313/posts/2014-08-28-%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E6%A8%A1%E6%9D%BF%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">异常处理的一般方法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>学习Java的应该都知道，异常处理是其一大特色，使用异常处理的最大优势就是：将问题处理代码和正常执行流程做了区分，使得程序的执行逻辑更加清晰，不再使错误处理代码和正常业务逻辑代码混在一起。Java不仅自己定义了各种各样的异常类来描述一些基本的错误现象，而且还提供了扩展机制，允许程序猿自定义异常类，应用于实际问题处理，Java的异常处理机制可以捕获对应的异常，并进行主动处理，那么既然Java的异常处理机制这么好用，有没有一般性的方法呢？
+首先说明，（1）. Java的异常分为：Error和Exception，Error类及其子类表示不是不可能恢复但很难处理的情况下的一种严重问题，例如内存溢出（大家可以想想Java是否存在内存溢出现象？），我们不可能指望程序能处理，所以本文所有的方法都是针对Exception。
+（2）. 异常处理就五个关键字：try、catch、finally、throw、throws，他们的用法也比较简单，本文不再赘述。
+好了，下面开讲：
+1. Exception分为两类：Exception和RuntimeException，其中Exception必须在系统中处理，而RuntimeException继承与Exception，表示一种设计或实现的问题，如果系统正常运行，此类异常不会出现，例如最常见的NullPointerException，所以一般不强制要求处理。
+2. 像ClassNotFoundException这类异常，一般是jar包没有添加，在系统正常运行中肯定不会出现，所以无需抛出，可以直接try catch掉，但别忘了打log。
+3. 像SQLException之类的，这类异常偶然也会出现，如：数据库服务没打开、没有网络、SQL语法有误等，但这类异常即使抛到Service层依然无法处理，抛到客户端客户也看不懂，还影响用户体验，所以也不要抛出，一般都是转化为RuntimeException，在转化之前打log。
+4. 所以需要我们处理的异常只有ValidationException和BusinessException，这两类异常都是我们自定义的异常，其中ValidationException处理的是验证异常，而BusinessException处理的是业务逻辑异常，这两类异常都需要我们在系统中做出处理，下面会给出ValidationException、BusinessException和自定义转化为RuntimeException的参考方法。
+5. Service层是负责业务逻辑处理的一层，所以所有的验证都要放在Service层，而Service层在进行验证和业务逻辑处理的时候，应该抛出这些所遇到的异常，并加入到ValidationException（如用户登录时用户名或密码为空等）或者BusinessException（如用户名或密码不正确等）异常中，然后在上层（servlet或者Action或者、controller）中进行捕获，捕获到之后放到Request中，带到前台进行处理。
+6. 千万要记得出现异常一定要打log！！！尤其是当你try catch掉一个异常时。其中ValidationException、BusinessException日志级别为warning或info，其他的据具体情况而定，但MyRuntimeException 可以不打，大家可以想想为什么？（前面有答案）
+7. 顺便说一下，关闭资源一定要放在finally里，因为finally的代码无论是否有异常都会被执行，确保打开的资源一定都会被关闭。
+在这里顺便回答一些同学的问题：
+（1）、我在前台已经做了验证，那么是否还需要在后台再做验证？
+答：肯定要，原因①、前台验证一般都是用js来做，而js的解析是在客户端，如果有人禁用了浏览器的js，是不是你的验证就不起作用了。（关于如何禁用js，请自己用Google百度一下）；
+②、不排除有些黑客要黑你，所以他们可以通过一些工具，直接绕过前台，那么你懂得。
+（2）、为什么要抽象Service层，为什么不把Service层的功能全放到servlet中来做，简单来说为什么要把验证放到Service层？
+答：首先为什么抽象Service层，肯定是为了复用，这个是关于分成模型中要讲的，有机会我会在写一篇博文，专讲分层的一般方法，这里不多说，大家可以试想一下，目前移动端越来越火，而我们的servlet是和web相关，那么我们的Servlet能被App复用吗？如果我们把验证放到servlet中，那么如果在开发一套App，我们是不是所有的验证都要重写一篇？而放在Service层则没有这个问题。
+（3）、Java是否存在内存溢出问题？
+答：一般是不存在的，因为jvm有GC机制，会很好的管理内存，但有时候当我们短时间内，打开很多资源而没有关闭的时候，是可能会存在内存溢出问题的。
+package cn.bridgeli.exceptionhandle.exception; public class BusinessException extends Exception { private static final long serialVersionUID = 1L; private int code; public BusinessException(int code, String message) { super(message); this.code = code; } public int getCode() { return code; } } package cn.bridgeli.exceptionhandle.exception; public class MyRuntimeException extends RuntimeException { private static final long serialVersionUID = 1L; private int code; public MyRuntimeException(int code, String message) { super(message); this.code = code; } public int getCode() { return code; } } package cn.bridgeli.exceptionhandle.exception; import java.util.HashMap; import java.util.Map; public class ValidationException extends Exception { private static final long serialVersionUID = 1L; private Map&lt;String, String&gt; errorFields = new HashMap&lt;String, String&gt;(); public ValidationException() { } public void addErrorFiel(String name, String message) { errorFields.put(name, message); } public String getErrorField(String name) { if (errorFields.containsKey(errorFields)) { return errorFields.get(name); } return &#34;&#34;; } } </p>
+  </div>
+  <footer class="entry-footer"><span title='2014-08-26 08:43:06 +0000 +0000'>August 26, 2014</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>161 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 异常处理的一般方法" href="http://localhost:1313/posts/2014-08-26-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%84%E4%B8%80%E8%88%AC%E6%96%B9%E6%B3%95/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">如何在网络上搭建个人博客
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>相信有很多程序猿应该都有过自己搭建博客的冲动，但很多时候有一种无从下手的感觉，第一篇博客就写一下，怎么搭建自己的个人博客吧，希望对大家有点帮助。
+搭建个人博客主要分以下几步：
+1. 购买域名
+这个其实很简单，我们只需要在常见的万网、西部数码注册后，只要该域名还未被注册，填一下基本信息，一般都可以了，另外需要说明的是：（1.）、域名是有限资源，如果一个域名被注册了，那么别人就不能注册了，所以想好了域名，大家可以立马去注册，以防被别人抢注，万一被别人抢注，想买回来就很困难了，大家可以搜一下史上最贵的是个域名；（2）、域名注册是有有效期的，如果有效期到了没有续费成功的话，那么这个域名就会被回收，就有了被别人重新注册的风险，所以大家可以试着设置一个自动续费之类的；（3）、经过我的分析，西部数码的域名注册费用会比万网稍稍便宜一些，当然是仅供参考。
+2. 购买空间
+这个大的分两种：（1）、独立的IP，这个一般会比较贵；（2）、购买空间，没有独立IP，这个相对便宜。一般如果仅仅是搭建一个个人博客的话，购买空间就够了，一般空间提供商会提供一个二级域名供大家调试。
+另外购买空间这个分大陆的和非大陆的，大陆的一般比较贵，但访问速度快，而且需要备案，备案这个一般购买域名的地方都会有提供，另外像360也提供免费备案；非大陆的空间一般都比较便宜，也比较稳定，但访问速度会稍慢一些，而且不需要备案，所以也哟哟很多人选择这个，BridgeLi就是选择的这个方案。好了有了域名和空间我们就可以进行接下来第三步了。
+3. 准备博客系统
+推荐大家使用WordPress，WordPress是目前世界上最流行的博客系统，据说世界上百分之八十的博客，都是WordPress搭建的，可见其影响力，WordPress这么流行的一个原因就是他是开源免费，大家都可以对其进行个性化的开发，而且为了使他更好用，很多牛人对他开发了很对各种各样的插件，大家可以根据自己的具体情况，选用其中部分插件，由此也可见WordPress的可扩展行做的是多么牛，相信这也是其流行的一个原因。
+关于WordPress怎么用，BridgeLi在这里就不多说了，因为巨简单，大家可以自己到WordPress官网上下一个看看。
+不过需要说明的WordPress是PHP语言写得，所以在搭建博客时，需要我们的系统支持PHP，BridgeLi的空间实在西部数码买的，在预装软件一栏里，选择WordPress就可以了，一键生成，属于傻瓜式，当然大家也可以自己一步一步的去搭建，推荐LAMP。
+4. 域名绑定
+一切已经就绪，当然下面就是绑定域名啦，如果域名绑定成功的话，我们应该就可以通过我们的域名来访问我们的博客了。因为BridgeLi是在西部数码买的空间，使用的预装的WordPress系统，所以下面先以这个为例进行讲解，选择个人中心–&gt;主机管理，会有一个域名绑定，我们只需要按照步骤一步一步就可以了，需要说明的是，如果你的域名是在西部数码买的，那么应该在添加域名绑定之后应该局可以访问了，但如果您不是在西部数码买的，像BridgeLi就是在万网买的域名，就需要到万网那边，把西部数码提供的二级域名添加到域名解析里面就行了，关于DNS服务器我们可以忽略，关于域名解析，大家眼看自己空间的类型，如果是独立IP，那么肯定就是A，具体大家可以看万网和西部数码的文档，BridgeLi就不在这里一一赘述了。
+另外还有一种情况是自己搭建的系统，也就是我们只买了一个域名、一个空间，博客系统是自己传上去的，那么如何进行域名绑定呢？当然域名解析肯定还是要到注册地方的域名解析中去添加，添加完成之后，我们就可以通过：域名&#43; / &#43; 项目名称就行访问了，我们当然不希望是这样的，直接通过域名访问多好啊，这就需要我们对服务器进行一番设置，因为BridgeLi是对Java开发的，对tomcat比较熟，下面就以tomcat为例进行说明，主要有两步：
+（1）、打开server.xml文件，在和之间插入如下语句。
+&lt;Context path=”” docBase=”” debug=”0″ privileged=”true”&gt;
+其中path为空，就是为了去掉访问时的/项目名称，docBase是项目所在的目录，如果是war包，一定要项目名称，如果是源码包（这个应该很少），则一定要详细到webRoot（MyEclipse项目）或者webContent（Eclipse项目）
+（2）、删除webapps文件夹下的ROOT文件夹就可以了
+经过以上四步，我们就在网络上拥有自己的博客了，怎么样，很简单吧？想搭建博客的你，还犹豫什么，马上行动吧！
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-08-25 09:22:47 +0000 +0000'>August 25, 2014</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>30 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 如何在网络上搭建个人博客" href="http://localhost:1313/posts/2014-08-25-%E5%A6%82%E4%BD%95%E5%9C%A8%E7%BD%91%E7%BB%9C%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/page/17/">
+      «&nbsp;Prev&nbsp;
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

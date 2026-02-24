@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>上线脚本 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E4%B8%8A%E7%BA%BF%E8%84%9A%E6%9C%AC/</link>
+    <description>Recent content in 上线脚本 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 24 Oct 2015 14:26:16 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E4%B8%8A%E7%BA%BF%E8%84%9A%E6%9C%AC/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>运维之maven版Git上线脚本</title>
+      <link>http://localhost:1313/posts/2015-10-24-%E8%BF%90%E7%BB%B4%E4%B9%8Bmaven%E7%89%88git%E4%B8%8A%E7%BA%BF%E8%84%9A%E6%9C%AC/</link>
+      <pubDate>Sat, 24 Oct 2015 14:26:16 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-10-24-%E8%BF%90%E7%BB%B4%E4%B9%8Bmaven%E7%89%88git%E4%B8%8A%E7%BA%BF%E8%84%9A%E6%9C%AC/</guid>
+      <description>&lt;p&gt;之前的文章曾写了Git怎么用和Git服务器怎么搭建，一个公司仅仅只有这些还是远远不够的，这些仅仅是对源码的管理，程序猿开发好的源码怎么编译、打包、部署上线呢？下面就需要运维来解决这个问题了，不过这一段时间公司老大让老夫负责公司的源码由SVN迁Git，有幸接触到一点这块的知识，今天记录一下，万一老夫哪天失业了转行去做运维了呢！&lt;/p&gt;
+&lt;p&gt;在开始正式文章之前，首先感谢一下我在小马金融的同事：张学军，此脚本原始版本是由学军提供的，然后加上老夫的优化，可以说没有学军的无私帮助，老夫不可能完成这个脚本的，所以，谢谢，学军！&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+#!/bin/bash  
+export JAVA_HOME=/usr/local/jdk1.7.0_67  
+export JRE_HOME=${JAVA_HOME}/jre  
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib  
+export PATH=${JAVA_HOME}/bin:$PATH
+
+dir_path=&amp;#34;/apps/project/project_name&amp;#34;  
+work=&amp;#34;project_name&amp;#34;  
+DATE=\`date +%Y%m%d%H%M\`  
+tomcat=&amp;#34;apache-tomcat-6.0.41_project_name&amp;#34;
+
+cd $dir_path  
+if [ ! -d wars ];then  
+mkdir wars  
+fi
+
+if [ -d ROOT ];then  
+tar cfz ROOT-$DATE.tar.gz ROOT  
+mv ROOT-$DATE.tar.gz wars/  
+fi
+
+git_update(){  
+tag_version=$1  
+cd $dir_path/$work  
+git checkout master  
+git pull  
+echo $tag_version  
+git_tag=\`git tag|grep -x $tag_version\`  
+if [ &amp;#34;$git_tag&amp;#34; = &amp;#34;$tag_version&amp;#34; ];then  
+git checkout -b \`date +%Y%m%d%H%M\` $git_tag  
+else  
+printf &amp;#34;tag number input error n&amp;#34;  
+exit 1  
+fi  
+git_id1=\`git log -1 &amp;amp;#8211;format=%H\`  
+git_id2=\`git show $git_tag |grep commit |awk &amp;amp;#8216;{print $2}&amp;amp;#8217; |head -1\`  
+if [ &amp;#34;$git_id1&amp;#34; != &amp;#34;$git_id2&amp;#34; ];then  
+printf &amp;#34;The current git branch where inconsistent tag number is correct , please check the tag number n&amp;#34;  
+exit 1  
+fi  
+}
+
+tag_version=$1
+
+if [ &amp;#34;$tag_version&amp;#34; = &amp;#34;&amp;#34; ];then  
+printf &amp;#34;Please enter the version number n&amp;#34;  
+exit 1  
+else  
+git_update $1  
+echo $1 &amp;gt;&amp;gt; ${dir_path}/tag.txt  
+fi
+
+build(){  
+dir_path=$1  
+work=$2  
+cd $dir_path/$work  
+mvn package -DskipTests  
+if [ -d $dir_path/$work/target ];then  
+cd $dir_path/$work/target  
+else  
+echo &amp;#34;build $dir_path/$work failed&amp;#34;  
+exit  
+fi  
+return 1  
+}
+
+build $dir_path $work  
+type=$?  
+if [ $type -eq 1 ];then  
+cd $dir_path/$work/target  
+work_name=\`ls |grep $work |grep -v &amp;#34;war|jar|gz&amp;#34;\`  
+else  
+echo &amp;#34;build failure&amp;#34;  
+exit 1  
+fi
+
+if [ -d $dir_path/ROOT ];then  
+rm -rf $dir_path/ROOT  
+fi
+
+cd $dir_path/$work/target/  
+mv $work_name $dir_path/ROOT
+
+if [ -d $dir_path/ROOT ];then  
+scp $dir_path/config.properties $dir_path/ROOT/WEB-INF/classes/  
+scp $dir_path/redis.properties $dir_path/ROOT/WEB-INF/classes/  
+scp $dir_path/jdbc.properties $dir_path/ROOT/WEB-INF/classes/  
+fi
+
+tomcat_status=\`ps aux |grep $tomcat |grep -v &amp;#34;gerp&amp;#34;&amp;gt;/dev/null;echo $?\`
+
+if [ $tomcat_status -eq 0 ];then  
+kill -9 \`ps aux |grep $tomcat |grep -v &amp;#34;grep&amp;#34;|awk &amp;amp;#8216;{print $2}&amp;amp;#8217;\`;rm -rf /usr/local/$tomcat/work/\*;rm -rf /usr/local/$tomcat/temp/\*;/usr/local/$tomcat/bin/startup.sh  
+else  
+rm -rf /usr/local/$tomcat/work/\*;rm -rf /usr/local/$tomcat/temp/\*;/usr/local/$tomcat/bin/startup.sh  
+fi
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注：里面的project_name是项目名，老夫隐藏了公司的实际项目名，就以project_name代替了，实际用的时候请根据实际情况修改&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

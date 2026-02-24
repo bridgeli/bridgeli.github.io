@@ -1,0 +1,19 @@
+{{- define "main" }}
+
+{{/* 1. 只显示欢迎信息 (HomeInfo) */}}
+{{- if .Site.Params.homeInfoParams }}
+    {{- partial "home_info.html" . }}
+{{- end }}
+
+{{/* 2. 【关键】这里原本是用来显示文章列表的代码，我们直接把它删掉/注释掉，不渲染任何文章 */}}
+{{/* 
+{{- $paginator := .Paginate (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) }}
+{{- if gt $paginator.TotalPages 0 }}
+    {{- range $paginator.Pages }}
+        {{- .Render "summary" }}
+    {{- end }}
+    {{- partial "pagination.html" . }}
+{{- end }}
+*/}}
+
+{{- end }}{{/* end main */}}

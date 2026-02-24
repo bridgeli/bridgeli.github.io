@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>工作流Activiti5入门（下） | 分享技术带来的喜悦</title>
+<meta name="keywords" content="activiti, 工作流">
+<meta name="description" content="看了工作流上和中的人，相信已经在慢慢入门了，因为本教程也只是致力于做一个入门而已，然后在用的过程中再慢慢学习，用来工作也许是一点问题都没有了，如果没有看过请看这篇和这篇，所以本没有必要再写下了，但实在感觉留下一个小尾巴：数据库还没有给大家介绍，这个入门实在是太过简陋，所以今天就把这篇文章来一个扫尾，下面先看最后一个想用的task
+六. 组任务
+流程图：
+
+其实和用户任务看起来并无差别，下面看实现
+
+分配组任务方式一（直接指定办理人）
+
+具体配置：
+
+完成任务：
+
+/*\*查询当前人的个人任务\*/  
+@Test  
+public void findMyPersonalTask(){  
+String assignee = &#34;小A&#34;;  
+List&lt;Task&gt; list = processEngine.getTaskService()//与正在执行的任务管理相关的Service  
+.createTaskQuery()//创建任务查询对象  
+/*\*查询条件（where部分）\*/  
+.taskAssignee(assignee)//指定个人任务查询，指定办理人  
+// .taskCandidateUser(candidateUser)//组任务的办理人查询  
+/*\*排序\*/  
+.orderByTaskCreateTime().asc()//使用创建时间的升序排列  
+/*\*返回结果集\*/  
+.list();//返回列表  
+if(list!=null &amp;&amp; list.size()&gt;0){  
+for(Task task:list){  
+System.out.println(&#34;任务ID:&#34;&#43;task.getId());  
+System.out.println(&#34;任务名称:&#34;&#43;task.getName());  
+System.out.println(&#34;任务的创建时间:&#34;&#43;task.getCreateTime());  
+System.out.println(&#34;任务的办理人:&#34;&#43;task.getAssignee());  
+System.out.println(&#34;流程实例ID：&#34;&#43;task.getProcessInstanceId());  
+System.out.println(&#34;执行对象ID:&#34;&#43;task.getExecutionId());  
+System.out.println(&#34;流程定义ID:&#34;&#43;task.getProcessDefinitionId());  
+System.out.println(&#34;########################################################&#34;);  
+}  
+}  
+}
+
+/*\*查询当前人的组任务\*/  
+@Test  
+public void findMyGroupTask(){  
+String candidateUser = &#34;大大&#34;;  
+List&lt;Task&gt; list = processEngine.getTaskService()//与正在执行的任务管理相关的Service  
+.createTaskQuery()//创建任务查询对象  
+/*\*查询条件（where部分）\*/  
+.taskCandidateUser(candidateUser)//组任务的办理人查询  
+/*\*排序\*/  
+.orderByTaskCreateTime().asc()//使用创建时间的升序排列  
+/*\*返回结果集\*/  
+.list();//返回列表  
+if(list!=null &amp;&amp; list.size()&gt;0){  
+for(Task task:list){  
+System.out.println(&#34;任务ID:&#34;&#43;task.getId());  
+System.out.println(&#34;任务名称:&#34;&#43;task.getName());  
+System.out.println(&#34;任务的创建时间:&#34;&#43;task.getCreateTime());  
+System.out.println(&#34;任务的办理人:&#34;&#43;task.getAssignee());  
+System.out.println(&#34;流程实例ID：&#34;&#43;task.getProcessInstanceId());  
+System.out.println(&#34;执行对象ID:&#34;&#43;task.getExecutionId());  
+System.out.println(&#34;流程定义ID:&#34;&#43;task.getProcessDefinitionId());  
+System.out.println(&#34;########################################################&#34;);  
+}  
+}  
+}
+
+/*\*完成我的任务\*/  
+@Test  
+public void completeMyPersonalTask(){  
+//任务ID  
+String taskId = &#34;6905&#34;;  
+processEngine.getTaskService()//与正在执行的任务管理相关的Service  
+.complete(taskId);  
+System.out.println(&#34;完成任务：任务ID：&#34;&#43;taskId);  
+}
+
+/*\*查询正在执行的任务办理人表\*/  
+@Test  
+public void findRunPersonTask(){  
+//任务ID  
+String taskId = &#34;6204&#34;;  
+List&lt;IdentityLink&gt; list = processEngine.getTaskService()//  
+.getIdentityLinksForTask(taskId);  
+if(list!=null &amp;&amp; list.size()&gt;0){  
+for(IdentityLink identityLink:list){  
+System.out.println(identityLink.getTaskId()&#43;&#34; &#34;&#43;identityLink.getType()&#43;&#34; &#34;&#43;identityLink.getProcessInstanceId()&#43;&#34; &#34;&#43;identityLink.getUserId());  
+}  
+}  
+}  
+/*\*查询历史任务的办理人表\*/  
+@Test  
+public void findHistoryPersonTask(){  
+//流程实例ID  
+String processInstanceId = &#34;6201&#34;;  
+List&lt;HistoricIdentityLink&gt; list = processEngine.getHistoryService()//  
+.getHistoricIdentityLinksForProcessInstance(processInstanceId);  
+if(list!=null &amp;&amp; list.size()&gt;0){  
+for(HistoricIdentityLink identityLink:list){  
+System.out.println(identityLink.getTaskId()&#43;&#34; &#34;&#43;identityLink.getType()&#43;&#34; &#34;&#43;identityLink.getProcessInstanceId()&#43;&#34; &#34;&#43;identityLink.getUserId());  
+}  
+}  
+}
+
+/*\*拾取任务，将组任务分给个人任务，指定任务的办理人字段\*/  
+@Test  
+public void claim(){  
+//将组任务分配给个人任务  
+//任务ID  
+String taskId = &#34;6905&#34;;  
+//分配的个人任务（可以是组任务中的成员，也可以是非组任务的成员）  
+String userId = &#34;大大&#34;;  
+processEngine.getTaskService()//  
+.claim(taskId, userId);  
+}
+
+/*\*将个人任务回退到组任务，前提，之前一定是个组任务\*/  
+@Test  
+public void setAssigee(){  
+//任务ID  
+String taskId = &#34;6204&#34;;  
+processEngine.getTaskService()//  
+.setAssignee(taskId, null);  
+}
+
+/*\*向组任务中添加成员\*/  
+@Test  
+public void addGroupUser(){  
+//任务ID  
+String taskId = &#34;6204&#34;;  
+//成员办理人  
+String userId = &#34;大H&#34;;  
+processEngine.getTaskService()//  
+.addCandidateUser(taskId, userId);  
+}
+
+/*\*从组任务中删除成员\*/  
+@Test  
+public void deleteGroupUser(){  
+//任务ID  
+String taskId = &#34;6204&#34;;  
+//成员办理人  
+String userId = &#34;小B&#34;;  
+processEngine.getTaskService()//  
+.deleteCandidateUser(taskId, userId);  
+}
+
+分配组任务方式二（使用流程变量）
+
+具体配置：">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/posts/2015-11-29-%E5%B7%A5%E4%BD%9C%E6%B5%81activiti5%E5%85%A5%E9%97%A8%E4%B8%8B/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2015-11-29-%E5%B7%A5%E4%BD%9C%E6%B5%81activiti5%E5%85%A5%E9%97%A8%E4%B8%8B/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">文章</a></div>
+    <h1 class="post-title entry-hint-parent">
+      工作流Activiti5入门（下）
+    </h1>
+    <div class="post-meta"><span title='2015-11-29 14:20:15 +0000 +0000'>November 29, 2015</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>455 words</span>&nbsp;·&nbsp;<span>Bridge Li</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>看了工作流上和中的人，相信已经在慢慢入门了，因为本教程也只是致力于做一个入门而已，然后在用的过程中再慢慢学习，用来工作也许是一点问题都没有了，如果没有看过请看<a href="https://www.bridgeli.cn/archives/197" title="工作流Activiti5入门（上）">这篇</a>和<a href="https://www.bridgeli.cn/archives/229" title="工作流Activiti5入门（中）">这篇</a>，所以本没有必要再写下了，但实在感觉留下一个小尾巴：数据库还没有给大家介绍，这个入门实在是太过简陋，所以今天就把这篇文章来一个扫尾，下面先看最后一个想用的task</p>
+<p>六. 组任务</p>
+<p>流程图：<br>
+<a href="https://www.bridgeli.cn/wp-content/uploads/2015/11/9.png"><img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2015/11/9.png" alt="9" width="186" height="292" class="alignnone size-full wp-image-222" /></a><br>
+其实和用户任务看起来并无差别，下面看实现</p>
+<ol>
+<li>分配组任务方式一（直接指定办理人）</li>
+</ol>
+<p>具体配置：</p>
+<p><a href="https://www.bridgeli.cn/wp-content/uploads/2015/11/11.png"><img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2015/11/11-300x54.png" alt="11" width="300" height="54" class="alignnone size-medium wp-image-224" /></a></p>
+<p>完成任务：</p>
+<pre tabindex="0"><code>
+/*\*查询当前人的个人任务\*/  
+@Test  
+public void findMyPersonalTask(){  
+String assignee = &#34;小A&#34;;  
+List&lt;Task&gt; list = processEngine.getTaskService()//与正在执行的任务管理相关的Service  
+.createTaskQuery()//创建任务查询对象  
+/*\*查询条件（where部分）\*/  
+.taskAssignee(assignee)//指定个人任务查询，指定办理人  
+// .taskCandidateUser(candidateUser)//组任务的办理人查询  
+/*\*排序\*/  
+.orderByTaskCreateTime().asc()//使用创建时间的升序排列  
+/*\*返回结果集\*/  
+.list();//返回列表  
+if(list!=null &amp;&amp; list.size()&gt;0){  
+for(Task task:list){  
+System.out.println(&#34;任务ID:&#34;+task.getId());  
+System.out.println(&#34;任务名称:&#34;+task.getName());  
+System.out.println(&#34;任务的创建时间:&#34;+task.getCreateTime());  
+System.out.println(&#34;任务的办理人:&#34;+task.getAssignee());  
+System.out.println(&#34;流程实例ID：&#34;+task.getProcessInstanceId());  
+System.out.println(&#34;执行对象ID:&#34;+task.getExecutionId());  
+System.out.println(&#34;流程定义ID:&#34;+task.getProcessDefinitionId());  
+System.out.println(&#34;########################################################&#34;);  
+}  
+}  
+}
+
+/*\*查询当前人的组任务\*/  
+@Test  
+public void findMyGroupTask(){  
+String candidateUser = &#34;大大&#34;;  
+List&lt;Task&gt; list = processEngine.getTaskService()//与正在执行的任务管理相关的Service  
+.createTaskQuery()//创建任务查询对象  
+/*\*查询条件（where部分）\*/  
+.taskCandidateUser(candidateUser)//组任务的办理人查询  
+/*\*排序\*/  
+.orderByTaskCreateTime().asc()//使用创建时间的升序排列  
+/*\*返回结果集\*/  
+.list();//返回列表  
+if(list!=null &amp;&amp; list.size()&gt;0){  
+for(Task task:list){  
+System.out.println(&#34;任务ID:&#34;+task.getId());  
+System.out.println(&#34;任务名称:&#34;+task.getName());  
+System.out.println(&#34;任务的创建时间:&#34;+task.getCreateTime());  
+System.out.println(&#34;任务的办理人:&#34;+task.getAssignee());  
+System.out.println(&#34;流程实例ID：&#34;+task.getProcessInstanceId());  
+System.out.println(&#34;执行对象ID:&#34;+task.getExecutionId());  
+System.out.println(&#34;流程定义ID:&#34;+task.getProcessDefinitionId());  
+System.out.println(&#34;########################################################&#34;);  
+}  
+}  
+}
+
+/*\*完成我的任务\*/  
+@Test  
+public void completeMyPersonalTask(){  
+//任务ID  
+String taskId = &#34;6905&#34;;  
+processEngine.getTaskService()//与正在执行的任务管理相关的Service  
+.complete(taskId);  
+System.out.println(&#34;完成任务：任务ID：&#34;+taskId);  
+}
+
+/*\*查询正在执行的任务办理人表\*/  
+@Test  
+public void findRunPersonTask(){  
+//任务ID  
+String taskId = &#34;6204&#34;;  
+List&lt;IdentityLink&gt; list = processEngine.getTaskService()//  
+.getIdentityLinksForTask(taskId);  
+if(list!=null &amp;&amp; list.size()&gt;0){  
+for(IdentityLink identityLink:list){  
+System.out.println(identityLink.getTaskId()+&#34; &#34;+identityLink.getType()+&#34; &#34;+identityLink.getProcessInstanceId()+&#34; &#34;+identityLink.getUserId());  
+}  
+}  
+}  
+/*\*查询历史任务的办理人表\*/  
+@Test  
+public void findHistoryPersonTask(){  
+//流程实例ID  
+String processInstanceId = &#34;6201&#34;;  
+List&lt;HistoricIdentityLink&gt; list = processEngine.getHistoryService()//  
+.getHistoricIdentityLinksForProcessInstance(processInstanceId);  
+if(list!=null &amp;&amp; list.size()&gt;0){  
+for(HistoricIdentityLink identityLink:list){  
+System.out.println(identityLink.getTaskId()+&#34; &#34;+identityLink.getType()+&#34; &#34;+identityLink.getProcessInstanceId()+&#34; &#34;+identityLink.getUserId());  
+}  
+}  
+}
+
+/*\*拾取任务，将组任务分给个人任务，指定任务的办理人字段\*/  
+@Test  
+public void claim(){  
+//将组任务分配给个人任务  
+//任务ID  
+String taskId = &#34;6905&#34;;  
+//分配的个人任务（可以是组任务中的成员，也可以是非组任务的成员）  
+String userId = &#34;大大&#34;;  
+processEngine.getTaskService()//  
+.claim(taskId, userId);  
+}
+
+/*\*将个人任务回退到组任务，前提，之前一定是个组任务\*/  
+@Test  
+public void setAssigee(){  
+//任务ID  
+String taskId = &#34;6204&#34;;  
+processEngine.getTaskService()//  
+.setAssignee(taskId, null);  
+}
+
+/*\*向组任务中添加成员\*/  
+@Test  
+public void addGroupUser(){  
+//任务ID  
+String taskId = &#34;6204&#34;;  
+//成员办理人  
+String userId = &#34;大H&#34;;  
+processEngine.getTaskService()//  
+.addCandidateUser(taskId, userId);  
+}
+
+/*\*从组任务中删除成员\*/  
+@Test  
+public void deleteGroupUser(){  
+//任务ID  
+String taskId = &#34;6204&#34;;  
+//成员办理人  
+String userId = &#34;小B&#34;;  
+processEngine.getTaskService()//  
+.deleteCandidateUser(taskId, userId);  
+}
+</code></pre><ol start="2">
+<li>分配组任务方式二（使用流程变量）</li>
+</ol>
+<p>具体配置：</p>
+<p><a href="https://www.bridgeli.cn/wp-content/uploads/2015/11/13.png"><img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2015/11/13-300x71.png" alt="13" width="300" height="71" class="alignnone size-medium wp-image-226" /></a></p>
+<p>完成任务：</p>
+<pre tabindex="0"><code>
+// 2 启动流程  
+//启动流程实例，同时设置流程变量，用来指定组任务的办理人  
+Map&lt;String, Object&gt; variables = new HashMap&lt;String, Object&gt;();  
+variables.put(&#34;userIDs&#34;, &#34;大大,小小,中中&#34;);  
+ProcessInstance pi = processEngine.getRuntimeService()//  
+.startProcessInstanceByKey(&#34;taskProcess&#34;,variables);  
+System.out.println(&#34;pid:&#34; + pi.getId());  
+}
+
+//查询我的个人任务列表  
+@Test  
+public void findMyTaskList(){  
+String userId = &#34;大大&#34;;  
+List&lt;Task&gt; list = processEngine.getTaskService()//  
+.createTaskQuery()//  
+.taskAssignee(userId)//指定个人任务查询  
+.list();  
+for(Task task:list ){  
+System.out.println(&#34;id=&#34;+task.getId());  
+System.out.println(&#34;name=&#34;+task.getName());  
+System.out.println(&#34;assinee=&#34;+task.getAssignee());  
+System.out.println(&#34;assinee=&#34;+task.getCreateTime());  
+System.out.println(&#34;executionId=&#34;+task.getExecutionId());
+
+}  
+}
+
+//查询组任务列表  
+@Test  
+public void findGroupList(){  
+String userId = &#34;大大&#34;;  
+List&lt;Task&gt; list = processEngine.getTaskService()//  
+.createTaskQuery()//  
+.taskCandidateUser(userId)//指定组任务查询  
+.list();  
+for(Task task:list ){  
+System.out.println(&#34;id=&#34;+task.getId());  
+System.out.println(&#34;name=&#34;+task.getName());  
+System.out.println(&#34;assinee=&#34;+task.getAssignee());  
+System.out.println(&#34;assinee=&#34;+task.getCreateTime());  
+System.out.println(&#34;executionId=&#34;+task.getExecutionId());  
+System.out.println(&#34;##################################&#34;);
+
+}  
+}
+
+//查询组任务成员列表  
+@Test  
+public void findGroupUser(){  
+String taskId = &#34;3709&#34;;  
+List&lt;IdentityLink&gt; list = processEngine.getTaskService()//  
+.getIdentityLinksForTask(taskId);  
+for(IdentityLink identityLink:list ){  
+System.out.println(&#34;userId=&#34;+identityLink.getUserId());  
+System.out.println(&#34;taskId=&#34;+identityLink.getTaskId());  
+System.out.println(&#34;piId=&#34;+identityLink.getProcessInstanceId());  
+System.out.println(&#34;######################&#34;);  
+}  
+}
+
+//查询组任务成员历史列表  
+@Test  
+public void findGroupHisUser(){  
+String taskId = &#34;3709&#34;;  
+List&lt;HistoricIdentityLink&gt; list = processEngine.getHistoryService()//  
+.getHistoricIdentityLinksForTask(taskId);  
+for(HistoricIdentityLink identityLink:list ){  
+System.out.println(&#34;userId=&#34;+identityLink.getUserId());  
+System.out.println(&#34;taskId=&#34;+identityLink.getTaskId());  
+System.out.println(&#34;piId=&#34;+identityLink.getProcessInstanceId());  
+System.out.println(&#34;######################&#34;);  
+}  
+}
+
+//完成任务  
+@Test  
+public void completeTask(){  
+String taskId = &#34;3709&#34;;  
+processEngine.getTaskService()//  
+.complete(taskId);//  
+System.out.println(&#34;完成任务&#34;);  
+}
+
+/*\*将组任务分配给个人任务，拾取任务\*/  
+//由1个人去完成任务  
+@Test  
+public void claim(){  
+//任务ID  
+String taskId = &#34;5908&#34;;  
+//分配的办理人  
+String userId = &#34;小B&#34;;  
+processEngine.getTaskService()//  
+.claim(taskId, userId);  
+}
+</code></pre><p>七. 数据库</p>
+<p>Activiti的后台是有数据库的支持，所有的表都以ACT_开头。 第二部分是表示表的用途的两个字母标识。 用途也和服务的API对应。<br>
+ACT_RE_<em>: ‘RE’表示repository。 这个前缀的表包含了流程定义和流程静态资源 （图片，规则，等等）。<br>
+ACT_RU_</em>: ‘RU’表示runtime。 这些运行时的表，包含流程实例，任务，变量，异步任务，等运行中的数据。 Activiti只在流程实例执行过程中保存这些数据， 在流程结束时就会删除这些记录。 这样运行时表可以一直很小速度很快。<br>
+ACT_ID_<em>: ‘ID’表示identity。 这些表包含身份信息，比如用户，组等等。<br>
+ACT_HI_</em>: ‘HI’表示history。 这些表包含历史数据，比如历史流程实例， 变量，任务等等。<br>
+ACT_GE_*: 通用数据， 用于不同场景下，如存放资源文件。</p>
+<p>再具体的各个表结构操作如下，至于各个表的每个字段什么含义，就靠读者自己学习了：<br>
+1：资源库流程规则表<br>
+act_re_deployment 部署信息表<br>
+act_re_model 流程设计模型部署表<br>
+act_re_procdef 流程定义数据表<br>
+2：运行时数据库表<br>
+act_ru_execution 运行时流程执行实例表<br>
+act_ru_identitylink 运行时流程人员表，主要存储任务节点与参与者的相关信息<br>
+act_ru_task 运行时任务节点表<br>
+act_ru_variable 运行时流程变量数据表<br>
+3：历史数据库表<br>
+act_hi_actinst 历史节点表<br>
+act_hi_attachment 历史附件表<br>
+act_hi_comment 历史意见表<br>
+act_hi_identitylink 历史流程人员表<br>
+act_hi_detail 历史详情表，提供历史变量的查询<br>
+act_hi_procinst 历史流程实例表<br>
+act_hi_taskinst 历史任务实例表<br>
+act_hi_varinst 历史变量表<br>
+4：组织机构表<br>
+act_id_group 用户组信息表<br>
+act_id_info 用户扩展信息表<br>
+act_id_membership 用户与用户组对应信息表<br>
+act_id_user 用户信息表<br>
+这四张表很常见，基本的组织机构管理，关于用户认证方面建议还是自己开发一套，组件自带的功能太简单，使用中有很多需求难以满足<br>
+5：通用数据表<br>
+act_ge_bytearray 二进制数据表<br>
+act_ge_property 属性数据表存储整个流程引擎级别的数据,初始化表结构时，会默认插入三条记录，</p>
+<p>至于这些表的ER图，则如下：</p>
+<p><a href="https://www.bridgeli.cn/wp-content/uploads/2015/11/acticiti_er_1.png"><img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2015/11/acticiti_er_1-300x267.png" alt="acticiti_er_1" width="300" height="267" class="alignnone size-medium wp-image-231" /></a></p>
+<p><a href="https://www.bridgeli.cn/wp-content/uploads/2015/11/activiti_er_2.png"><img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2015/11/activiti_er_2-300x113.png" alt="activiti_er_2" width="300" height="113" class="alignnone size-medium wp-image-232" /></a><br>
+写到这里，工作流activiti的一个基本教程就完了，因为这几篇博客，是老夫随性所写，并无一个整体的计划，所以很散漫，但老夫相信看完这个系列的教程，读者对activiti一定有了一个初步的概念，聪明如读者，再加上自己的使用过程中的自学，在工作中一定可以如鱼得水</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/activiti/">Activiti</a></li>
+      <li><a href="http://localhost:1313/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/">工作流</a></li>
+    </ul>
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 工作流Activiti5入门（下） on x"
+            href="https://x.com/intent/tweet/?text=%e5%b7%a5%e4%bd%9c%e6%b5%81Activiti5%e5%85%a5%e9%97%a8%ef%bc%88%e4%b8%8b%ef%bc%89&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-11-29-%25E5%25B7%25A5%25E4%25BD%259C%25E6%25B5%2581activiti5%25E5%2585%25A5%25E9%2597%25A8%25E4%25B8%258B%2f&amp;hashtags=activiti%2c%e5%b7%a5%e4%bd%9c%e6%b5%81">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 工作流Activiti5入门（下） on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-11-29-%25E5%25B7%25A5%25E4%25BD%259C%25E6%25B5%2581activiti5%25E5%2585%25A5%25E9%2597%25A8%25E4%25B8%258B%2f&amp;title=%e5%b7%a5%e4%bd%9c%e6%b5%81Activiti5%e5%85%a5%e9%97%a8%ef%bc%88%e4%b8%8b%ef%bc%89&amp;summary=%e5%b7%a5%e4%bd%9c%e6%b5%81Activiti5%e5%85%a5%e9%97%a8%ef%bc%88%e4%b8%8b%ef%bc%89&amp;source=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-11-29-%25E5%25B7%25A5%25E4%25BD%259C%25E6%25B5%2581activiti5%25E5%2585%25A5%25E9%2597%25A8%25E4%25B8%258B%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 工作流Activiti5入门（下） on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-11-29-%25E5%25B7%25A5%25E4%25BD%259C%25E6%25B5%2581activiti5%25E5%2585%25A5%25E9%2597%25A8%25E4%25B8%258B%2f&title=%e5%b7%a5%e4%bd%9c%e6%b5%81Activiti5%e5%85%a5%e9%97%a8%ef%bc%88%e4%b8%8b%ef%bc%89">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 工作流Activiti5入门（下） on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-11-29-%25E5%25B7%25A5%25E4%25BD%259C%25E6%25B5%2581activiti5%25E5%2585%25A5%25E9%2597%25A8%25E4%25B8%258B%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 工作流Activiti5入门（下） on whatsapp"
+            href="https://api.whatsapp.com/send?text=%e5%b7%a5%e4%bd%9c%e6%b5%81Activiti5%e5%85%a5%e9%97%a8%ef%bc%88%e4%b8%8b%ef%bc%89%20-%20http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-11-29-%25E5%25B7%25A5%25E4%25BD%259C%25E6%25B5%2581activiti5%25E5%2585%25A5%25E9%2597%25A8%25E4%25B8%258B%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 工作流Activiti5入门（下） on telegram"
+            href="https://telegram.me/share/url?text=%e5%b7%a5%e4%bd%9c%e6%b5%81Activiti5%e5%85%a5%e9%97%a8%ef%bc%88%e4%b8%8b%ef%bc%89&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-11-29-%25E5%25B7%25A5%25E4%25BD%259C%25E6%25B5%2581activiti5%25E5%2585%25A5%25E9%2597%25A8%25E4%25B8%258B%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 工作流Activiti5入门（下） on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=%e5%b7%a5%e4%bd%9c%e6%b5%81Activiti5%e5%85%a5%e9%97%a8%ef%bc%88%e4%b8%8b%ef%bc%89&u=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-11-29-%25E5%25B7%25A5%25E4%25BD%259C%25E6%25B5%2581activiti5%25E5%2585%25A5%25E9%2597%25A8%25E4%25B8%258B%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

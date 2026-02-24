@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Maven on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/maven/</link>
+    <description>Recent content in Maven on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 25 Dec 2025 02:24:23 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/maven/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>本地开发不同项目使用不同版本 JDK 的解决方案</title>
+      <link>http://localhost:1313/posts/2025-12-25-%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E4%B8%8D%E5%90%8C%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC-jdk-%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</link>
+      <pubDate>Thu, 25 Dec 2025 02:24:23 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-12-25-%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E4%B8%8D%E5%90%8C%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC-jdk-%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</guid>
+      <description>&lt;p&gt;一般我们在公司工作中，很少有人就负责一个项目，而负责不同的项目，由于各种原因使用的 JDK 版本可能并不相同，如果存在不兼容的情况，那么本地 mvn clean compile 的时候就会报错，这个时候就需要我们去修改我们设置的环境变量，如果多个项目同时开发，那么就需要时不时切来切去，特别烦人，其实这个问题 maven 早就替大家考虑过了，我们只需要：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;修改 maven 的 toolchains.xml 文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;
+
+&amp;lt;!&amp;amp;#8211;  
+Licensed to the Apache Software Foundation (ASF) under one  
+or more contributor license agreements. See the NOTICE file  
+distributed with this work for additional information  
+regarding copyright ownership. The ASF licenses this file  
+to you under the Apache License, Version 2.0 (the  
+&amp;#34;License&amp;#34;); you may not use this file except in compliance  
+with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,  
+software distributed under the License is distributed on an  
+&amp;#34;AS IS&amp;#34; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY  
+KIND, either express or implied. See the License for the  
+specific language governing permissions and limitations  
+under the License.  
+&amp;amp;#8211;&amp;gt;
+
+&amp;lt;!&amp;amp;#8211;  
+| This is the toolchains file for Maven. It can be specified at two levels:  
+|  
+| 1. User Level. This toolchains.xml file provides configuration for a single user,  
+| and is normally provided in ${user.home}/.m2/toolchains.xml.  
+|  
+| NOTE: This location can be overridden with the CLI option:  
+|  
+| -t /path/to/user/toolchains.xml  
+|  
+| 2. Global Level. This toolchains.xml file provides configuration for all Maven  
+| users on a machine (assuming they&amp;amp;#8217;re all using the same Maven  
+| installation). It&amp;amp;#8217;s normally provided in  
+| ${maven.conf}/toolchains.xml.  
+|  
+| NOTE: This location can be overridden with the CLI option:  
+|  
+| -gt /path/to/global/toolchains.xml  
+|  
+| The sections in this sample file are intended to give you a running start at  
+| getting the most out of your Maven installation.  
+|&amp;amp;#8211;&amp;gt;  
+&amp;lt;toolchains xmlns=&amp;#34;http://maven.apache.org/TOOLCHAINS/1.1.0&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;  
+xsi:schemaLocation=&amp;#34;http://maven.apache.org/TOOLCHAINS/1.1.0 http://maven.apache.org/xsd/toolchains-1.1.0.xsd&amp;#34;&amp;gt;
+
+&amp;lt;!&amp;amp;#8211;  
+| With toolchains you can refer to installations on your system. This  
+| way you don&amp;amp;#8217;t have to hardcode paths in your pom.xml.  
+|  
+| Every toolchain consist of 3 elements:  
+| * type: the type of tool. An often used value is &amp;amp;#8216;jdk&amp;amp;#8217;. Toolchains-aware  
+| plugins should document which type you must use.  
+|  
+| * provides: A list of key/value-pairs.  
+| Based on the toolchain-configuration in the pom.xml Maven will search for  
+| matching &amp;lt;provides/&amp;gt; configuration. You can decide for yourself which key-value  
+| pairs to use. Often used keys are &amp;amp;#8216;version&amp;amp;#8217;, &amp;amp;#8216;vendor&amp;amp;#8217; and &amp;amp;#8216;arch&amp;amp;#8217;. By default  
+| the version has a special meaning. If you configured in the pom.xml &amp;amp;#8216;1.5&amp;amp;#8217;  
+| Maven will search for 1.5 and above.  
+|  
+| * configuration: Additional configuration for this tool.  
+| Look for documentation of the toolchains-aware plugin which configuration elements  
+| can be used.  
+|  
+| See also https://maven.apache.org/guides/mini/guide-using-toolchains.html  
+|  
+| General example
+
+&amp;lt;toolchain&amp;gt;  
+&amp;lt;type/&amp;gt;  
+&amp;lt;provides&amp;gt;  
+&amp;lt;version&amp;gt;1.0&amp;lt;/version&amp;gt;  
+&amp;lt;/provides&amp;gt;  
+&amp;lt;configuration/&amp;gt;  
+&amp;lt;/toolchain&amp;gt;
+
+| JDK examples
+
+&amp;lt;toolchain&amp;gt;  
+&amp;lt;type&amp;gt;jdk&amp;lt;/type&amp;gt;  
+&amp;lt;provides&amp;gt;  
+&amp;lt;version&amp;gt;1.5&amp;lt;/version&amp;gt;  
+&amp;lt;vendor&amp;gt;sun&amp;lt;/vendor&amp;gt;  
+&amp;lt;/provides&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;jdkHome&amp;gt;/path/to/jdk/1.5&amp;lt;/jdkHome&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;/toolchain&amp;gt;  
+&amp;lt;toolchain&amp;gt;  
+&amp;lt;type&amp;gt;jdk&amp;lt;/type&amp;gt;  
+&amp;lt;provides&amp;gt;  
+&amp;lt;version&amp;gt;1.6&amp;lt;/version&amp;gt;  
+&amp;lt;vendor&amp;gt;sun&amp;lt;/vendor&amp;gt;  
+&amp;lt;/provides&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;jdkHome&amp;gt;/path/to/jdk/1.6&amp;lt;/jdkHome&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;/toolchain&amp;gt;
+
+&amp;amp;#8211;&amp;gt;
+
+&amp;lt;toolchain&amp;gt;  
+&amp;lt;type&amp;gt;jdk&amp;lt;/type&amp;gt;  
+&amp;lt;provides&amp;gt;  
+&amp;lt;version&amp;gt;17&amp;lt;/version&amp;gt;  
+&amp;lt;/provides&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;jdkHome&amp;gt;D:\J2EE\Java\jdk-17&amp;lt;/jdkHome&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;/toolchain&amp;gt;  
+&amp;lt;toolchain&amp;gt;  
+&amp;lt;type&amp;gt;jdk&amp;lt;/type&amp;gt;  
+&amp;lt;provides&amp;gt;  
+&amp;lt;version&amp;gt;8&amp;lt;/version&amp;gt;  
+&amp;lt;/provides&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;jdkHome&amp;gt;D:\J2EE\Java\jdk1.8.0_311&amp;lt;/jdkHome&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;/toolchain&amp;gt;
+
+&amp;lt;/toolchains&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;修改项目的 pom.xml 文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;profiles&amp;gt;  
+&amp;lt;profile&amp;gt;  
+&amp;lt;id&amp;gt;dev&amp;lt;/id&amp;gt;  
+&amp;lt;activation&amp;gt;  
+&amp;lt;activeByDefault&amp;gt;false&amp;lt;/activeByDefault&amp;gt;  
+&amp;lt;/activation&amp;gt;  
+&amp;lt;build&amp;gt;  
+&amp;lt;plugins&amp;gt;  
+&amp;lt;plugin&amp;gt;  
+&amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;maven-toolchains-plugin&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;3.1.0&amp;lt;/version&amp;gt;  
+&amp;lt;executions&amp;gt;  
+&amp;lt;execution&amp;gt;  
+&amp;lt;goals&amp;gt;  
+&amp;lt;goal&amp;gt;toolchain&amp;lt;/goal&amp;gt;  
+&amp;lt;/goals&amp;gt;  
+&amp;lt;/execution&amp;gt;  
+&amp;lt;/executions&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;toolchains&amp;gt;  
+&amp;lt;jdk&amp;gt;  
+&amp;lt;version&amp;gt;8&amp;lt;/version&amp;gt;  
+&amp;lt;/jdk&amp;gt;  
+&amp;lt;/toolchains&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;/plugin&amp;gt;  
+&amp;lt;/plugins&amp;gt;  
+&amp;lt;/build&amp;gt;  
+&amp;lt;/profile&amp;gt;  
+&amp;lt;/profiles&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;修改完我们在编译的时候只需要运行：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+mvn clean compile -Pdev
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;即可，这样编译就会自动用 jdk8 也不是系统环境变量配置的，当然还有更简单的，我们可以修改 pom.xml 中的配置，只需要把：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Maven 打包 Excel 文件损坏</title>
+      <link>http://localhost:1313/posts/2019-01-13-maven-%E6%89%93%E5%8C%85-excel-%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F/</link>
+      <pubDate>Sun, 13 Jan 2019 09:10:03 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2019-01-13-maven-%E6%89%93%E5%8C%85-excel-%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F/</guid>
+      <description>&lt;p&gt;前几天在项目中遇到一个小问题，有一个 Excel 文件放在 classpath 下，通过流下载下来，本地测试的时候一点问题都没，但是部署到测试环境却不行了，说文件已损坏，然后打不开，简单代码如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+@RequestMapping(value = &amp;#34;/export&amp;#34;, method = RequestMethod.GET)  
+public void export(HttpServletResponse response) {
+
+ServletOutputStream servletOutputStream = null;  
+String filename = &amp;#34;template.xlsx&amp;#34;;  
+InputStream inputStream = ExcelHandleController.class.getClassLoader().getResourceAsStream(filename);  
+try {  
+byte[] b = new byte[inputStream.available()];  
+inputStream.read(b);  
+response.setCharacterEncoding(StandardCharsets.UTF_8.name());  
+response.setHeader(&amp;#34;Content-Disposition&amp;#34;, &amp;#34;attachment;filename=&amp;#34; + filename);  
+response.setContentType(&amp;#34;application/octet-stream;charset=UTF-8&amp;#34;);  
+//获取响应报文输出流对象  
+servletOutputStream = response.getOutputStream();  
+//输出  
+servletOutputStream.write(b);  
+} catch (IOException e) {  
+logger.error(&amp;#34;文件下载出错&amp;#34;, e);  
+} finally {  
+if (null != inputStream) {  
+try {  
+inputStream.close();  
+} catch (IOException e) {  
+logger.error(&amp;#34;文件下载出错&amp;#34;, e);  
+}  
+}  
+if (null != servletOutputStream) {  
+try {  
+servletOutputStream.flush();  
+servletOutputStream.close();  
+} catch (IOException e) {  
+logger.error(&amp;#34;文件下载出错&amp;#34;, e);  
+}
+
+}
+
+}
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当时就感觉这代码很简单啊，没什么问题的，但是下载下来就是不对，想到是不是测试环境有什么问题，查了一下没什么特殊之处，最后发现 Git 上的代码中的文件并没有什么问题，但是打成 war 包解压之后这文件本身就已经损坏了，而且比对了一下两个文件，发现 war 包之中的文件变大了，搜了一下资料，才知道原来 maven 打包会对一些文件转码，这个过程中会损坏一些文件，所以打不开，网上的资料也挺多，最简单的就是增加一个 plugin，不让该文件转码，代码如下：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>上传 Java 库到 Maven central repository</title>
+      <link>http://localhost:1313/posts/2018-05-20-%E4%B8%8A%E4%BC%A0-java-%E5%BA%93%E5%88%B0-maven-central-repository/</link>
+      <pubDate>Sun, 20 May 2018 08:17:54 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2018-05-20-%E4%B8%8A%E4%BC%A0-java-%E5%BA%93%E5%88%B0-maven-central-repository/</guid>
+      <description>&lt;p&gt;之前看过 Trinea 写过一篇文章，如果上传 Java 库到 Maven central repository，前一段时间感觉公司封装的 mybatis-generator 不好用，完全没有解决原生的 mybatis-generator 的问题，所以就重新做了一次封装，主要是加了查询分页，然后就想到是不是可以上传到 Maven central repository 玩玩，看了一下 Trinea 的这篇文章感觉挺简单的（原文见后面参考资料），但实际上还是有一些坑，具体的可以看 Trinea 的这篇文章，我主要写一下遇到的一些坑。&lt;/p&gt;
+&lt;p&gt;先说明一下，pom 文件请参考我的配置：https://github.com/bridgeli/mybatis-generator-plugin/blob/master/pom.xml，这里面所有的配置都是必须的，也是最少的了吧，自己写的时候修改一些内容，适配自己的就好了，Trinea 写的那个 pom 还是比较适合 Android。&lt;/p&gt;
+&lt;p&gt;发布 release 版本的时候，使用命令&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+mvn release:clean release:prepare release:perform
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;执行这个命令的时候，可能会遇到三个问题。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Git 报错，使用 Git 几年了，进入会遇到这样的错误。错误信息：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+Unable to commit files  
+[ERROR] Provider message:  
+[ERROR] The git-add command failed.  
+[ERROR] Command output:
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;实在不知道咋回事，可能是我有些文件没提交，反正提交之后就好了，看到有人说他报错是因为他不是 Git 管理的项目，我作为 Git 脑残粉，肯定是的，可能就是因为没有提交吧，反正最后就这么莫名其妙的解决了。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;提示没有 snapshot 版本，所以执行这个命令的时候，版本号和发布 snapshot 一样就好，而不是自己手动改成 release 版。&lt;/li&gt;
+&lt;li&gt;因为此时会发布一个 release 版本，会有 tag 推送到 GitHub 有可能会遇到 401，看到这个 error code，应该都清楚咋回事，没权限。不知道，病急乱投医，我是在 GitHub 上添加了一个 GPG key 并且在 pom 文件中新增一个 plugin。这个问题有人说是账号和密码错误，但是我很肯定我的账号和密码一点也没有错。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;plugin&amp;gt;  
+&amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;maven-gpg-plugin&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;1.5&amp;lt;/version&amp;gt;  
+&amp;lt;executions&amp;gt;  
+&amp;lt;execution&amp;gt;  
+&amp;lt;id&amp;gt;sign-artifacts&amp;lt;/id&amp;gt;  
+&amp;lt;phase&amp;gt;verify&amp;lt;/phase&amp;gt;  
+&amp;lt;goals&amp;gt;  
+&amp;lt;goal&amp;gt;sign&amp;lt;/goal&amp;gt;  
+&amp;lt;/goals&amp;gt;  
+&amp;lt;/execution&amp;gt;  
+&amp;lt;/executions&amp;gt;  
+&amp;lt;/plugin&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;最终解决了这个问题，关于这个问题，可能是我操作的问题没有看到过别人说过，另外在 GitHub 上他的颜色一直还是：灰的，没有显示使用过，所以可能是我操作的有问题，不需要在 GitHub 上添加这个 GPG key，具体大家可以测一下，我后期也会测试。&lt;br&gt;
+另，需要说明的是，生成 GPG key 的时候用到的邮箱和我在 GitHub 上的邮箱，我用的不是同一个邮箱，建议还是用同一个吧，省得出莫名其妙的问题。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Maven私服之Nexus入门图文教程</title>
+      <link>http://localhost:1313/posts/2016-01-31-maven%E7%A7%81%E6%9C%8D%E4%B9%8Bnexus%E5%9B%BE%E6%96%87%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</link>
+      <pubDate>Sun, 31 Jan 2016 14:03:25 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-01-31-maven%E7%A7%81%E6%9C%8D%E4%B9%8Bnexus%E5%9B%BE%E6%96%87%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</guid>
+      <description>&lt;p&gt;老夫相信看到这篇文章的人一定已经知道maven和nexus分别是什么东西了，所以就不多做介绍了，下面直接从下载安装开始讲。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;下载安装&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;大家可以直接从这个链接&lt;a href=&#34;http://www.sonatype.org/nexus/go/&#34; target=&#34;_blank&#34; title=&#34;nexus下载地址&#34;&gt;&lt;a href=&#34;http://www.sonatype.org/nexus/go/&#34;&gt;http://www.sonatype.org/nexus/go/&lt;/a&gt;&lt;/a&gt;下载系统，下载完成之后解压到系统的任何文件夹下就可以了，老夫下载是：nexus-2.8.1-01，然后可就是安装了。&lt;br&gt;
+解压一路进到nexus-2.8.1-01/bin/jsw。然后选择适合自己的系统的文件夹进去，老夫的电脑是win32，所以进去之后是这个样子&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/1.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/1-300x87.png&#34; alt=&#34;1&#34; width=&#34;300&#34; height=&#34;87&#34; class=&#34;alignnone size-medium wp-image-242&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;然后用管理员身份先运行install-nexus.bat安装服务，然后运行console-nexus.bat，等起来之后直接在浏览器中输入：http://localhost:8081/nexus，我们看到下图就是成功了，忘了是不是需要安装服务：wrapper了，大家试一试就知道了。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/2.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/2-300x65.png&#34; alt=&#34;2&#34; width=&#34;300&#34; height=&#34;65&#34; class=&#34;alignnone size-medium wp-image-243&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;配置nexus&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;要管理Nexus，你首先需要以管理员身份登陆，点击界面右上角的login，输入默认的登录名和密码：admin/admin123，登陆成功后，你会看到左边的导航栏增加了很多内容，变成了下面这个样子&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/3.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/3-300x92.png&#34; alt=&#34;3&#34; width=&#34;300&#34; height=&#34;92&#34; class=&#34;alignnone size-medium wp-image-244&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这里，可以管理仓库，配置Nexus系统，管理任务，管理用户，角色，权限，查看系统的RSS源，管理及查看系统日志，等等。你会看到Nexus的功能十分丰富和强大，本文，老夫只介绍一些最基本的管理和操作。&lt;/p&gt;
+&lt;p&gt;因为是老夫习惯于让大伙看了这篇文章就知道怎么做，所以这里多内容咱就不说了，直接上配置，点击左边Administration菜单下面的Repositories，找到右边仓库列表中的三个仓库Apache Snapshots，Codehaus Snapshots和Maven Central，然后再没有仓库的configuration下把Download Remote Indexes修改为true。如下图：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/4.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/4-300x99.png&#34; alt=&#34;4&#34; width=&#34;300&#34; height=&#34;99&#34; class=&#34;alignnone size-medium wp-image-245&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;然后在Apache Snapshots，Codehaus Snapshots和Maven Central这三个仓库上分别右键，选择Repari Index，这样Nexus就会去下载远程的索引文件。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/5.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/5-300x113.png&#34; alt=&#34;5&#34; width=&#34;300&#34; height=&#34;113&#34; class=&#34;alignnone size-medium wp-image-246&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这样设置以后, Nexus会自动从远程中央仓库下载索引文件, 为了检验索引文件自动下载是否生效,可以切换到Browse Index看看是否生成了这些索引文件。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;添加一个代理仓库&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;加入我们想要代理Sonatype的公共仓库，其地址为：http://repository.sonatype.org/content/groups/public/。步骤如下，在Repositories面板的上方，点击Add，然后选择Proxy Repository，在下方的配置部分，我们填写如下的信息：Repository ID – sonatype；Repository Name – Sonatype Repository；Remote Storage Location – &lt;a href=&#34;http://repository.sonatype.org/content/groups/public/&#34;&gt;http://repository.sonatype.org/content/groups/public/&lt;/a&gt;。其余的保持默认值，需要注意的是Repository Policy，我们不要代理snapshot构件，至于原因老夫相信读者应该已经很清楚了，然后点击Save。因为比较简单就不上图了。&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;管理宿主仓库&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Nexus预定义了3个本地仓库，分别为Releases，Snapshots，和3rd Party。这三个仓库都有各自明确的目的。Releases用于部署我们自己的release构件，Snapshots用于部署我们自己的snapshot构件，而3rd Party用于部署第三方构件，有些构件如Oracle的JDBC驱动，我们不能从公共仓库下载到，我们就需要将其部署到自己的仓库中。&lt;br&gt;
+当然你也可以创建自己的本地仓库，步骤和创建代理仓库类似，点击Repository面板上方的Add按钮，然后选择Hosted Repository，然后在下方的配置面板中输入id和name，注意这里我们不再需要填写远程仓库地址，Repository Type则为不可修改的hosted，而关于Repository Policy，你可以根据自己的需要选择Release或者Snapshot。&lt;/p&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;管理Maven仓库组&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Nexus 中仓库组的概念是Maven没有的，在Maven看来，不管你是hosted也好，proxy也好，或者group也好，对我都是一样的，我只管根据 groupId，artifactId，version等信息向你要构件。为了方便Maven的配置，Nexus能够将多个仓库，hosted或者 proxy合并成一个group，这样，Maven只需要依赖于一个group，便能使用所有该group包含的仓库的内容。&lt;br&gt;
+最新neuxs默认自带了一个名为“Public Repositories”组，点击该组可以对他保护的仓库进行调整，把刚才建立的仓库Sonatype Repository加入其中，这样就不需要再在maven中明确指定仓库的地址了。同时创建一个Group ID为public-snapshots、Group Name为Public Snapshots Repositories的组，把Apache Snapshots、Codehaus Snapshots、Snapshots和Sonatype Repository也加入其中。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>maven打包dubbo接口之最佳实践</title>
+      <link>http://localhost:1313/posts/2015-12-20-maven%E6%89%93%E5%8C%85%E4%B9%8Bdubbo%E6%8E%A5%E5%8F%A3%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</link>
+      <pubDate>Sun, 20 Dec 2015 13:56:50 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-12-20-maven%E6%89%93%E5%8C%85%E4%B9%8Bdubbo%E6%8E%A5%E5%8F%A3%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</guid>
+      <description>&lt;p&gt;之前刚开始学习dubbo的时候，曾写过一个入门的&lt;a href=&#34;https://www.bridgeli.cn/archives/196&#34; title=&#34;Dubbo和zookeeper入门实例&#34;&gt;小例子&lt;/a&gt;，当时生产者也是用tomcat去跑的，其实dubbo只需要提供service层接口就好了，并不需要和http相关的东西，所以其实并不需要用tomcat去跑，我们完全打成其他的包直接去跑，这样dubbo接口也不会tomcat性能的限制，而打包可以说是maven最擅长的事情之一，今天就记录一下我们公司的实际项目中使用maven-assembly-plugin打包的方法。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;首先在pom文件中，添加maven-assembly-plugin插件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;plugin&amp;gt;  
+&amp;lt;artifactId&amp;gt;maven-assembly-plugin&amp;lt;/artifactId&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;descriptor&amp;gt;src/main/assembly/assembly.xml&amp;lt;/descriptor&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;executions&amp;gt;  
+&amp;lt;execution&amp;gt;  
+&amp;lt;id&amp;gt;make-assembly&amp;lt;/id&amp;gt;  
+&amp;lt;phase&amp;gt;package&amp;lt;/phase&amp;gt;  
+&amp;lt;goals&amp;gt;  
+&amp;lt;goal&amp;gt;single &amp;lt;/goal&amp;gt;  
+&amp;lt;/goals&amp;gt;  
+&amp;lt;/execution&amp;gt;  
+&amp;lt;/executions&amp;gt;  
+&amp;lt;/plugin&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在该插件的第四行我们指定了一个assembly.xml文件，下面我们就看看assembly.xml的内容&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;assembly.xml文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;assembly&amp;gt;  
+&amp;lt;id&amp;gt;assembly&amp;lt;/id&amp;gt;  
+&amp;lt;formats&amp;gt;  
+&amp;lt;format&amp;gt;tar.gz&amp;lt;/format&amp;gt;  
+&amp;lt;/formats&amp;gt;  
+&amp;lt;includeBaseDirectory&amp;gt;true&amp;lt;/includeBaseDirectory&amp;gt;  
+&amp;lt;fileSets&amp;gt;  
+&amp;lt;fileSet&amp;gt;  
+&amp;lt;outputDirectory&amp;gt;/&amp;lt;/outputDirectory&amp;gt;  
+&amp;lt;includes&amp;gt;  
+&amp;lt;include&amp;gt;README.txt&amp;lt;/include&amp;gt;  
+&amp;lt;/includes&amp;gt;  
+&amp;lt;/fileSet&amp;gt;  
+&amp;lt;fileSet&amp;gt;  
+&amp;lt;directory&amp;gt;src/main/scripts&amp;lt;/directory&amp;gt;  
+&amp;lt;outputDirectory&amp;gt;/bin&amp;lt;/outputDirectory&amp;gt;  
+&amp;lt;/fileSet&amp;gt;  
+&amp;lt;/fileSets&amp;gt;  
+&amp;lt;dependencySets&amp;gt;  
+&amp;lt;dependencySet&amp;gt;  
+&amp;lt;useProjectArtifact&amp;gt;true&amp;lt;/useProjectArtifact&amp;gt;  
+&amp;lt;outputDirectory&amp;gt;lib&amp;lt;/outputDirectory&amp;gt;  
+&amp;lt;/dependencySet&amp;gt;  
+&amp;lt;/dependencySets&amp;gt;  
+&amp;lt;/assembly&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;该文件的第四行中的tar.gz指的就是打包的文件格式，对于Linux用户，对这个格式一定非常熟悉，当然大家也可以指定为zip格式，另外在该文件的第十五行，指定了一个scripts文件夹，那么这里面放的又是什么呢？我们知道打包之后的系统我们要跑起来才能用，那么这里面放的就是对我们的系统操作的一些脚本，打包之后，我们的系统都是一些jar文件，放在了倒数第四行指定的lib文件中，而这些脚本则放在了和lib同级的bin文件中，下面就让我们一一看看scripts中几个文件的内容&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;scripts文件夹&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;①. start.bat&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+@echo off &amp;amp; setlocal enabledelayedexpansion
+
+set LIB_JARS=&amp;#34;&amp;#34;  
+cd ..lib  
+for %%i in (*) do set LIB_JARS=!LIB_JARS!;..lib%%i  
+cd ..bin
+
+if &amp;#34;&amp;#34;%1&amp;#34;&amp;#34; == &amp;#34;&amp;#34;debug&amp;#34;&amp;#34; goto debug  
+if &amp;#34;&amp;#34;%1&amp;#34;&amp;#34; == &amp;#34;&amp;#34;jmx&amp;#34;&amp;#34; goto jmx
+
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main  
+goto end
+
+:debug  
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main  
+goto end
+
+:jmx  
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main
+
+:end  
+pause
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;②. start.sh&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

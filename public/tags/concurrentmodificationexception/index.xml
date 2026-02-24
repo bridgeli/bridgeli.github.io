@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>ConcurrentModificationException on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/concurrentmodificationexception/</link>
+    <description>Recent content in ConcurrentModificationException on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 28 May 2017 04:25:52 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/concurrentmodificationexception/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java集合类ArrayList删除特定元素</title>
+      <link>http://localhost:1313/posts/2017-05-28-java%E9%9B%86%E5%90%88%E7%B1%BBarraylist%E5%88%A0%E9%99%A4%E7%89%B9%E5%AE%9A%E5%85%83%E7%B4%A0/</link>
+      <pubDate>Sun, 28 May 2017 04:25:52 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2017-05-28-java%E9%9B%86%E5%90%88%E7%B1%BBarraylist%E5%88%A0%E9%99%A4%E7%89%B9%E5%AE%9A%E5%85%83%E7%B4%A0/</guid>
+      <description>&lt;p&gt;前一段时间入职新公司，熟悉公司系统原有代码的时候，发现公司代码那个烂啊，系统能正常跑，都不能用侥幸来形容，就是创造了一个奇迹。因为里面不仅没有coding style，而且竟然有很明显的常识性错误。其中当我一眼指出最明显的早就应该出过问题的一个地方，项目组几乎所有成员，是的，几乎全部成员，都说这个还真不知道，涨知识了，那就是：Java集合类ArrayList删除特定元素。发现原来不是所有人都知道怎么做，这难道不是最基础的吗？唉，真不知道这些系统是怎么跑起来的。我们首先看两种错误的写法，第一种：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+@Test  
+public void testRemove1() {  
+List&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;String&amp;gt;() {  
+private static final long serialVersionUID = 1L;
+
+{  
+add(&amp;#34;cn&amp;#34;);  
+add(&amp;#34;bridgeli&amp;#34;);  
+add(&amp;#34;blog&amp;#34;);  
+}  
+};  
+for (int i = 0, len = list.size(); i &amp;lt; len; i++) {  
+String str = list.get(i);  
+if (&amp;#34;cn&amp;#34;.equals(str)) {  
+list.remove(str);  
+}  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个写法如果你不知道错在哪，那你得真的好好补基础了。由于这个错误比较明显，所以有人搞了下面这种写法，也是我们公司的同事犯的一个错误：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+@Test  
+public void testRemove2() {  
+List&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;String&amp;gt;() {  
+private static final long serialVersionUID = 1L;
+
+{  
+add(&amp;#34;cn&amp;#34;);  
+add(&amp;#34;bridgeli&amp;#34;);  
+add(&amp;#34;blog&amp;#34;);  
+}  
+};  
+for (String str : list) {  
+if (&amp;#34;cn&amp;#34;.equals(str)) {  
+list.remove(str);  
+}  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;跑一下这个例子看看，把cn换成bridgeli试试，出乎不出乎你的意料？下面我们就来简单探究一下原因foreach的原理，其实特别简单：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

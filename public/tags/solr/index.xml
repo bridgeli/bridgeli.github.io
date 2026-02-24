@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Solr on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/solr/</link>
+    <description>Recent content in Solr on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 10 Jul 2016 14:12:42 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/solr/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>全文索引服务solr入门四之solr集群搭建与应用</title>
+      <link>http://localhost:1313/posts/2016-07-10-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E5%9B%9B%E4%B9%8Bsolr%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%BA%94%E7%94%A8/</link>
+      <pubDate>Sun, 10 Jul 2016 14:12:42 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-07-10-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E5%9B%9B%E4%B9%8Bsolr%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%BA%94%E7%94%A8/</guid>
+      <description>&lt;p&gt;经过前面几篇文章的努力，我们的solr服务终于跑起来了，可以对外提供服务了，虽然有一点小瑕疵（对中文支持不是很好，但可以通过IK分词来解决，示例可以看老夫之前的这篇&lt;a href=&#34;https://www.bridgeli.cn/archives/109&#34; title=&#34;全文检索工具-Lucene（solr）入门&#34;&gt;文章&lt;/a&gt;），但还是存在一个致命的问题：单点！对于现代互联网公司，这个一个不可忍受的缺点，所以本节我们就来解决这个问题，在搭建集群之前，我们先看看要搭建的集群的目标：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/goal.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/goal-300x203.png&#34; alt=&#34;goal&#34; width=&#34;300&#34; height=&#34;203&#34; class=&#34;alignnone size-medium wp-image-302&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;从这张图上，我们可以清晰看到我们需要三台zookeeper服务器和四台solr服务器，一共七台服务器（实际上老夫去哪找那么多集群，所以使用伪分布式的方式搭建集群，即在同一台服务器上创建多个实例模拟集群），确定了目标之后，我们就开始搭建我们的集群。&lt;/p&gt;
+&lt;p&gt;四. zookeeper集群搭建&lt;/p&gt;
+&lt;p&gt;Zookeeper有一个选举机制，选举谁是leader谁是follower。成为主节点，需要得到半数以上的投票。尽可能为奇数节点。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建三个zookeeper实例&lt;/li&gt;
+&lt;li&gt;在zookeeper1、2、3文件夹下分别创建一个data目录。在data目录下创建一个myid的文件。文件的内容zookeeper1下就是1，zookeeper2下就是2，zookeeper3下就是3。&lt;/li&gt;
+&lt;li&gt;需要修改zookeeper的配置文件。把Zookeeper1confzoo_sample.cfg改名为zoo.cfg（示例有误，配置文件中的dataDir路径需要使用“/”而不是“”）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/config.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/config-300x157.png&#34; alt=&#34;config&#34; width=&#34;300&#34; height=&#34;157&#34; class=&#34;alignnone size-medium wp-image-296&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;启动zookeeper。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/start.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/start-300x169.png&#34; alt=&#34;start&#34; width=&#34;300&#34; height=&#34;169&#34; class=&#34;alignnone size-medium wp-image-299&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;启动成功之后：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/startsucess.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/startsucess-300x193.png&#34; alt=&#34;startsucess&#34; width=&#34;300&#34; height=&#34;193&#34; class=&#34;alignnone size-medium wp-image-300&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;启动zookeeper的客户端，测试zookeeper是否好用。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/client.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/client-300x193.png&#34; alt=&#34;client&#34; width=&#34;300&#34; height=&#34;193&#34; class=&#34;alignnone size-medium wp-image-290&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;五. Solr实例搭建&lt;/p&gt;
+&lt;p&gt;需要4个solr实例来完成。&lt;br&gt;
+第一步：创建4个tomcat实例&lt;br&gt;
+第二步：搭建4个solr的单机版环境（该系列的前几篇就写这个了）。&lt;/p&gt;
+&lt;p&gt;从复制过来的单机版：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;修改tomcat的端口号。&lt;/li&gt;
+&lt;li&gt;修改solrhome的位置。修改web.xml&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;六. 集群搭建&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;搭建步骤&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;①. 让zookeeper集群集中管理配置文件。把配置文件上传到zookeeper。&lt;br&gt;
+把solrhome/collection1/conf文件夹的内容上传到zookeeper集群。&lt;br&gt;
+把：D:tempSolrCloudsolrhome1collection1conf上传。&lt;br&gt;
+命令：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+java -classpath D:tempSolrCloudtomcat1webappssolrWEB-INFlib/* org.apache.solr.cloud.ZkCLI -zkhost 127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183 -cmd upconfig -confdir D:tempSolrCloudsolrhome1collection1conf -confname myconf
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;需要保证执行命令之前，zookeeper集群是启动状态。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;查看zookeeper下的配置文件。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/cloud.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/cloud-300x193.png&#34; alt=&#34;cloud&#34; width=&#34;300&#34; height=&#34;193&#34; class=&#34;alignnone size-medium wp-image-291&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;修改每个solrhome下的solr.xml文件。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/cloudconfig.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/cloudconfig-300x145.png&#34; alt=&#34;cloudconfig&#34; width=&#34;300&#34; height=&#34;145&#34; class=&#34;alignnone size-medium wp-image-292&#34; /&gt;&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>全文索引服务solr入门三之solrJ的应用</title>
+      <link>http://localhost:1313/posts/2016-06-26-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E4%B8%89%E4%B9%8Bsolrj%E7%9A%84%E5%BA%94%E7%94%A8/</link>
+      <pubDate>Sun, 26 Jun 2016 13:52:32 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-06-26-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E4%B8%89%E4%B9%8Bsolrj%E7%9A%84%E5%BA%94%E7%94%A8/</guid>
+      <description>&lt;p&gt;三. 使用solrJ和spring集成&lt;/p&gt;
+&lt;p&gt;再&lt;a href=&#34;https://www.bridgeli.cn/archives/283&#34; title=&#34;全文索引服务solr入门二之认识管理后台&#34;&gt;上一篇&lt;/a&gt;和&lt;a href=&#34;https://www.bridgeli.cn/archives/277&#34; title=&#34;全文索引服务solr入门一之单机版服务器搭建&#34;&gt;上上一篇&lt;/a&gt;文章中我们先搭建了一个solr服务器和学习了solr服务器后台的使用，这一次我们将直接进入实战：和spring集成，在继承之前我们先看看所需要的solr的jar文件都是那些（spring的那些大家就自己玩吧，我相信都知道的）&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;所需的jar文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;直接上图片，就是图上的这些图片，当然大家可以自己找maven依赖（jar文件这个最简单了，没有的话一定会报classnotfoundException，加上就好了）&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/06/solrJ1.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/06/solrJ1-300x217.png&#34; alt=&#34;solrJ1&#34; width=&#34;300&#34; height=&#34;217&#34; class=&#34;alignnone size-medium wp-image-285&#34; /&gt;&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/06/solrJ2.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/06/solrJ2-300x131.png&#34; alt=&#34;solrJ2&#34; width=&#34;300&#34; height=&#34;131&#34; class=&#34;alignnone size-medium wp-image-286&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;spring的配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;  
+&amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34;  
+xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xmlns:mvc=&amp;#34;http://www.springframework.org/schema/mvc&amp;#34;  
+xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34;  
+xmlns:aop=&amp;#34;http://www.springframework.org/schema/aop&amp;#34; xmlns:tx=&amp;#34;http://www.springframework.org/schema/tx&amp;#34;  
+xsi:schemaLocation=&amp;#34;http://www.springframework.org/schema/beans  
+http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  
+http://www.springframework.org/schema/mvc  
+http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd  
+http://www.springframework.org/schema/context  
+http://www.springframework.org/schema/context/spring-context-3.1.xsd  
+http://www.springframework.org/schema/aop  
+http://www.springframework.org/schema/aop/spring-aop-3.1.xsd  
+http://www.springframework.org/schema/tx  
+http://www.springframework.org/schema/tx/spring-tx-3.1.xsd &amp;#34;&amp;gt;  
+&amp;lt;!&amp;amp;#8211; 配置扫描包 &amp;amp;#8211;&amp;gt;  
+&amp;lt;context:component-scan base-package=&amp;#34;cn.bridgeli&amp;#34;/&amp;gt;  
+&amp;lt;!&amp;amp;#8211; 配置注解驱动 &amp;amp;#8211;&amp;gt;  
+&amp;lt;mvc:annotation-driven/&amp;gt;  
+&amp;lt;!&amp;amp;#8211; jsp视图解析器 &amp;amp;#8211;&amp;gt;  
+&amp;lt;bean class=&amp;#34;org.springframework.web.servlet.view.InternalResourceViewResolver&amp;#34; &amp;gt;  
+&amp;lt;!&amp;amp;#8211; 前缀 &amp;amp;#8211;&amp;gt;  
+&amp;lt;property name=&amp;#34;prefix&amp;#34; value=&amp;#34;/WEB-INF/jsp/&amp;#34;&amp;gt;&amp;lt;/property&amp;gt;  
+&amp;lt;!&amp;amp;#8211; 后缀 &amp;amp;#8211;&amp;gt;  
+&amp;lt;property name=&amp;#34;suffix&amp;#34; value=&amp;#34;.jsp&amp;#34;&amp;gt;&amp;lt;/property&amp;gt;  
+&amp;lt;/bean&amp;gt;  
+&amp;lt;!&amp;amp;#8211; 单机版solr &amp;amp;#8211;&amp;gt;  
+&amp;lt;bean class=&amp;#34;org.apache.solr.client.solrj.impl.HttpSolrServer&amp;#34;&amp;gt;  
+&amp;lt;constructor-arg name=&amp;#34;baseURL&amp;#34; value=&amp;#34;http://localhost:8080/solr/&amp;#34;&amp;gt;&amp;lt;/constructor-arg&amp;gt;  
+&amp;lt;/bean&amp;gt;  
+&amp;lt;!&amp;amp;#8211; 集群版SolrCloud &amp;amp;#8211;&amp;gt;  
+&amp;lt;!&amp;amp;#8211;  
+&amp;lt;bean class=&amp;#34;org.apache.solr.client.solrj.impl.CloudSolrServer&amp;#34;&amp;gt;  
+&amp;lt;constructor-arg name=&amp;#34;zkHost&amp;#34; value=&amp;#34;127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183&amp;#34;&amp;gt;&amp;lt;/constructor-arg&amp;gt;  
+&amp;lt;property name=&amp;#34;defaultCollection&amp;#34; value=&amp;#34;collection2&amp;#34;&amp;gt;&amp;lt;/property&amp;gt;  
+&amp;lt;/bean&amp;gt;  
+&amp;amp;#8211;&amp;gt;  
+&amp;lt;/beans&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;简单吧，大家只要注意到单机版就行了，因为我们这次只用到了单机版，下面就要看源码实现了&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>全文索引服务solr入门二之认识管理后台</title>
+      <link>http://localhost:1313/posts/2016-06-11-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E4%BA%8C%E4%B9%8B%E8%AE%A4%E8%AF%86%E7%AE%A1%E7%90%86%E5%90%8E%E5%8F%B0/</link>
+      <pubDate>Sat, 11 Jun 2016 14:28:53 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-06-11-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E4%BA%8C%E4%B9%8B%E8%AE%A4%E8%AF%86%E7%AE%A1%E7%90%86%E5%90%8E%E5%8F%B0/</guid>
+      <description>&lt;p&gt;二. 认识solr管理后台&lt;/p&gt;
+&lt;p&gt;上一篇文章中我们搭建起来的其实就是一个solr管理后台，这节课我们就是来简单认识他，具体的操作当然由大家自己试验了。下面我们先直接选择左侧的默认collection1你会看到下面出来很多东西，其中有几个比较重要：Analyzer、Documents、Query，下面我们认识第一个：Analyzer。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;认识Analyzer&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;查看当前索引库中的字段列表，及分词效果。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/06/analyzer.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/06/analyzer-300x144.png&#34; alt=&#34;analyzer&#34; width=&#34;300&#34; height=&#34;144&#34; class=&#34;alignnone size-medium wp-image-279&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;①. 域、字段列表：所有的域都是定义在schema.xml配置文件中。在solr中域必须是先定义后使用。&lt;br&gt;
+如果想修改域的定义及自定义域需要修改schema.xml。&lt;br&gt;
+②. 查看域的分词效果。&lt;br&gt;
+可以直接在Field Value中贴一段文字，然后点击按钮Analyzer Values，查看效果。&lt;br&gt;
+需要说明的是：默认对英文支持尚可，中文支持很差。实际生产用zk中文分词&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;Documents&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;索引库的维护功能。可以对索引库进行增删改操作。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/06/documents.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/06/documents-300x235.png&#34; alt=&#34;documents&#34; width=&#34;300&#34; height=&#34;235&#34; class=&#34;alignnone size-medium wp-image-280&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;①. 添加文档&lt;/p&gt;
+&lt;p&gt;I. 在solr中一条记录就是一个文档。&lt;br&gt;
+II. 文档可以使用json数据格式描述：key就是域名（字段名），value：值。&lt;br&gt;
+III. 在solr中每个文档必须有一个id域。类似于关系型数据库中表的主键。必须有且不能重复。&lt;br&gt;
+IV. 域必须先定义后使用。必须在schema.xml中定义。&lt;/p&gt;
+&lt;p&gt;②. 更新文档&lt;/p&gt;
+&lt;p&gt;添加一个新的文档如果id存在会想把id对应的文档删除，然后再添加以新的。先删除后添加。&lt;/p&gt;
+&lt;p&gt;③. 删除文档&lt;/p&gt;
+&lt;p&gt;I. 根据id删除&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;delete&amp;gt;  
+&amp;lt;id&amp;gt;a001&amp;lt;/id&amp;gt;  
+&amp;lt;/delete&amp;gt;  
+&amp;lt;commit/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;II. 根据查询删除&lt;/p&gt;
+&lt;p&gt;删除所有文档：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;delete&amp;gt;  
+&amp;lt;query&amp;gt;\*:\*&amp;lt;/query&amp;gt;  
+&amp;lt;/delete&amp;gt;  
+&amp;lt;commit/&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;删除指定id的文档：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;delete&amp;gt;  
+&amp;lt;query&amp;gt;id:change.me&amp;lt;/query&amp;gt;  
+&amp;lt;/delete&amp;gt;  
+&amp;lt;commit/&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;Query&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;查询索引库&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/06/query.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/06/query-300x228.png&#34; alt=&#34;query&#34; width=&#34;300&#34; height=&#34;228&#34; class=&#34;alignnone size-medium wp-image-281&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;q:查询条件&lt;br&gt;
+fq：过滤条件，查询语句和查询的语法完全相同。可以设置多个过滤条件&lt;br&gt;
+sort：排序条件&lt;br&gt;
+start rows：分页条件。start起始记录，rows每页显示的记录数。&lt;br&gt;
+fl：返回结果中域的列表&lt;br&gt;
+df：默认搜索域&lt;br&gt;
+hl：高亮显示&lt;br&gt;
+hl.fl：高亮显示的域&lt;br&gt;
+hl.simple.pre：高亮前缀&lt;br&gt;
+hl.simple.post：高亮后缀&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>全文索引服务solr入门一之单机版服务器搭建</title>
+      <link>http://localhost:1313/posts/2016-05-29-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E4%B8%80%E4%B9%8B%E5%8D%95%E6%9C%BA%E7%89%88%E7%89%88%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Sun, 29 May 2016 14:24:39 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-05-29-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E4%B8%80%E4%B9%8B%E5%8D%95%E6%9C%BA%E7%89%88%E7%89%88%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/</guid>
+      <description>&lt;p&gt;一直对全文索引很感兴趣，但由于工作上一直没用到，所以就没有上心去看，有一次闲着无聊，偶然发现传智播客的公开课上有一节讲这个的，听了一下还不错，于是整理成笔记，供老夫和其他朋友需要的时候参考。&lt;br&gt;
+老夫相信看这篇文章的人对solr一定有所了解，不了解的请用Google百度一下，所以虽然是一个系列，但这里老夫只会讲怎么用，争取让看了这个系列文章的人能里面先跑起来，好了，下面直接切入主题。&lt;/p&gt;
+&lt;p&gt;一. solr的安装与配置&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;solr的运行环境&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;① . 需要安装jdk，要求jdk的版本为1.7.0以上版本。&lt;br&gt;
+② . Tomcat要求7以上版本。&lt;br&gt;
+③ . 操作系统：linux、windows都可以。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;Solr和tomcat的集成&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;① . 安装jdk、安装tomcat&lt;br&gt;
+② . 把solr-4.10.4.zip包解压。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/05/solrserver.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/05/solrserver-300x243.png&#34; alt=&#34;solrserver&#34; width=&#34;300&#34; height=&#34;243&#34; class=&#34;alignnone size-medium wp-image-274&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;③ . 把dist目录下的solr-4.10.3.war文件放到tomcat下webapp目录下。改名为solr.war。改名不是必须的，为了方便访问。&lt;br&gt;
+④ . 解压war包。启动tomcat自动解压。&lt;br&gt;
+⑤ . 把solr.war删除。删除war包时要关闭tomcat。&lt;br&gt;
+⑥ . 把D:tempsolr-4.10.3examplelibext目录下的所有的jar包添加到solr工程中。D:tempapache-tomcat-7.0.53webappssolrWEB-INFlib&lt;br&gt;
+⑦ . 创建一个solrhome（solr所有配置文件存放的目录）。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/05/solrhome.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/05/solrhome-300x198.png&#34; alt=&#34;solrhome&#34; width=&#34;300&#34; height=&#34;198&#34; class=&#34;alignnone size-medium wp-image-273&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;把sorl文件夹复制到其他路径下，改名为solrhome，改名的目的是为了便于理解。&lt;br&gt;
+⑧. 告诉sorl服务器solrhome的位置。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/05/solrxml.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/05/solrxml-300x88.png&#34; alt=&#34;solrxml&#34; width=&#34;300&#34; height=&#34;88&#34; class=&#34;alignnone size-medium wp-image-276&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;修改solr工程的web.xml文件。&lt;br&gt;
+D:tempsolrhomecollection1：索引库存放的位置。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/05/solrconf.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/05/solrconf-300x278.png&#34; alt=&#34;solrconf&#34; width=&#34;300&#34; height=&#34;278&#34; class=&#34;alignnone size-medium wp-image-272&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;⑨ . 启动tomcat。&lt;br&gt;
+访问：http://localhost:8080/solr，如果看到下面这个界面，那么就是成功了&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/05/solrsucess.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/05/solrsucess-300x141.png&#34; alt=&#34;solrsucess&#34; width=&#34;300&#34; height=&#34;141&#34; class=&#34;alignnone size-medium wp-image-275&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;至此一个单机版的solr服务器就搭建起来了，比较简单，接下来的第二篇会老夫会介绍这个服务器搭建起来以后怎么玩&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

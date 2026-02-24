@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Web on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/web/</link>
+    <description>Recent content in Web on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 17 Aug 2018 15:25:38 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/web/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于 tomcat 排查错误的一个小小感悟</title>
+      <link>http://localhost:1313/posts/2018-08-17-%E5%85%B3%E4%BA%8E-tomcat-%E6%8E%92%E6%9F%A5%E9%94%99%E8%AF%AF%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E6%84%9F%E6%82%9F/</link>
+      <pubDate>Fri, 17 Aug 2018 15:25:38 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2018-08-17-%E5%85%B3%E4%BA%8E-tomcat-%E6%8E%92%E6%9F%A5%E9%94%99%E8%AF%AF%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E6%84%9F%E6%82%9F/</guid>
+      <description>&lt;p&gt;前几天响应公司的要求，系统日志接入公司的 ELK，按照中间件的同学要求之后，果然不出意外的遇到了问题，项目跑不起来了，控制台 catalina.out 打印日志如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+Aug 16, 2018 10:02:21 AM org.apache.coyote.AbstractProtocol start  
+INFO: Starting ProtocolHandler [&amp;#34;http-apr-8144&amp;#34;]  
+Aug 16, 2018 10:02:21 AM org.apache.coyote.AbstractProtocol start  
+INFO: Starting ProtocolHandler [&amp;#34;ajp-apr-58144&amp;#34;]  
+Aug 16, 2018 10:02:21 AM org.apache.catalina.startup.Catalina start  
+INFO: Server startup in 28819 ms  
+Aug 16, 2018 10:02:23 AM org.apache.catalina.loader.WebappClassLoaderBase loadClass  
+INFO: Illegal access: this web application instance has been stopped already. Could not load com.alibaba.rocketmq.shade.io.netty.util.concurren  
+t.DefaultPromise$2. The eventual following stack trace is caused by an error thrown for debugging purposes as well as to attempt to terminate t  
+he thread which caused the illegal access, and has no functional impact.  
+java.lang.IllegalStateException  
+at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1743)  
+at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1701)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151)  
+at java.lang.Thread.run(Thread.java:745)
+
+Exception in thread &amp;#34;NettyClientWorkerThread_3&amp;#34; java.lang.NoClassDefFoundError: com/alibaba/rocketmq/shade/io/netty/util/concurrent/DefaultPromi  
+se$2  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151)  
+at java.lang.Thread.run(Thread.java:745)  
+Caused by: java.lang.ClassNotFoundException: com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise$2  
+at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1858)  
+at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1701)  
+&amp;amp;#8230; 4 more  
+Aug 16, 2018 10:02:23 AM org.apache.catalina.loader.WebappClassLoaderBase loadClass  
+INFO: Illegal access: this web application instance has been stopped already. Could not load com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise$2. The eventual following stack trace is caused by an error thrown for debugging purposes as well as to attempt to terminate the thread which caused the illegal access, and has no functional impact.  
+java.lang.IllegalStateException  
+at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1743)  
+at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1701)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151)  
+at java.lang.Thread.run(Thread.java:745)
+
+Exception in thread &amp;#34;NettyClientWorkerThread_4&amp;#34; java.lang.NoClassDefFoundError: com/alibaba/rocketmq/shade/io/netty/util/concurrent/DefaultPromise$2  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151)  
+at java.lang.Thread.run(Thread.java:745)  
+Exception in thread &amp;#34;NettyClientWorkerThread_2&amp;#34; Exception in thread &amp;#34;NettyClientWorkerThread_1&amp;#34; java.lang.NoClassDefFoundError: com/alibaba/rocketmq/shade/io/netty/util/concurrent/DefaultPromise$2  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151)  
+at java.lang.Thread.run(Thread.java:745)  
+java.lang.NoClassDefFoundError: com/alibaba/rocketmq/shade/io/netty/util/concurrent/DefaultPromise$2  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151)  
+at java.lang.Thread.run(Thread.java:745)  
+Exception in thread &amp;#34;NettyClientSelector_1&amp;#34; java.lang.NoClassDefFoundError: com/alibaba/rocketmq/shade/io/netty/util/concurrent/DefaultPromise$2  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398)  
+at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151)  
+at java.lang.Thread.run(Thread.java:745)  
+Aug 16, 2018 10:02:28 AM org.apache.catalina.loader.WebappClassLoaderBase loadClass
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;很常见的一个错，java.lang.NoClassDefFoundError，找不到 com/alibaba/rocketmq/shade/io/netty/util/concurrent/DefaultPromise，但是不应该啊，因为什么都没有修改，之前都是跑的好好地，怎么会突然找不到这个类，莫名其妙，有同事说，是不是修改 jar 的版本之类的，不过我确实没有修改，只是引入了公司 ELK 相关的 jar 而已，而且看了一下这个类在 classpath 下是存在的，后来经同事提醒，这个地方可能不是真正的报错的地方，看一下 tomcat 的 localhost 日志，果然在发现了如下的报错：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>是的，我也开启了全站HTTPS</title>
+      <link>http://localhost:1313/posts/2017-09-03-%E6%98%AF%E7%9A%84%E6%88%91%E4%B9%9F%E5%BC%80%E5%90%AF%E4%BA%86%E5%85%A8%E7%AB%99https/</link>
+      <pubDate>Sun, 03 Sep 2017 11:25:18 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2017-09-03-%E6%98%AF%E7%9A%84%E6%88%91%E4%B9%9F%E5%BC%80%E5%90%AF%E4%BA%86%E5%85%A8%E7%AB%99https/</guid>
+      <description>&lt;p&gt;现在的趋势都在全站HTTPS，据说在Google内部有一个时间表，会把所有未开启HTTPS的网站标注为不安全（目前仅仅会把带密码框的输入页标注为不安全），所以一直想玩玩，去年的时候就看到新浪timyang的博客开启了全站HTTPS，并写了一篇文章如何开启，当时就想玩玩，但感觉还是稍有麻烦，而且当时的博客服务器用的Apache，对Apache配置不熟，想着是自己的小博客就没动，前几天突然看到coolshell网也开启了全站HTTPS，发现现在配置变得很简单了，而且我的博客服务器也由Apache换成了Nginx，所以就玩了玩，确实很方便。&lt;br&gt;
+首先声明，无论是timyang还是左耳朵耗子，使用的都是Let’s Encrypt，他是一个公益组织，表示感谢，网址：https://letsencrypt.org/&lt;br&gt;
+下面写一下开启的方法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;首先，打开 &lt;a href=&#34;https://certbot.eff.org&#34;&gt;https://certbot.eff.org&lt;/a&gt; 网页。&lt;/li&gt;
+&lt;li&gt;在那个机器上图标下面，你需要选择一下你用的 Web 接入软件 和你的 操作系统。比如，我选的，nginx 和 CentOS 6。&lt;/li&gt;
+&lt;li&gt;然后就会跳转到一个安装教程网页。你就照着做一遍就好了。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;例如我选的这个调到安装教程页，出现的命令是：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+wget https://dl.eff.org/certbot-auto  
+chmod a+x certbot-auto
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后，运行如下命令：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+./path/to/certbot-auto &amp;amp;#8211;nginx
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;certbot-auto 会自动检查到你的 nginx.conf 下的配置，把你所有的虚拟站点都列出来，然后让你选择需要开启 https 的站点。你就简单的输入列表编号（用空格分开），因为我的就一个所以直接回车就好了（里面有一些需要你填写的东西，连我这英文巨差的人都可以看懂，相信大家都能看的懂），然后，certbot-auto 就帮你下载证书并更新 nginx.conf 了。&lt;/p&gt;
+&lt;p&gt;但在这个过程中需要注意的一点：记得开启你的 443 端口，我博客用的阿里云，当时没开启直接报错了，开启之后重新执行一下这个命令就好了。&lt;/p&gt;
+&lt;p&gt;你打开你的 nginx.conf 文件 ，你可以发现你的文件中的 server 配置中可能被做了如下的修改：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+listen 443 ssl; # managed by Certbot  
+ssl_certificate /etc/letsencrypt/live/www.bridgeli.cn/fullchain.pem; # managed by Certbot  
+ssl_certificate_key /etc/letsencrypt/live/www.bridgeli.cn/privkey.pem; # managed by Certbot  
+include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;和&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+if ($scheme != &amp;#34;https&amp;#34;) {  
+return 301 https://$host$request_uri;  
+} # managed by Certbot
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;另外开启HTTPS之后都建议开启HTTP/2性能更好，但这要求你的Nginx版本要大于 1.9.5 ，开启的方法也无比简单，只需要在 nginx.conf 的 listen 443 ssl; 后面加上 http2 就好了。如下所示：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

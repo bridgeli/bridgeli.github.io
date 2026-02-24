@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Sh on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/sh/</link>
+    <description>Recent content in Sh on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 19 Apr 2015 14:58:55 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/sh/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Shell编程入门</title>
+      <link>http://localhost:1313/posts/2015-04-19-shell%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Sun, 19 Apr 2015 14:58:55 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-04-19-shell%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/</guid>
+      <description>&lt;p&gt;一、Shell入门&lt;/p&gt;
+&lt;p&gt;我们先看一个小例子，永恒的经典：Hello World&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+#!/bin/sh  
+var=&amp;#34;Hello World!&amp;#34;  
+echo $var
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;保存，文件名为：hello&lt;br&gt;
+我们发现文件的第一行虽是一个注释，但是说明了文件的执行是由/bin/sh来执行，所以我们这么来执行这个文件：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+/bin/sh hello
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;就可以看到结果了，但我们知道在Linux下，一个文件是否可以执行是由文件属性来决定的，那么我们是否可以给他加上可执行权限，来执行这个文件呢？&lt;br&gt;
+先执行如下命令：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+chmod u+x hello
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后我们在直接敲命令：hello，看到什么现象？&lt;br&gt;
+所以一个文件被执行有这两个途径&lt;/p&gt;
+&lt;p&gt;二、Shell语法入门&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;输入/输出内部命令&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;①. echo 输出命令&lt;br&gt;
+②. read 输入命令&lt;/p&gt;
+&lt;p&gt;例如：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+#!/bin/sh  
+echo Name:  
+read NAME  
+echo Phone:  
+read PHONE  
+echo SNAME,SPHONE &amp;gt; contact.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;if条件语句&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在看if条件语句之前，我们先看一下：测试命令执行结果，在Linux下正确的命令执行结果为0，否则为其他值，我们可以用：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+echo $?
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;来看上一个命令的执行结果，懂了这些之后，我们在看那些常见语法&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+if 条件测试命令串  
+then  
+条件为真时执行的命令  
+else  
+条件为假时执行的命令  
+fi
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注：if和then必须是两行，如果放一行，请在then前加“;”&lt;/p&gt;
+&lt;p&gt;例如：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+#!/bin/sh
+echo Input file name:
+read NAME
+if [ -d $NAME ]
+then
+  echo Dir
+else
+  echo Not Dir
+fi
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;case条件语句&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+case 条件测试命令串 in  
+表达式1)  
+分支1执行的命令  
+;;  
+表达式2)  
+分支2执行的命令  
+;;  
+*)  
+其他命令  
+;;  
+esac
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;例如：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

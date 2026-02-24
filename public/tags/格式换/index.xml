@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>格式换 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E6%A0%BC%E5%BC%8F%E6%8D%A2/</link>
+    <description>Recent content in 格式换 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 18 Jun 2017 12:50:29 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E6%A0%BC%E5%BC%8F%E6%8D%A2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ThreadLocal类之简单应用示例</title>
+      <link>http://localhost:1313/posts/2017-06-18-threadlocal%E7%B1%BB%E4%B9%8B%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B/</link>
+      <pubDate>Sun, 18 Jun 2017 12:50:29 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2017-06-18-threadlocal%E7%B1%BB%E4%B9%8B%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B/</guid>
+      <description>&lt;p&gt;在日常开发的系统中，日期处理是非常非常用的一个功能，处理的日期的时候就需要用到SimpleDateFormat对象，但是我们都知道SimpleDateFormat本身不是线程安全的（如果不知道的请看源码），所以就需要频繁创建SimpleDateFormat这个对象。但是我们知道创建这个对象本身不仅是很费时的，而且创建的这些对象存活期很短，导致内存中大量这样的对象需要被GC，所以我们自然而然的想到使用ThreadLocal来给每个线程缓存一个SimpleDateFormat实例，提高性能。下面是一个具体的实现的小例子，其实不仅针对SimpleDateFormat对象，对于数据库连接等等都可以这么使用。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo;
+
+import java.text.DateFormat;  
+import java.text.SimpleDateFormat;  
+import java.util.HashMap;  
+import java.util.Map;
+
+public class DateFormatFactory {
+
+private static final Map&amp;lt;DatePatternEnum, ThreadLocal&amp;lt;DateFormat&amp;gt;&amp;gt; pattern2ThreadLocal;
+
+static {  
+DatePatternEnum[] patterns = DatePatternEnum.values();  
+int len = patterns.length;  
+pattern2ThreadLocal = new HashMap&amp;lt;DatePatternEnum, ThreadLocal&amp;lt;DateFormat&amp;gt;&amp;gt;(len);
+
+for (int i = 0; i &amp;lt; len; i++) {  
+DatePatternEnum datePatternEnum = patterns[i];  
+final String pattern = datePatternEnum.pattern;
+
+pattern2ThreadLocal.put(datePatternEnum, new ThreadLocal&amp;lt;DateFormat&amp;gt;() {  
+@Override  
+protected DateFormat initialValue() {  
+return new SimpleDateFormat(pattern);  
+}  
+});  
+}  
+}
+
+// 获取DateFormat  
+public static DateFormat getDateFormat(DatePatternEnum patternEnum) {  
+ThreadLocal&amp;lt;DateFormat&amp;gt; threadDateFormat = pattern2ThreadLocal.get(patternEnum);  
+// 不需要判断threadDateFormat是否为空  
+return threadDateFormat.get();  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;对应的时间枚举类（如果还有其他格式的时间需要处理，可以直接在这个类里面添加即可）：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>工厂，策略 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E5%B7%A5%E5%8E%82%E7%AD%96%E7%95%A5/</link>
+    <description>Recent content in 工厂，策略 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 14 Dec 2014 15:33:31 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%B7%A5%E5%8E%82%E7%AD%96%E7%95%A5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>设计模式综合运用之Excel导入</title>
+      <link>http://localhost:1313/posts/2014-12-14-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%BB%BC%E5%90%88%E8%BF%90%E7%94%A8%E4%B9%8Bexcel%E5%AF%BC%E5%85%A5/</link>
+      <pubDate>Sun, 14 Dec 2014 15:33:31 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2014-12-14-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%BB%BC%E5%90%88%E8%BF%90%E7%94%A8%E4%B9%8Bexcel%E5%AF%BC%E5%85%A5/</guid>
+      <description>&lt;p&gt;学以致用，前几篇文章我们学了很多设计模式，今天我们就把这些模式综合运用一下，看看实际应用是怎么导入Excel的，（当然这里面没有用到侦听者模式）&lt;br&gt;
+我们先看一下Excel的样子：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2014/12/20141214232827.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2014/12/20141214232827-300x107.png&#34; alt=&#34;20141214232827&#34; width=&#34;300&#34; height=&#34;107&#34; class=&#34;alignnone size-medium wp-image-125&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;因为是Excel的的解析，所以应该是前台上传的，我们应该有一个Servlet来接收前台传过来的数据：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.demo.servlet;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import cn.bridgeli.demo.servce.Container;
+import cn.bridgeli.demo.servce.ExcelParseStrategy;
+
+public class ExcelParseServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//真正的情况下应该由前台传过来的，这里是模拟就写死了  
+        File file = new File(&amp;#34;D:/Excel.xls&amp;#34;);
+
+        String excelType = request.getParameter(&amp;#34;excelType&amp;#34;);
+
+// 此处是策略模式，至于怎么实现，大家可以参考策略模式  
+        Container container = new Container();
+        ExcelParseStrategy excelParseStrategy = container.getStrategy(excelType);
+
+        excelParseStrategy.parse(file);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;下面看ExcelParseStrategy接口，和具体策略的实现：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

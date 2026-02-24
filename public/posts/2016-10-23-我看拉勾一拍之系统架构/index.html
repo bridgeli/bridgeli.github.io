@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>我看拉勾一拍之系统架构 | 分享技术带来的喜悦</title>
+<meta name="keywords" content="rpc, 微服务, 架构">
+<meta name="description" content="今年年中的时候由公司平台部转组到Alpha项目中心负责公司一拍项目组的技术研发工作，到现在已经快有将近半年的时间了，随着对系统的越来越熟悉，对原有系统的架构也越来越感到有些不合理的地方，随着自己水平的提升感觉对架构也有了一点自己的理解，所以今天就借这个机会说说自己的不成熟的建议。
+一. 原有的架构
+俗话说，一图胜千言，直接上图：
+ 
+解释一下这几个系统分别的作用：
+
+后台管理系统不用说了，管理C和B可见的内容；
+C端用户系统，是对C可见的一个系统，一拍是一个招聘系统，所以就是对候选人操作的后台；
+B端用户系统，是对B可见的一个系统，通俗点讲就是HR操作的后台；
+Dubbo系统，是对兄弟部门和B提供服务的一个系统；
+Recommend系统，其实也是一个Dubbo系统，区别在于Dubbo系统是对外提供各种服务的，而Recommend系统是发现全站系统用户的行为，然后对用户的行为进行分析，甄选出一部分C端用户作为一拍的现在用户；
+msgpush系统，是用netty做的一个实时消息推送的IM服务，目前主要是给后台管理用户和C端候选人聊天的一个系统；
+
+其中：1. 在我们接手之前B和C是同一个系统，也就是说B是我们这半年新加的一个系统；2. Recommend和msgpush系统也同样是我们这半年新增的一个系统
+二. 系统架构存在的问题
+目前后台管理系统、C端用户系统、Dubbo系统各自独立，这样存在的问题：
+
+
+最主要的是各自分别操作数据库，这样只要底层数据库发送变动，那么三个系统操作数据库的地方都要同步修改三次；
+
+
+操作数据库的地方代码冗余，很多地方都一样，这样一个地方出bug，三个地方要同步修改，然后都要上线；
+
+
+后台管理系统采用分层的模式分模块而不是根据业务分模块，这样每次上线service和dao都要先deploy jar到maven私服；
+
+
+当时为了快速迭代，Recommend系统也是单独操作操作数据库，不过还好用了后台管理系统的dao这个jar包，但是首先根本不需要这么重的一个jar包，其次jar出bug了，有时候他也需要重新上线啊，不然这个jar包就会一直很旧，当然只要不涉及到他操作数据库的地方出bug，你不改也是可以的；
+
+
+目前C和B虽然已经分开，但如果用户激增，横向扩展依然不合理，只能整体加机器，而不能针对性对某些模块单独加机器；
+
+
+代码中存在的问题：不知道什么原因大量的逻辑被写在了controller层，导致代码可复用性差；
+
+
+由于之前后台管理系统和其他系统不是同一个团队开发的，命名各有各的风格，代码不仅冗余还同样一个类名字不一样；
+
+
+很多系统日志配置的也有问题，错误日志和最基本的业务日志没有区分开，目前在将就用；
+
+
+系统中的jar依赖不仅存在循环依赖，而且加入了大量的自己不需要的依赖，导致各种jar冲突出问题；
+
+
+综合以上问题，我个人认为这是一个：可维护性、可扩展性不高的系统。
+三. 我的个人思考
+同样先来一张图，来总体说明一下我的想法：
+ 
+整体来说只有相对独立的实时消息推送系统不懂，然后把其余的各个业务层抽象成微服务，采用公司目前使用比较成熟的dubbo作为rpc框架，controller层只负责业务转发不负责逻辑的一个简单系统，这样带来的好处：
+
+Dubbo系统作为核心的业务系统，分别对兄弟部门、后台管理系统、C端用户系统、B端用户系统、Recommend系统提供服务，如果用户量增加，不仅可以整体增加Dubbo系统的机器，也可以把调用量大的接口单独拆出来，部署到另外的机器上，实现隔离，不会因某个接口调用量大，导致整个系统不可用，而且把数据库的底层操作也放到了这个Dubbo系统中，这样就可以避免数据库修改，要修改多处的问题；
+抽象出来的这个dubbo系统，不仅可以解决后台系统和其他系统命名不一样的问题，而且和可以解决不同团队造成的coding style不一的问题，一举多得；
+由于后台管理系统、C端用户系统、B端用户系统、Recommend系统都调用Dubbo系统，所以他们的controller层讲极其简单，很多业务逻辑类似的东西全部放到了Dubbo系统里面，代码的可复用性提高了不少；
+抽象出来的逻辑都统一放到了dubbo中，这样系统如果有bug，这样就做到了一个地方修改，这样多个地方就可以同时生效；
+由于业务都在Dubbo系统里面这样同时也避免了曾经出现了，后台管理系统和BC系统使用的缓存不一致，导致缓存出问题的这种低级bug；
+由于controller层简单没有逻辑，这样就可以避免目前由于后台管理系统单机，修改一个业务逻辑bug重启系统，导致后台不可用的问题，因为只需要重启dubbo就行了；
+这样controller层变得很轻，只需要一个简单的servlet容器，对机器的要求会降低不少；
+
+四. 备注
+由于我工作时间不长，见过的系统更有限，所以对系统架构几乎没有什么经验，这些只是我个人的一点很粗浅的理解，例如把dubbo做的那么重，虽然可扩展性提高了不少，但其实也不知道算不算合理，因为调用rpc服务，肯定会增加网络IO延时，所以这些算是我个人的抛砖引玉吧，一方面希望对同样和我一样没有经验的小伙伴能有所帮助，另一方面希望有经验的小伙伴能留言交流
+五. 总结
+以上便是我个人对拉勾一拍所有的核心系统进行了审视后的一番分析，如果这些核心系统架构的重构真的达到自己的理想状况这将是一番浩大的工程，对于高速发展的互联网公司来说，这就是一边驾驶者一辆高速前进的汽车，一边对这辆汽车进行换轮胎换发动机，先不说工作量的问题，难度程度也可见一斑。">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/posts/2016-10-23-%E6%88%91%E7%9C%8B%E6%8B%89%E5%8B%BE%E4%B8%80%E6%8B%8D%E4%B9%8B%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2016-10-23-%E6%88%91%E7%9C%8B%E6%8B%89%E5%8B%BE%E4%B8%80%E6%8B%8D%E4%B9%8B%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">文章</a></div>
+    <h1 class="post-title entry-hint-parent">
+      我看拉勾一拍之系统架构
+    </h1>
+    <div class="post-meta"><span title='2016-10-23 13:57:34 +0000 +0000'>October 23, 2016</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>46 words</span>&nbsp;·&nbsp;<span>Bridge Li</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>今年年中的时候由公司平台部转组到Alpha项目中心负责公司一拍项目组的技术研发工作，到现在已经快有将近半年的时间了，随着对系统的越来越熟悉，对原有系统的架构也越来越感到有些不合理的地方，随着自己水平的提升感觉对架构也有了一点自己的理解，所以今天就借这个机会说说自己的不成熟的建议。</p>
+<p>一. 原有的架构</p>
+<p>俗话说，一图胜千言，直接上图：</p>
+<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2016/10/old_architecture-225x300.jpg" alt="old_architecture-225x300" width="300" height="225" class="alignnone size-full wp-image-307" /> 
+<p>解释一下这几个系统分别的作用：</p>
+<ol>
+<li>后台管理系统不用说了，管理C和B可见的内容；</li>
+<li>C端用户系统，是对C可见的一个系统，一拍是一个招聘系统，所以就是对候选人操作的后台；</li>
+<li>B端用户系统，是对B可见的一个系统，通俗点讲就是HR操作的后台；</li>
+<li>Dubbo系统，是对兄弟部门和B提供服务的一个系统；</li>
+<li>Recommend系统，其实也是一个Dubbo系统，区别在于Dubbo系统是对外提供各种服务的，而Recommend系统是发现全站系统用户的行为，然后对用户的行为进行分析，甄选出一部分C端用户作为一拍的现在用户；</li>
+<li>msgpush系统，是用netty做的一个实时消息推送的IM服务，目前主要是给后台管理用户和C端候选人聊天的一个系统；</li>
+</ol>
+<p>其中：1. 在我们接手之前B和C是同一个系统，也就是说B是我们这半年新加的一个系统；2. Recommend和msgpush系统也同样是我们这半年新增的一个系统</p>
+<p>二. 系统架构存在的问题</p>
+<p>目前后台管理系统、C端用户系统、Dubbo系统各自独立，这样存在的问题：</p>
+<ol>
+<li>
+<p>最主要的是各自分别操作数据库，这样只要底层数据库发送变动，那么三个系统操作数据库的地方都要同步修改三次；</p>
+</li>
+<li>
+<p>操作数据库的地方代码冗余，很多地方都一样，这样一个地方出bug，三个地方要同步修改，然后都要上线；</p>
+</li>
+<li>
+<p>后台管理系统采用分层的模式分模块而不是根据业务分模块，这样每次上线service和dao都要先deploy jar到maven私服；</p>
+</li>
+<li>
+<p>当时为了快速迭代，Recommend系统也是单独操作操作数据库，不过还好用了后台管理系统的dao这个jar包，但是首先根本不需要这么重的一个jar包，其次jar出bug了，有时候他也需要重新上线啊，不然这个jar包就会一直很旧，当然只要不涉及到他操作数据库的地方出bug，你不改也是可以的；</p>
+</li>
+<li>
+<p>目前C和B虽然已经分开，但如果用户激增，横向扩展依然不合理，只能整体加机器，而不能针对性对某些模块单独加机器；</p>
+</li>
+<li>
+<p>代码中存在的问题：不知道什么原因大量的逻辑被写在了controller层，导致代码可复用性差；</p>
+</li>
+<li>
+<p>由于之前后台管理系统和其他系统不是同一个团队开发的，命名各有各的风格，代码不仅冗余还同样一个类名字不一样；</p>
+</li>
+<li>
+<p>很多系统日志配置的也有问题，错误日志和最基本的业务日志没有区分开，目前在将就用；</p>
+</li>
+<li>
+<p>系统中的jar依赖不仅存在循环依赖，而且加入了大量的自己不需要的依赖，导致各种jar冲突出问题；</p>
+</li>
+</ol>
+<p>综合以上问题，我个人认为这是一个：可维护性、可扩展性不高的系统。</p>
+<p>三. 我的个人思考</p>
+<p>同样先来一张图，来总体说明一下我的想法：</p>
+<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2016/10/new_architecture-225x300.jpg" alt="new_architecture-225x300" width="300" height="225" class="alignnone size-full wp-image-307" /> 
+<p>整体来说只有相对独立的实时消息推送系统不懂，然后把其余的各个业务层抽象成微服务，采用公司目前使用比较成熟的dubbo作为rpc框架，controller层只负责业务转发不负责逻辑的一个简单系统，这样带来的好处：</p>
+<ol>
+<li>Dubbo系统作为核心的业务系统，分别对兄弟部门、后台管理系统、C端用户系统、B端用户系统、Recommend系统提供服务，如果用户量增加，不仅可以整体增加Dubbo系统的机器，也可以把调用量大的接口单独拆出来，部署到另外的机器上，实现隔离，不会因某个接口调用量大，导致整个系统不可用，而且把数据库的底层操作也放到了这个Dubbo系统中，这样就可以避免数据库修改，要修改多处的问题；</li>
+<li>抽象出来的这个dubbo系统，不仅可以解决后台系统和其他系统命名不一样的问题，而且和可以解决不同团队造成的coding style不一的问题，一举多得；</li>
+<li>由于后台管理系统、C端用户系统、B端用户系统、Recommend系统都调用Dubbo系统，所以他们的controller层讲极其简单，很多业务逻辑类似的东西全部放到了Dubbo系统里面，代码的可复用性提高了不少；</li>
+<li>抽象出来的逻辑都统一放到了dubbo中，这样系统如果有bug，这样就做到了一个地方修改，这样多个地方就可以同时生效；</li>
+<li>由于业务都在Dubbo系统里面这样同时也避免了曾经出现了，后台管理系统和BC系统使用的缓存不一致，导致缓存出问题的这种低级bug；</li>
+<li>由于controller层简单没有逻辑，这样就可以避免目前由于后台管理系统单机，修改一个业务逻辑bug重启系统，导致后台不可用的问题，因为只需要重启dubbo就行了；</li>
+<li>这样controller层变得很轻，只需要一个简单的servlet容器，对机器的要求会降低不少；</li>
+</ol>
+<p>四. 备注</p>
+<p>由于我工作时间不长，见过的系统更有限，所以对系统架构几乎没有什么经验，这些只是我个人的一点很粗浅的理解，例如把dubbo做的那么重，虽然可扩展性提高了不少，但其实也不知道算不算合理，因为调用rpc服务，肯定会增加网络IO延时，所以这些算是我个人的抛砖引玉吧，一方面希望对同样和我一样没有经验的小伙伴能有所帮助，另一方面希望有经验的小伙伴能留言交流</p>
+<p>五. 总结</p>
+<p>以上便是我个人对拉勾一拍所有的核心系统进行了审视后的一番分析，如果这些核心系统架构的重构真的达到自己的理想状况这将是一番浩大的工程，对于高速发展的互联网公司来说，这就是一边驾驶者一辆高速前进的汽车，一边对这辆汽车进行换轮胎换发动机，先不说工作量的问题，难度程度也可见一斑。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/rpc/">Rpc</a></li>
+      <li><a href="http://localhost:1313/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a></li>
+      <li><a href="http://localhost:1313/tags/%E6%9E%B6%E6%9E%84/">架构</a></li>
+    </ul>
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 我看拉勾一拍之系统架构 on x"
+            href="https://x.com/intent/tweet/?text=%e6%88%91%e7%9c%8b%e6%8b%89%e5%8b%be%e4%b8%80%e6%8b%8d%e4%b9%8b%e7%b3%bb%e7%bb%9f%e6%9e%b6%e6%9e%84&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2016-10-23-%25E6%2588%2591%25E7%259C%258B%25E6%258B%2589%25E5%258B%25BE%25E4%25B8%2580%25E6%258B%258D%25E4%25B9%258B%25E7%25B3%25BB%25E7%25BB%259F%25E6%259E%25B6%25E6%259E%2584%2f&amp;hashtags=rpc%2c%e5%be%ae%e6%9c%8d%e5%8a%a1%2c%e6%9e%b6%e6%9e%84">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 我看拉勾一拍之系统架构 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2016-10-23-%25E6%2588%2591%25E7%259C%258B%25E6%258B%2589%25E5%258B%25BE%25E4%25B8%2580%25E6%258B%258D%25E4%25B9%258B%25E7%25B3%25BB%25E7%25BB%259F%25E6%259E%25B6%25E6%259E%2584%2f&amp;title=%e6%88%91%e7%9c%8b%e6%8b%89%e5%8b%be%e4%b8%80%e6%8b%8d%e4%b9%8b%e7%b3%bb%e7%bb%9f%e6%9e%b6%e6%9e%84&amp;summary=%e6%88%91%e7%9c%8b%e6%8b%89%e5%8b%be%e4%b8%80%e6%8b%8d%e4%b9%8b%e7%b3%bb%e7%bb%9f%e6%9e%b6%e6%9e%84&amp;source=http%3a%2f%2flocalhost%3a1313%2fposts%2f2016-10-23-%25E6%2588%2591%25E7%259C%258B%25E6%258B%2589%25E5%258B%25BE%25E4%25B8%2580%25E6%258B%258D%25E4%25B9%258B%25E7%25B3%25BB%25E7%25BB%259F%25E6%259E%25B6%25E6%259E%2584%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 我看拉勾一拍之系统架构 on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2016-10-23-%25E6%2588%2591%25E7%259C%258B%25E6%258B%2589%25E5%258B%25BE%25E4%25B8%2580%25E6%258B%258D%25E4%25B9%258B%25E7%25B3%25BB%25E7%25BB%259F%25E6%259E%25B6%25E6%259E%2584%2f&title=%e6%88%91%e7%9c%8b%e6%8b%89%e5%8b%be%e4%b8%80%e6%8b%8d%e4%b9%8b%e7%b3%bb%e7%bb%9f%e6%9e%b6%e6%9e%84">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 我看拉勾一拍之系统架构 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2f2016-10-23-%25E6%2588%2591%25E7%259C%258B%25E6%258B%2589%25E5%258B%25BE%25E4%25B8%2580%25E6%258B%258D%25E4%25B9%258B%25E7%25B3%25BB%25E7%25BB%259F%25E6%259E%25B6%25E6%259E%2584%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 我看拉勾一拍之系统架构 on whatsapp"
+            href="https://api.whatsapp.com/send?text=%e6%88%91%e7%9c%8b%e6%8b%89%e5%8b%be%e4%b8%80%e6%8b%8d%e4%b9%8b%e7%b3%bb%e7%bb%9f%e6%9e%b6%e6%9e%84%20-%20http%3a%2f%2flocalhost%3a1313%2fposts%2f2016-10-23-%25E6%2588%2591%25E7%259C%258B%25E6%258B%2589%25E5%258B%25BE%25E4%25B8%2580%25E6%258B%258D%25E4%25B9%258B%25E7%25B3%25BB%25E7%25BB%259F%25E6%259E%25B6%25E6%259E%2584%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 我看拉勾一拍之系统架构 on telegram"
+            href="https://telegram.me/share/url?text=%e6%88%91%e7%9c%8b%e6%8b%89%e5%8b%be%e4%b8%80%e6%8b%8d%e4%b9%8b%e7%b3%bb%e7%bb%9f%e6%9e%b6%e6%9e%84&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2016-10-23-%25E6%2588%2591%25E7%259C%258B%25E6%258B%2589%25E5%258B%25BE%25E4%25B8%2580%25E6%258B%258D%25E4%25B9%258B%25E7%25B3%25BB%25E7%25BB%259F%25E6%259E%25B6%25E6%259E%2584%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 我看拉勾一拍之系统架构 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=%e6%88%91%e7%9c%8b%e6%8b%89%e5%8b%be%e4%b8%80%e6%8b%8d%e4%b9%8b%e7%b3%bb%e7%bb%9f%e6%9e%b6%e6%9e%84&u=http%3a%2f%2flocalhost%3a1313%2fposts%2f2016-10-23-%25E6%2588%2591%25E7%259C%258B%25E6%258B%2589%25E5%258B%25BE%25E4%25B8%2580%25E6%258B%258D%25E4%25B9%258B%25E7%25B3%25BB%25E7%25BB%259F%25E6%259E%25B6%25E6%259E%2584%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

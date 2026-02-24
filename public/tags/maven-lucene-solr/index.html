@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Maven Lucene Solr | 分享技术带来的喜悦</title>
+<meta name="keywords" content="">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/tags/maven-lucene-solr/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/maven-lucene-solr/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/maven-lucene-solr/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/tags/">Tags</a></div>
+  <h1>
+    Maven Lucene Solr
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">全文检索工具-Lucene（solr）入门
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>最近闲着没事在写微信公众号，其中一个是聊天机器人，和网上的众多机器人原理一样，但是功能没那么强大（主要是只是库不够强大），但是怎么解决“如何根据用户的问题从回答库中找出最匹配的答案呢？”，大家最先想到的也许是数据库的 LIKE 就好了嘛，但是　LIKE 存在如下问题：
+在问答库非常庞大的时候，LIKE 的效率会非常非常的慢； LIKE只适用于关键字匹配，并不适合自然语言匹配。举个例子：用户的问题“河南的省会是哪个城市？”，而数据库的的记录是“河南的省会是哪”，虽然无论是从字面上还是意义上都一样，都 LIKE 却无能为力； LIKE 无法计算相似度。也就是说 LIKE 返回多条记录时，无法确定那个是最佳答案所以此时全文检索引擎的优越性就体现出来了。 全文检索引擎的原理：扫描知识库的每一条记录并分词建立索引，索引记录了词在每一条记录中出现的位置和次数，当收到用户的问题时，也进行分词，然后从索引中找出包含这些词的所有记录，再分别计算相似度，然后可以找出相似度最高的一条记录返回给用户，下面老夫给出一个自己用Lucene（solr）写的例子，这个例子经验证是可以直接跑起来的，至于其众多API，大家可以自己去查官网文档，其实很容易理解。
+import java.io.File; import java.io.IOException; import java.util.List; import javax.annotation.PostConstruct; import javax.annotation.Resource; import org.apache.lucene.document.Document; import org.apache.lucene.document.Field; import org.apache.lucene.document.IntField; import org.apache.lucene.document.TextField; import org.apache.lucene.index.IndexWriter; import org.apache.lucene.index.IndexWriterConfig; import org.apache.lucene.store.Directory; import org.apache.lucene.store.FSDirectory; import org.apache.lucene.util.Version; import org.slf4j.Logger; import org.slf4j.LoggerFactory; import org.springframework.stereotype.Service; import org.wltea.analyzer.lucene.IKAnalyzer; import cn.bridgeli.livingsmallhelper.entity.Knowledge; import cn.bridgeli.livingsmallhelper.mapper.KnowledgeMapper; import cn.bridgeli.livingsmallhelper.service.ChatService; public class SolrTest { private static final Logger LOG = LoggerFactory.getLogger(DataInit.class); private KnowledgeMapper knowledgeMapper; @Resource private ChatService chatService; public void createIndex() { List&lt;Knowledge&gt; knowledges = knowledgeMapper.query(); Directory directory = null; IndexWriter indexWriter = null; File indexFile = new File(chatService.getIndexDir()); if (!indexFile.exists()) { try { directory = FSDirectory.open(indexFile); IndexWriterConfig indexWriterConfig = new IndexWriterConfig(Version.LUCENE_46, new IKAnalyzer(true)); indexWriter = new IndexWriter(directory, indexWriterConfig); for (Knowledge k : knowledges) { Document document = new Document(); document.add(new TextField(&#34;question&#34;, k.getQuestion(), Field.Store.YES)); document.add(new IntField(&#34;id&#34;, k.getId(), Field.Store.YES)); document.add(new TextField(&#34;answer&#34;, k.getAnswer() == null ? &#34;&#34; : k.getAnswer(), Field.Store.YES)); document.add(new IntField(&#34;category&#34;, k.getCategory(), Field.Store.YES)); indexWriter.addDocument(document); } indexWriter.commit(); } catch (IOException e) { LOG.error(&#34;IOException&#34;, e); } finally { try { if (null != indexWriter) { indexWriter.close(); } if (null != directory) { directory.close(); } } catch (IOException e) { LOG.error(&#34;IOException&#34;, e); } } } } @SuppressWarnings(&#34;deprecation&#34;) private Knowledge searchIndex(String content) { Knowledge knowledge = null; Directory directory = null; IndexReader reader = null; try { directory = FSDirectory.open(new File(getIndexDir())); reader = IndexReader.open(directory); IndexSearcher searcher = new IndexSearcher(reader); //这个question 就是以问题为索引去查找，和CreateIndex()中相对应 QueryParser queryParser = new QueryParser(Version.LUCENE_46, &#34;question&#34;, new IKAnalyzer(true)); Query query = queryParser.parse(QueryParser.escape(content)); //这个1 的含义就是找出最相似度最高的一条 TopDocs topDocs = searcher.search(query, 1); if (topDocs.totalHits &gt; 0) { knowledge = new Knowledge(); ScoreDoc[] scoreDocs = topDocs.scoreDocs; for (ScoreDoc scoreDoc : scoreDocs) { Document doc = searcher.doc(scoreDoc.doc); knowledge.setId(doc.getField(&#34;id&#34;).numericValue().intValue()); knowledge.setQuestion(doc.get(&#34;questory&#34;)); knowledge.setAnswer(doc.get(&#34;answer&#34;)); knowledge.setCategory(doc.getField(&#34;category&#34;).numericValue().intValue()); } } } catch (IOException e) { LOG.error(&#34;IOException&#34;, e); } catch (ParseException e) { LOG.error(&#34;ParseException&#34;, e); } finally { try { reader.close(); directory.close(); } catch (IOException e) { LOG.error(&#34;IOException&#34;, e); } } return knowledge; } @Override public String getIndexDir() { String classpath = SolrTest.class.getResource(&#34;/&#34;).getPath(); classpath = classpath.replaceAll(&#34;%20&#34;, &#34; &#34;); LOG.warn(&#34;==================&#34; &#43; classpath); return classpath &#43; &#34;index/&#34;; } @Test public void testSolr() throws IOException, ParseException { SolrTest solrTest = new SolrTest(); File indexDir = new File(getIndexDir()); if (!indexDir.exists()) { solrTest.createIndex(indexDir); } solrTest.searchIndex(&#34;你好啊&#34;); } } 因为我是用maven写的，所以对应的pom文件，如下：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-11-02 14:43:20 +0000 +0000'>November 2, 2014</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>370 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 全文检索工具-Lucene（solr）入门" href="http://localhost:1313/posts/2014-11-02-%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2%E5%B7%A5%E5%85%B7-lucenesolr%E5%85%A5%E9%97%A8/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

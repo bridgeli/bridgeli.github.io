@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>使用 docker 一键部署 ELK(包含中文分词) 服务脚本 | 分享技术带来的喜悦</title>
+<meta name="keywords" content="ElasticSearch, elasticsearch-analysis-ik, ELK, IK分词, kibana, Logstash">
+<meta name="description" content="前几天公司有个需求要做全文索引，于是写了一个脚本使用 docker 一键部署 ELK 服务，内容如下：
+
+#!/bin/bash  
+set -e
+
+echo &#34;==================================================&#34;  
+echo &#34;🚀 开始部署 ELK &#43; MySQL 同步（中文分词 &#43; 固定索引）&#34;  
+echo &#34;==================================================&#34;
+
+\# ==================== 配置区（请修改）====================  
+MYSQL_HOST=&#34;192.168.124.6&#34; # ✏️ 修改为你的 MySQL IP  
+MYSQL_USER=&#34;root&#34; # 读取权限用户  
+MYSQL_PASSWORD=&#34;123456&#34; # 用户密码  
+MYSQL_DB=&#34;ams&#34; # 数据库名
+
+ELASTIC_PASSWORD=&#34;i*B4j6eD&#43;g0e&#34; # ES 密码（至少 8 位，含大小写&#43;数字）
+
+ES_VERSION=&#34;8.11.3&#34; # 必须与 IK 插件版本一致  
+LOGSTASH_VERSION=&#34;8.11.3&#34;  
+\# ========================================================
+
+\# 项目路径  
+ROOT_DIR=&#34;/project/elastic-sync&#34;  
+mkdir -p &#34;$ROOT_DIR&#34;  
+cd &#34;$ROOT_DIR&#34;
+
+echo &#34;📁 创建项目目录结构&#34;  
+mkdir -p config/mysql config data/es data/kibana logs/logstash plugins/ik
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 下载 IK 分词插件 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;  
+IK_URL=&#34;https://release.infinilabs.com/analysis-ik/stable/elasticsearch-analysis-ik-ik-${ES_VERSION}.zip&#34;  
+IK_DIR=&#34;$ROOT_DIR/plugins/ik&#34;
+
+if [ ! -f &#34;$IK_DIR/plugin-descriptor.properties&#34; ]; then  
+echo &#34;📥 正在下载 IK 分词插件 v${ES_VERSION}&amp;#8230;&#34;  
+wget -q &#34;$IK_URL&#34; -O /tmp/ik.zip  
+unzip -q /tmp/ik.zip -d &#34;$IK_DIR&#34;  
+rm /tmp/ik.zip  
+chown -R 1000:1000 &#34;$IK_DIR&#34;  
+echo &#34;✅ IK 插件安装完成&#34;  
+else  
+echo &#34;ℹ️ IK 插件已存在，跳过安装&#34;  
+fi
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 elasticsearch.yml &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+cat &gt; config/elasticsearch.yml &lt;&lt; EOF  
+cluster.name: production-cluster  
+node.name: node-1  
+node.roles: [ data, master, ingest ]
+
+path:  
+data: /usr/share/elasticsearch/data  
+logs: /usr/share/elasticsearch/logs
+
+network.host: 0.0.0.0  
+http.port: 9200
+
+http.cors.enabled: true  
+http.cors.allow-origin: &#34;*&#34;
+
+discovery.type: single-node
+
+xpack.security.enabled: true  
+xpack.security.http.ssl.enabled: false
+
+xpack.monitoring.collection.enabled: true  
+EOF
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 logstash.yml &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+cat &gt; config/logstash.yml &lt;&lt; EOF  
+http.host: &#34;0.0.0.0&#34;  
+xpack.monitoring.enabled: false  
+config.reload.automatic: false  
+EOF
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 logstash.conf &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+cat &gt; config/logstash.conf &lt;&lt; EOF  
+input {  
+jdbc {  
+jdbc_connection_string =&gt; &#34;jdbc:mysql://$MYSQL_HOST:3306/$MYSQL_DB?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai&#34;  
+jdbc_user =&gt; &#34;$MYSQL_USER&#34;  
+jdbc_password =&gt; &#34;$MYSQL_PASSWORD&#34;  
+jdbc_driver_library =&gt; &#34;/usr/share/logstash/mysql/mysql-connector-java-8.0.30.jar&#34;  
+jdbc_driver_class =&gt; &#34;com.mysql.cj.jdbc.Driver&#34;
+
+jdbc_default_timezone =&gt; &#34;Asia/Shanghai&#34;
+
+statement =&gt; &#34;  
+SELECT * FROM article  
+WHERE updated_at &gt;= :sql_last_value  
+ORDER BY updated_at ASC  
+&#34;
+
+use_column_value =&gt; true  
+tracking_column =&gt; &#34;updated_at&#34;  
+tracking_column_type =&gt; &#34;timestamp&#34;  
+last_run_metadata_path =&gt; &#34;/usr/share/logstash/.logstash_jdbc_last_run&#34;
+
+schedule =&gt; &#34;\*/2 \* \* \* *&#34;  
+}  
+}
+
+filter {
+
+\# 清洗 content 字段中的 HTML 标签  
+if [content] {  
+mutate {  
+gsub =&gt; [  
+&#34;content&#34;, &#34;&lt;[^&gt;]*&gt;&#34;, &#34;&#34; # 删除所有 HTML 标签：&lt;p&gt;、&lt;div&gt;、&lt;span&gt; 等  
+]  
+}  
+\# 可选：进一步清理多余的空白字符  
+mutate {  
+gsub =&gt; [  
+&#34;content&#34;, &#34;\s&#43;&#34;, &#34; &#34; # 多个空白字符（空格、换行、制表符）合并为一个空格  
+]  
+}  
+mutate {  
+strip =&gt; [&#34;content&#34;] # 去除首尾空格  
+}  
+}
+
+\# 如果 del_flag 是 1，标记该记录用于删除  
+if [del_flag] == 1 {  
+mutate {  
+add_tag =&gt; [&#34;delete_document&#34;]  
+}  
+}  
+}
+
+output {  
+if &#34;delete_document&#34; in [tags] {  
+elasticsearch {  
+hosts =&gt; [&#34;http://elasticsearch:9200&#34;]  
+user =&gt; &#34;elastic&#34;  
+password =&gt; &#34;$ELASTIC_PASSWOR&#34;  
+action =&gt; &#34;delete&#34;  
+document_id =&gt; &#34;%{id}&#34;  
+index =&gt; &#34;articles&#34;  
+}  
+} else {  
+elasticsearch {  
+hosts =&gt; [&#34;http://elasticsearch:9200&#34;]  
+user =&gt; &#34;elastic&#34;  
+password =&gt; &#34;$ELASTIC_PASSWOR&#34;  
+index =&gt; &#34;articles&#34; # ✅ 固定索引  
+document_id =&gt; &#34;%{id}&#34; # 支持 varchar id  
+doc_as_upsert =&gt; true # 更新覆盖  
+}  
+}
+
+stdout { codec =&gt; rubydebug }  
+}  
+EOF
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 docker-compose.yml &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+cat &gt; docker-compose.yml &lt;&lt; EOF  
+services:  
+elasticsearch:  
+image: docker.elastic.co/elasticsearch/elasticsearch:$ES_VERSION  
+container_name: elasticsearch  
+environment:  
+&amp;#8211; discovery.type=single-node  
+&amp;#8211; ES_JAVA_OPTS=-Xms2g -Xmx2g  
+&amp;#8211; xpack.security.enabled=true  
+&amp;#8211; xpack.security.http.ssl.enabled=false  
+&amp;#8211; ELASTIC_PASSWORD=$ELASTIC_PASSWORD  
+ports:  
+&amp;#8211; &#34;9200:9200&#34;  
+volumes:  
+&amp;#8211; ./data/es:/usr/share/elasticsearch/data  
+&amp;#8211; ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml  
+&amp;#8211; ./plugins/ik:/usr/share/elasticsearch/plugins/ik  
+networks:  
+&amp;#8211; elastic  
+restart: unless-stopped  
+healthcheck:  
+test: [&#34;CMD-SHELL&#34;, &#34;curl -f http://localhost:9200 || exit 1&#34;]  
+interval: 30s  
+timeout: 10s  
+retries: 3
+
+kibana:  
+image: docker.elastic.co/kibana/kibana:$LOGSTASH_VERSION  
+container_name: kibana  
+depends_on:  
+elasticsearch:  
+condition: service_healthy  
+environment:  
+&amp;#8211; ELASTICSEARCH_HOSTS=[&#34;http://elasticsearch:9200&#34;]  
+&amp;#8211; ELASTICSEARCH_USERNAME=elastic  
+&amp;#8211; ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD  
+&amp;#8211; SERVER_NAME=kibana.example.com  
+&amp;#8211; I18N_LOCALE=zh-CN  
+ports:  
+&amp;#8211; &#34;5601:5601&#34;  
+volumes:  
+&amp;#8211; ./data/kibana:/usr/share/kibana/data  
+networks:  
+&amp;#8211; elastic  
+restart: unless-stopped
+
+logstash:  
+image: docker.elastic.co/logstash/logstash:$LOGSTASH_VERSION  
+container_name: logstash  
+depends_on:  
+&amp;#8211; elasticsearch  
+volumes:  
+&amp;#8211; ./config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf  
+&amp;#8211; ./config/logstash.yml:/usr/share/logstash/config/logstash.yml  
+&amp;#8211; ./logs/logstash:/var/log/logstash  
+&amp;#8211; ./config/mysql:/usr/share/logstash/mysql  
+networks:  
+&amp;#8211; elastic  
+restart: unless-stopped
+
+networks:  
+elastic:  
+driver: bridge  
+EOF
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 下载 MySQL JDBC 驱动 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+JDBC_JAR=&#34;config/mysql/mysql-connector-java-8.0.30.jar&#34;  
+if [ ! -f &#34;$JDBC_JAR&#34; ]; then  
+echo &#34;📥 下载 MySQL JDBC 驱动&amp;#8230;&#34;  
+mkdir -p config/mysql  
+wget -q https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30.jar -O &#34;$JDBC_JAR&#34;  
+echo &#34;✅ JDBC 驱动下载完成&#34;  
+fi
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 设置权限 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+echo &#34;🔐 设置目录权限&#34;  
+chown -R 1000:1000 data/es plugins/ik  
+chmod -R 755 config logs  
+chmod -R 777 data/kibana
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成创建索引脚本 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+cat &gt; create-index.sh &lt;&lt; &amp;#8216;EOF&amp;#8217;  
+#!/bin/bash  
+echo &#34;🔄 正在创建索引 &amp;#8216;articles&amp;#8217; 并配置 IK 分词器&amp;#8230;&#34;
+
+curl -X PUT &#34;http://localhost:9200/articles&#34; \  
+-u elastic:$ELASTIC_PASSWORD \  
+-H &#34;Content-Type: application/json&#34; \  
+-d &amp;#8216;  
+{  
+&#34;settings&#34;: {  
+&#34;index&#34;: {  
+&#34;number_of_shards&#34;: 1,  
+&#34;number_of_replicas&#34;: 1  
+},  
+&#34;analysis&#34;: {  
+&#34;analyzer&#34;: {  
+&#34;ik_analyzer&#34;: {  
+&#34;type&#34;: &#34;custom&#34;,  
+&#34;tokenizer&#34;: &#34;ik_max_word&#34;,  
+&#34;filter&#34;: [&#34;lowercase&#34;]  
+}  
+}  
+}  
+},  
+&#34;mappings&#34;: {  
+&#34;properties&#34;: {  
+&#34;id&#34;: { &#34;type&#34;: &#34;keyword&#34; },  
+&#34;title&#34;: {  
+&#34;type&#34;: &#34;text&#34;,  
+&#34;analyzer&#34;: &#34;ik_max_word&#34;,  
+&#34;search_analyzer&#34;: &#34;ik_smart&#34;  
+},  
+&#34;content&#34;: {  
+&#34;type&#34;: &#34;text&#34;,  
+&#34;analyzer&#34;: &#34;ik_max_word&#34;,  
+&#34;search_analyzer&#34;: &#34;ik_smart&#34;  
+},  
+&#34;author&#34;: { &#34;type&#34;: &#34;keyword&#34; },  
+&#34;created_at&#34;: { &#34;type&#34;: &#34;date&#34; },  
+&#34;updated_at&#34;: { &#34;type&#34;: &#34;date&#34; }  
+}  
+}  
+}&amp;#8217; &amp;&amp; echo &#34;✅ 索引 &amp;#8216;articles&amp;#8217; 创建成功！&#34;  
+EOF
+
+chmod &#43;x create-index.sh
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 完成 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+echo &#34;==================================================&#34;  
+echo &#34;🎉 部署准备完成！&#34;  
+echo &#34;==================================================&#34;  
+echo &#34;&#34;  
+echo &#34;📌 下一步操作：&#34;  
+echo &#34;1. 检查配置：nano setup-elastic-sync.sh （修改 MySQL 地址、用户、密码）&#34;  
+echo &#34;2. 增加权限：chmod &#43;x setup-elastic-sync.sh&#34;  
+echo &#34;3. 执行脚本：sudo ./setup-elastic-sync.sh&#34;  
+echo &#34;4. 启动服务：sudo docker compose up -d&#34;  
+echo &#34;5. 创建索引：bash ./create-index.sh&#34;  
+echo &#34;6. 访问 Kibana：http://你的服务器IP:5601&#34;  
+echo &#34; &amp;#8211; 用户：elastic&#34;  
+echo &#34; &amp;#8211; 密码：$ELASTIC_PASSWORD&#34;  
+echo &#34;&#34;  
+echo &#34;💡 首次运行会全量同步 articles 表，之后每 2 分钟增量同步&#34;  
+echo &#34;🔍 在 Kibana 中搜索中文（如“阿里巴巴”），应能命中结果&#34;  
+echo &#34;&#34;  
+echo &#34;⚠️ 注意：必须先运行 create-index.sh 再让 Logstash 写入，否则分词无效！&#34;
+如果 kibana 用 elastic 用户连不上，通过 Elasticsearch 的 Security API 为内置用户 kibana_system 修改密码：">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/posts/2025-08-28-%E4%BD%BF%E7%94%A8-docker-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2-elk-%E6%9C%8D%E5%8A%A1%E8%84%9A%E6%9C%AC/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2025-08-28-%E4%BD%BF%E7%94%A8-docker-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2-elk-%E6%9C%8D%E5%8A%A1%E8%84%9A%E6%9C%AC/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">文章</a></div>
+    <h1 class="post-title entry-hint-parent">
+      使用 docker 一键部署 ELK(包含中文分词) 服务脚本
+    </h1>
+    <div class="post-meta"><span title='2025-08-28 09:26:14 +0000 +0000'>August 28, 2025</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>891 words</span>&nbsp;·&nbsp;<span>Bridge Li</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>前几天公司有个需求要做全文索引，于是写了一个脚本使用 docker 一键部署 ELK 服务，内容如下：</p>
+<pre tabindex="0"><code>
+#!/bin/bash  
+set -e
+
+echo &#34;==================================================&#34;  
+echo &#34;🚀 开始部署 ELK + MySQL 同步（中文分词 + 固定索引）&#34;  
+echo &#34;==================================================&#34;
+
+\# ==================== 配置区（请修改）====================  
+MYSQL_HOST=&#34;192.168.124.6&#34; # ✏️ 修改为你的 MySQL IP  
+MYSQL_USER=&#34;root&#34; # 读取权限用户  
+MYSQL_PASSWORD=&#34;123456&#34; # 用户密码  
+MYSQL_DB=&#34;ams&#34; # 数据库名
+
+ELASTIC_PASSWORD=&#34;i*B4j6eD+g0e&#34; # ES 密码（至少 8 位，含大小写+数字）
+
+ES_VERSION=&#34;8.11.3&#34; # 必须与 IK 插件版本一致  
+LOGSTASH_VERSION=&#34;8.11.3&#34;  
+\# ========================================================
+
+\# 项目路径  
+ROOT_DIR=&#34;/project/elastic-sync&#34;  
+mkdir -p &#34;$ROOT_DIR&#34;  
+cd &#34;$ROOT_DIR&#34;
+
+echo &#34;📁 创建项目目录结构&#34;  
+mkdir -p config/mysql config data/es data/kibana logs/logstash plugins/ik
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 下载 IK 分词插件 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;  
+IK_URL=&#34;https://release.infinilabs.com/analysis-ik/stable/elasticsearch-analysis-ik-ik-${ES_VERSION}.zip&#34;  
+IK_DIR=&#34;$ROOT_DIR/plugins/ik&#34;
+
+if [ ! -f &#34;$IK_DIR/plugin-descriptor.properties&#34; ]; then  
+echo &#34;📥 正在下载 IK 分词插件 v${ES_VERSION}&amp;#8230;&#34;  
+wget -q &#34;$IK_URL&#34; -O /tmp/ik.zip  
+unzip -q /tmp/ik.zip -d &#34;$IK_DIR&#34;  
+rm /tmp/ik.zip  
+chown -R 1000:1000 &#34;$IK_DIR&#34;  
+echo &#34;✅ IK 插件安装完成&#34;  
+else  
+echo &#34;ℹ️ IK 插件已存在，跳过安装&#34;  
+fi
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 elasticsearch.yml &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+cat &gt; config/elasticsearch.yml &lt;&lt; EOF  
+cluster.name: production-cluster  
+node.name: node-1  
+node.roles: [ data, master, ingest ]
+
+path:  
+data: /usr/share/elasticsearch/data  
+logs: /usr/share/elasticsearch/logs
+
+network.host: 0.0.0.0  
+http.port: 9200
+
+http.cors.enabled: true  
+http.cors.allow-origin: &#34;*&#34;
+
+discovery.type: single-node
+
+xpack.security.enabled: true  
+xpack.security.http.ssl.enabled: false
+
+xpack.monitoring.collection.enabled: true  
+EOF
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 logstash.yml &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+cat &gt; config/logstash.yml &lt;&lt; EOF  
+http.host: &#34;0.0.0.0&#34;  
+xpack.monitoring.enabled: false  
+config.reload.automatic: false  
+EOF
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 logstash.conf &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+cat &gt; config/logstash.conf &lt;&lt; EOF  
+input {  
+jdbc {  
+jdbc_connection_string =&gt; &#34;jdbc:mysql://$MYSQL_HOST:3306/$MYSQL_DB?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai&#34;  
+jdbc_user =&gt; &#34;$MYSQL_USER&#34;  
+jdbc_password =&gt; &#34;$MYSQL_PASSWORD&#34;  
+jdbc_driver_library =&gt; &#34;/usr/share/logstash/mysql/mysql-connector-java-8.0.30.jar&#34;  
+jdbc_driver_class =&gt; &#34;com.mysql.cj.jdbc.Driver&#34;
+
+jdbc_default_timezone =&gt; &#34;Asia/Shanghai&#34;
+
+statement =&gt; &#34;  
+SELECT * FROM article  
+WHERE updated_at &gt;= :sql_last_value  
+ORDER BY updated_at ASC  
+&#34;
+
+use_column_value =&gt; true  
+tracking_column =&gt; &#34;updated_at&#34;  
+tracking_column_type =&gt; &#34;timestamp&#34;  
+last_run_metadata_path =&gt; &#34;/usr/share/logstash/.logstash_jdbc_last_run&#34;
+
+schedule =&gt; &#34;\*/2 \* \* \* *&#34;  
+}  
+}
+
+filter {
+
+\# 清洗 content 字段中的 HTML 标签  
+if [content] {  
+mutate {  
+gsub =&gt; [  
+&#34;content&#34;, &#34;&lt;[^&gt;]*&gt;&#34;, &#34;&#34; # 删除所有 HTML 标签：&lt;p&gt;、&lt;div&gt;、&lt;span&gt; 等  
+]  
+}  
+\# 可选：进一步清理多余的空白字符  
+mutate {  
+gsub =&gt; [  
+&#34;content&#34;, &#34;\s+&#34;, &#34; &#34; # 多个空白字符（空格、换行、制表符）合并为一个空格  
+]  
+}  
+mutate {  
+strip =&gt; [&#34;content&#34;] # 去除首尾空格  
+}  
+}
+
+\# 如果 del_flag 是 1，标记该记录用于删除  
+if [del_flag] == 1 {  
+mutate {  
+add_tag =&gt; [&#34;delete_document&#34;]  
+}  
+}  
+}
+
+output {  
+if &#34;delete_document&#34; in [tags] {  
+elasticsearch {  
+hosts =&gt; [&#34;http://elasticsearch:9200&#34;]  
+user =&gt; &#34;elastic&#34;  
+password =&gt; &#34;$ELASTIC_PASSWOR&#34;  
+action =&gt; &#34;delete&#34;  
+document_id =&gt; &#34;%{id}&#34;  
+index =&gt; &#34;articles&#34;  
+}  
+} else {  
+elasticsearch {  
+hosts =&gt; [&#34;http://elasticsearch:9200&#34;]  
+user =&gt; &#34;elastic&#34;  
+password =&gt; &#34;$ELASTIC_PASSWOR&#34;  
+index =&gt; &#34;articles&#34; # ✅ 固定索引  
+document_id =&gt; &#34;%{id}&#34; # 支持 varchar id  
+doc_as_upsert =&gt; true # 更新覆盖  
+}  
+}
+
+stdout { codec =&gt; rubydebug }  
+}  
+EOF
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 docker-compose.yml &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+cat &gt; docker-compose.yml &lt;&lt; EOF  
+services:  
+elasticsearch:  
+image: docker.elastic.co/elasticsearch/elasticsearch:$ES_VERSION  
+container_name: elasticsearch  
+environment:  
+&amp;#8211; discovery.type=single-node  
+&amp;#8211; ES_JAVA_OPTS=-Xms2g -Xmx2g  
+&amp;#8211; xpack.security.enabled=true  
+&amp;#8211; xpack.security.http.ssl.enabled=false  
+&amp;#8211; ELASTIC_PASSWORD=$ELASTIC_PASSWORD  
+ports:  
+&amp;#8211; &#34;9200:9200&#34;  
+volumes:  
+&amp;#8211; ./data/es:/usr/share/elasticsearch/data  
+&amp;#8211; ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml  
+&amp;#8211; ./plugins/ik:/usr/share/elasticsearch/plugins/ik  
+networks:  
+&amp;#8211; elastic  
+restart: unless-stopped  
+healthcheck:  
+test: [&#34;CMD-SHELL&#34;, &#34;curl -f http://localhost:9200 || exit 1&#34;]  
+interval: 30s  
+timeout: 10s  
+retries: 3
+
+kibana:  
+image: docker.elastic.co/kibana/kibana:$LOGSTASH_VERSION  
+container_name: kibana  
+depends_on:  
+elasticsearch:  
+condition: service_healthy  
+environment:  
+&amp;#8211; ELASTICSEARCH_HOSTS=[&#34;http://elasticsearch:9200&#34;]  
+&amp;#8211; ELASTICSEARCH_USERNAME=elastic  
+&amp;#8211; ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD  
+&amp;#8211; SERVER_NAME=kibana.example.com  
+&amp;#8211; I18N_LOCALE=zh-CN  
+ports:  
+&amp;#8211; &#34;5601:5601&#34;  
+volumes:  
+&amp;#8211; ./data/kibana:/usr/share/kibana/data  
+networks:  
+&amp;#8211; elastic  
+restart: unless-stopped
+
+logstash:  
+image: docker.elastic.co/logstash/logstash:$LOGSTASH_VERSION  
+container_name: logstash  
+depends_on:  
+&amp;#8211; elasticsearch  
+volumes:  
+&amp;#8211; ./config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf  
+&amp;#8211; ./config/logstash.yml:/usr/share/logstash/config/logstash.yml  
+&amp;#8211; ./logs/logstash:/var/log/logstash  
+&amp;#8211; ./config/mysql:/usr/share/logstash/mysql  
+networks:  
+&amp;#8211; elastic  
+restart: unless-stopped
+
+networks:  
+elastic:  
+driver: bridge  
+EOF
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 下载 MySQL JDBC 驱动 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+JDBC_JAR=&#34;config/mysql/mysql-connector-java-8.0.30.jar&#34;  
+if [ ! -f &#34;$JDBC_JAR&#34; ]; then  
+echo &#34;📥 下载 MySQL JDBC 驱动&amp;#8230;&#34;  
+mkdir -p config/mysql  
+wget -q https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30.jar -O &#34;$JDBC_JAR&#34;  
+echo &#34;✅ JDBC 驱动下载完成&#34;  
+fi
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 设置权限 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+echo &#34;🔐 设置目录权限&#34;  
+chown -R 1000:1000 data/es plugins/ik  
+chmod -R 755 config logs  
+chmod -R 777 data/kibana
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成创建索引脚本 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+cat &gt; create-index.sh &lt;&lt; &amp;#8216;EOF&amp;#8217;  
+#!/bin/bash  
+echo &#34;🔄 正在创建索引 &amp;#8216;articles&amp;#8217; 并配置 IK 分词器&amp;#8230;&#34;
+
+curl -X PUT &#34;http://localhost:9200/articles&#34; \  
+-u elastic:$ELASTIC_PASSWORD \  
+-H &#34;Content-Type: application/json&#34; \  
+-d &amp;#8216;  
+{  
+&#34;settings&#34;: {  
+&#34;index&#34;: {  
+&#34;number_of_shards&#34;: 1,  
+&#34;number_of_replicas&#34;: 1  
+},  
+&#34;analysis&#34;: {  
+&#34;analyzer&#34;: {  
+&#34;ik_analyzer&#34;: {  
+&#34;type&#34;: &#34;custom&#34;,  
+&#34;tokenizer&#34;: &#34;ik_max_word&#34;,  
+&#34;filter&#34;: [&#34;lowercase&#34;]  
+}  
+}  
+}  
+},  
+&#34;mappings&#34;: {  
+&#34;properties&#34;: {  
+&#34;id&#34;: { &#34;type&#34;: &#34;keyword&#34; },  
+&#34;title&#34;: {  
+&#34;type&#34;: &#34;text&#34;,  
+&#34;analyzer&#34;: &#34;ik_max_word&#34;,  
+&#34;search_analyzer&#34;: &#34;ik_smart&#34;  
+},  
+&#34;content&#34;: {  
+&#34;type&#34;: &#34;text&#34;,  
+&#34;analyzer&#34;: &#34;ik_max_word&#34;,  
+&#34;search_analyzer&#34;: &#34;ik_smart&#34;  
+},  
+&#34;author&#34;: { &#34;type&#34;: &#34;keyword&#34; },  
+&#34;created_at&#34;: { &#34;type&#34;: &#34;date&#34; },  
+&#34;updated_at&#34;: { &#34;type&#34;: &#34;date&#34; }  
+}  
+}  
+}&amp;#8217; &amp;&amp; echo &#34;✅ 索引 &amp;#8216;articles&amp;#8217; 创建成功！&#34;  
+EOF
+
+chmod +x create-index.sh
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 完成 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+echo &#34;==================================================&#34;  
+echo &#34;🎉 部署准备完成！&#34;  
+echo &#34;==================================================&#34;  
+echo &#34;&#34;  
+echo &#34;📌 下一步操作：&#34;  
+echo &#34;1. 检查配置：nano setup-elastic-sync.sh （修改 MySQL 地址、用户、密码）&#34;  
+echo &#34;2. 增加权限：chmod +x setup-elastic-sync.sh&#34;  
+echo &#34;3. 执行脚本：sudo ./setup-elastic-sync.sh&#34;  
+echo &#34;4. 启动服务：sudo docker compose up -d&#34;  
+echo &#34;5. 创建索引：bash ./create-index.sh&#34;  
+echo &#34;6. 访问 Kibana：http://你的服务器IP:5601&#34;  
+echo &#34; &amp;#8211; 用户：elastic&#34;  
+echo &#34; &amp;#8211; 密码：$ELASTIC_PASSWORD&#34;  
+echo &#34;&#34;  
+echo &#34;💡 首次运行会全量同步 articles 表，之后每 2 分钟增量同步&#34;  
+echo &#34;🔍 在 Kibana 中搜索中文（如“阿里巴巴”），应能命中结果&#34;  
+echo &#34;&#34;  
+echo &#34;⚠️ 注意：必须先运行 create-index.sh 再让 Logstash 写入，否则分词无效！&#34;
+</code></pre><p>如果 kibana 用 elastic 用户连不上，通过 Elasticsearch 的 Security API 为内置用户 kibana_system 修改密码：</p>
+<pre tabindex="0"><code>
+curl -X POST &#34;http://localhost:9200/_security/user/kibana_system/_password&#34; -u elastic:i*B4j6eD+g0e -H &#34;Content-Type: application/json&#34; -d &amp;#8216;{  
+&#34;password&#34;: &#34;kibana_secure_password_2025&#34;  
+}&amp;#8217;
+</code></pre><p>然后修改 docker-compose.yml 中 kibana 修改用户名：kibana_system，密码：kibana_secure_password_2025</p>
+<p>另 Ubuntu 安装 docker 命令：</p>
+<pre tabindex="0"><code>
+\# 关防火墙（可选）  
+sudo systemctl disable ufw  
+sudo apt-get update  
+sudo apt-get install apt-transport-https ca-certificates curl software-properties-common  
+\# 下载并添加 Docker 的 GPG 密钥  
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg &amp;#8211;dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg  
+\# 添加 Docker 的 APT 软件源  
+echo &#34;deb [arch=$(dpkg &amp;#8211;print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&#34; | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+
+\# 添加阿里云的 Docker GPG 密钥（可选，信任源）  
+curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo gpg &amp;#8211;dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg  
+\# 使用阿里云镜像源  
+echo &#34;deb [arch=$(dpkg &amp;#8211;print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable&#34; | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+
+sudo apt-get update  
+sudo apt-get install docker-ce docker-ce-cli containerd.io  
+docker &amp;#8211;version  
+sudo systemctl is-enabled docker  
+sudo systemctl enable docker  
+sudo systemctl start docker  
+sudo docker ps
+</code></pre>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/elasticsearch/">ElasticSearch</a></li>
+      <li><a href="http://localhost:1313/tags/elasticsearch-analysis-ik/">Elasticsearch-Analysis-Ik</a></li>
+      <li><a href="http://localhost:1313/tags/elk/">ELK</a></li>
+      <li><a href="http://localhost:1313/tags/ik%E5%88%86%E8%AF%8D/">IK分词</a></li>
+      <li><a href="http://localhost:1313/tags/kibana/">Kibana</a></li>
+      <li><a href="http://localhost:1313/tags/logstash/">Logstash</a></li>
+    </ul>
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 使用 docker 一键部署 ELK(包含中文分词) 服务脚本 on x"
+            href="https://x.com/intent/tweet/?text=%e4%bd%bf%e7%94%a8%20docker%20%e4%b8%80%e9%94%ae%e9%83%a8%e7%bd%b2%20ELK%28%e5%8c%85%e5%90%ab%e4%b8%ad%e6%96%87%e5%88%86%e8%af%8d%29%20%e6%9c%8d%e5%8a%a1%e8%84%9a%e6%9c%ac&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-08-28-%25E4%25BD%25BF%25E7%2594%25A8-docker-%25E4%25B8%2580%25E9%2594%25AE%25E9%2583%25A8%25E7%25BD%25B2-elk-%25E6%259C%258D%25E5%258A%25A1%25E8%2584%259A%25E6%259C%25AC%2f&amp;hashtags=ElasticSearch%2celasticsearch-analysis-ik%2cELK%2cIK%e5%88%86%e8%af%8d%2ckibana%2cLogstash">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 使用 docker 一键部署 ELK(包含中文分词) 服务脚本 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-08-28-%25E4%25BD%25BF%25E7%2594%25A8-docker-%25E4%25B8%2580%25E9%2594%25AE%25E9%2583%25A8%25E7%25BD%25B2-elk-%25E6%259C%258D%25E5%258A%25A1%25E8%2584%259A%25E6%259C%25AC%2f&amp;title=%e4%bd%bf%e7%94%a8%20docker%20%e4%b8%80%e9%94%ae%e9%83%a8%e7%bd%b2%20ELK%28%e5%8c%85%e5%90%ab%e4%b8%ad%e6%96%87%e5%88%86%e8%af%8d%29%20%e6%9c%8d%e5%8a%a1%e8%84%9a%e6%9c%ac&amp;summary=%e4%bd%bf%e7%94%a8%20docker%20%e4%b8%80%e9%94%ae%e9%83%a8%e7%bd%b2%20ELK%28%e5%8c%85%e5%90%ab%e4%b8%ad%e6%96%87%e5%88%86%e8%af%8d%29%20%e6%9c%8d%e5%8a%a1%e8%84%9a%e6%9c%ac&amp;source=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-08-28-%25E4%25BD%25BF%25E7%2594%25A8-docker-%25E4%25B8%2580%25E9%2594%25AE%25E9%2583%25A8%25E7%25BD%25B2-elk-%25E6%259C%258D%25E5%258A%25A1%25E8%2584%259A%25E6%259C%25AC%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 使用 docker 一键部署 ELK(包含中文分词) 服务脚本 on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-08-28-%25E4%25BD%25BF%25E7%2594%25A8-docker-%25E4%25B8%2580%25E9%2594%25AE%25E9%2583%25A8%25E7%25BD%25B2-elk-%25E6%259C%258D%25E5%258A%25A1%25E8%2584%259A%25E6%259C%25AC%2f&title=%e4%bd%bf%e7%94%a8%20docker%20%e4%b8%80%e9%94%ae%e9%83%a8%e7%bd%b2%20ELK%28%e5%8c%85%e5%90%ab%e4%b8%ad%e6%96%87%e5%88%86%e8%af%8d%29%20%e6%9c%8d%e5%8a%a1%e8%84%9a%e6%9c%ac">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 使用 docker 一键部署 ELK(包含中文分词) 服务脚本 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-08-28-%25E4%25BD%25BF%25E7%2594%25A8-docker-%25E4%25B8%2580%25E9%2594%25AE%25E9%2583%25A8%25E7%25BD%25B2-elk-%25E6%259C%258D%25E5%258A%25A1%25E8%2584%259A%25E6%259C%25AC%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 使用 docker 一键部署 ELK(包含中文分词) 服务脚本 on whatsapp"
+            href="https://api.whatsapp.com/send?text=%e4%bd%bf%e7%94%a8%20docker%20%e4%b8%80%e9%94%ae%e9%83%a8%e7%bd%b2%20ELK%28%e5%8c%85%e5%90%ab%e4%b8%ad%e6%96%87%e5%88%86%e8%af%8d%29%20%e6%9c%8d%e5%8a%a1%e8%84%9a%e6%9c%ac%20-%20http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-08-28-%25E4%25BD%25BF%25E7%2594%25A8-docker-%25E4%25B8%2580%25E9%2594%25AE%25E9%2583%25A8%25E7%25BD%25B2-elk-%25E6%259C%258D%25E5%258A%25A1%25E8%2584%259A%25E6%259C%25AC%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 使用 docker 一键部署 ELK(包含中文分词) 服务脚本 on telegram"
+            href="https://telegram.me/share/url?text=%e4%bd%bf%e7%94%a8%20docker%20%e4%b8%80%e9%94%ae%e9%83%a8%e7%bd%b2%20ELK%28%e5%8c%85%e5%90%ab%e4%b8%ad%e6%96%87%e5%88%86%e8%af%8d%29%20%e6%9c%8d%e5%8a%a1%e8%84%9a%e6%9c%ac&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-08-28-%25E4%25BD%25BF%25E7%2594%25A8-docker-%25E4%25B8%2580%25E9%2594%25AE%25E9%2583%25A8%25E7%25BD%25B2-elk-%25E6%259C%258D%25E5%258A%25A1%25E8%2584%259A%25E6%259C%25AC%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 使用 docker 一键部署 ELK(包含中文分词) 服务脚本 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=%e4%bd%bf%e7%94%a8%20docker%20%e4%b8%80%e9%94%ae%e9%83%a8%e7%bd%b2%20ELK%28%e5%8c%85%e5%90%ab%e4%b8%ad%e6%96%87%e5%88%86%e8%af%8d%29%20%e6%9c%8d%e5%8a%a1%e8%84%9a%e6%9c%ac&u=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-08-28-%25E4%25BD%25BF%25E7%2594%25A8-docker-%25E4%25B8%2580%25E9%2594%25AE%25E9%2583%25A8%25E7%25BD%25B2-elk-%25E6%259C%258D%25E5%258A%25A1%25E8%2584%259A%25E6%259C%25AC%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

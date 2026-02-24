@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>工作流 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/</link>
+    <description>Recent content in 工作流 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 29 Nov 2015 14:20:15 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>工作流Activiti5入门（下）</title>
+      <link>http://localhost:1313/posts/2015-11-29-%E5%B7%A5%E4%BD%9C%E6%B5%81activiti5%E5%85%A5%E9%97%A8%E4%B8%8B/</link>
+      <pubDate>Sun, 29 Nov 2015 14:20:15 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-11-29-%E5%B7%A5%E4%BD%9C%E6%B5%81activiti5%E5%85%A5%E9%97%A8%E4%B8%8B/</guid>
+      <description>&lt;p&gt;看了工作流上和中的人，相信已经在慢慢入门了，因为本教程也只是致力于做一个入门而已，然后在用的过程中再慢慢学习，用来工作也许是一点问题都没有了，如果没有看过请看&lt;a href=&#34;https://www.bridgeli.cn/archives/197&#34; title=&#34;工作流Activiti5入门（上）&#34;&gt;这篇&lt;/a&gt;和&lt;a href=&#34;https://www.bridgeli.cn/archives/229&#34; title=&#34;工作流Activiti5入门（中）&#34;&gt;这篇&lt;/a&gt;，所以本没有必要再写下了，但实在感觉留下一个小尾巴：数据库还没有给大家介绍，这个入门实在是太过简陋，所以今天就把这篇文章来一个扫尾，下面先看最后一个想用的task&lt;/p&gt;
+&lt;p&gt;六. 组任务&lt;/p&gt;
+&lt;p&gt;流程图：&lt;br&gt;
+&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/11/9.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/11/9.png&#34; alt=&#34;9&#34; width=&#34;186&#34; height=&#34;292&#34; class=&#34;alignnone size-full wp-image-222&#34; /&gt;&lt;/a&gt;&lt;br&gt;
+其实和用户任务看起来并无差别，下面看实现&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;分配组任务方式一（直接指定办理人）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;具体配置：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/11/11.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/11/11-300x54.png&#34; alt=&#34;11&#34; width=&#34;300&#34; height=&#34;54&#34; class=&#34;alignnone size-medium wp-image-224&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;完成任务：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+/*\*查询当前人的个人任务\*/  
+@Test  
+public void findMyPersonalTask(){  
+String assignee = &amp;#34;小A&amp;#34;;  
+List&amp;lt;Task&amp;gt; list = processEngine.getTaskService()//与正在执行的任务管理相关的Service  
+.createTaskQuery()//创建任务查询对象  
+/*\*查询条件（where部分）\*/  
+.taskAssignee(assignee)//指定个人任务查询，指定办理人  
+// .taskCandidateUser(candidateUser)//组任务的办理人查询  
+/*\*排序\*/  
+.orderByTaskCreateTime().asc()//使用创建时间的升序排列  
+/*\*返回结果集\*/  
+.list();//返回列表  
+if(list!=null &amp;amp;&amp;amp; list.size()&amp;gt;0){  
+for(Task task:list){  
+System.out.println(&amp;#34;任务ID:&amp;#34;+task.getId());  
+System.out.println(&amp;#34;任务名称:&amp;#34;+task.getName());  
+System.out.println(&amp;#34;任务的创建时间:&amp;#34;+task.getCreateTime());  
+System.out.println(&amp;#34;任务的办理人:&amp;#34;+task.getAssignee());  
+System.out.println(&amp;#34;流程实例ID：&amp;#34;+task.getProcessInstanceId());  
+System.out.println(&amp;#34;执行对象ID:&amp;#34;+task.getExecutionId());  
+System.out.println(&amp;#34;流程定义ID:&amp;#34;+task.getProcessDefinitionId());  
+System.out.println(&amp;#34;########################################################&amp;#34;);  
+}  
+}  
+}
+
+/*\*查询当前人的组任务\*/  
+@Test  
+public void findMyGroupTask(){  
+String candidateUser = &amp;#34;大大&amp;#34;;  
+List&amp;lt;Task&amp;gt; list = processEngine.getTaskService()//与正在执行的任务管理相关的Service  
+.createTaskQuery()//创建任务查询对象  
+/*\*查询条件（where部分）\*/  
+.taskCandidateUser(candidateUser)//组任务的办理人查询  
+/*\*排序\*/  
+.orderByTaskCreateTime().asc()//使用创建时间的升序排列  
+/*\*返回结果集\*/  
+.list();//返回列表  
+if(list!=null &amp;amp;&amp;amp; list.size()&amp;gt;0){  
+for(Task task:list){  
+System.out.println(&amp;#34;任务ID:&amp;#34;+task.getId());  
+System.out.println(&amp;#34;任务名称:&amp;#34;+task.getName());  
+System.out.println(&amp;#34;任务的创建时间:&amp;#34;+task.getCreateTime());  
+System.out.println(&amp;#34;任务的办理人:&amp;#34;+task.getAssignee());  
+System.out.println(&amp;#34;流程实例ID：&amp;#34;+task.getProcessInstanceId());  
+System.out.println(&amp;#34;执行对象ID:&amp;#34;+task.getExecutionId());  
+System.out.println(&amp;#34;流程定义ID:&amp;#34;+task.getProcessDefinitionId());  
+System.out.println(&amp;#34;########################################################&amp;#34;);  
+}  
+}  
+}
+
+/*\*完成我的任务\*/  
+@Test  
+public void completeMyPersonalTask(){  
+//任务ID  
+String taskId = &amp;#34;6905&amp;#34;;  
+processEngine.getTaskService()//与正在执行的任务管理相关的Service  
+.complete(taskId);  
+System.out.println(&amp;#34;完成任务：任务ID：&amp;#34;+taskId);  
+}
+
+/*\*查询正在执行的任务办理人表\*/  
+@Test  
+public void findRunPersonTask(){  
+//任务ID  
+String taskId = &amp;#34;6204&amp;#34;;  
+List&amp;lt;IdentityLink&amp;gt; list = processEngine.getTaskService()//  
+.getIdentityLinksForTask(taskId);  
+if(list!=null &amp;amp;&amp;amp; list.size()&amp;gt;0){  
+for(IdentityLink identityLink:list){  
+System.out.println(identityLink.getTaskId()+&amp;#34; &amp;#34;+identityLink.getType()+&amp;#34; &amp;#34;+identityLink.getProcessInstanceId()+&amp;#34; &amp;#34;+identityLink.getUserId());  
+}  
+}  
+}  
+/*\*查询历史任务的办理人表\*/  
+@Test  
+public void findHistoryPersonTask(){  
+//流程实例ID  
+String processInstanceId = &amp;#34;6201&amp;#34;;  
+List&amp;lt;HistoricIdentityLink&amp;gt; list = processEngine.getHistoryService()//  
+.getHistoricIdentityLinksForProcessInstance(processInstanceId);  
+if(list!=null &amp;amp;&amp;amp; list.size()&amp;gt;0){  
+for(HistoricIdentityLink identityLink:list){  
+System.out.println(identityLink.getTaskId()+&amp;#34; &amp;#34;+identityLink.getType()+&amp;#34; &amp;#34;+identityLink.getProcessInstanceId()+&amp;#34; &amp;#34;+identityLink.getUserId());  
+}  
+}  
+}
+
+/*\*拾取任务，将组任务分给个人任务，指定任务的办理人字段\*/  
+@Test  
+public void claim(){  
+//将组任务分配给个人任务  
+//任务ID  
+String taskId = &amp;#34;6905&amp;#34;;  
+//分配的个人任务（可以是组任务中的成员，也可以是非组任务的成员）  
+String userId = &amp;#34;大大&amp;#34;;  
+processEngine.getTaskService()//  
+.claim(taskId, userId);  
+}
+
+/*\*将个人任务回退到组任务，前提，之前一定是个组任务\*/  
+@Test  
+public void setAssigee(){  
+//任务ID  
+String taskId = &amp;#34;6204&amp;#34;;  
+processEngine.getTaskService()//  
+.setAssignee(taskId, null);  
+}
+
+/*\*向组任务中添加成员\*/  
+@Test  
+public void addGroupUser(){  
+//任务ID  
+String taskId = &amp;#34;6204&amp;#34;;  
+//成员办理人  
+String userId = &amp;#34;大H&amp;#34;;  
+processEngine.getTaskService()//  
+.addCandidateUser(taskId, userId);  
+}
+
+/*\*从组任务中删除成员\*/  
+@Test  
+public void deleteGroupUser(){  
+//任务ID  
+String taskId = &amp;#34;6204&amp;#34;;  
+//成员办理人  
+String userId = &amp;#34;小B&amp;#34;;  
+processEngine.getTaskService()//  
+.deleteCandidateUser(taskId, userId);  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;分配组任务方式二（使用流程变量）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;具体配置：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>工作流Activiti5入门（中）</title>
+      <link>http://localhost:1313/posts/2015-11-22-fdsfdsf/</link>
+      <pubDate>Sun, 22 Nov 2015 13:21:25 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-11-22-fdsfdsf/</guid>
+      <description>&lt;p&gt;时光匆匆，没想到转眼离上次写&lt;a href=&#34;https://www.bridgeli.cn/archives/197&#34; title=&#34;工作流Activiti5入门（上）&#34;&gt;工作流Activiti5入门（上）&lt;/a&gt;已经过去快四个月了，上次主要写了有关环境的搭建、工作流的部署、启动、查询、认领、完成任务以及查询流程状态和删除流程等，今天我们看看一些更高级也是非常经常用到的一些功能。&lt;/p&gt;
+&lt;p&gt;一. 连线&lt;/p&gt;
+&lt;p&gt;一个流程图不可能都是一些孤立的点，点和点之间需要一些线连接，那么这些线该如何连接呢？&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;一个活动中可以指定一个或多个SequenceFlow。&lt;br&gt;
+开始活动中有一个SequenceFlow 。&lt;br&gt;
+结束活动中没有SequenceFlow 。&lt;br&gt;
+其他活动中有1条或多条SequenceFlow&lt;/li&gt;
+&lt;li&gt;如果只有一个，则可以不使用流程变量设置codition的名称；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如果有多个，则需要使用流程变量设置codition的名称。message表示流程变量的名称，‘不重要’表示流程变量的值，${}中间的内容要使用boolean类型的表达式，用来判断应该执行的连线。例如可以这样，如果${}成立，则会按照这个方向走&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;流程图&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/11/1.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/11/1-300x118.png&#34; alt=&#34;1&#34; width=&#34;300&#34; height=&#34;118&#34; class=&#34;alignnone size-medium wp-image-214&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;完成任务&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+/*\*完成我的任务\*/  
+@Test  
+public void completeMyPersonalTask(){  
+//任务ID  
+String taskId = &amp;#34;3103&amp;#34;;  
+//完成任务的同时，设置流程变量，使用流程变量用来指定完成任务后，下一个连线，对应sequenceFlow.bpmn文件中${message==&amp;amp;#8217;不重要&amp;amp;#8217;}  
+Map&amp;lt;String, Object&amp;gt; variables = new HashMap&amp;lt;String, Object&amp;gt;();  
+variables.put(&amp;#34;message&amp;#34;, &amp;#34;重要&amp;#34;);  
+processEngine.getTaskService()//与正在执行的任务管理相关的Service  
+.complete(taskId,variables);  
+System.out.println(&amp;#34;完成任务：任务ID：&amp;#34;+taskId);  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;连线比较简单，既不多做介绍了&lt;/p&gt;
+&lt;p&gt;二. 排他网关&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;一个排他网关对应一个以上的顺序流&lt;br&gt;
+由排他网关流出的顺序流都有个conditionExpression元素，在内部维护返回boolean类型的决策结果。&lt;br&gt;
+决策网关只会返回一条结果。当流程执行到排他网关时，流程引擎会自动检索网关出口，从上到下检索如果发现第一条决策结果为true或者没有设置条件的(默认为成立)，则流出。&lt;br&gt;
+如果没有任何一个出口符合条件，则抛出异常&lt;br&gt;
+使用流程变量，设置连线的条件，并按照连线的条件执行工作流，如果没有条件符合的条件，则以默认的连线离开。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;流程图&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/11/4.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/11/4-300x138.png&#34; alt=&#34;4&#34; width=&#34;300&#34; height=&#34;138&#34; class=&#34;alignnone size-medium wp-image-217&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;完成个人任务&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+/*\*完成我的任务\*/  
+@Test  
+public void completeMyPersonalTask(){  
+//任务ID  
+String taskId = &amp;#34;3904&amp;#34;;  
+//完成任务的同时，设置流程变量，使用流程变量用来指定完成任务后，下一个连线，对应exclusiveGateWay.bpmn文件中${money&amp;gt;1000}  
+Map&amp;lt;String, Object&amp;gt; variables = new HashMap&amp;lt;String, Object&amp;gt;();  
+variables.put(&amp;#34;money&amp;#34;, 200);  
+processEngine.getTaskService()//与正在执行的任务管理相关的Service  
+.complete(taskId,variables);  
+System.out.println(&amp;#34;完成任务：任务ID：&amp;#34;+taskId);  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;三. 并行网关&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>敏感词过滤 | 分享技术带来的喜悦</title>
+<meta name="keywords" content="">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/tags/%E6%95%8F%E6%84%9F%E8%AF%8D%E8%BF%87%E6%BB%A4/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/%E6%95%8F%E6%84%9F%E8%AF%8D%E8%BF%87%E6%BB%A4/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/%E6%95%8F%E6%84%9F%E8%AF%8D%E8%BF%87%E6%BB%A4/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/tags/">Tags</a></div>
+  <h1>
+    敏感词过滤
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">DFA算法应用之敏感词过滤
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>公司在做一个社区应用，由于我朝特色，众所周知社区应用有一个很重要的就是要进行敏感词的过滤，这块由一个同事负责，听他说，有一个算法叫DFA，可以做这个，个人比较感兴趣，就到网上查了一些资料，有一篇文章写的特别好，老夫的这篇文章就是把其核心的部分（就是怎么应用，老夫一直有一个观点，理论弱于实践，理论懂得再多不会用一点用没有，所以老夫认为应用是核心）摘出来，留作笔记，如果有想了解其原理的，请点击下方的参考资料，好了，既然是应用那么就直接上代码了：
+package cn.bridgeli.dfa; import java.util.HashSet; import java.util.Iterator; import java.util.Map; import java.util.Set; public class SensitivewordFilter { @SuppressWarnings(&#34;rawtypes&#34;) private Map sensitiveWordMap = null; public static int minMatchTYpe = 1; // 最小匹配规则 public static int maxMatchType = 2; // 最大匹配规则 /** * 初始化敏感词库 */ public SensitivewordFilter() { sensitiveWordMap = new SensitiveWordInit().initKeyWord(); } /** * 判断文字是否包含敏感字符 * * @param txt * 文字 * @param matchType * 匹配规则 1：最小匹配规则，2：最大匹配规则 * @return 若包含返回true，否则返回false */ public boolean isContaintSensitiveWord(String txt, int matchType) { boolean flag = false; for (int i = 0; i &lt; txt.length(); i&#43;&#43;) { int matchFlag = this.CheckSensitiveWord(txt, i, matchType); // 判断是否包含敏感字符 if (matchFlag &gt; 0) { flag = true; } } return flag; } /** * 获取文字中的敏感词 * * @param txt * 文字 * @param matchType * 匹配规则&amp;nbsp;1：最小匹配规则，2：最大匹配规则 * @return */ public Set&lt;String&gt; getSensitiveWord(String txt, int matchType) { Set&lt;String&gt; sensitiveWordList = new HashSet&lt;String&gt;(); for (int i = 0; i &lt; txt.length(); i&#43;&#43;) { int length = CheckSensitiveWord(txt, i, matchType); if (length &gt; 0) { sensitiveWordList.add(txt.substring(i, i &#43; length)); i = i &#43; length &amp;#8211; 1; // 减1的原因，是因为for会自增 } } return sensitiveWordList; } /** * 替换敏感字字符 * * @param txt * @param matchType * @param replaceChar \* 替换字符，默认\* */ public String replaceSensitiveWord(String txt, int matchType, String replaceChar) { String resultTxt = txt; Set&lt;String&gt; set = getSensitiveWord(txt, matchType); // 获取所有的敏感词 Iterator&lt;String&gt; iterator = set.iterator(); String word = null; String replaceString = null; while (iterator.hasNext()) { word = iterator.next(); replaceString = getReplaceChars(replaceChar, word.length()); resultTxt = resultTxt.replaceAll(word, replaceString); } return resultTxt; } /** * 获取替换字符串 * * @param replaceChar * @param length * @return */ private String getReplaceChars(String replaceChar, int length) { String resultReplace = replaceChar; for (int i = 1; i &lt; length; i&#43;&#43;) { resultReplace &#43;= replaceChar; } return resultReplace; } /** * 检查文字中是否包含敏感字符，检查规则如下：&lt;br&gt; * * @param txt * @param beginIndex * @param matchType * @return，如果存在，则返回敏感词字符的长度，不存在返回0 */ @SuppressWarnings({ &#34;rawtypes&#34; }) public int CheckSensitiveWord(String txt, int beginIndex, int matchType) { boolean flag = false; // 敏感词结束标识位：用于敏感词只有1位的情况 int matchFlag = 0; // 匹配标识数默认为0 char word = 0; Map nowMap = sensitiveWordMap; for (int i = beginIndex; i &lt; txt.length(); i&#43;&#43;) { word = txt.charAt(i); nowMap = (Map) nowMap.get(word); // 获取指定key if (nowMap != null) { // 存在，则判断是否为最后一个 matchFlag&#43;&#43;; // 找到相应key，匹配标识&#43;1 if (&#34;1&#34;.equals(nowMap.get(&#34;isEnd&#34;))) { // 如果为最后一个匹配规则,结束循环，返回匹配标识数 flag = true; // 结束标志位为true if (SensitivewordFilter.minMatchTYpe == matchType) { // 最小规则，直接返回,最大规则还需继续查找 break; } } } else { // 不存在，直接返回 break; } } if (matchFlag &lt; 2 || !flag) { // 长度必须大于等于1，为词 matchFlag = 0; } return matchFlag; } public static void main(String[] args) { SensitivewordFilter filter = new SensitivewordFilter(); System.out.println(&#34;敏感词的数量：&#34; &#43; filter.sensitiveWordMap.size()); String string = &#34;太多的伤感情怀也许只局限于饲养基地 荧幕中的情节，主人公尝试着去用某种方式渐渐的很潇洒地释自杀指南怀那些自己经历的伤感。&#34; &#43; &#34;然后法轮功 我们的扮演的角色就是跟随着主人公的喜红客联盟 怒哀乐而过于牵强的把自己的情感也附加于银幕情节中，然后感动就流泪，&#34; &#43; &#34;难过就躺在某一个人的怀里尽情的阐述心扉或者手机卡复制器一个人一杯红酒一部电影在夜三级片 深人静的晚上，关上电话静静的发呆着。&#34;; Set&lt;String&gt; set = filter.getSensitiveWord(string, 1); System.out.println(&#34;语句中包含敏感词的个数为：&#34; &#43; set.size() &#43; &#34;。包含：&#34; &#43; set); } } 这个主要是应用，DFA的核心是下面：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-05-02 12:38:56 +0000 +0000'>May 2, 2016</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>710 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to DFA算法应用之敏感词过滤" href="http://localhost:1313/posts/2016-05-02-dfa%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8%E4%B9%8B%E6%95%8F%E6%84%9F%E8%AF%8D%E8%BF%87%E6%BB%A4/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

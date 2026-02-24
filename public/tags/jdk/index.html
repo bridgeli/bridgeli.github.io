@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>JDK | 分享技术带来的喜悦</title>
+<meta name="keywords" content="">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/tags/jdk/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/jdk/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/jdk/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/tags/">Tags</a></div>
+  <h1>
+    JDK
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">本地开发不同项目使用不同版本 JDK 的解决方案
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>一般我们在公司工作中，很少有人就负责一个项目，而负责不同的项目，由于各种原因使用的 JDK 版本可能并不相同，如果存在不兼容的情况，那么本地 mvn clean compile 的时候就会报错，这个时候就需要我们去修改我们设置的环境变量，如果多个项目同时开发，那么就需要时不时切来切去，特别烦人，其实这个问题 maven 早就替大家考虑过了，我们只需要：
+修改 maven 的 toolchains.xml 文件 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;!&amp;#8211; Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the &#34;License&#34;); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &#34;AS IS&#34; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. &amp;#8211;&gt; &lt;!&amp;#8211; | This is the toolchains file for Maven. It can be specified at two levels: | | 1. User Level. This toolchains.xml file provides configuration for a single user, | and is normally provided in ${user.home}/.m2/toolchains.xml. | | NOTE: This location can be overridden with the CLI option: | | -t /path/to/user/toolchains.xml | | 2. Global Level. This toolchains.xml file provides configuration for all Maven | users on a machine (assuming they&amp;#8217;re all using the same Maven | installation). It&amp;#8217;s normally provided in | ${maven.conf}/toolchains.xml. | | NOTE: This location can be overridden with the CLI option: | | -gt /path/to/global/toolchains.xml | | The sections in this sample file are intended to give you a running start at | getting the most out of your Maven installation. |&amp;#8211;&gt; &lt;toolchains xmlns=&#34;http://maven.apache.org/TOOLCHAINS/1.1.0&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xsi:schemaLocation=&#34;http://maven.apache.org/TOOLCHAINS/1.1.0 http://maven.apache.org/xsd/toolchains-1.1.0.xsd&#34;&gt; &lt;!&amp;#8211; | With toolchains you can refer to installations on your system. This | way you don&amp;#8217;t have to hardcode paths in your pom.xml. | | Every toolchain consist of 3 elements: | * type: the type of tool. An often used value is &amp;#8216;jdk&amp;#8217;. Toolchains-aware | plugins should document which type you must use. | | * provides: A list of key/value-pairs. | Based on the toolchain-configuration in the pom.xml Maven will search for | matching &lt;provides/&gt; configuration. You can decide for yourself which key-value | pairs to use. Often used keys are &amp;#8216;version&amp;#8217;, &amp;#8216;vendor&amp;#8217; and &amp;#8216;arch&amp;#8217;. By default | the version has a special meaning. If you configured in the pom.xml &amp;#8216;1.5&amp;#8217; | Maven will search for 1.5 and above. | | * configuration: Additional configuration for this tool. | Look for documentation of the toolchains-aware plugin which configuration elements | can be used. | | See also https://maven.apache.org/guides/mini/guide-using-toolchains.html | | General example &lt;toolchain&gt; &lt;type/&gt; &lt;provides&gt; &lt;version&gt;1.0&lt;/version&gt; &lt;/provides&gt; &lt;configuration/&gt; &lt;/toolchain&gt; | JDK examples &lt;toolchain&gt; &lt;type&gt;jdk&lt;/type&gt; &lt;provides&gt; &lt;version&gt;1.5&lt;/version&gt; &lt;vendor&gt;sun&lt;/vendor&gt; &lt;/provides&gt; &lt;configuration&gt; &lt;jdkHome&gt;/path/to/jdk/1.5&lt;/jdkHome&gt; &lt;/configuration&gt; &lt;/toolchain&gt; &lt;toolchain&gt; &lt;type&gt;jdk&lt;/type&gt; &lt;provides&gt; &lt;version&gt;1.6&lt;/version&gt; &lt;vendor&gt;sun&lt;/vendor&gt; &lt;/provides&gt; &lt;configuration&gt; &lt;jdkHome&gt;/path/to/jdk/1.6&lt;/jdkHome&gt; &lt;/configuration&gt; &lt;/toolchain&gt; &amp;#8211;&gt; &lt;toolchain&gt; &lt;type&gt;jdk&lt;/type&gt; &lt;provides&gt; &lt;version&gt;17&lt;/version&gt; &lt;/provides&gt; &lt;configuration&gt; &lt;jdkHome&gt;D:\J2EE\Java\jdk-17&lt;/jdkHome&gt; &lt;/configuration&gt; &lt;/toolchain&gt; &lt;toolchain&gt; &lt;type&gt;jdk&lt;/type&gt; &lt;provides&gt; &lt;version&gt;8&lt;/version&gt; &lt;/provides&gt; &lt;configuration&gt; &lt;jdkHome&gt;D:\J2EE\Java\jdk1.8.0_311&lt;/jdkHome&gt; &lt;/configuration&gt; &lt;/toolchain&gt; &lt;/toolchains&gt; 修改项目的 pom.xml 文件 &lt;profiles&gt; &lt;profile&gt; &lt;id&gt;dev&lt;/id&gt; &lt;activation&gt; &lt;activeByDefault&gt;false&lt;/activeByDefault&gt; &lt;/activation&gt; &lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; &lt;artifactId&gt;maven-toolchains-plugin&lt;/artifactId&gt; &lt;version&gt;3.1.0&lt;/version&gt; &lt;executions&gt; &lt;execution&gt; &lt;goals&gt; &lt;goal&gt;toolchain&lt;/goal&gt; &lt;/goals&gt; &lt;/execution&gt; &lt;/executions&gt; &lt;configuration&gt; &lt;toolchains&gt; &lt;jdk&gt; &lt;version&gt;8&lt;/version&gt; &lt;/jdk&gt; &lt;/toolchains&gt; &lt;/configuration&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt; &lt;/profile&gt; &lt;/profiles&gt; 修改完我们在编译的时候只需要运行： mvn clean compile -Pdev 即可，这样编译就会自动用 jdk8 也不是系统环境变量配置的，当然还有更简单的，我们可以修改 pom.xml 中的配置，只需要把：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-12-25 02:24:23 +0000 +0000'>December 25, 2025</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>522 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 本地开发不同项目使用不同版本 JDK 的解决方案" href="http://localhost:1313/posts/2025-12-25-%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E4%B8%8D%E5%90%8C%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC-jdk-%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

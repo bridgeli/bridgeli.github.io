@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>长连接 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E9%95%BF%E8%BF%9E%E6%8E%A5/</link>
+    <description>Recent content in 长连接 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 04 Apr 2016 14:14:24 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E9%95%BF%E8%BF%9E%E6%8E%A5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Spring和websocket整合应用示例（下）</title>
+      <link>http://localhost:1313/posts/2016-04-04-spring%E5%92%8Cwebsocket%E6%95%B4%E5%90%88%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B%E4%B8%8B/</link>
+      <pubDate>Mon, 04 Apr 2016 14:14:24 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-04-04-spring%E5%92%8Cwebsocket%E6%95%B4%E5%90%88%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B%E4%B8%8B/</guid>
+      <description>&lt;p&gt;在&lt;a href=&#34;https://www.bridgeli.cn/archives/262&#34; title=&#34;Spring和websocket整合应用示例（上）&#34;&gt;上篇&lt;/a&gt;中，我们已经实现了websocket，但还有一个核心的业务实现类没有实现，这里我们就实现这个业务核心类，因为老夫参与的这个系统使用websocket发送消息，所以其实现就是如何发送消息了。&lt;/p&gt;
+&lt;ol start=&#34;7&#34;&gt;
+&lt;li&gt;NewsListenerImpl的实现&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.websocket;
+
+import com.google.gson.Gson;  
+import com.google.gson.GsonBuilder;  
+import cn.bridgeli.DateUtil;  
+import cn.bridgeli.enumeration.PlatNewsCategoryType;  
+import cn.bridgeli.model.PlatNewsVo;  
+import cn.bridgeli.model.SearchCondition;  
+import cn.bridgeli.quartz.impl.TimingJob;  
+import cn.bridgeli.service.PlatNewsService;  
+import org.apache.commons.lang.StringUtils;  
+import org.json.simple.JSONArray;  
+import org.json.simple.JSONObject;  
+import org.quartz.*;  
+import org.quartz.impl.StdSchedulerFactory;  
+import org.slf4j.Logger;  
+import org.slf4j.LoggerFactory;  
+import org.springframework.beans.factory.annotation.Autowired;  
+import org.springframework.stereotype.Component;  
+import org.springframework.web.socket.TextMessage;
+
+import java.io.IOException;  
+import java.util.Date;  
+import java.util.List;  
+import java.util.concurrent.ExecutorService;  
+import java.util.concurrent.Executors;
+
+/**  
+* @Description : 站内消息监听器实现  
+* @Date : 16-3-7  
+*/  
+@Component  
+public class NewsListenerImpl implements NewsListener{  
+private static final Logger logger = LoggerFactory.getLogger(NewsListenerImpl.class);  
+Gson gson = new GsonBuilder().setDateFormat(&amp;#34;yyyy-MM-dd HH:mm:ss&amp;#34;).create();
+
+//线程池  
+private ExecutorService executorService = Executors.newCachedThreadPool();
+
+//任务调度  
+private SchedulerFactory sf = new StdSchedulerFactory();
+
+@Autowired  
+private PlatNewsService platNewsService;
+
+@Override  
+public void afterPersist(PlatNewsVo platNewsVo) {  
+logger.info(&amp;#34;监听到有新消息添加。。。&amp;#34;);  
+logger.info(&amp;#34;新消息为:&amp;#34;+gson.toJson(platNewsVo));  
+//启动线程  
+if(null != platNewsVo &amp;amp;&amp;amp; !StringUtils.isBlank(platNewsVo.getCurrentoperatoremail())){  
+//如果是定时消息  
+if(platNewsVo.getNewsType() == PlatNewsCategoryType.TIMING_TIME.getCategoryId()){  
+startTimingTask(platNewsVo); //定时推送  
+}else{  
+//立即推送  
+executorService.execute(new AfterConnectionEstablishedTask(platNewsVo.getCurrentoperatoremail()));  
+}  
+}  
+}
+
+@Override  
+public void afterConnectionEstablished(String email) {  
+logger.info(&amp;#34;建立websocket连接后推送新消息。。。&amp;#34;);  
+if(!StringUtils.isBlank(email)){  
+executorService.execute(new AfterConnectionEstablishedTask(email));  
+}  
+}
+
+/**  
+* @Description ： 如果新添加了定时消息，启动定时消息任务  
+* @param platNewsVo  
+*/  
+private void startTimingTask(PlatNewsVo platNewsVo){  
+logger.info(&amp;#34;开始定时推送消息任务。。。&amp;#34;);
+
+Date timingTime = platNewsVo.getTimingTime();  
+if(null == timingTime){  
+logger.info(&amp;#34;定时消息时间为null。&amp;#34;);  
+return;  
+}  
+logger.info(&amp;#34;定时推送任务时间为：&amp;#34;+DateUtil.date2String(timingTime));
+
+JobDetail jobDetail= JobBuilder.newJob(TimingJob.class)  
+.withIdentity(platNewsVo.getCurrentoperatoremail()+&amp;#34;定时消息&amp;#34;+platNewsVo.getId(), &amp;#34;站内消息&amp;#34;)  
+.build();
+
+//传递参数  
+jobDetail.getJobDataMap().put(&amp;#34;platNewsService&amp;#34;,platNewsService);  
+jobDetail.getJobDataMap().put(&amp;#34;userEmail&amp;#34;,platNewsVo.getCurrentoperatoremail());
+
+Trigger trigger= TriggerBuilder  
+.newTrigger()  
+.withIdentity(&amp;#34;定时消息触发&amp;#34;+platNewsVo.getId(), &amp;#34;站内消息&amp;#34;)  
+.startAt(timingTime)  
+.withSchedule(SimpleScheduleBuilder.simpleSchedule()  
+.withIntervalInSeconds(0) //时间间隔  
+.withRepeatCount(0) //重复次数  
+)  
+.build();
+
+//启动定时任务  
+try {  
+Scheduler sched = sf.getScheduler();  
+sched.scheduleJob(jobDetail,trigger);  
+if(!sched.isShutdown()){  
+sched.start();  
+}
+
+} catch (SchedulerException e) {  
+logger.info(e.toString());  
+}  
+logger.info(&amp;#34;完成开启定时推送消息任务。。。&amp;#34;);
+
+}
+
+/**  
+* @Description : 建立websocket链接后的推送线程  
+*/  
+class AfterConnectionEstablishedTask implements Runnable{
+
+String email ;  
+public AfterConnectionEstablishedTask(String email){  
+this.email = email;  
+}  
+@Override  
+public void run() {  
+logger.info(&amp;#34;开始推送消息给用户:&amp;#34;+email+&amp;#34;。。。&amp;#34;);
+
+if(!StringUtils.isBlank(email)){  
+SearchCondition searchCondition = new SearchCondition();  
+searchCondition.setOperatorEmail(email);
+
+JSONArray jsonArray = new JSONArray();
+
+for(PlatNewsCategoryType type : PlatNewsCategoryType.values()){  
+searchCondition.setTypeId(type.getCategoryId());  
+int count = platNewsService.countPlatNewsByExample(searchCondition);  
+JSONObject object = new JSONObject();  
+object.put(&amp;#34;name&amp;#34;,type.name());  
+object.put(&amp;#34;description&amp;#34;,type.getDescription());  
+object.put(&amp;#34;count&amp;#34;,count);
+
+jsonArray.add(object);  
+}  
+if(null != jsonArray &amp;amp;&amp;amp; jsonArray.size()&amp;gt;0){  
+UserSocketVo userSocketVo = WSSessionLocalCache.get(email);  
+TextMessage reMessage = new TextMessage(gson.toJson(jsonArray));  
+try {  
+if(null != userSocketVo){  
+//推送消息  
+userSocketVo.getWebSocketSession().sendMessage(reMessage);  
+//更新推送时间  
+userSocketVo.setLastSendTime(DateUtil.getNowDate());  
+logger.info(&amp;#34;完成推送新消息给用户:&amp;#34;+userSocketVo.getUserEmail()+&amp;#34;。。。&amp;#34;);  
+}
+
+} catch (IOException e) {  
+logger.error(e.toString());  
+logger.info(&amp;#34;站内消息推送失败。。。&amp;#34;+e.toString());  
+}  
+}  
+}  
+logger.info(&amp;#34;结束推送消息给&amp;#34;+email+&amp;#34;。。。&amp;#34;);
+
+}  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个类就是websocket的核心业务的实现，其具体肯定和业务相关，由于业务的不同，实现肯定不同，因为老夫参与的系统是发送消息，所以里面最核心的一句就是：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Spring和websocket整合应用示例（上）</title>
+      <link>http://localhost:1313/posts/2016-04-04-spring%E5%92%8Cwebsocket%E6%95%B4%E5%90%88%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B%E4%B8%8A/</link>
+      <pubDate>Mon, 04 Apr 2016 14:05:19 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-04-04-spring%E5%92%8Cwebsocket%E6%95%B4%E5%90%88%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B%E4%B8%8A/</guid>
+      <description>&lt;p&gt;嗯，这次真的仅仅是一个入门教程，因为老夫表示自己也不会。近期老夫参与开发公司的一个CRM系统，系统中有很多消息的推送，由一个同事负责，其用到了websocket技术，老夫比较感兴趣，删繁就简，整理了一个教程，留作自己笔记，因很多原理老夫也是不甚了了，以备将来用到了有资料可查。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;maven依赖&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;javax.servlet&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;javax.servlet-api&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;3.1.0&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;  
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;com.fasterxml.jackson.core&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;jackson-core&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;2.3.0&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;  
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;com.fasterxml.jackson.core&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;jackson-databind&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;2.3.0&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;  
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;spring-websocket&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;4.0.1.RELEASE&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;  
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;spring-messaging&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;4.0.1.RELEASE&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;spring-servlet的配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;  
+&amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34;  
+xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34;  
+xmlns:mvc=&amp;#34;http://www.springframework.org/schema/mvc&amp;#34;  
+xmlns:tx=&amp;#34;http://www.springframework.org/schema/tx&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;  
+xmlns:websocket=&amp;#34;http://www.springframework.org/schema/websocket&amp;#34;  
+xsi:schemaLocation=&amp;#34;  
+http://www.springframework.org/schema/beans  
+http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  
+http://www.springframework.org/schema/context  
+http://www.springframework.org/schema/context/spring-context-3.1.xsd  
+http://www.springframework.org/schema/mvc  
+http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd  
+http://www.springframework.org/schema/tx  
+http://www.springframework.org/schema/tx/spring-tx-3.1.xsd  
+http://www.springframework.org/schema/websocket  
+http://www.springframework.org/schema/websocket/spring-websocket.xsd&amp;#34;&amp;gt;
+
+&amp;amp;#8230;&amp;amp;#8230;
+
+&amp;lt;!&amp;amp;#8211; websocket &amp;amp;#8211;&amp;gt;  
+&amp;lt;bean id=&amp;#34;websocket&amp;#34; class=&amp;#34;cn.bridgeli.websocket.WebsocketEndPoint&amp;#34;/&amp;gt;  
+&amp;lt;websocket:handlers&amp;gt;  
+&amp;lt;websocket:mapping path=&amp;#34;/websocket&amp;#34; handler=&amp;#34;websocket&amp;#34;/&amp;gt;  
+&amp;lt;websocket:handshake-interceptors&amp;gt;  
+&amp;lt;bean class=&amp;#34;cn.bridgeli.websocket.HandshakeInterceptor&amp;#34;/&amp;gt;  
+&amp;lt;/websocket:handshake-interceptors&amp;gt;  
+&amp;lt;/websocket:handlers&amp;gt;  
+&amp;lt;/beans&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其中，path对应的路径就是前段通过ws协议调的接口路径&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;HandshakeInterceptor的实现&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.websocket;
+
+import cn.bridgeli.utils.UserManager;  
+import cn.bridgeli.util.DateUtil;  
+import cn.bridgeli.sharesession.UserInfo;  
+import org.apache.commons.lang.StringUtils;  
+import org.slf4j.Logger;  
+import org.slf4j.LoggerFactory;  
+import org.springframework.http.server.ServerHttpRequest;  
+import org.springframework.http.server.ServerHttpResponse;  
+import org.springframework.web.context.request.RequestContextHolder;  
+import org.springframework.web.context.request.ServletRequestAttributes;  
+import org.springframework.web.socket.WebSocketHandler;  
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
+
+import java.util.Date;  
+import java.util.Map;
+
+/**  
+* @Description :创建握手（handshake）接口  
+* @Date : 16-3-3  
+*/
+
+public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor{  
+private static final Logger logger = LoggerFactory.getLogger(HandshakeInterceptor.class);
+
+@Override  
+public boolean beforeHandshake(ServerHttpRequest request,  
+ServerHttpResponse response, WebSocketHandler wsHandler,  
+Map&amp;lt;String, Object&amp;gt; attributes) throws Exception {  
+logger.info(&amp;#34;建立握手前&amp;amp;#8230;&amp;#34;);  
+ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();  
+UserInfo currUser = UserManager.getSessionUser(attrs.getRequest());  
+UserSocketVo userSocketVo = new UserSocketVo();  
+String email= &amp;#34;&amp;#34;;
+
+if(null != currUser){  
+email = currUser.getEmail();  
+}  
+if(StringUtils.isBlank(email)){  
+email = DateUtil.date2String(new Date());  
+}  
+userSocketVo.setUserEmail(email);  
+attributes.put(&amp;#34;SESSION_USER&amp;#34;, userSocketVo);
+
+return super.beforeHandshake(request, response, wsHandler, attributes);  
+}
+
+@Override  
+public void afterHandshake(ServerHttpRequest request,  
+ServerHttpResponse response, WebSocketHandler wsHandler,  
+Exception ex) {  
+logger.info(&amp;#34;建立握手后&amp;amp;#8230;&amp;#34;);  
+super.afterHandshake(request, response, wsHandler, ex);  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;因为老夫不是很懂，所以最大限度的保留原代码，这其实就是从单点登录中取出当前登录用户，转成UserSocketVo对象，放到Map中。所以接下来我们看看UserSocketVo对象的定义&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

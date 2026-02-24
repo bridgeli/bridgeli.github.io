@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Mybatis-Generator-Plugin on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/mybatis-generator-plugin/</link>
+    <description>Recent content in Mybatis-Generator-Plugin on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 29 Apr 2018 09:37:55 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/mybatis-generator-plugin/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>介绍一个 Mybatis 插件：mybatis-generator-plugin</title>
+      <link>http://localhost:1313/posts/2018-04-29-%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%AA-mybatis-%E6%8F%92%E4%BB%B6mybatis-generator-plugin/</link>
+      <pubDate>Sun, 29 Apr 2018 09:37:55 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2018-04-29-%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%AA-mybatis-%E6%8F%92%E4%BB%B6mybatis-generator-plugin/</guid>
+      <description>&lt;p&gt;在实际开发中，我们都是先建表，然后根据表生成对应的 Java 类，现在很流行的 ORMapping 框架是: Mybatis，所以我们需要生成 entity、mapper 和 xml，我们都知道有一个插件是：mybatis-generator，使用它就可以很方便的生成这些结构化的重复性基础性的代码，但是他有一个问题，生成的查询没有分页，所以很烦。然后我搜索了一些资料，重新封装了一下，重新命名为：mybatis-generator-plugin，具体源码放在了 GitHub 上：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+https://github.com/bridgeli/mybatis-generator-plugin
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;大家可以 clone 下来，deploy 到自己公司的私服，或者 install 到本地使用。具体就是在 pom 文件中。具体用法&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在 pom 文件中添加如下内容：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;properties&amp;gt;  
+&amp;lt;project.build.sourceEncoding&amp;gt;UTF-8&amp;lt;/project.build.sourceEncoding&amp;gt;  
+&amp;lt;/properties&amp;gt;
+
+&amp;lt;build&amp;gt;  
+&amp;lt;plugins&amp;gt;  
+&amp;lt;plugin&amp;gt;  
+&amp;lt;groupId&amp;gt;org.mybatis.generator&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;mybatis-generator-maven-plugin&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;1.3.5&amp;lt;/version&amp;gt;  
+&amp;lt;dependencies&amp;gt;  
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;cn.bridgeli&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;mybatis-generator-plugin&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;0.0.1-SNAPSHOT&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;  
+&amp;lt;/dependencies&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;verbose&amp;gt;true&amp;lt;/verbose&amp;gt;  
+&amp;lt;overwrite&amp;gt;true&amp;lt;/overwrite&amp;gt;  
+&amp;lt;configurationFile&amp;gt;src/main/resources/generatorConfig.xml&amp;lt;/configurationFile&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;/plugin&amp;gt;  
+&amp;lt;/plugins&amp;gt;  
+&amp;lt;/build&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其中：configurationFile 配置 generatorConfig.xml 文件的位置，我们生成的对应的文件，都是根据这个文件来的。所以第二步就是：&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;在对应的文件下添加该文件，它的模板如下：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;  
+&amp;lt;!DOCTYPE generatorConfiguration  
+PUBLIC &amp;#34;-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN&amp;#34;  
+&amp;#34;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&amp;#34;&amp;gt;
+
+&amp;lt;generatorConfiguration&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; 请替换本地jar路径 此文件不要上传 &amp;amp;#8211;&amp;gt;  
+&amp;lt;classPathEntry  
+location=&amp;#34;/Users/bridgeli/.m2/repository/mysql/mysql-connector-java/5.1.33/mysql-connector-java-5.1.33.jar&amp;#34; /&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; mvn mybatis-generator:generate &amp;amp;#8211;&amp;gt;  
+&amp;lt;context id=&amp;#34;oneHour&amp;#34;  
+targetRuntime=&amp;#34;cn.bridgeli.plugin.IntrospectedTableMyBatis3ImplExt&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;suppressAllComments&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;useActualColumnNames&amp;#34; value=&amp;#34;false&amp;#34; /&amp;gt;  
+&amp;lt;!&amp;amp;#8211; 格式化java代码 &amp;amp;#8211;&amp;gt;  
+&amp;lt;property name=&amp;#34;javaFormatter&amp;#34;  
+value=&amp;#34;org.mybatis.generator.api.dom.DefaultJavaFormatter&amp;#34; /&amp;gt;  
+&amp;lt;!&amp;amp;#8211; 格式化XML代码 &amp;amp;#8211;&amp;gt;  
+&amp;lt;property name=&amp;#34;xmlFormatter&amp;#34;  
+value=&amp;#34;org.mybatis.generator.api.dom.DefaultXmlFormatter&amp;#34; /&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; 配置插件 &amp;amp;#8211;&amp;gt;  
+&amp;lt;plugin type=&amp;#34;cn.bridgeli.mybatis.MySQLLimitPlugin&amp;#34;&amp;gt;&amp;lt;/plugin&amp;gt;
+
+&amp;lt;commentGenerator&amp;gt;  
+&amp;lt;!&amp;amp;#8211; 是否去除自动生成的注释 true：是 ： false:否 &amp;amp;#8211;&amp;gt;  
+&amp;lt;property name=&amp;#34;suppressAllComments&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;/commentGenerator&amp;gt;  
+&amp;lt;!&amp;amp;#8211;数据库连接的信息：驱动类、连接地址、用户名、密码 &amp;amp;#8211;&amp;gt;  
+&amp;lt;jdbcConnection driverClass=&amp;#34;com.mysql.jdbc.Driver&amp;#34;  
+connectionURL=&amp;#34;jdbc:mysql://ip:port/databasename&amp;#34; userId=&amp;#34;username&amp;#34;  
+password=&amp;#34;password&amp;#34;&amp;gt;  
+&amp;lt;/jdbcConnection&amp;gt;
+
+&amp;lt;javaTypeResolver&amp;gt;  
+&amp;lt;property name=&amp;#34;forceBigDecimals&amp;#34; value=&amp;#34;false&amp;#34; /&amp;gt;  
+&amp;lt;/javaTypeResolver&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; 配置model生成位置 &amp;amp;#8211;&amp;gt;  
+&amp;lt;javaModelGenerator targetPackage=&amp;#34;cn.bridgeli.entity&amp;#34;  
+targetProject=&amp;#34;src/main/java&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;enableSubPackages&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;trimStrings&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;/javaModelGenerator&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; 配置sqlmap生成位置 &amp;amp;#8211;&amp;gt;  
+&amp;lt;sqlMapGenerator targetPackage=&amp;#34;cn/bridgeli/mapper&amp;#34;  
+targetProject=&amp;#34;src/main/resources&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;enableSubPackages&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;/sqlMapGenerator&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; 配置mapper接口生成位置 &amp;amp;#8211;&amp;gt;  
+&amp;lt;javaClientGenerator type=&amp;#34;XMLMAPPER&amp;#34;  
+targetPackage=&amp;#34;cn.bridgeli.mapper&amp;#34; targetProject=&amp;#34;src/main/java&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;enableSubPackages&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;/javaClientGenerator&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; 配置表信息 &amp;amp;#8211;&amp;gt;  
+&amp;lt;table tableName=&amp;#34;table_name&amp;#34; enableCountByExample=&amp;#34;true&amp;#34;  
+domainObjectName=&amp;#34;DomainObjectName&amp;#34; enableDeleteByExample=&amp;#34;false&amp;#34;  
+enableSelectByExample=&amp;#34;true&amp;#34; enableUpdateByExample=&amp;#34;true&amp;#34;&amp;gt;  
+&amp;lt;generatedKey column=&amp;#34;ID&amp;#34; sqlStatement=&amp;#34;MySQL&amp;#34;  
+identity=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;/table&amp;gt;  
+&amp;lt;/context&amp;gt;
+
+&amp;lt;/generatorConfiguration&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这里面需要说明就是：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

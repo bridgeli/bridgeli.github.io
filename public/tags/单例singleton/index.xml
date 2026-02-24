@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>单例，singleton on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E5%8D%95%E4%BE%8Bsingleton/</link>
+    <description>Recent content in 单例，singleton on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 16 Nov 2014 12:42:05 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%8D%95%E4%BE%8Bsingleton/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>设计模式之单例模式</title>
+      <link>http://localhost:1313/posts/2014-11-16-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Sun, 16 Nov 2014 12:42:05 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2014-11-16-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</guid>
+      <description>&lt;p&gt;在程序设计中，单例模式是非常常用的一个设计模式，至于有点老夫就不用多说了，肯定有一点比较省内存，但什么的类适合于设置成单例呢？一言以蔽之：&lt;/p&gt;
+&lt;p&gt;在程序设计中，无状态的类都可以设置成单例。&lt;/p&gt;
+&lt;p&gt;那么问题来了，什么样的类是无状态的，什么样的类是有状态的呢？其实很简单：&lt;/p&gt;
+&lt;p&gt;没有数据，也就是说这个类只有方法，没有成员变量。&lt;/p&gt;
+&lt;p&gt;举个例子：&lt;br&gt;
+User类是否可以设置成单例呢？肯定不行，因为User类每一个对应的Id肯定是不同的人，如果设置成单例，数据就乱了；但一般Service层、DAO层的方法呢？这个一般都是一些业务逻辑，只有一些方法，没有数据，所以肯定可以设置成单例，事实上我们这些类如果有Spring托管，那么自然而然这些类就是单例的。&lt;/p&gt;
+&lt;p&gt;既然单例使用这么多，有点还这么明显，那么怎么设置一个类是单例的呢？根据老夫第一个项目经理Zack的说法，设置一个类成单例的，有两种方法，首先看第一个，传统意义上的单例：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.singleton;
+
+public class Singleton {
+    private static volatile Singleton singleton = null;
+
+    private Singleton() {
+    }
+
+    public static Singleton getInstance() {
+        if (null == singleton) {
+            synchronized (Singleton.class) {
+                if(null == singleton) {
+                    singleton = new Singleton();
+                }
+            }
+        }
+        return singleton;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个最简单，构造方法设置成私有的，别人就不能new了，想获取实例必须通过getInstance（）方法，而这个方法里面是static的，所以这是一个传统意义上的最简单的单例。&lt;/p&gt;
+&lt;p&gt;除此之外，我们还可以借助于静态内部类的方式实现单利：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo.singleton;
+
+public class Singleton {
+
+    private Singleton() {
+    }
+
+    public static Singleton getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
+
+    private static class SingletonHolder {
+        private static final Singleton INSTANCE = new Singleton();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;第二个，管理意义上的单例&lt;br&gt;
+我们自己观察可以发现，这个虽然简单，但我们Spring实现的单例，肯定不是这么实现的，那么他是怎么实现的呢？Spring并没有限制我们自己写的类必须要有一个私有的构造方法，所以管理意义上的单例，并不要一个类有一个私有的构造方法，但他会通过一个BeanFactory产生我们想要的实例，参考代码如下：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

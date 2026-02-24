@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Easy Rules on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/easy-rules/</link>
+    <description>Recent content in Easy Rules on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 12 Jul 2020 07:14:11 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/easy-rules/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>规则引擎入门</title>
+      <link>http://localhost:1313/posts/2020-07-12-%E8%A7%84%E5%88%99%E5%BC%95%E6%93%8E%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Sun, 12 Jul 2020 07:14:11 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2020-07-12-%E8%A7%84%E5%88%99%E5%BC%95%E6%93%8E%E5%85%A5%E9%97%A8/</guid>
+      <description>&lt;p&gt;关于规则引擎，我们在工作中应该会经常遇到，例如我们对不同的用户给不同的折扣。前一段时间在网上闲逛，发现一个很简单的规则引擎，一下是学习笔记。&lt;/p&gt;
+&lt;p&gt;在使用之前，我们要先导入 jar 包：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;org.jeasy&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;easy-rules-core&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;3.3.0&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;  
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;org.jeasy&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;easy-rules-mvel&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;3.3.0&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;一. 使用零配置的方式：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;规则引擎入口：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo.rule;
+
+import org.jeasy.rules.api.Facts;  
+import org.jeasy.rules.api.Rules;  
+import org.jeasy.rules.api.RulesEngine;  
+import org.jeasy.rules.core.DefaultRulesEngine;  
+import org.jeasy.rules.core.RulesEngineParameters;  
+import org.junit.Test;
+
+/**  
+* @author bridgeli  
+*/  
+public class ThreeEightRuleTest {
+
+@Test  
+public void testRule() {  
+/**  
+* 创建规则执行引擎  
+* 注意: skipOnFirstAppliedRule意思是，只要匹配到第一条规则就跳过后面规则匹配  
+*/  
+RulesEngineParameters parameters = new RulesEngineParameters().skipOnFirstAppliedRule(true);  
+RulesEngine rulesEngine = new DefaultRulesEngine(parameters);  
+//创建规则  
+Rules rules = new Rules();  
+rules.register(new EightRule());  
+rules.register(new ThreeRule());  
+rules.register(new ThreeEightRuleUnitGroup(new EightRule(), new ThreeRule()));  
+rules.register(new OtherRule());  
+Facts facts = new Facts();  
+for (int i = 1; i &amp;lt;= 50; i++) {  
+//规则因素，对应的name，要和规则里面的@Fact 一致  
+facts.put(&amp;#34;number&amp;#34;, i);  
+//执行规则  
+rulesEngine.fire(rules, facts);  
+System.out.println();  
+}  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个是判断 1- 50 里面，哪些是 3 的倍数、哪些是 8 的倍数、哪些是 3 和 8 的倍数。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

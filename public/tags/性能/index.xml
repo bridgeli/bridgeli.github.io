@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>性能 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E6%80%A7%E8%83%BD/</link>
+    <description>Recent content in 性能 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 29 Mar 2015 15:54:19 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E6%80%A7%E8%83%BD/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>JAVA 性能调优</title>
+      <link>http://localhost:1313/posts/2015-03-29-java-%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</link>
+      <pubDate>Sun, 29 Mar 2015 15:54:19 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-03-29-java-%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</guid>
+      <description>&lt;p&gt;学习Java性能调优之前，我们必须得先了解Java中的内存分配：堆、栈、非堆&lt;br&gt;
+为了更好的说明这个问题，我们先看一个程序：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.demo;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Test {
+    public void test() {
+        List&amp;lt;Email&amp;gt; emails = new ArrayList&amp;lt;Email&amp;gt;();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            Class.forName(&amp;#34;&amp;#34;);
+            String url = &amp;#34;&amp;#34;;
+            conn = DriverManager.getConnection(url, &amp;#34;&amp;#34;, &amp;#34;&amp;#34;);
+            pstmt = conn.prepareStatement(&amp;#34;&amp;#34;);
+            rs = pstmt.executeQuery();
+            Email email = null;
+            while (rs.next()) {
+                email = new Email();
+                email.setSubject(&amp;#34;&amp;#34;);
+                emails.add(email);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+// close conn  
+        }
+    }
+}  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在这段代码中，那些哪些数据放在堆上，哪些数据放在栈上，又有哪些数据放在方法去呢？一言以蔽之：在方法中，“=”左边的值，全部放在栈上，占4个字节，而“=”右边的肯定就是放在堆上了，所以该段代码中像：emails、conn的变量都是放在栈上的，而我们 new 出来的全部放在了堆上，而方法区是没有放东西的，既然new 出来的Email是放在堆上的，那么Email中的这些变量又是放在哪呢？&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

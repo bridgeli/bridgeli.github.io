@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Java | 分享技术带来的喜悦</title>
+<meta name="keywords" content="">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/categories/java/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/java/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/categories/java/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/categories/">Categories</a></div>
+  <h1>
+    Java
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>今天这篇文章比较简单，写一个老夫近期工作中遇到的一个问题，这个问题困扰了老夫几个月了，虽然借助强大的Google百度了好久，但一直没有彻底解决，一直感觉挺简单一问题，也挺常见的一问题（网上问这个问题的还挺多），怎么就没有一个靠谱点的解决方案呢，刚好上个周呢时间稍有空闲，于是仔细研究了一下，终于找到了问题的根源，然后同事一言点醒梦中人，豁然开朗，一举解决，所以记录一下，先说一下异常：MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效，详细的堆栈信息如下：
+严重: StandardWrapper.Throwable org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from file [D:J2EEapache-tomcat-7.0.62webappscrm-v1.0WEB-INFclassesspring-kafka-consumer.xml]; nested exception is com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效。 at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:409) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:335) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:303) at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:180) at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:216) at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:187) at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:125) at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:94) at org.springframework.context.support.AbstractRefreshableApplicationContext.refreshBeanFactory(AbstractRefreshableApplicationContext.java:129) at org.springframework.context.support.AbstractApplicationContext.obtainFreshBeanFactory(AbstractApplicationContext.java:540) at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:454) at org.springframework.web.servlet.FrameworkServlet.configureAndRefreshWebApplicationContext(FrameworkServlet.java:658) at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:624) at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:672) at org.springframework.web.servlet.FrameworkServlet.initWebApplicationContext(FrameworkServlet.java:543) at org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:484) at org.springframework.web.servlet.HttpServletBean.init(HttpServletBean.java:136) at javax.servlet.GenericServlet.init(GenericServlet.java:158) at org.apache.catalina.core.StandardWrapper.initServlet(StandardWrapper.java:1284) at org.apache.catalina.core.StandardWrapper.loadServlet(StandardWrapper.java:1197) at org.apache.catalina.core.StandardWrapper.allocate(StandardWrapper.java:864) at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:134) at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:122) at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:505) at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:170) at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:103) at org.apache.catalina.valves.AccessLogValve.invoke(AccessLogValve.java:957) at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:116) at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:423) at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1079) at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:620) at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:316) at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145) at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615) at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) at java.lang.Thread.run(Thread.java:745) Caused by: com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效。 at com.sun.org.apache.xerces.internal.impl.io.UTF8Reader.invalidByte(UTF8Reader.java:687) at com.sun.org.apache.xerces.internal.impl.io.UTF8Reader.read(UTF8Reader.java:408) at com.sun.org.apache.xerces.internal.impl.XMLEntityScanner.load(XMLEntityScanner.java:1735) at com.sun.org.apache.xerces.internal.impl.XMLEntityScanner.scanData(XMLEntityScanner.java:1234) at com.sun.org.apache.xerces.internal.impl.XMLScanner.scanComment(XMLScanner.java:778) at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanComment(XMLDocumentFragmentScannerImpl.java:1038) at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(XMLDocumentFragmentScannerImpl.java:2988) at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(XMLDocumentScannerImpl.java:606) at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.next(XMLNSDocumentScannerImpl.java:117) at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:510) at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:848) at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:777) at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:141) at com.sun.org.apache.xerces.internal.parsers.DOMParser.parse(DOMParser.java:243) at com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl.parse(DocumentBuilderImpl.java:347) at org.springframework.beans.factory.xml.DefaultDocumentLoader.loadDocument(DefaultDocumentLoader.java:76) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadDocument(XmlBeanDefinitionReader.java:428) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:390) &amp;#8230; 35 more 三月 16, 2016 5:41:59 下午 org.apache.catalina.core.StandardWrapperValve invoke 严重: Allocate exception for servlet springServlet com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效。 at com.sun.org.apache.xerces.internal.impl.io.UTF8Reader.invalidByte(UTF8Reader.java:687) at com.sun.org.apache.xerces.internal.impl.io.UTF8Reader.read(UTF8Reader.java:408) at com.sun.org.apache.xerces.internal.impl.XMLEntityScanner.load(XMLEntityScanner.java:1735) at com.sun.org.apache.xerces.internal.impl.XMLEntityScanner.scanData(XMLEntityScanner.java:1234) at com.sun.org.apache.xerces.internal.impl.XMLScanner.scanComment(XMLScanner.java:778) at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanComment(XMLDocumentFragmentScannerImpl.java:1038) at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(XMLDocumentFragmentScannerImpl.java:2988) at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(XMLDocumentScannerImpl.java:606) at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.next(XMLNSDocumentScannerImpl.java:117) at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:510) at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:848) at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:777) at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:141) at com.sun.org.apache.xerces.internal.parsers.DOMParser.parse(DOMParser.java:243) at com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl.parse(DocumentBuilderImpl.java:347) at org.springframework.beans.factory.xml.DefaultDocumentLoader.loadDocument(DefaultDocumentLoader.java:76) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadDocument(XmlBeanDefinitionReader.java:428) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:390) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:335) at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:303) at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:180) at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:216) at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:187) at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:125) at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:94) at org.springframework.context.support.AbstractRefreshableApplicationContext.refreshBeanFactory(AbstractRefreshableApplicationContext.java:129) at org.springframework.context.support.AbstractApplicationContext.obtainFreshBeanFactory(AbstractApplicationContext.java:540) at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:454) at org.springframework.web.servlet.FrameworkServlet.configureAndRefreshWebApplicationContext(FrameworkServlet.java:658) at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:624) at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:672) at org.springframework.web.servlet.FrameworkServlet.initWebApplicationContext(FrameworkServlet.java:543) at org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:484) at org.springframework.web.servlet.HttpServletBean.init(HttpServletBean.java:136) at javax.servlet.GenericServlet.init(GenericServlet.java:158) at org.apache.catalina.core.StandardWrapper.initServlet(StandardWrapper.java:1284) at org.apache.catalina.core.StandardWrapper.loadServlet(StandardWrapper.java:1197) at org.apache.catalina.core.StandardWrapper.allocate(StandardWrapper.java:864) at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:134) at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:122) at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:505) at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:170) at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:103) at org.apache.catalina.valves.AccessLogValve.invoke(AccessLogValve.java:957) at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:116) at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:423) at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1079) at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:620) at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:316) at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145) at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615) at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) at java.lang.Thread.run(Thread.java:745) 看完堆栈信息，我相信遇到这个问题的同学，已经知道咋回事了。说起来也很简单，就是tomcat跑一个web项目时，报这个异常，导致项目起不来。在仔细看之后，应该是编码问题导致的，对，就是编码的问题了，看报错的那个XML文件编译之后的情况如下：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-03-20 14:23:00 +0000 +0000'>March 20, 2016</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>284 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效" href="http://localhost:1313/posts/2016-03-20-malformedbytesequenceexception-3-%E5%AD%97%E8%8A%82%E7%9A%84-utf-8-%E5%BA%8F%E5%88%97%E7%9A%84%E5%AD%97%E8%8A%82-2-%E6%97%A0%E6%95%88/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">POI解析Excel示例
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在Java的世界里，对于解析Excel，目前市场上有两个不错的框架，一个是jxl另一个是poi，之前老夫曾对jxl可以说是倍加赞赏（当时老夫还为了它而写了一篇文章，详见这里），因为一直认为它虽然有bug，虽然兼容性不好，但是它简单易用啊，只要自己够仔细认真就能避开这些坑，但是从这周起，老夫决定jxl一生黑，因为随着时间的推移，现在Excel的版本越来越新，而jxl只支持2003之前的版本，可以说解析起来异常麻烦，而poi有Apache做保证，表现越来越好，使用起来其实也不是很复杂，所以老夫决定之后再次遇到解析Excel的只用poi。
+下面是老夫写的一个解析Excel的一个工具类，希望对大家有所帮助。
+解析Excel所需的类库的maven依赖 &lt;dependency&gt; &lt;groupId&gt;org.apache.poi&lt;/groupId&gt; &lt;artifactId&gt;poi&lt;/artifactId&gt; &lt;version&gt;3.14&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.apache.poi&lt;/groupId&gt; &lt;artifactId&gt;poi-ooxml&lt;/artifactId&gt; &lt;version&gt;3.14&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.apache.commons&lt;/groupId&gt; &lt;artifactId&gt;commons-io&lt;/artifactId&gt; &lt;version&gt;1.3.2&lt;/version&gt; &lt;/dependency&gt; 解析的具体方法 package cn.bridgeli.demo; import java.io.FileInputStream; import java.util.Date; import java.util.HashMap; import java.util.LinkedList; import java.util.List; import java.util.Map; import org.apache.commons.io.FilenameUtils; import org.apache.poi.hssf.usermodel.HSSFWorkbook; import org.apache.poi.ss.usermodel.Cell; import org.apache.poi.ss.usermodel.DataFormatter; import org.apache.poi.ss.usermodel.DateUtil; import org.apache.poi.ss.usermodel.Row; import org.apache.poi.ss.usermodel.Sheet; import org.apache.poi.ss.usermodel.Workbook; import org.apache.poi.xssf.usermodel.XSSFWorkbook; import org.junit.Test; public class ExcelReader { protected static final String dateTimeFmtPattern = &#34;yyyy-MM-dd HH:mm:ss&#34;; protected static final String dateFmtPattern = &#34;yyyy-MM-dd&#34;; protected static final DataFormatter formatter = new DataFormatter(); @Test public void testReader() throws Exception { List&lt;Map&lt;String, String&gt;&gt; list = readExcel(&#34;E:/test1.xls&#34;); List&lt;Map&lt;String, String&gt;&gt; list2 = readExcel(&#34;E:/test1.xlsx&#34;); } /** * 读取excel文件（同时支持2003和2007格式） * * @param fileName * 文件名，绝对路径 * @return list中的map的key是列的序号 * @throws Exception * io异常等 */ public static List&lt;Map&lt;String, String&gt;&gt; readExcel(String fileName) throws Exception { FileInputStream fis = null; Workbook wb = null; List&lt;Map&lt;String, String&gt;&gt; list = null; try { String extension = FilenameUtils.getExtension(fileName); fis = new FileInputStream(fileName); list = read(fis, extension); return list; } finally { if (null != wb) { wb.close(); } if (null != fis) { fis.close(); } } } /** * 读取excel文件（同时支持2003和2007格式） * * @param fis * 文件输入流 * @param extension * 文件名扩展名: xls 或 xlsx 不区分大小写 * @return list中的map的key是列的序号 * @throws Exception * io异常等 */ public static List&lt;Map&lt;String, String&gt;&gt; read(FileInputStream fis, String extension) throws Exception { Workbook wb = null; List&lt;Map&lt;String, String&gt;&gt; list = null; try { if (&#34;xls&#34;.equalsIgnoreCase(extension)) { wb = new HSSFWorkbook(fis); } else if (&#34;xlsx&#34;.equalsIgnoreCase(extension)) { wb = new XSSFWorkbook(fis); } else { throw new Exception(&#34;file is not office excel&#34;); } list = readWorkbook(wb); return list; } finally { if (null != wb) { wb.close(); } } } protected static List&lt;Map&lt;String, String&gt;&gt; readWorkbook(Workbook wb) throws Exception { List&lt;Map&lt;String, String&gt;&gt; list = new LinkedList&lt;Map&lt;String, String&gt;&gt;(); for (int k = 0; k &lt; wb.getNumberOfSheets(); k&#43;&#43;) { Sheet sheet = wb.getSheetAt(k); int rows = sheet.getPhysicalNumberOfRows(); for (int r = 0; r &lt; rows; r&#43;&#43;) { Row row = sheet.getRow(r); if (row == null) { continue; } Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;(); int cells = row.getPhysicalNumberOfCells(); for (int c = 0; c &lt; cells; c&#43;&#43;) { Cell cell = row.getCell(c); if (cell == null) { continue; } String value = getCellValue(cell); map.put(String.valueOf(cell.getColumnIndex() &#43; 1), value); } list.add(map); } } return list; } protected static String getCellValue(Cell cell) { String value = null; switch (cell.getCellType()) { case Cell.CELL_TYPE_FORMULA: // 公式 case Cell.CELL_TYPE_NUMERIC: // 数字 double doubleVal = cell.getNumericCellValue(); short format = cell.getCellStyle().getDataFormat(); String formatString = cell.getCellStyle().getDataFormatString(); if (format == 14 || format == 31 || format == 57 || format == 58 || (format &gt;= 176 &amp;&amp; format &lt;= 183)) { // 日期 Date date = DateUtil.getJavaDate(doubleVal); value = formatDate(date, dateFmtPattern); } else if (format == 20 || format == 32 || (format &gt;= 184 &amp;&amp; format &lt;= 187)) { // 时间 Date date = DateUtil.getJavaDate(doubleVal); value = formatDate(date, &#34;HH:mm&#34;); } else { value = String.valueOf(doubleVal); } break; case Cell.CELL_TYPE_STRING: // 字符串 value = cell.getStringCellValue(); break; case Cell.CELL_TYPE_BLANK: // 空白 value = &#34;&#34;; break; case Cell.CELL_TYPE_BOOLEAN: // Boolean value = String.valueOf(cell.getBooleanCellValue()); break; case Cell.CELL_TYPE_ERROR: // Error，返回错误码 value = String.valueOf(cell.getErrorCellValue()); break; default: value = &#34;&#34;; break; } return value; } @SuppressWarnings(&#34;deprecation&#34;) private static String formatDate(Date d, String sdf) { String value = null; if (d.getSeconds() == 0 &amp;&amp; d.getMinutes() == 0 &amp;&amp; d.getHours() == 0) { // value = DateTimeUtil.getFormatedDate(d, dateFmtPattern); } else { // value = DateTimeUtil.getFormatedDate(d, sdf); } return value; } } 对于这些第三方工具类的框架来说，老夫一直认为我们没有必要每次都自己去一步一步的写，只要写一次就够了，所以本文就是老夫的一个笔记而已，希望做到无论是老夫还是渎职今后只要需要解析Excel的时候，找到这里，把这里的方法copy出去，改吧改吧就能用了，另外本文也只牵涉到对Excel的解析而已，并没有生成的部分，一方面我在工作中解析多余生成，另一方面我相信大家只要会解析生成也一定不是大问题，网上资料这么多，所以就留给读者自己去探索了
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-03-13 14:13:56 +0000 +0000'>March 13, 2016</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>559 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to POI解析Excel示例" href="http://localhost:1313/posts/2016-03-13-poi%E8%A7%A3%E6%9E%90excel%E7%A4%BA%E4%BE%8B/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Junit Test之Easy Mock Test入门
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>这一段时间公司的项目进行分模块分层进行专人维护开发，所以就会有不同的service和dao有不同的人来开发，这里我们假设service和dao不同的人开发，service是依赖dao的，如果我们的dao开发人员比较忙并没有把dao模块开发好，service如果要对自己的模块进行测试该怎么做呢？这个时候我们的Easy Mock Test就可以派上用场了。
+首先开发service的和dao的会讨论商量出来一套接口，假设dao的接口如下：
+package cn.bridgeli.dao; import cn.bridgeli.model.User; public interface UserDao { public User getUserById(int id); public User getUserByUsername(String username); //&amp;#8230; } dao模块的小朋友把它打成一个jar包，扔给service开发人员，然后我们亲爱的service开发人员就自己玩去了，最后我们的service开发人员完成了自己的任务，写下了如下的代码，当然这只是一个demo而已：
+package cn.bridgeli.service.impl; import cn.bridgeli.dao.UserDao; import cn.bridgeli.model.User; import cn.bridgeli.service.UserService; public class UserServiceImpl implements UserService { private UserDao userDao; public void setUserDao(UserDao userDao) { this.userDao = userDao; } @Override public boolean login(String username, String password) { User user = userDao.getUserByUsername(username); System.out.println(&#34;id==&#34; &#43; user.getId()); if (user != null) { String passwordInDao = user.getPassword(); if (passwordInDao != null &amp;&amp; passwordInDao.equalsIgnoreCase(password)) { return true; } } return false; } @Override public User getUserById(int userId) { return userDao.getUserById(userId); } } 但是我们的service怎么知道自己写的有没有问题呢？现在我们的service想对自己的模块进行测试，但dao开发人员还没开始，这肯定是没办法开始的，那么怎么办呢？很简单，只需要这么做就可以了：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-02-29 14:37:48 +0000 +0000'>February 29, 2016</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>206 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Junit Test之Easy Mock Test入门" href="http://localhost:1313/posts/2016-02-29-junit-test%E4%B9%8Beasy-mock-test%E5%85%A5%E9%97%A8/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">集群Quartz的配置方法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>一般系统随着用户量的增长，慢慢的都会由单机走向集群，而很多时候我们又需要跑一些定时任务，Quartz就是为此而生，那么单机好办，集群中的Quartz又该如何配置呢？集群中的Quartz各节点之间是通过同一个数据库实例(准确的说是同一个数据库实例的同一套表)来感知彼此的，既然是通过数据库，那么就先看看数SQL文件
+SQL文件 # \# Quartz seems to work best with the driver mm.mysql-2.0.7-bin.jar # \# In your Quartz properties file, you&amp;#8217;ll need to set \# org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate # DROP TABLE IF EXISTS QRTZ_JOB_LISTENERS; DROP TABLE IF EXISTS QRTZ_TRIGGER_LISTENERS; DROP TABLE IF EXISTS QRTZ_FIRED_TRIGGERS; DROP TABLE IF EXISTS QRTZ_PAUSED_TRIGGER_GRPS; DROP TABLE IF EXISTS QRTZ_SCHEDULER_STATE; DROP TABLE IF EXISTS QRTZ_LOCKS; DROP TABLE IF EXISTS QRTZ_SIMPLE_TRIGGERS; DROP TABLE IF EXISTS QRTZ_CRON_TRIGGERS; DROP TABLE IF EXISTS QRTZ_BLOB_TRIGGERS; DROP TABLE IF EXISTS QRTZ_TRIGGERS; DROP TABLE IF EXISTS QRTZ_JOB_DETAILS; DROP TABLE IF EXISTS QRTZ_CALENDARS; CREATE TABLE QRTZ_JOB_DETAILS ( JOB_NAME VARCHAR(200) NOT NULL, JOB_GROUP VARCHAR(200) NOT NULL, DESCRIPTION VARCHAR(250) NULL, JOB_CLASS_NAME VARCHAR(250) NOT NULL, IS_DURABLE VARCHAR(1) NOT NULL, IS_VOLATILE VARCHAR(1) NOT NULL, IS_STATEFUL VARCHAR(1) NOT NULL, REQUESTS_RECOVERY VARCHAR(1) NOT NULL, JOB_DATA BLOB NULL, PRIMARY KEY (JOB_NAME,JOB_GROUP) ); CREATE TABLE QRTZ_JOB_LISTENERS ( JOB_NAME VARCHAR(200) NOT NULL, JOB_GROUP VARCHAR(200) NOT NULL, JOB_LISTENER VARCHAR(200) NOT NULL, PRIMARY KEY (JOB_NAME,JOB_GROUP,JOB_LISTENER), FOREIGN KEY (JOB_NAME,JOB_GROUP) REFERENCES QRTZ_JOB_DETAILS(JOB_NAME,JOB_GROUP) ); CREATE TABLE QRTZ_TRIGGERS ( TRIGGER_NAME VARCHAR(200) NOT NULL, TRIGGER_GROUP VARCHAR(200) NOT NULL, JOB_NAME VARCHAR(200) NOT NULL, JOB_GROUP VARCHAR(200) NOT NULL, IS_VOLATILE VARCHAR(1) NOT NULL, DESCRIPTION VARCHAR(250) NULL, NEXT_FIRE_TIME BIGINT(13) NULL, PREV_FIRE_TIME BIGINT(13) NULL, PRIORITY INTEGER NULL, TRIGGER_STATE VARCHAR(16) NOT NULL, TRIGGER_TYPE VARCHAR(8) NOT NULL, START_TIME BIGINT(13) NOT NULL, END_TIME BIGINT(13) NULL, CALENDAR_NAME VARCHAR(200) NULL, MISFIRE_INSTR SMALLINT(2) NULL, JOB_DATA BLOB NULL, PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP), FOREIGN KEY (JOB_NAME,JOB_GROUP) REFERENCES QRTZ_JOB_DETAILS(JOB_NAME,JOB_GROUP) ); CREATE TABLE QRTZ_SIMPLE_TRIGGERS ( TRIGGER_NAME VARCHAR(200) NOT NULL, TRIGGER_GROUP VARCHAR(200) NOT NULL, REPEAT_COUNT BIGINT(7) NOT NULL, REPEAT_INTERVAL BIGINT(12) NOT NULL, TIMES_TRIGGERED BIGINT(10) NOT NULL, PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP), FOREIGN KEY (TRIGGER_NAME,TRIGGER_GROUP) REFERENCES QRTZ_TRIGGERS(TRIGGER_NAME,TRIGGER_GROUP) ); CREATE TABLE QRTZ_CRON_TRIGGERS ( TRIGGER_NAME VARCHAR(200) NOT NULL, TRIGGER_GROUP VARCHAR(200) NOT NULL, CRON_EXPRESSION VARCHAR(200) NOT NULL, TIME_ZONE_ID VARCHAR(80), PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP), FOREIGN KEY (TRIGGER_NAME,TRIGGER_GROUP) REFERENCES QRTZ_TRIGGERS(TRIGGER_NAME,TRIGGER_GROUP) ); CREATE TABLE QRTZ_BLOB_TRIGGERS ( TRIGGER_NAME VARCHAR(200) NOT NULL, TRIGGER_GROUP VARCHAR(200) NOT NULL, BLOB_DATA BLOB NULL, PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP), FOREIGN KEY (TRIGGER_NAME,TRIGGER_GROUP) REFERENCES QRTZ_TRIGGERS(TRIGGER_NAME,TRIGGER_GROUP) ); CREATE TABLE QRTZ_TRIGGER_LISTENERS ( TRIGGER_NAME VARCHAR(200) NOT NULL, TRIGGER_GROUP VARCHAR(200) NOT NULL, TRIGGER_LISTENER VARCHAR(200) NOT NULL, PRIMARY KEY (TRIGGER_NAME,TRIGGER_GROUP,TRIGGER_LISTENER), FOREIGN KEY (TRIGGER_NAME,TRIGGER_GROUP) REFERENCES QRTZ_TRIGGERS(TRIGGER_NAME,TRIGGER_GROUP) ); CREATE TABLE QRTZ_CALENDARS ( CALENDAR_NAME VARCHAR(200) NOT NULL, CALENDAR BLOB NOT NULL, PRIMARY KEY (CALENDAR_NAME) ); CREATE TABLE QRTZ_PAUSED_TRIGGER_GRPS ( TRIGGER_GROUP VARCHAR(200) NOT NULL, PRIMARY KEY (TRIGGER_GROUP) ); CREATE TABLE QRTZ_FIRED_TRIGGERS ( ENTRY_ID VARCHAR(95) NOT NULL, TRIGGER_NAME VARCHAR(200) NOT NULL, TRIGGER_GROUP VARCHAR(200) NOT NULL, IS_VOLATILE VARCHAR(1) NOT NULL, INSTANCE_NAME VARCHAR(200) NOT NULL, FIRED_TIME BIGINT(13) NOT NULL, PRIORITY INTEGER NOT NULL, STATE VARCHAR(16) NOT NULL, JOB_NAME VARCHAR(200) NULL, JOB_GROUP VARCHAR(200) NULL, IS_STATEFUL VARCHAR(1) NULL, REQUESTS_RECOVERY VARCHAR(1) NULL, PRIMARY KEY (ENTRY_ID) ); CREATE TABLE QRTZ_SCHEDULER_STATE ( INSTANCE_NAME VARCHAR(200) NOT NULL, LAST_CHECKIN_TIME BIGINT(13) NOT NULL, CHECKIN_INTERVAL BIGINT(13) NOT NULL, PRIMARY KEY (INSTANCE_NAME) ); CREATE TABLE QRTZ_LOCKS ( LOCK_NAME VARCHAR(40) NOT NULL, PRIMARY KEY (LOCK_NAME) ); INSERT INTO QRTZ_LOCKS values(&amp;#8216;TRIGGER_ACCESS&amp;#8217;); INSERT INTO QRTZ_LOCKS values(&amp;#8216;JOB_ACCESS&amp;#8217;); INSERT INTO QRTZ_LOCKS values(&amp;#8216;CALENDAR_ACCESS&amp;#8217;); INSERT INTO QRTZ_LOCKS values(&amp;#8216;STATE_ACCESS&amp;#8217;); INSERT INTO QRTZ_LOCKS values(&amp;#8216;MISFIRE_ACCESS&amp;#8217;); commit; 其实这个文件在Quartz的文档中是可以找到的，这里贴出来只是为了大家方便，建好数据库之后，接下来肯定就是看看数据源的问题了
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-01-03 13:23:26 +0000 +0000'>January 3, 2016</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>747 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 集群Quartz的配置方法" href="http://localhost:1313/posts/2016-01-03-%E9%9B%86%E7%BE%A4quartz%E7%9A%84%E9%85%8D%E5%88%B6%E6%96%B9%E6%B3%95/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Bug之我见
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>作为一个工作两年多的程序猿，可以说每天都在和bug打交道，一方面我们在源源不断的创造bug，另一方面我们又致力于消灭一个又一个被我们创造出来的bug。有人说，话不可绝对，否则就是错了，那么说句话的人有没有意识到他这句话就是绝对的呢？是不是也是错的呢？借用他这句话的意思，那么他说的这句话肯定也是错的，事实上也确实就是错的，因为在软件编程界有一句话：世界上没有bug的系统是不存在的，这句话可以说是绝对的正确的。那么世界上没有bug的系统既然是不存在的，那么这么多系统是怎么被上线又运行良好的呢？这就要从什么是bug，bug的严重程度，优先级说起。
+首先要说明的是，老夫是一个程序猿，作为一个软件开发者，对bug的理解肯定没有相关的QA人员理解深刻，所以难免有错误，既然如此老夫为什么又要越俎代庖写下这篇文章呢？因为老夫工作的这两年里，深深地感觉有相当一部分QA，对bug的理解并没有那么的深刻，所以老夫希望能够根据自己工作的经验、自己对bug的理解写出来，以期能够抛砖引玉，希望有识之士给予指点，好了，下面我们就开始从什么是bug说起。
+一. 什么是bug
+bug，在IT公司里，每天都会听到这个词，那么什么是bug呢？或者说什么不是bug呢？在IT公司里面，有一部分人员是专职的QA，那么是QA说这是bug就是bug的吗？因为他们最喜欢的提bug了，他们的工作也是提出软件中的各种bug，还是程序猿说这不是bug就不是bug了呢？因为程序猿最不喜欢听到的一句话也许就是：某某系统或者功能又出bug了吧。我想肯定都不是，因为如果QA说是bug就是bug的话，因为QA也可能对需求理解的并不充分或者说理解错误；但如果程序猿说不是bug就不是bug的话，那么世界上的所有系统将不会有bug，又何谈世界上没有bug的系统是不存在的呢？下面老夫给出自己的理解：
+系统说明书上有而系统上却没有这个功能； 系统有这个功能，但是所表现出来的和软件需求说明书上的不一样； 系统说明书上没有，而系统上却有这个功能； 我想①和②大家都能理解的，就不举例说明了，但③可能有些人不能理解，需求说明书上没有，程序猿会做？当然不是不可能的，例如登陆的时候，需求说明上并没有验证码这一项，而程序猿根据自己的经验，很多系统都有，自作主张加上了，那么是不是一个bug呢？肯定是的，理解了什么是bug之后，我们看看bug的严重程度。
+二. bug的严重程度
+严重程度的英文是：Severity，一般来说不同公司对bug严重程度的是分级是不同的，但一般是根据系统是否符合产品说明书以及缺陷对于现阶段测试的影响而定义的，这里只给一个一般性的说明，一般来说bug可分一下五级：
+紧急（Crash） 一般是：不能执行正常基本流程，或者重要功能没有实现，使系统崩溃或资源严重不足。无法正常更正的问题。
+例如：由于程序所引起的死机、非法退出、程序中断、死循发生死锁、数据通讯错误、功能与需求严重不符、异常退出、重要功能未实现等等
+需要说明的是：一般紧急问题需要版本立即处理，处理后立即发版本。
+非常高（Major） 高一般是：影响其他模块功能不能正常操作，导致一些流程无法进行。
+如：小功能没有实现、系统所提供的功能或服务受明显的影响、非法操作数据溢出、一般的数值计算错误
+非常高的问题可视情况延迟处理，处理后需发版本，方便后期测试。
+高（Minor） 一般是：用户常操作的基本功能没有实现，存在合理的更正办法，用户可进行基本操作。
+如：界面错误、格式错误、简单的输入限制未放在前台进行控制、小流程、功能错误
+紧急、非常高、高等级的Bug的修改直接影响到产品能否合格的交付。
+中（Trivial） 中一般是：操作者使用不方便，但是不影响功能的实现。可改善的功能。数据边界不合理。
+如：辅助说明描述不清楚、显示格式不规范、系统处理未优化（性能）、长时间操作未给用户进度提示、提示或页面文字规范、操作时未给用户提示、个别不影响产品理解的错别字、文字排列不整齐等一些小问题、使操作者不方便，操作失误可能导致严重问题出现、浏览器、系统、数据兼容性
+低（Nice to Have） 低一般是：易用性和建议性的功能
+如：不影响使用的瑕疵、更好的实现方式。
+需要说明的是，bug的严重程度一般应由测试人员定级
+三. bug的优先级
+bug的优先级的英文是：Priority，bug优先级应根据发版需求、公司要求、bug发生率和bug严重程度来划分。主要用于提示研发同事即时修复bug，使版本能按照预期发布，和严重程度一样，也分一下五级：
+紧急（Urgent） 立即修复的bug，他阻止相关开发人员的进一步开发活动，立即进行修复工作；阻止与此密切相关功能的进一步测试
+非常高（Very High） 本版本必须修复的bug
+高（High） 必须修改，不一定马上修改，但需确定在某个特定里程碑结束前须修正
+中（Medium） 时间允许应该修复的bug或可以暂时存在的bug
+低（Low） 可不修复的建议，可以一直存在的问题
+四. bug的严重程度和优先级的关系
+看了bug的严重程度和优先级之后，我们再说说他们之间的关系？当时我和同事再说这个问题的时候，他们都认为这还用说，bug严重高的优先级也一定高啊！事实是这样的，事实上他们之间并没有关系，严重级别的bug不一定优先级别高；优先级别高的bug也不一定严重级别高。因为优先级别和暂时发版的模块密切相关，但是bug严重程度与暂时发版无关，另外Bug的优先级别和公司要求也有关，如电子商务网站，那么界面优化用户体验对于公司就很重要；虽然界面上的问题并不影响使用，所有严重级别不高，但优先级却非常高；而有些系统只是内部使用，界面优化就不那么重要了；还有一些网站只是数据正确性要求比较高，界面和操作要求不高等等。这些都是严重程度很低，优先级却不一定的例子，最后再给大家说一个windows的记事本的bug，大家可以新建一个记事本在里面输入：“联通”俩字保存退出，再打开看看，这个严重程度够大了吧？但微软却一直并没有修，说明了什么问题？类似的例子还有很多，大家可以自己想想：什么的bug严重级别很高，优先级也很高，什么的bug严重级别很高，优先级却很低，什么样的bug严重程度很低，优先级却很高，什么样的bug严重程度很低，优先级也很低。
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-09-27 15:02:54 +0000 +0000'>September 27, 2015</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>50 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Bug之我见" href="http://localhost:1313/posts/2015-09-27-bug%E4%B9%8B%E6%88%91%E8%A7%81/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Blog迁移记
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>以前老夫的Blog是在西部数码买的空间，转眼一眼就到期了，幸好一朋友免费赞助的一空间，然后就把自己的Blog迁移过去了，下面就总结一下自己的迁移经验，以供需要的朋友或者自己将来再次迁移只用，先说明，老夫用的是典型的LAMP环境，另外Linux环境的Ubuntu。
+LAMP环境，Linux最好弄了，你买空间的时候，选择Linux，并选择发行版本就完了，下面开始从A说起
+一. A（Apache）
+1.安装apache2
+安装命令：
+sudo apt-get install apache2 启动/停止/重启apache2:
+service apache2 start/stop/restart 卸载apache2 之前卸载重新安装后找不到apache2.conf配置文件，测试使用以下方式卸载后可用。
+(1)
+sudo apt-get &amp;#8211;purge remove apache2 sudo apt-get &amp;#8211;purge remove apache2.2-common sudo apt-get autoremove (2) （关键一步）找到没有删除掉的配置文件，一并删除
+sudo find /etc -name &#34;\*apache\*&#34; -exec rm -rf {} ; sudo rm -rf /var/www 二、M（MySQL）
+安装MySQL sudo apt-get install mysql-server 修改MySQL的默认字符集 登陆进去之后查看字符集：
+show variables like &amp;#8216;%character%&amp;#8217;; 默认字符集不是UTF-8，不符合我们的要求。则需要修改。修改过程如下：
+使用如下命令，打开MySQL的配置文件：
+vim /etc/mysql/my.cnf 在[client]下添加如下一行代码：
+[client] default-character-set=utf8 在[mysqld]下添加如下两行代码：
+[mysqld] character-set-server = utf8 init_connect=&amp;#8217;SET NAMES utf8&amp;#8242; 保存后退出，然后重启MySQL：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-09-05 14:54:58 +0000 +0000'>September 5, 2015</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>133 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Blog迁移记" href="http://localhost:1313/posts/2015-09-05-blog%E8%BF%81%E7%A7%BB%E8%AE%B0/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Dubbo和zookeeper入门实例
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>公司项目里用到了dubbo，感觉挺好玩，以前没有玩过，自己抽时间就小小研究了一下，今天记录一下自己的学习成果。
+关于Dubbo和zookeeper是干嘛的，网上一搜一大堆所以就不多做介绍了，想了解的可以自己搜搜看，今天就只记录怎么跑一个最基本的Dubbo和zookeeper小示例程序是怎么跑起来的，当然虽然是一个demo，但和真实环境也是无差的哦。
+一. 安装zookeeper
+要想使用Dubbo，必须给Dubbo一个注册中心，当然这个注册中心不一定必须是zookeeper，也可以是redis等，但用zookeeper是一个相对比较好的方式，咱们暂且就这么办。
+关于zookeeper的安装，老夫窃以为这篇文章写得非常棒，就不多赘述了，大家可以直接参考：http://blog.csdn.net/wxwzy738/article/details/16330253，看了这篇文章，大家立马就会就明白怎么一回事了，看过自知。
+二. Dubbo实现
+Dubbo的实现肯定是要靠自己写代码啦，我的代码使用maven编译的，引入的jar文件如下：
+依赖的jar文件 &lt;dependency&gt; &lt;groupId&gt;junit&lt;/groupId&gt; &lt;artifactId&gt;junit&lt;/artifactId&gt; &lt;version&gt;4.12&lt;/version&gt; &lt;scope&gt;test&lt;/scope&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com.alibaba&lt;/groupId&gt; &lt;artifactId&gt;dubbo&lt;/artifactId&gt; &lt;version&gt;2.5.3&lt;/version&gt; &lt;exclusions&gt; &lt;exclusion&gt; &lt;artifactId&gt;spring&lt;/artifactId&gt; &lt;groupId&gt;org.springframework&lt;/groupId&gt; &lt;/exclusion&gt; &lt;/exclusions&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.slf4j&lt;/groupId&gt; &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt; &lt;version&gt;1.7.7&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com.101tec&lt;/groupId&gt; &lt;artifactId&gt;zkclient&lt;/artifactId&gt; &lt;version&gt;0.5&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework&lt;/groupId&gt; &lt;artifactId&gt;spring-test&lt;/artifactId&gt; &lt;version&gt;4.1.7.RELEASE&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework&lt;/groupId&gt; &lt;artifactId&gt;spring-context&lt;/artifactId&gt; &lt;version&gt;4.1.7.RELEASE&lt;/version&gt; &lt;/dependency&gt; 其中junit和spring-test大家肯定看出来是干嘛的了，为了跑测试，Dubbo分为生产者和消费者，接下来我们先看看生产者是怎么实现的
+生产者的实现 ①. 配置文件applicationProvider.xml
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;beans xmlns=&#34;http://www.springframework.org/schema/beans&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xmlns:dubbo=&#34;http://code.alibabatech.com/schema/dubbo&#34; xmlns:context=&#34;http://www.springframework.org/schema/context&#34; xsi:schemaLocation=&#34; http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd&#34;&gt; &lt;!&amp;#8211; Auto Scan &amp;#8211;&gt; &lt;context:component-scan base-package=&#34;cn.bridgeli.provider&#34; /&gt; &lt;!&amp;#8211; Application name &amp;#8211;&gt; &lt;dubbo:application name=&#34;hello-world-app&#34; /&gt; &lt;!&amp;#8211; registry address, used for service to register itself &amp;#8211;&gt; &lt;dubbo:registry address=&#34;zookeeper://127.0.0.1:2181&#34; /&gt; &lt;!&amp;#8211; expose this service through dubbo protocol, through port 20880 &amp;#8211;&gt; &lt;!&amp;#8211; &lt;dubbo:protocol name=&#34;dubbo&#34; port=&#34;20880&#34; /&gt; &lt;dubbo:protocol name=&#34;dubbo&#34; port=&#34;9090&#34; server=&#34;netty&#34; client=&#34;netty&#34; codec=&#34;dubbo&#34; serialization=&#34;hessian2&#34; charset=&#34;UTF-8&#34; threadpool=&#34;fixed&#34; threads=&#34;100&#34; queues=&#34;0&#34; iothreads=&#34;9&#34; buffer=&#34;8192&#34; accepts=&#34;1000&#34; payload=&#34;8388608&#34; /&gt; &amp;#8211;&gt; &lt;!&amp;#8211; Service interface Concurrent Control &amp;#8211;&gt; &lt;!&amp;#8211; &lt;dubbo:service interface=&#34;cn.bridgeli.provider.service.ProviderService&#34; ref=&#34;providerService&#34;/&gt; &amp;#8211;&gt; &lt;!&amp;#8211; 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类 &amp;#8211;&gt; &lt;dubbo:annotation package=&#34;cn.bridgeli.provider.service&#34; /&gt; &lt;!&amp;#8211; Default Protocol &amp;#8211;&gt; &lt;!&amp;#8211; &lt;dubbo:protocol server=&#34;netty&#34; /&gt; &amp;#8211;&gt; &lt;/beans&gt; 注释很详细，不解释，就是dubbo和spring的集成
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-07-26 14:05:52 +0000 +0000'>July 26, 2015</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>497 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Dubbo和zookeeper入门实例" href="http://localhost:1313/posts/2015-07-26-dubbo%E5%92%8Czookeeper%E5%85%A5%E9%97%A8%E5%AE%9E%E4%BE%8B/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Java中常见的日期处理方法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在实际工作中日期是我们非常用的一种类型，其原因相信不用我说了大家都明白，今天就写一篇文章记录一下自己在工作中常用的日期处理
+日期格式化 日期格式化，在工作中，很多时候我们拿到的日期的格式不是我们想要的，那么就需要我们把它格式化成我们想要的，那么怎么做呢？
+举个例子：我们想格式化当日时间为：2015-05-31 22:05:30，就可以这么做：
+package cn.bridgeli.demo.date; import java.text.SimpleDateFormat; import java.util.Date; public class DateTest { public void testSimpleDateFormat() { SimpleDateFormat simpleDateFormat = new SimpleDateFormat(&#34;yyyy-MM-dd HH:mm:ss&#34;); Date date = new Date(); String now = simpleDateFormat.format(date); System.out.println(now); } } 那么大家就可以根据自己的需要，去格式化大家想要的格式了，需要注意的一点是：我这里的“HH”是大写的表明是24时计时法，如果写成小写的“hh”，就变成12时计时法了。
+获取当前的月份 我想有些人可能已经想到了，把上面的改成
+SimpleDateFormat simpleDateFormat = new SimpleDateFormat(&#34;MM&#34;); 这个是能达到目的，但不够优雅，也不是官方所推荐的，也比较难以维护，下面我们看看标准的实现
+package cn.bridgeli.demo.date; import java.util.Calendar; import java.util.Date; public class DateTest { public void testSimpleDateFormat() { Calendar calendar = Calendar.getInstance(); System.out.println(calendar.get(Calendar.MONTH)); } } 其实在JDK的早期版本中，Date类型是直接有genMonth()方法的，但由于Date类型比较简单，功能有限，所以后来JDK就把这个方法给废弃了（但为了兼容，目前还是可以用的），然后创造了Calendar，所以我们可以利用Calendar获取年份、月份、日期等等，具体可以查询JDK的API
+获得当前周几 这个其实和上一个很类似，具体不多说了，大家查JDK的API中的Calendar就可以看到了
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-05-31 15:26:20 +0000 +0000'>May 31, 2015</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>249 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Java中常见的日期处理方法" href="http://localhost:1313/posts/2015-05-31-java%E4%B8%AD%E5%B8%B8%E8%A7%81%E7%9A%84%E6%97%A5%E6%9C%9F%E5%A4%84%E7%90%86/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Nginx配置使用入门
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Nginx作为当今数一数二的负载均衡服务器，应用十分广泛，今天记录一下，大名鼎鼎的Nginx的配置信息
+一个简单的负载均衡的示例，把www.domain.com均衡到本机不同的端口，也可以改为均衡到不同的地址上。 http { upstream myproject { server 127.0.0.1:8000 weight=3; server 127.0.0.1:8001; server 127.0.0.1:8002; server 127.0.0.1:8003; } server { listen 80; server_name www.domain.com; location / { proxy_pass http://myproject; } } } weight就是权重，数值越大，分配到这个服务器的概率就越大，以本例来说，分配8000上的概率为二分之一，其他的三个均为为六分之一，另外需要注意的是：proxy_pass和upstream一定要一样
+注：这么配置仅仅是解决了负载均衡的问题，但是没有解决session共享的问题，为了解决session共享我们有两个方案：
+配置粘连，也就是说，只要某一个请求被分配到该服务器，那么今后的该客端的所有请求全都分配到该服务器上；
+在代码中解决session共享问题
+目前针对这两种方案，我都不是很熟悉，我将来会写一篇文章来解决这个问题
+静态资源处理
+location ~ .(jpg|png|jpeg|bmp|gif|swf|css|js)$ { expires 30d; root /nginx-1.8.0;#root break; } 就是说上面的这些静态资源文件都是相对于：/nginx-1.8.0的，所以如果我们代码中写的路径是img/bridgeli.png，那么我们就需要在nginx-1.8.0建一个img目录，把我们bridgeli.png放在里面。
+完整示例 #!nginx \# 使用的用户和组 user www www; \# 指定工作衍生进程数 worker_processes 2; \# 指定 pid 存放的路径 pid /var/run/nginx.pid; \# [ debug | info | notice | warn | error | crit ] \# 可以在下方直接使用 [ debug | info | notice | warn | error | crit ] 参数 error_log /var/log/nginx.error_log info; events { \# 允许的连接数 connections 2000; \# use [ kqueue | rtsig | epoll | /dev/poll | select | poll ] ; \# 具体内容查看 http://wiki.codemongers.com/事件模型 use kqueue; } http { include conf/mime.types; default_type application/octet-stream; log_format main &amp;#8216;$remote_addr &amp;#8211; $remote_user [$time_local] &amp;#8216; &amp;#8216;&#34;$request&#34; $status $bytes_sent &amp;#8216; &amp;#8216;&#34;$http_referer&#34; &#34;$http_user_agent&#34; &amp;#8216; &amp;#8216;&#34;$gzip_ratio&#34;&amp;#8217;; log_format download &amp;#8216;$remote_addr &amp;#8211; $remote_user [$time_local] &amp;#8216; &amp;#8216;&#34;$request&#34; $status $bytes_sent &amp;#8216; &amp;#8216;&#34;$http_referer&#34; &#34;$http_user_agent&#34; &amp;#8216; &amp;#8216;&#34;$http_range&#34; &#34;$sent_http_content_range&#34;&amp;#8217;; client_header_timeout 3m; client_body_timeout 3m; send_timeout 3m; client_header_buffer_size 1k; large_client_header_buffers 4 4k; gzip on; gzip_min_length 1100; gzip_buffers 4 8k; gzip_types text/plain; output_buffers 1 32k; postpone_output 1460; sendfile on; tcp_nopush on; tcp_nodelay on; send_lowat 12000; keepalive_timeout 75 20; #lingering_time 30; #lingering_timeout 10; #reset_timedout_connection on; server { listen one.example.com; server_name one.example.com www.one.example.com; access_log /var/log/nginx.access_log main; location / { proxy_pass http://127.0.0.1/; proxy_redirect off; proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; client_max_body_size 10m; client_body_buffer_size 128k; client_body_temp_path /var/nginx/client_body_temp; proxy_connect_timeout 90; proxy_send_timeout 90; proxy_read_timeout 90; proxy_send_lowat 12000; proxy_buffer_size 4k; proxy_buffers 4 32k; proxy_busy_buffers_size 64k; proxy_temp_file_write_size 64k; proxy_temp_path /var/nginx/proxy_temp; charset UTF-8; } error_page 404 /404.html; location /404.html { root /spool/www; charset on; source_charset UTF-8; } location /old_stuff/ { rewrite ^/old_stuff/(.*)$ /new_stuff/$1 permanent; } location /download/ { valid_referers none blocked server_names *.example.com; if ($invalid_referer) { #rewrite ^/ http://www.example.com/; return 403; } #rewrite_log on; \# rewrite /download/\*/mp3/\*.any_ext to /download/\*/mp3/\*.mp3 rewrite ^/(download/.\*)/mp3/(.\*)..*$ /$1/mp3/$2.mp3 break; root /spool/www; #autoindex on; access_log /var/log/nginx-download.access_log download; } location ~* ^.&#43;.(jpg|jpeg|gif)$ { root /spool/www; access_log off; expires 30d; } } } 这是Nginx官方网站的一个例子，说实话里面的很多配置我也不是很清楚，但很多并不是非常难以理解
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-05-17 14:07:24 +0000 +0000'>May 17, 2015</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>471 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Nginx配置使用入门" href="http://localhost:1313/posts/2015-05-17-nginx%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Spring加Mybatis实现MySQL数据库主从读写分离
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>上周在一个同事的指点下，实现了Spring加Mybatis实现了MySQL的主从读写分离，今天记一下笔记，以供自己今后参考，下面是配置文件的写法。
+数据源也就是jdbc.properties，因为是主从读写分离，那么肯定有两个数据源了 jdbc.driver=org.mariadb.jdbc.Driver \# 从库，只读 slave.jdbc.url=jdbc:mariadb://xxx.xxx.xxx.xxx:3306/xxx?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;noAccessToProcedureBodies=true&amp;autoReconnect=true slave.jdbc.username=xxx slave.jdbc.password=xxx \# 主库，需要写 master.jdbc.url=jdbc:mariadb://xxx.xxx.xxx.xxx:3306/xxx?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;noAccessToProcedureBodies=true&amp;autoReconnect=true master.jdbc.username=xxx master.jdbc.password=xxx 这个非常简单和普通的区别不是很大，另外数据库的驱动是：mariadb，动下面就是第二个配置文件spring.xml
+spring.xml &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;beans xmlns=&#34;http://www.springframework.org/schema/beans&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xmlns:context=&#34;http://www.springframework.org/schema/context&#34; xsi:schemaLocation=&#34; http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd &#34;&gt; &lt;!&amp;#8211; Import properties file &amp;#8211;&gt; &lt;context:property-placeholder location=&#34;classpath:jdbc.properties&#34; /&gt; &lt;!&amp;#8211; Auto Scan &amp;#8211;&gt; &lt;context:component-scan base-package=&#34;cn.bridgeli.demo&#34; /&gt; &lt;/beans&gt; 这个文件很简单，有两个作用，①. 引入数据源配置文件；②. spring扫描的文件的路径
+spring-mybatis.xml配置文件 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;beans xmlns=&#34;http://www.springframework.org/schema/beans&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xmlns:tx=&#34;http://www.springframework.org/schema/tx&#34; xmlns:aop=&#34;http://www.springframework.org/schema/aop&#34; xsi:schemaLocation=&#34; http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd &#34;&gt; &lt;bean id=&#34;slaveDataSourceImpl&#34; class=&#34;com.jolbox.bonecp.BoneCPDataSource&#34; destroy-method=&#34;close&#34;&gt; &lt;property name=&#34;driverClass&#34; value=&#34;${jdbc.driver}&#34; /&gt; &lt;property name=&#34;jdbcUrl&#34; value=&#34;${slave.jdbc.url}&#34; /&gt; &lt;property name=&#34;username&#34; value=&#34;${slave.jdbc.username}&#34; /&gt; &lt;property name=&#34;password&#34; value=&#34;${slave.jdbc.password}&#34; /&gt; &lt;!&amp;#8211; 检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0 &amp;#8211;&gt; &lt;property name=&#34;idleConnectionTestPeriodInMinutes&#34; value=&#34;10&#34; /&gt; &lt;!&amp;#8211; 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 &amp;#8211;&gt; &lt;property name=&#34;idleMaxAgeInMinutes&#34; value=&#34;10&#34; /&gt; &lt;!&amp;#8211; 每个分区最大的连接数 &amp;#8211;&gt; &lt;property name=&#34;maxConnectionsPerPartition&#34; value=&#34;20&#34; /&gt; &lt;!&amp;#8211; 每个分区最小的连接数 &amp;#8211;&gt; &lt;property name=&#34;minConnectionsPerPartition&#34; value=&#34;10&#34; /&gt; &lt;!&amp;#8211; 分区数 ，默认值2，最小1，推荐3-4，视应用而定 &amp;#8211;&gt; &lt;property name=&#34;partitionCount&#34; value=&#34;3&#34; /&gt; &lt;!&amp;#8211; 每次去拿数据库连接的时候一次性要拿几个,默认值：2 &amp;#8211;&gt; &lt;property name=&#34;acquireIncrement&#34; value=&#34;3&#34; /&gt; &lt;!&amp;#8211; 缓存prepared statements的大小，默认值：0 &amp;#8211;&gt; &lt;property name=&#34;statementsCacheSize&#34; value=&#34;50&#34; /&gt; &lt;!&amp;#8211; 在做keep-alive的时候的SQL语句 &amp;#8211;&gt; &lt;property name=&#34;connectionTestStatement&#34; value=&#34;select 1 from dual&#34; /&gt; &lt;!&amp;#8211; 在每次到数据库取连接的时候执行的SQL语句，只执行一次 &amp;#8211;&gt; &lt;property name=&#34;initSQL&#34; value=&#34;select 1 from dual&#34; /&gt; &lt;property name=&#34;closeConnectionWatch&#34; value=&#34;false&#34; /&gt; &lt;property name=&#34;logStatementsEnabled&#34; value=&#34;true&#34; /&gt; &lt;property name=&#34;transactionRecoveryEnabled&#34; value=&#34;true&#34; /&gt; &lt;/bean&gt; &lt;bean id=&#34;masterDataSourceImpl&#34; class=&#34;com.jolbox.bonecp.BoneCPDataSource&#34; destroy-method=&#34;close&#34;&gt; &lt;property name=&#34;driverClass&#34; value=&#34;${jdbc.driver}&#34; /&gt; &lt;property name=&#34;jdbcUrl&#34; value=&#34;${master.jdbc.url}&#34; /&gt; &lt;property name=&#34;username&#34; value=&#34;${master.jdbc.username}&#34; /&gt; &lt;property name=&#34;password&#34; value=&#34;${master.jdbc.password}&#34; /&gt; &lt;!&amp;#8211; 检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0 &amp;#8211;&gt; &lt;property name=&#34;idleConnectionTestPeriodInMinutes&#34; value=&#34;10&#34; /&gt; &lt;!&amp;#8211; 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 &amp;#8211;&gt; &lt;property name=&#34;idleMaxAgeInMinutes&#34; value=&#34;10&#34; /&gt; &lt;!&amp;#8211; 每个分区最大的连接数 &amp;#8211;&gt; &lt;property name=&#34;maxConnectionsPerPartition&#34; value=&#34;20&#34; /&gt; &lt;!&amp;#8211; 每个分区最小的连接数 &amp;#8211;&gt; &lt;property name=&#34;minConnectionsPerPartition&#34; value=&#34;10&#34; /&gt; &lt;!&amp;#8211; 分区数 ，默认值2，最小1，推荐3-4，视应用而定 &amp;#8211;&gt; &lt;property name=&#34;partitionCount&#34; value=&#34;3&#34; /&gt; &lt;!&amp;#8211; 每次去拿数据库连接的时候一次性要拿几个,默认值：2 &amp;#8211;&gt; &lt;property name=&#34;acquireIncrement&#34; value=&#34;3&#34; /&gt; &lt;!&amp;#8211; 缓存prepared statements的大小，默认值：0 &amp;#8211;&gt; &lt;property name=&#34;statementsCacheSize&#34; value=&#34;50&#34; /&gt; &lt;!&amp;#8211; 在做keep-alive的时候的SQL语句 &amp;#8211;&gt; &lt;property name=&#34;connectionTestStatement&#34; value=&#34;select 1 from dual&#34; /&gt; &lt;!&amp;#8211; 在每次到数据库取连接的时候执行的SQL语句，只执行一次 &amp;#8211;&gt; &lt;property name=&#34;initSQL&#34; value=&#34;select 1 from dual&#34; /&gt; &lt;property name=&#34;closeConnectionWatch&#34; value=&#34;false&#34; /&gt; &lt;property name=&#34;logStatementsEnabled&#34; value=&#34;true&#34; /&gt; &lt;property name=&#34;transactionRecoveryEnabled&#34; value=&#34;true&#34; /&gt; &lt;/bean&gt; &lt;!&amp;#8211; DataSource/Master &amp;#8211;&gt; &lt;bean id=&#34;masterDataSource&#34; class=&#34;org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy&#34;&gt; &lt;property name=&#34;targetDataSource&#34; ref=&#34;masterDataSourceImpl&#34; /&gt; &lt;/bean&gt; &lt;bean id=&#34;masterTransactionManager&#34; class=&#34;org.springframework.jdbc.datasource.DataSourceTransactionManager&#34;&gt; &lt;property name=&#34;dataSource&#34; ref=&#34;masterDataSource&#34; /&gt; &lt;/bean&gt; &lt;bean id=&#34;masterTransactionTemplate&#34; class=&#34;org.springframework.transaction.support.TransactionTemplate&#34;&gt; &lt;property name=&#34;transactionManager&#34; ref=&#34;masterTransactionManager&#34; /&gt; &lt;/bean&gt; &lt;!&amp;#8211; DataSource/Slave &amp;#8211;&gt; &lt;bean id=&#34;slaveDataSource&#34; class=&#34;org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy&#34;&gt; &lt;property name=&#34;targetDataSource&#34; ref=&#34;slaveDataSourceImpl&#34; /&gt; &lt;/bean&gt; &lt;bean id=&#34;slaveTransactionManager&#34; class=&#34;org.springframework.jdbc.datasource.DataSourceTransactionManager&#34;&gt; &lt;property name=&#34;dataSource&#34; ref=&#34;slaveDataSource&#34; /&gt; &lt;/bean&gt; &lt;bean id=&#34;slaveTransactionTemplate&#34; class=&#34;org.springframework.transaction.support.TransactionTemplate&#34;&gt; &lt;property name=&#34;transactionManager&#34; ref=&#34;slaveTransactionManager&#34; /&gt; &lt;/bean&gt; &lt;!&amp;#8211; Mybatis/Master &amp;#8211;&gt; &lt;bean id=&#34;masterSqlSessionFactory&#34; class=&#34;org.mybatis.spring.SqlSessionFactoryBean&#34;&gt; &lt;property name=&#34;dataSource&#34; ref=&#34;masterDataSource&#34;&gt;&lt;/property&gt; &lt;property name=&#34;configLocation&#34; value=&#34;classpath:mybatis.xml&#34; /&gt; &lt;property name=&#34;typeAliasesPackage&#34; value=&#34;cn.bridgeli.demo.entity&#34; /&gt; &lt;property name=&#34;mapperLocations&#34;&gt; &lt;list&gt; &lt;value&gt;classpath:cn/bridgeli/demo/mapper/master/*.xml&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;/bean&gt; &lt;bean class=&#34;org.mybatis.spring.mapper.MapperScannerConfigurer&#34;&gt; &lt;property name=&#34;basePackage&#34; value=&#34;cn.bridgeli.demo.mapper.master&#34; /&gt; &lt;property name=&#34;sqlSessionFactoryBeanName&#34; value=&#34;masterSqlSessionFactory&#34; /&gt; &lt;/bean&gt; &lt;!&amp;#8211; Mybatis/Slave &amp;#8211;&gt; &lt;bean id=&#34;slaveSqlSessionFactory&#34; class=&#34;org.mybatis.spring.SqlSessionFactoryBean&#34;&gt; &lt;property name=&#34;dataSource&#34; ref=&#34;slaveDataSource&#34;&gt;&lt;/property&gt; &lt;property name=&#34;configLocation&#34; value=&#34;classpath:mybatis.xml&#34; /&gt; &lt;property name=&#34;typeAliasesPackage&#34; value=&#34;cn.bridgeli.demo.entity&#34; /&gt; &lt;property name=&#34;mapperLocations&#34;&gt; &lt;list&gt; &lt;value&gt;classpath:cn/bridgeli/demo/mapper/slave/*.xml&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;/bean&gt; &lt;bean class=&#34;org.mybatis.spring.mapper.MapperScannerConfigurer&#34;&gt; &lt;property name=&#34;basePackage&#34; value=&#34;cn.bridgeli.demo.mapper.slave&#34; /&gt; &lt;property name=&#34;sqlSessionFactoryBeanName&#34; value=&#34;slaveSqlSessionFactory&#34; /&gt; &lt;/bean&gt; &lt;!&amp;#8211; Configuration transaction advice &amp;#8211;&gt; &lt;tx:advice id=&#34;txAdvice&#34; transaction-manager=&#34;masterTransactionManager&#34;&gt; &lt;tx:attributes&gt; &lt;tx:method name=&#34;add*&#34; propagation=&#34;REQUIRED&#34; /&gt; &lt;tx:method name=&#34;update*&#34; propagation=&#34;REQUIRED&#34; /&gt; &lt;tx:method name=&#34;delete*&#34; propagation=&#34;REQUIRED&#34; /&gt; &lt;tx:method name=&#34;get*&#34; read-only=&#34;true&#34; propagation=&#34;SUPPORTS&#34; /&gt; &lt;tx:method name=&#34;list*&#34; read-only=&#34;true&#34; propagation=&#34;SUPPORTS&#34; /&gt; &lt;/tx:attributes&gt; &lt;/tx:advice&gt; &lt;!&amp;#8211; Configuration transaction aspect &amp;#8211;&gt; &lt;aop:config&gt; &lt;aop:pointcut id=&#34;systemServicePointcut&#34; expression=&#34;execution(\* cn.bridgeli.demo.service.\*.*(..))&#34; /&gt; &lt;aop:advisor advice-ref=&#34;txAdvice&#34; pointcut-ref=&#34;systemServicePointcut&#34; /&gt; &lt;/aop:config&gt; &lt;/beans&gt; 这个配置文件老夫是完整的copy了下来，看起来也比较易懂，就不做解释了，需要说明的mybatis下那些dao的接口，分别对应cn.bridgeli.demo.mapper.master、cn.bridgeli.demo.mapper.slave，cn.bridgeli.demo.mapper.master下的这些dao接口是要写的，另一个是读的，这些接口对应的配置文件肯定就是他们对应的文件夹下面的xml文件了，在将来的项目中几乎可以照抄
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-05-03 15:19:38 +0000 +0000'>May 3, 2015</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>502 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Spring加Mybatis实现MySQL数据库主从读写分离" href="http://localhost:1313/posts/2015-05-03-spring%E5%8A%A0mybatis%E5%AE%9E%E7%8E%B0mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%BB%E4%BB%8E%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/categories/java/page/8/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="http://localhost:1313/categories/java/page/10/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

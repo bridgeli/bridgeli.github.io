@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Git服务器之Gerrit的搭建及第一次使用注意事项 | 分享技术带来的喜悦</title>
+<meta name="keywords" content="code review, Gerrit, Git, 代码审查">
+<meta name="description" content="公司的代码托管打算由SVN迁移到Git，刚好老大让老夫全权负责这个事(感谢老大信任)，老夫根据自己使用Git的经验，选择了Gerrit作为服务器，下面介绍一下老夫搭建Gerrit服务器的过程及第一次使用时需要注意的事项，如果以前没有用过Git可以参考老夫之前写的这篇文章和这篇文章。
+
+环境准备
+
+①. Linux，Gerrit需要Linux环境，至于是哪个发行版本就不重要了，ubuntu还是centos随意；
+②. JDK，这个怎么安装就不说了，Java程序猿都会，就是不会网上一搜一堆，不做赘述；
+③. MySQL，其实这个非必须，Gerrit自带的有H2数据库，但没法老夫就是喜欢MySQL；
+④. nginx，作为认证和反向代理服务器；
+⑤. Maven, 在安装的过程中会下载一些jar文件；
+⑥. Git，这个忘了是不是必须的了，但还是装上吧，反正也不多，大家可以自己试一下需不需要（欢迎留言指出）；
+
+数据准备
+
+①. 自己去Gerrit的官网：http://gerrit-releases.storage.googleapis.com/index.html，下载一个合适的版本，就是一个war包，这也就是我们为什么需要先装JDK的原因，需要说明的是Gerrit的1.X版本是Python写的，2.X改成了Java，变成了一个war包；
+②. 为Gerrit创建一个数据库，库名您随意，最好有意义，例如就叫reviewdb
+
+开始安装
+
+开始安装之前，有人建议专门为Gerrit创建一个用户用户运行Gerrit，并且禁止登陆，这里从简，如果你非要这么做可以这么做：
+
+adduser gerrit2  
+passwd &amp;#8211;delete gerrit2
+然后以gerrit2运行安装，老夫就从简了，直接敲一下命令：
+
+java -jar gerrit-xxx.war init -d review
+gerrit-xxx.war就是你之前下载的war包，review是一个路径，就是安装到这下面，你可以随意定义，敲完这个命令，就进入一下交互(你的可能不太一样)，在里面我加了一些注释：
+
+Gerrit Code Review xxx  
+选项中大写字母为默认选项,如使用默认选项回车即可
+
+Create &amp;#8216;/home/review&amp;#8217; [Y/n]? 
+
+Git Repositories  
+gerrit用于存储git仓库的目录,相对于根目录review #就是之前-d后面的路径
+
+Location of Git repositories [git]: 
+
+SQL Database
+
+Database server type [h2]: mysql #数据库选mysql  
+Server hostname [localhost]:  
+Server port [(mysql default)]:  
+Database name [reviewdb]:  
+Database username [root]:  
+root&amp;#8217;s password :  
+confirm password : 
+
+User Authentication  
+使用HTTP认证,OPENID需要服务器连接互联网,还可以使用LDAP认证服务
+
+Authentication method [OPENID/?]: http #这里建议选http  
+Get username from custom HTTP header [y/N]?  
+SSO logout URL : 
+
+Email Delivery  
+gerrit发送邮件设置,可以使用本地或远程SMTP服务器,  
+只要在smtp服务器上有帐号即可。
+
+SMTP server hostname [localhost]: #这里我并没有选择邮件发送服务器和其他的配置，不知道为什么也可以发邮件  
+SMTP server port [(default)]: #事实上发邮件是必须的，有知道为什么，可以告知，谢谢  
+SMTP encryption [NONE/?]:  
+SMTP username [root]:  
+root@localhost.localdomain&amp;#8217;s password :  
+confirm password : 
+
+Container Process  
+使用root用户运行gerrit
+
+Run as [root]:  
+Java runtime [/usr/lib/jvm/java-7-openjdk-amd64/jre]:  
+Copy gerrit-2.8.1.war to /home/review/bin/gerrit-xxx.war [Y/n]?  
+Copying gerrit-2.8.1.war to /home/review/bin/gerrit-xxx.war
+
+SSH Daemon  
+gerrit自带的ssh服务,与服务器自身的ssh服务无关,监听默认端口即可  
+注意:如要使用低于1024的特权端口,需authbind授权,否则ssh会绑定端口失败  
+Listen on address [*]:  
+Listen on port [29418]: 
+
+Gerrit Code Review is not shipped with Bouncy Castle Crypto v144  
+If available, Gerrit can take advantage of features  
+in the library, but will also function without it.  
+Download and install it now [Y/n]?  
+Downloading http://www.bouncycastle.org/download/bcprov-jdk16-144.jar &amp;#8230; OK  
+Checksum bcprov-jdk16-144.jar OK  
+Generating SSH host key &amp;#8230; rsa&amp;#8230; dsa&amp;#8230; done
+
+HTTP Daemon  
+这里使用nginx反向代理gerrit,所以只在loop接口监听即可。  
+如果使用域名访问gerrit,最好将规范URL设置为域名形式,发送校验邮件时会使用到
+
+Behind reverse proxy [y/N]? y  
+Proxy uses SSL (https://) [y/N]?  
+Subdirectory on proxy server [/]:  
+Listen on address [*]: 127.0.0.1  
+Listen on port [8081]:  
+Canonical URL [http://127.0.0.1/]:
+
+Plugins  
+选装插件
+
+Install plugin download-commands version v2.8.1 [y/N]?  
+Install plugin reviewnotes version v2.8.1 [y/N]?  
+Install plugin replication version v2.8.1 [y/N]?  
+Install plugin commit-message-length-validator version v2.8.1 [y/N]? 
+
+Initialized /home/review  
+Executing /home/review/bin/gerrit.sh start  
+Starting Gerrit Code Review:  
+因为为ssh服务选在了低于1024的端口,且没有authbind端口授权,所以会出现如下错误,高于1024端口不会。  
+FAILED  
+error: cannot start Gerrit: exit status 1  
+Waiting for server on 127.0.0.1:80 &amp;#8230; OK  
+服务器上没有X,所以使用浏览器打开连接失败  
+Opening http://127.0.0.1/#/admin/projects/ &amp;#8230;FAILED  
+Open Gerrit with a JavaScript capable browser:  
+http://127.0.0.1/#/admin/projects/
+到了这里只能说好了一半，如果你直接通过域名访问，会报一个认证失败的错误，错误就不贴了，大家自己看看就知道了
+需要说明的是，以上这些配置，也可以通过修改：review/etc/gerrit.config 进行修改，修改之后重启就好了">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/posts/2015-10-17-git%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B9%8Bgerrit%E7%9A%84%E6%90%AD%E5%BB%BA%E5%8F%8A%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2015-10-17-git%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B9%8Bgerrit%E7%9A%84%E6%90%AD%E5%BB%BA%E5%8F%8A%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">文章</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Git服务器之Gerrit的搭建及第一次使用注意事项
+    </h1>
+    <div class="post-meta"><span title='2015-10-17 09:03:35 +0000 +0000'>October 17, 2015</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>833 words</span>&nbsp;·&nbsp;<span>Bridge Li</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>公司的代码托管打算由SVN迁移到Git，刚好老大让老夫全权负责这个事(感谢老大信任)，老夫根据自己使用Git的经验，选择了Gerrit作为服务器，下面介绍一下老夫搭建Gerrit服务器的过程及第一次使用时需要注意的事项，如果以前没有用过Git可以参考老夫之前写的<a href="https://www.bridgeli.cn/archives/153" title="世界最大同性交友网站(GitHub)入门使用秘籍">这篇文章</a>和<a href="https://www.bridgeli.cn/archives/200" title="Git开发最佳实践">这篇文章</a>。</p>
+<ol>
+<li>环境准备</li>
+</ol>
+<p>①. Linux，Gerrit需要Linux环境，至于是哪个发行版本就不重要了，ubuntu还是centos随意；<br>
+②. JDK，这个怎么安装就不说了，Java程序猿都会，就是不会网上一搜一堆，不做赘述；<br>
+③. MySQL，其实这个非必须，Gerrit自带的有H2数据库，但没法老夫就是喜欢MySQL；<br>
+④. nginx，作为认证和反向代理服务器；<br>
+⑤. Maven, 在安装的过程中会下载一些jar文件；<br>
+⑥. Git，这个忘了是不是必须的了，但还是装上吧，反正也不多，大家可以自己试一下需不需要（欢迎留言指出）；</p>
+<ol start="2">
+<li>数据准备</li>
+</ol>
+<p>①. 自己去Gerrit的官网：http://gerrit-releases.storage.googleapis.com/index.html，下载一个合适的版本，就是一个war包，这也就是我们为什么需要先装JDK的原因，需要说明的是Gerrit的1.X版本是Python写的，2.X改成了Java，变成了一个war包；<br>
+②. 为Gerrit创建一个数据库，库名您随意，最好有意义，例如就叫reviewdb</p>
+<ol start="3">
+<li>开始安装</li>
+</ol>
+<p>开始安装之前，有人建议专门为Gerrit创建一个用户用户运行Gerrit，并且禁止登陆，这里从简，如果你非要这么做可以这么做：</p>
+<pre tabindex="0"><code>
+adduser gerrit2  
+passwd &amp;#8211;delete gerrit2
+</code></pre><p>然后以gerrit2运行安装，老夫就从简了，直接敲一下命令：</p>
+<pre tabindex="0"><code>
+java -jar gerrit-xxx.war init -d review
+</code></pre><p>gerrit-xxx.war就是你之前下载的war包，review是一个路径，就是安装到这下面，你可以随意定义，敲完这个命令，就进入一下交互(你的可能不太一样)，在里面我加了一些注释：</p>
+<pre tabindex="0"><code>
+Gerrit Code Review xxx  
+选项中大写字母为默认选项,如使用默认选项回车即可
+
+Create &amp;#8216;/home/review&amp;#8217; [Y/n]? 
+
+Git Repositories  
+gerrit用于存储git仓库的目录,相对于根目录review #就是之前-d后面的路径
+
+Location of Git repositories [git]: 
+
+SQL Database
+
+Database server type [h2]: mysql #数据库选mysql  
+Server hostname [localhost]:  
+Server port [(mysql default)]:  
+Database name [reviewdb]:  
+Database username [root]:  
+root&amp;#8217;s password :  
+confirm password : 
+
+User Authentication  
+使用HTTP认证,OPENID需要服务器连接互联网,还可以使用LDAP认证服务
+
+Authentication method [OPENID/?]: http #这里建议选http  
+Get username from custom HTTP header [y/N]?  
+SSO logout URL : 
+
+Email Delivery  
+gerrit发送邮件设置,可以使用本地或远程SMTP服务器,  
+只要在smtp服务器上有帐号即可。
+
+SMTP server hostname [localhost]: #这里我并没有选择邮件发送服务器和其他的配置，不知道为什么也可以发邮件  
+SMTP server port [(default)]: #事实上发邮件是必须的，有知道为什么，可以告知，谢谢  
+SMTP encryption [NONE/?]:  
+SMTP username [root]:  
+root@localhost.localdomain&amp;#8217;s password :  
+confirm password : 
+
+Container Process  
+使用root用户运行gerrit
+
+Run as [root]:  
+Java runtime [/usr/lib/jvm/java-7-openjdk-amd64/jre]:  
+Copy gerrit-2.8.1.war to /home/review/bin/gerrit-xxx.war [Y/n]?  
+Copying gerrit-2.8.1.war to /home/review/bin/gerrit-xxx.war
+
+SSH Daemon  
+gerrit自带的ssh服务,与服务器自身的ssh服务无关,监听默认端口即可  
+注意:如要使用低于1024的特权端口,需authbind授权,否则ssh会绑定端口失败  
+Listen on address [*]:  
+Listen on port [29418]: 
+
+Gerrit Code Review is not shipped with Bouncy Castle Crypto v144  
+If available, Gerrit can take advantage of features  
+in the library, but will also function without it.  
+Download and install it now [Y/n]?  
+Downloading http://www.bouncycastle.org/download/bcprov-jdk16-144.jar &amp;#8230; OK  
+Checksum bcprov-jdk16-144.jar OK  
+Generating SSH host key &amp;#8230; rsa&amp;#8230; dsa&amp;#8230; done
+
+HTTP Daemon  
+这里使用nginx反向代理gerrit,所以只在loop接口监听即可。  
+如果使用域名访问gerrit,最好将规范URL设置为域名形式,发送校验邮件时会使用到
+
+Behind reverse proxy [y/N]? y  
+Proxy uses SSL (https://) [y/N]?  
+Subdirectory on proxy server [/]:  
+Listen on address [*]: 127.0.0.1  
+Listen on port [8081]:  
+Canonical URL [http://127.0.0.1/]:
+
+Plugins  
+选装插件
+
+Install plugin download-commands version v2.8.1 [y/N]?  
+Install plugin reviewnotes version v2.8.1 [y/N]?  
+Install plugin replication version v2.8.1 [y/N]?  
+Install plugin commit-message-length-validator version v2.8.1 [y/N]? 
+
+Initialized /home/review  
+Executing /home/review/bin/gerrit.sh start  
+Starting Gerrit Code Review:  
+因为为ssh服务选在了低于1024的端口,且没有authbind端口授权,所以会出现如下错误,高于1024端口不会。  
+FAILED  
+error: cannot start Gerrit: exit status 1  
+Waiting for server on 127.0.0.1:80 &amp;#8230; OK  
+服务器上没有X,所以使用浏览器打开连接失败  
+Opening http://127.0.0.1/#/admin/projects/ &amp;#8230;FAILED  
+Open Gerrit with a JavaScript capable browser:  
+http://127.0.0.1/#/admin/projects/
+</code></pre><p>到了这里只能说好了一半，如果你直接通过域名访问，会报一个认证失败的错误，错误就不贴了，大家自己看看就知道了<br>
+需要说明的是，以上这些配置，也可以通过修改：review/etc/gerrit.config 进行修改，修改之后重启就好了</p>
+<p>老夫把自己gerrit.config的配置贴出来如下（部分敏感信息用xxx进行了隐藏，该文件中*就是*，不是用于隐藏信息）：</p>
+<pre tabindex="0"><code>
+[gerrit]  
+basePath = git  
+canonicalWebUrl = http://gerrit.xxx.com/  
+[database]  
+type = mysql  
+hostname = localhost  
+database = reviewdb  
+username = root  
+[index]  
+type = LUCENE  
+[auth]  
+type = HTTP  
+[sendemail]  
+smtpServer = smtp.qq.com  
+smtpServerPort = 465  
+smtpEncryption = ssl  
+smtpUser = xxx@xxx.com  
+smtpPass = xxx  
+sslVerify = false  
+from=CodeReview&lt;xxx@xxx.com&gt;  
+[container]  
+user = root  
+javaHome = /data/apps/jdk/jre  
+[sshd]  
+listenAddress = *:29418  
+[httpd]  
+listenUrl = proxy-http://*:8081/  
+[cache]  
+directory = cache
+</code></pre><ol start="4">
+<li>nginx认证</li>
+</ol>
+<p>①. 配置nginx</p>
+<p>nginx反向代理gerrit,并且nginx承担http认证,gerrit不会对用户进行认证。gerrit将http认证成功后第一个登录的用户作为管理员,其他用户皆为普通用户。用户第一次http认证成功后,gerrit会为用户生成同名的gerrit用户,只要进一步完善账户即可。比如添加email和公钥等等。管理员为其他普通用户授权。</p>
+<p>nginx反向代理配置：</p>
+<pre tabindex="0"><code>
+user www;  
+worker_processes 4;  
+pid /run/nginx.pid;
+
+events {  
+worker_connentions 768;  
+}
+
+http {  
+server {  
+listen 80;  
+server_name gerrit.bridgeli.cn;  
+allow all;  
+deny all;  
+auth_basic &#34;THSTACK INC. Review System Login&#34;;  
+auth_basic_user_file /data/apps/nginx/passwords;
+
+location / {  
+proxy_pass http://127.0.0.1:8081;  
+}  
+}  
+}
+</code></pre><p>②. http认证文件</p>
+<p>使用htpasswd命令为管理云用户生成http认证配置文件,如果没有htpasswd文件需要安装apache2-utils包。<br>
+ubuntu用户的命令为：</p>
+<pre tabindex="0"><code>
+sudo apt-get install apache2-utils
+</code></pre><p>centos用户的命令是：</p>
+<pre tabindex="0"><code>
+yum install httpd-tools
+</code></pre><p>然后就可以用命令htpasswd设置密码和用户名了，其中passwords是nginx中配置的auth_basic_user_file的认证文件</p>
+<pre tabindex="0"><code>
+htpasswd -d passwords admin #admin是用户名
+</code></pre><p>以后添加gerrit用户时,同样需要先为其配置http认证,然后用户登录后gerrit会为其自动生成用户帐号,名字与http认证名字一致。</p>
+<ol start="5">
+<li>第一次使用要注意的问题</li>
+</ol>
+<p>gerrit的权限管理，极其复杂，复杂到我也没有弄明白。。。尤其是第一次使用可以说问题多多，但只要注意一下问题就好了</p>
+<p>①. git配置的email一定要和gerrit里注册的email一致，否者push会出错；<br>
+②. 只有管理员和项目拥有者可以使用</p>
+<pre tabindex="0"><code>
+git push origin master
+</code></pre><p>进行代码提交，其他人都不行，但是即使是：管理员和项目拥有者，也不建议使用这个命令，因为这个命令会导致代码不经过review直接被合并进去，失去了Gerrit的最优秀的功能，推荐使用的命令：</p>
+<pre tabindex="0"><code>
+git push origin HEAD:refs/for/master
+</code></pre><p>但是你以为这样就能成功了，还是不会的，因为你看到 remote: ERROR: missing Change-Id in commit message footer 的错误，所以还需要第三步，加入一个文件</p>
+<p>③. 把第七部分的附录，copy下来，保存为：commit-msg，然后放到：.git/hooks/下面，如果是Linux系统需要添加x权限，windows直接添加就好了，现在您在提交就没问题了<br>
+④. 以上之后你就可以提交了，提交了之后，进行代码审查就好了</p>
+<ol start="6">
+<li>补充说明：</li>
+</ol>
+<p>①. 使用http认证登录gerrit后,并无法通过点击”Sign Out”退出登录,只能通过直接关闭浏览器窗口来退出当前会话。<br>
+②. 如果需要重新安装gerrit,记得将数据库drop掉再重新创建。</p>
+<ol start="7">
+<li>附录</li>
+</ol>
+<pre tabindex="0"><code>
+#!/bin/sh  
+\# From Gerrit Code Review 2.1.2.4  
+#  
+\# Part of Gerrit Code Review (http://code.google.com/p/gerrit/)  
+#  
+\# Copyright (C) 2009 The Android Open Source Project  
+#  
+\# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);  
+\# you may not use this file except in compliance with the License.  
+\# You may obtain a copy of the License at  
+#  
+\# http://www.apache.org/licenses/LICENSE-2.0  
+#  
+\# Unless required by applicable law or agreed to in writing, software  
+\# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,  
+\# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  
+\# See the License for the specific language governing permissions and  
+\# limitations under the License.  
+#
+
+CHANGE_ID_AFTER=&#34;Bug|Issue&#34;  
+MSG=&#34;$1&#34;
+
+\# Check for, and add if missing, a unique Change-Id  
+#  
+add_ChangeId() {  
+clean_message=$(sed -e &amp;#8216;  
+/^diff &amp;#8211;git a/.*/{  
+s///  
+q  
+}  
+/^Signed-off-by:/d  
+/^#/d  
+&amp;#8216; &#34;$MSG&#34; | git stripspace)  
+if test -z &#34;$clean_message&#34;  
+then  
+return  
+fi
+
+if grep -i &amp;#8216;^Change-Id:&amp;#8217; &#34;$MSG&#34; &gt;/dev/null  
+then  
+return  
+fi
+
+id=$(_gen_ChangeId)  
+perl -e &amp;#8216;  
+$MSG = shift;  
+$id = shift;  
+$CHANGE_ID_AFTER = shift;
+
+undef $/;  
+open(I, $MSG); $_ = &lt;I&gt;; close I;  
+s|^diff &amp;#8211;git a/.*||ms;  
+s|^#.*$||mg;  
+exit unless $_;
+
+@message = split /n/;  
+$haveFooter = 0;  
+$startFooter = @message;  
+for($line = @message &amp;#8211; 1; $line &gt;= 0; $line&amp;#8211;) {  
+$_ = $message[$line];
+
+if (/^[a-zA-Z0-9-]+:/ &amp;&amp; !m,^[a-z0-9-]+://,) {  
+$haveFooter++;  
+next;  
+}  
+next if /^[ []/;  
+$startFooter = $line if ($haveFooter &amp;&amp; /^r?$/);  
+last;  
+}
+
+@footer = @message[$startFooter+1..@message];  
+@message = @message[0..$startFooter];  
+push(@footer, &#34;&#34;) unless @footer;
+
+for ($line = 0; $line &lt; @footer; $line++) {  
+$_ = $footer[$line];  
+next if /^($CHANGE_ID_AFTER):/i;  
+last;  
+}  
+splice(@footer, $line, 0, &#34;Change-Id: I$id&#34;);
+
+$_ = join(&#34;n&#34;, @message, @footer);  
+open(O, &#34;&gt;$MSG&#34;); print O; close O;  
+&amp;#8216; &#34;$MSG&#34; &#34;$id&#34; &#34;$CHANGE_ID_AFTER&#34;  
+}  
+_gen_ChangeIdInput() {  
+echo &#34;tree $(git write-tree)&#34;  
+if parent=$(git rev-parse HEAD^0 2&gt;/dev/null)  
+then  
+echo &#34;parent $parent&#34;  
+fi  
+echo &#34;author $(git var GIT_AUTHOR_IDENT)&#34;  
+echo &#34;committer $(git var GIT_COMMITTER_IDENT)&#34;  
+echo  
+printf &amp;#8216;%s&amp;#8217; &#34;$clean_message&#34;  
+}  
+_gen_ChangeId() {  
+_gen_ChangeIdInput |  
+git hash-object -t commit &amp;#8211;stdin  
+}
+
+export LC_ALL=C  
+add_ChangeId
+</code></pre><p><strong>2015.10.27 补充</strong></p>
+<ol>
+<li>经后续测试，Git是必须安装的；</li>
+<li>邮箱好像是必须的，如果配置信息如下：</li>
+</ol>
+<pre tabindex="0"><code>
+[sendemail]  
+smtpServer = smtp.qq.com  
+smtpServerPort = 465  
+smtpEncryption = ssl  
+smtpUser = xxx@xxx.com  
+smtpPass = xxxx  
+sslVerify = false  
+from=CodeReview&lt;xxx@xxx.com&gt;
+</code></pre><ol start="3">
+<li>clone项目的时候可以选择：clone with commit-msg hook，这样的话在正常的clone命令后面会添加如下命令，就不会忘记添加commit-msg文件了，但要注意Linux系统是否需要修改添加X权限</li>
+</ol>
+<pre tabindex="0"><code>
+&amp;&amp; scp -p -P 29418 xxx@xxx.com:hooks/commit-msg demo/.git/hooks/
+</code></pre><p>参考资料：</p>
+<ol>
+<li><a href="http://openwares.net/linux/gerrit2_setup.html">http://openwares.net/linux/gerrit2_setup.html</a></li>
+<li><a href="http://blog.csdn.net/ljchlx/article/details/22277235">http://blog.csdn.net/ljchlx/article/details/22277235</a></li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/code-review/">Code Review</a></li>
+      <li><a href="http://localhost:1313/tags/gerrit/">Gerrit</a></li>
+      <li><a href="http://localhost:1313/tags/git/">Git</a></li>
+      <li><a href="http://localhost:1313/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5/">代码审查</a></li>
+    </ul>
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Git服务器之Gerrit的搭建及第一次使用注意事项 on x"
+            href="https://x.com/intent/tweet/?text=Git%e6%9c%8d%e5%8a%a1%e5%99%a8%e4%b9%8bGerrit%e7%9a%84%e6%90%ad%e5%bb%ba%e5%8f%8a%e7%ac%ac%e4%b8%80%e6%ac%a1%e4%bd%bf%e7%94%a8%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-10-17-git%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8%25E4%25B9%258Bgerrit%25E7%259A%2584%25E6%2590%25AD%25E5%25BB%25BA%25E5%258F%258A%25E7%25AC%25AC%25E4%25B8%2580%25E6%25AC%25A1%25E4%25BD%25BF%25E7%2594%25A8%25E6%25B3%25A8%25E6%2584%258F%25E4%25BA%258B%25E9%25A1%25B9%2f&amp;hashtags=codereview%2cGerrit%2cGit%2c%e4%bb%a3%e7%a0%81%e5%ae%a1%e6%9f%a5">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Git服务器之Gerrit的搭建及第一次使用注意事项 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-10-17-git%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8%25E4%25B9%258Bgerrit%25E7%259A%2584%25E6%2590%25AD%25E5%25BB%25BA%25E5%258F%258A%25E7%25AC%25AC%25E4%25B8%2580%25E6%25AC%25A1%25E4%25BD%25BF%25E7%2594%25A8%25E6%25B3%25A8%25E6%2584%258F%25E4%25BA%258B%25E9%25A1%25B9%2f&amp;title=Git%e6%9c%8d%e5%8a%a1%e5%99%a8%e4%b9%8bGerrit%e7%9a%84%e6%90%ad%e5%bb%ba%e5%8f%8a%e7%ac%ac%e4%b8%80%e6%ac%a1%e4%bd%bf%e7%94%a8%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9&amp;summary=Git%e6%9c%8d%e5%8a%a1%e5%99%a8%e4%b9%8bGerrit%e7%9a%84%e6%90%ad%e5%bb%ba%e5%8f%8a%e7%ac%ac%e4%b8%80%e6%ac%a1%e4%bd%bf%e7%94%a8%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9&amp;source=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-10-17-git%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8%25E4%25B9%258Bgerrit%25E7%259A%2584%25E6%2590%25AD%25E5%25BB%25BA%25E5%258F%258A%25E7%25AC%25AC%25E4%25B8%2580%25E6%25AC%25A1%25E4%25BD%25BF%25E7%2594%25A8%25E6%25B3%25A8%25E6%2584%258F%25E4%25BA%258B%25E9%25A1%25B9%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Git服务器之Gerrit的搭建及第一次使用注意事项 on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-10-17-git%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8%25E4%25B9%258Bgerrit%25E7%259A%2584%25E6%2590%25AD%25E5%25BB%25BA%25E5%258F%258A%25E7%25AC%25AC%25E4%25B8%2580%25E6%25AC%25A1%25E4%25BD%25BF%25E7%2594%25A8%25E6%25B3%25A8%25E6%2584%258F%25E4%25BA%258B%25E9%25A1%25B9%2f&title=Git%e6%9c%8d%e5%8a%a1%e5%99%a8%e4%b9%8bGerrit%e7%9a%84%e6%90%ad%e5%bb%ba%e5%8f%8a%e7%ac%ac%e4%b8%80%e6%ac%a1%e4%bd%bf%e7%94%a8%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Git服务器之Gerrit的搭建及第一次使用注意事项 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-10-17-git%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8%25E4%25B9%258Bgerrit%25E7%259A%2584%25E6%2590%25AD%25E5%25BB%25BA%25E5%258F%258A%25E7%25AC%25AC%25E4%25B8%2580%25E6%25AC%25A1%25E4%25BD%25BF%25E7%2594%25A8%25E6%25B3%25A8%25E6%2584%258F%25E4%25BA%258B%25E9%25A1%25B9%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Git服务器之Gerrit的搭建及第一次使用注意事项 on whatsapp"
+            href="https://api.whatsapp.com/send?text=Git%e6%9c%8d%e5%8a%a1%e5%99%a8%e4%b9%8bGerrit%e7%9a%84%e6%90%ad%e5%bb%ba%e5%8f%8a%e7%ac%ac%e4%b8%80%e6%ac%a1%e4%bd%bf%e7%94%a8%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9%20-%20http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-10-17-git%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8%25E4%25B9%258Bgerrit%25E7%259A%2584%25E6%2590%25AD%25E5%25BB%25BA%25E5%258F%258A%25E7%25AC%25AC%25E4%25B8%2580%25E6%25AC%25A1%25E4%25BD%25BF%25E7%2594%25A8%25E6%25B3%25A8%25E6%2584%258F%25E4%25BA%258B%25E9%25A1%25B9%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Git服务器之Gerrit的搭建及第一次使用注意事项 on telegram"
+            href="https://telegram.me/share/url?text=Git%e6%9c%8d%e5%8a%a1%e5%99%a8%e4%b9%8bGerrit%e7%9a%84%e6%90%ad%e5%bb%ba%e5%8f%8a%e7%ac%ac%e4%b8%80%e6%ac%a1%e4%bd%bf%e7%94%a8%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-10-17-git%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8%25E4%25B9%258Bgerrit%25E7%259A%2584%25E6%2590%25AD%25E5%25BB%25BA%25E5%258F%258A%25E7%25AC%25AC%25E4%25B8%2580%25E6%25AC%25A1%25E4%25BD%25BF%25E7%2594%25A8%25E6%25B3%25A8%25E6%2584%258F%25E4%25BA%258B%25E9%25A1%25B9%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Git服务器之Gerrit的搭建及第一次使用注意事项 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=Git%e6%9c%8d%e5%8a%a1%e5%99%a8%e4%b9%8bGerrit%e7%9a%84%e6%90%ad%e5%bb%ba%e5%8f%8a%e7%ac%ac%e4%b8%80%e6%ac%a1%e4%bd%bf%e7%94%a8%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9&u=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-10-17-git%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8%25E4%25B9%258Bgerrit%25E7%259A%2584%25E6%2590%25AD%25E5%25BB%25BA%25E5%258F%258A%25E7%25AC%25AC%25E4%25B8%2580%25E6%25AC%25A1%25E4%25BD%25BF%25E7%2594%25A8%25E6%25B3%25A8%25E6%2584%258F%25E4%25BA%258B%25E9%25A1%25B9%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>StringTableSize on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/stringtablesize/</link>
+    <description>Recent content in StringTableSize on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 05 Nov 2017 06:53:11 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/stringtablesize/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>你假笨说JVM参数 – 002 StringTableSize</title>
+      <link>http://localhost:1313/posts/2017-11-05-%E4%BD%A0%E5%81%87%E7%AC%A8%E8%AF%B4jvm%E5%8F%82%E6%95%B0-002-stringtablesize/</link>
+      <pubDate>Sun, 05 Nov 2017 06:53:11 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2017-11-05-%E4%BD%A0%E5%81%87%E7%AC%A8%E8%AF%B4jvm%E5%8F%82%E6%95%B0-002-stringtablesize/</guid>
+      <description>&lt;p&gt;没想到距离第一次整理你假笨的分享已经过去两个多月了，近期会继续整理一系列你假笨关于JVM参数的分享，下面是第二次：&lt;/p&gt;
+&lt;p&gt;序号：002&lt;br&gt;
+时间：2017-07-14&lt;br&gt;
+参数：-XX:StringTableSize&lt;br&gt;
+含义：Number of buckets in the interned String table&lt;br&gt;
+String.intern() 被调用时会往 Hashtable 插入一个 String（若该 String 不存在），这里的 Table 就是 StringTable，此参数就是这个 StringTable 的大小，若此参数设置过小，明显的问题就是过多的hash碰撞，造成在查找字符串时比较消耗 CPU 资源&lt;br&gt;
+JDK 1.6 起，当冲突次数超过 100 次会自动 rehash，即便如此，若此参数设置过小会导致不断的 rehash，依然会过度消耗 CPU 资源&lt;br&gt;
+建议将此参数设置的值稍大一些，以减少 hash 冲突&lt;/p&gt;
+&lt;p&gt;使用方法：-XX:ReservedCodeCacheSize=__&lt;/p&gt;
+&lt;p&gt;小程序截图：&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2017/11/JVMPocket_StringTableSize-576x1024.jpg&#34; alt=&#34;&#34; width=&#34;576&#34; height=&#34;1024&#34; class=&#34;alignnone size-medium wp-image-424&#34; /&gt; 
+&lt;p&gt;分享记录：&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2017/11/StringTableSize-260x1024.png&#34; alt=&#34;&#34; width=&#34;260&#34; height=&#34;1024&#34; class=&#34;alignnone size-medium wp-image-425&#34; /&gt; 
+&lt;p&gt;感谢你假笨&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

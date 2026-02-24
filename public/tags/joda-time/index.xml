@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Joda-Time on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/joda-time/</link>
+    <description>Recent content in Joda-Time on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 03 Feb 2020 08:43:20 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/joda-time/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>日期中用 YYYY 一定会报错吗？</title>
+      <link>http://localhost:1313/posts/2020-02-03-%E6%97%A5%E6%9C%9F%E4%B8%AD%E7%94%A8-yyyy-%E4%B8%80%E5%AE%9A%E4%BC%9A%E6%8A%A5%E9%94%99%E5%90%97/</link>
+      <pubDate>Mon, 03 Feb 2020 08:43:20 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2020-02-03-%E6%97%A5%E6%9C%9F%E4%B8%AD%E7%94%A8-yyyy-%E4%B8%80%E5%AE%9A%E4%BC%9A%E6%8A%A5%E9%94%99%E5%90%97/</guid>
+      <description>&lt;p&gt;今年春节真是打破了 N 多传统，很多人都是在家连门都没出过，从今天开始也要开始在家远程办公了，因为和小伙伴合作开发一个功能，但是接口目前还没给到，然后记得今年元旦前后，关于 YYYY 报错的问题，突然火了，据说有 N 多程序员被火速召回公司改 bug，所以决定写篇小文章说说这个问题：YYYY 一定会报错吗？&lt;/p&gt;
+&lt;p&gt;首先需要说明的是：我用的 JDK 版本为：jdk-8u131-macosx-x64，所以具体表现为应该显示：2019-12-31，结果确是：2020-12-31，另外经过我的测试其实不仅 format 的时候报错，parse 的时候同样也会报错，我写了一段示例代码如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo;
+
+import org.joda.time.DateTime;  
+import org.junit.Test;
+
+import java.text.ParseException;  
+import java.text.SimpleDateFormat;  
+import java.util.Date;
+
+/**  
+* Created by bridgeli on 2019/02/03.  
+*/  
+public class DateTest {
+
+@Test  
+public void testSimpleDateFormat() throws ParseException {  
+SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat(&amp;#34;yyyy-MM-dd HH:mm:ss&amp;#34;);  
+DateTime dateTime1 = new DateTime(2019, 12, 31, 23, 59, 59);  
+String date1 = simpleDateFormat1.format(dateTime1.toDate());  
+System.out.println(&amp;#34;date1: &amp;#34; + date1);
+
+SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(&amp;#34;yyyy-MM-dd&amp;#34;);  
+DateTime dateTime2 = new DateTime(2020, 01, 01, 23, 59, 59);  
+String date2 = simpleDateFormat2.format(dateTime2.toDate());  
+System.out.println(&amp;#34;date2: &amp;#34; + date2);
+
+SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat(&amp;#34;YYYY-MM-dd HH:mm:ss&amp;#34;);  
+DateTime dateTime3 = new DateTime(2019, 12, 31, 23, 59, 59);  
+String date3 = simpleDateFormat3.format(dateTime3.toDate());  
+System.out.println(&amp;#34;date3: &amp;#34; + date3);
+
+SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat(&amp;#34;YYYY-MM-dd&amp;#34;);  
+DateTime dateTime4 = new DateTime(2020, 01, 01, 23, 59, 59);  
+String date4 = simpleDateFormat4.format(dateTime4.toDate());  
+System.out.println(&amp;#34;date4: &amp;#34; + date4);
+
+SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat(&amp;#34;yyyy-MM-dd HH:mm:ss&amp;#34;);  
+Date date5 = simpleDateFormat5.parse(&amp;#34;2019-12-31 23:59:59&amp;#34;);  
+System.out.println(&amp;#34;date5: &amp;#34; + date5);
+
+SimpleDateFormat simpleDateFormat6 = new SimpleDateFormat(&amp;#34;yyyy-MM-dd&amp;#34;);  
+Date date6 = simpleDateFormat6.parse(&amp;#34;2020-01-01&amp;#34;);  
+System.out.println(&amp;#34;date6: &amp;#34; + date6);
+
+SimpleDateFormat simpleDateFormat7 = new SimpleDateFormat(&amp;#34;YYYY-MM-dd HH:mm:ss&amp;#34;);  
+Date date7 = simpleDateFormat7.parse(&amp;#34;2019-12-31 23:59:59&amp;#34;);  
+System.out.println(&amp;#34;date7: &amp;#34; + date7);
+
+SimpleDateFormat simpleDateFormat8 = new SimpleDateFormat(&amp;#34;YYYY-MM-dd&amp;#34;);  
+Date date8 = simpleDateFormat8.parse(&amp;#34;2020-01-01&amp;#34;);  
+System.out.println(&amp;#34;date8: &amp;#34; + date8);  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上面这段代码的输出结果为：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

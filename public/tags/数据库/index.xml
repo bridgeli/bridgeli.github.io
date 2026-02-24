@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>数据库 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+    <description>Recent content in 数据库 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 11 Nov 2017 08:08:13 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MySQL : The last packet successfully received from the server was XXX milliseconds ago</title>
+      <link>http://localhost:1313/posts/2017-11-11-mysql-the-last-packet-successfully-received-from-the-server-was-xxx-milliseconds-ago/</link>
+      <pubDate>Sat, 11 Nov 2017 08:08:13 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2017-11-11-mysql-the-last-packet-successfully-received-from-the-server-was-xxx-milliseconds-ago/</guid>
+      <description>&lt;p&gt;14年毕业写完论文没事干的时候，自己玩微信公众号开发，当时想做一个自然语言交互，其实就是想试一下lucene，但是当时建索引的时候偶尔会报这个错，一致不知道具体原因，去网上搜索但是天下文章一大抄，你抄我来我抄他，也没找到原因，后来因为工作中也没遇到过，感觉应该是自己当时水平不行就忘了这件事，前几天 fatsjson 和 druid 的作者温少突然在一个群里面说有人通过阿里工单反馈这个问题，他给追踪了一下，找到了原因，原来还是还是有人遇到这个问题，今天记录一下，希望对遇到这个问题的小伙伴有帮助，报错的信息大概就是：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: The last packet successfully received from the server was 20,820,001 milliseconds ago. The last packet sent successfully to the server was 20,820,002 milliseconds ago. is longer than the server configured value of &amp;amp;#8216;wait_timeout&amp;amp;#8217;. You should consider either expiring and/or testing connection validity before use in your application, increasing the server configured values for client timeouts, or using the Connector/J connection property &amp;amp;#8216;autoReconnect=true&amp;amp;#8217; to avoid this problem.  
+at sun.reflect.GeneratedConstructorAccessor29.newInstance(Unknown Source) 
+
+…………
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;下面是温少分享的截图&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>事务并发处理</title>
+      <link>http://localhost:1313/posts/2017-04-09-%E4%BA%8B%E5%8A%A1%E5%B9%B6%E5%8F%91%E5%A4%84%E7%90%86/</link>
+      <pubDate>Sun, 09 Apr 2017 12:28:35 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2017-04-09-%E4%BA%8B%E5%8A%A1%E5%B9%B6%E5%8F%91%E5%A4%84%E7%90%86/</guid>
+      <description>&lt;p&gt;前几天和同事讨论，老夫自以为对事务有了一定的了解，但当讨论的时候发现还是有些说不明白，所以周末的时间，又看了一遍带我入门北京尚学堂马士兵老师关于事务的讲解，这次做一下笔记，以供以后忘了的时候查询方便。这里默认读者对事务的ACID都有了了解，直接说事务并发时可能出现的问题和数据库的事务隔离级别&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;事务并发时可能出现的问题&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;说这个问题记得大学课堂上有一个很经典的例子就是：银行的存取款，这里也用这个例子说明（因为不知道wp博客怎么搞表格和怎么支持MD，所以就搞几张图片吧）&lt;/p&gt;
+&lt;p&gt;①. 第一类丢失更新(Lost Update)&lt;/p&gt;
+&lt;img decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/first_lost_update.png&#34; alt=&#34;第一类丢失更新&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;②. dirty read脏读(读到了另一个事务在处理中还未提交的数据)&lt;/p&gt;
+&lt;img decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/dirty_read.png&#34; alt=&#34;脏读&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;③. non-repeatable read 不可重复读&lt;/p&gt;
+&lt;img decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/non_repeatable_read.png&#34; alt=&#34;不可重复读&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;④. second lost update problem 第二类丢失更新(不可重复读的特殊情况)&lt;/p&gt;
+&lt;img decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/second_lost_update.png&#34; alt=&#34;第二类丢失更新&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;⑤. phantom read 幻读&lt;/p&gt;
+&lt;img decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/phantom_read.png&#34; alt=&#34;幻读&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;看到这里可能会有读者对不可重复读和幻读有所迷惑，这两者有什么区别吗？不都是受另一个事务的影响，导致前后结果不一致吗？其实仔细看区别还是很明显的：幻读是关于数据库的delete和insert导致前后的数据不一致，而其他的情况都是数据的更新导致前后的数据不一致&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;数据库的事务隔离机制&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;其中在文档java.sql.Connection中有详细的说明，除了none（没有事务）之外，还有：1:read-uncommitted 2:read-committed 4:repeatable read 8:serializable（数字代表对应值）四种。&lt;br&gt;
+为什么取值要使用 1 2 4 8 而不是 1 2 3 4&lt;br&gt;
+1=0000 2=0010 4=0100 8=1000(位移计算效率高)&lt;/p&gt;
+&lt;p&gt;需要说明的是：&lt;/p&gt;
+&lt;p&gt;只要数据库支持事务，就不可能出现第一类丢失更新&lt;br&gt;
+read-uncommitted(允许读取未提交的数据) 会出现dirty read, phantom-read, non-repeatable read 问题&lt;br&gt;
+read-commited(读取已提交的数据 项目中一般都使用这个)不会出现dirty read，因为只有另一个事务提交才会读出来结果，但仍然会出现 non-repeatable read 和 phantom-read；使用read-commited机制可用悲观锁 乐观锁来解决non-repeatable read 和 phantom-read问题&lt;br&gt;
+repeatable read(事务执行中其他事务无法执行修改或插入操作 较安全)但仍然会出现phantom-read&lt;br&gt;
+serializable解决一切问题(顺序执行事务 不并发，实际中很少用)&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Spring aop应用之实现数据库读写分离</title>
+      <link>http://localhost:1313/posts/2016-12-31-spring-aop%E5%BA%94%E7%94%A8%E4%B9%8B%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB/</link>
+      <pubDate>Sat, 31 Dec 2016 12:12:51 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-12-31-spring-aop%E5%BA%94%E7%94%A8%E4%B9%8B%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB/</guid>
+      <description>&lt;p&gt;去年五月份的时候曾经写过一篇：&lt;a href=&#34;https://www.bridgeli.cn/archives/166&#34; title=&#34;Spring加Mybatis实现MySQL数据库主从读写分离&#34;&gt;Spring加Mybatis实现MySQL数据库主从读写分离&lt;/a&gt;，实现的原理是配置了多套数据源，相应的sqlsessionfactory，transactionmanager和事务代理各配置了一套，如果从库或数据库有多个的时候，需要配置的信息会越来越多，远远不够优雅，在我们编程界有一个规范：约定优于配置。所以就用Sping的aop实现了一个简单的数据库分离方案，具体实现代码放在了Github上，地址如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+https://github.com/bridgeli/practical-util/tree/master/src/main/java/cn/bridgeli/datasource
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;读者如果想使用再简单的方法就是把这个代码download下来，放到自己的项目里面，当然更优雅的方式是：打成jar包，放到项目里面了，具体打jar的方法，老夫就不在这里多说了，相信看这篇文章的读者肯定都会了。当然仅仅有这份代码，他们是不会自动生效的，既然是使用Spring的Aop实现数据库读写分离，所以肯定会有牵涉到Aop的配置了，所以在spring-mybatis.xml中有如下配置：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;  
+&amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34;  
+xmlns:aop=&amp;#34;http://www.springframework.org/schema/aop&amp;#34; xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34;  
+xmlns:p=&amp;#34;http://www.springframework.org/schema/p&amp;#34; xmlns:tx=&amp;#34;http://www.springframework.org/schema/tx&amp;#34;  
+xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;  
+xsi:schemaLocation=&amp;#34;  
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd&amp;#34;&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; 配置写数据源 &amp;amp;#8211;&amp;gt;  
+&amp;lt;bean id=&amp;#34;masterDataSource&amp;#34; class=&amp;#34;com.alibaba.druid.pool.DruidDataSource&amp;#34; destroy-method=&amp;#34;close&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;driverClassName&amp;#34; value=&amp;#34;${bridgeli.jdbc.driver}&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;url&amp;#34; value=&amp;#34;${bridgeli.jdbc.url}&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;username&amp;#34; value=&amp;#34;${bridgeli.jdbc.username}&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;password&amp;#34; value=&amp;#34;${bridgeli.jdbc.password}&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;validationQuery&amp;#34; value=&amp;#34;${bridgeli.jdbc.validationQuery}&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;initialSize&amp;#34; value=&amp;#34;1&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;maxActive&amp;#34; value=&amp;#34;20&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;minIdle&amp;#34; value=&amp;#34;0&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;maxWait&amp;#34; value=&amp;#34;60000&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;testOnBorrow&amp;#34; value=&amp;#34;false&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;testOnReturn&amp;#34; value=&amp;#34;false&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;testWhileIdle&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;timeBetweenEvictionRunsMillis&amp;#34; value=&amp;#34;60000&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;minEvictableIdleTimeMillis&amp;#34; value=&amp;#34;25200000&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;removeAbandoned&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;removeAbandonedTimeout&amp;#34; value=&amp;#34;1800&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;logAbandoned&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;filters&amp;#34; value=&amp;#34;stat&amp;#34; /&amp;gt;  
+&amp;lt;/bean&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; 配置读数据源 &amp;amp;#8211;&amp;gt;  
+&amp;lt;bean id=&amp;#34;parentSlaveDataSource&amp;#34; class=&amp;#34;com.alibaba.druid.pool.DruidDataSource&amp;#34; destroy-method=&amp;#34;close&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;driverClassName&amp;#34; value=&amp;#34;${bridgeli.jdbc.driver}&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;validationQuery&amp;#34; value=&amp;#34;${bridgeli.jdbc.validationQuery}&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;initialSize&amp;#34; value=&amp;#34;1&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;maxActive&amp;#34; value=&amp;#34;20&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;minIdle&amp;#34; value=&amp;#34;0&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;maxWait&amp;#34; value=&amp;#34;60000&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;testOnBorrow&amp;#34; value=&amp;#34;false&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;testOnReturn&amp;#34; value=&amp;#34;false&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;testWhileIdle&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;timeBetweenEvictionRunsMillis&amp;#34; value=&amp;#34;60000&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;minEvictableIdleTimeMillis&amp;#34; value=&amp;#34;25200000&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;removeAbandoned&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;removeAbandonedTimeout&amp;#34; value=&amp;#34;1800&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;logAbandoned&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;filters&amp;#34; value=&amp;#34;stat&amp;#34; /&amp;gt;  
+&amp;lt;/bean&amp;gt;  
+&amp;lt;bean id=&amp;#34;slaveDataSource1&amp;#34; class=&amp;#34;com.alibaba.druid.pool.DruidDataSource&amp;#34; destroy-method=&amp;#34;close&amp;#34; parent=&amp;#34;parentSlaveDataSource&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;url&amp;#34; value=&amp;#34;${bridgeli_slave1.jdbc.url}&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;username&amp;#34; value=&amp;#34;${bridgeli_slave1.jdbc.username}&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;password&amp;#34; value=&amp;#34;${bridgeli_slave1.jdbc.password}&amp;#34; /&amp;gt;  
+&amp;lt;/bean&amp;gt;
+
+&amp;lt;bean id=&amp;#34;dataSource&amp;#34; class=&amp;#34;cn.bridgeli.datasource.MasterSlaveDataSource&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;targetDataSources&amp;#34;&amp;gt;  
+&amp;lt;map&amp;gt;  
+&amp;lt;entry key-ref=&amp;#34;masterDataSource&amp;#34; value-ref=&amp;#34;masterDataSource&amp;#34;/&amp;gt;  
+&amp;lt;entry key-ref=&amp;#34;slaveDataSource1&amp;#34; value-ref=&amp;#34;slaveDataSource1&amp;#34;/&amp;gt;  
+&amp;lt;/map&amp;gt;  
+&amp;lt;/property&amp;gt;  
+&amp;lt;property name=&amp;#34;defaultTargetDataSource&amp;#34; ref=&amp;#34;masterDataSource&amp;#34;/&amp;gt;  
+&amp;lt;property name=&amp;#34;masterSlaveSelector&amp;#34; ref=&amp;#34;dataSelector&amp;#34;/&amp;gt;  
+&amp;lt;/bean&amp;gt;
+
+&amp;lt;bean id=&amp;#34;dataSelector&amp;#34; class=&amp;#34;cn.bridgeli.datasource.MasterSlaveSelectorByPoll&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;masters&amp;#34;&amp;gt;  
+&amp;lt;list&amp;gt;  
+&amp;lt;ref bean=&amp;#34;masterDataSource&amp;#34;/&amp;gt;  
+&amp;lt;/list&amp;gt;  
+&amp;lt;/property&amp;gt;  
+&amp;lt;property name=&amp;#34;slaves&amp;#34;&amp;gt;  
+&amp;lt;list&amp;gt;  
+&amp;lt;ref bean=&amp;#34;slaveDataSource1&amp;#34;/&amp;gt;  
+&amp;lt;/list&amp;gt;  
+&amp;lt;/property&amp;gt;  
+&amp;lt;property name=&amp;#34;defaultDataSource&amp;#34; ref=&amp;#34;masterDataSource&amp;#34;/&amp;gt;  
+&amp;lt;/bean&amp;gt;
+
+&amp;lt;aop:aspectj-autoproxy/&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; mybaits 数据工厂 &amp;amp;#8211;&amp;gt;  
+&amp;lt;bean id=&amp;#34;sqlSessionFactory&amp;#34; class=&amp;#34;org.mybatis.spring.SqlSessionFactoryBean&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;dataSource&amp;#34; ref=&amp;#34;dataSource&amp;#34; /&amp;gt;  
+&amp;lt;/bean&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; 自动扫描所有注解的路径 &amp;amp;#8211;&amp;gt;  
+&amp;lt;bean class=&amp;#34;org.mybatis.spring.mapper.MapperScannerConfigurer&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;basePackage&amp;#34; value=&amp;#34;cn.bridgeli.mapper&amp;#34; /&amp;gt;  
+&amp;lt;!&amp;amp;#8211; &amp;lt;property name=&amp;#34;sqlSessionFactory&amp;#34; ref=&amp;#34;sqlSessionFactory&amp;#34; /&amp;gt; &amp;amp;#8211;&amp;gt;  
+&amp;lt;property name=&amp;#34;sqlSessionFactoryBeanName&amp;#34; value=&amp;#34;sqlSessionFactory&amp;#34;&amp;gt;&amp;lt;/property&amp;gt;  
+&amp;lt;/bean&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; 数据库切面 &amp;amp;#8211;&amp;gt;  
+&amp;lt;bean id=&amp;#34;masterSlaveAspect&amp;#34; class=&amp;#34;cn.bridgeli.datasource.MasterSlaveAspect&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;prefixMasters&amp;#34;&amp;gt;  
+&amp;lt;list&amp;gt;  
+&amp;lt;value&amp;gt;save&amp;lt;/value&amp;gt;  
+&amp;lt;value&amp;gt;update&amp;lt;/value&amp;gt;  
+&amp;lt;value&amp;gt;delete&amp;lt;/value&amp;gt;  
+&amp;lt;/list&amp;gt;  
+&amp;lt;/property&amp;gt;  
+&amp;lt;/bean&amp;gt;  
+&amp;lt;aop:config&amp;gt;  
+&amp;lt;aop:aspect id=&amp;#34;c&amp;#34; ref=&amp;#34;masterSlaveAspect&amp;#34;&amp;gt;  
+&amp;lt;aop:pointcut id=&amp;#34;tx&amp;#34; expression=&amp;#34;execution(\* cn.bridgeli.service..\*.*(..))&amp;#34;/&amp;gt;  
+&amp;lt;aop:before pointcut-ref=&amp;#34;tx&amp;#34; method=&amp;#34;before&amp;#34;/&amp;gt;  
+&amp;lt;/aop:aspect&amp;gt;  
+&amp;lt;/aop:config&amp;gt;
+
+&amp;lt;context:annotation-config /&amp;gt;  
+&amp;lt;context:component-scan base-package=&amp;#34;cn.bridgeli&amp;#34; /&amp;gt;  
+&amp;lt;/beans&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样我们就很优雅的利用Spring的Aop实现了对数据库的读写分离，读的时候走slaveDataSource1这个数据源，写的时候走masterDataSource这个数据源。哎，等等，这里哪里体现了约定优于配置这一规范，他们怎么知道哪些方法走读库哪些走写库？同学你别急，仔细读读这个配置文件，你就会发现在第98行，配置了一个MasterSlaveAspect，也就是说代码里面service层（为什么是service层？）的方法以这里面配置的这些关键字打头，都将会走写库，所以当我们想让一个方法走主库的时候，必须在这个地方添加该方法的前缀或者用这里面已有的前缀，这就要求我们必须约定好走主库的方法的打头，即约定优于配置。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

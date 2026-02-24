@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Filter on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/filter/</link>
+    <description>Recent content in Filter on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 22 Mar 2020 08:57:44 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/filter/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dubbo 自定义拦截器</title>
+      <link>http://localhost:1313/posts/2020-03-22-dubbo-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8B%A6%E6%88%AA%E5%99%A8/</link>
+      <pubDate>Sun, 22 Mar 2020 08:57:44 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2020-03-22-dubbo-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8B%A6%E6%88%AA%E5%99%A8/</guid>
+      <description>&lt;p&gt;写了 Spring AOP 实现自定义注解，打印日志之后，感觉在调用第三方 dubbo 接口的时候，依然会有同样的问题，然后看了一下 dubbo 的官方文档，决定下一个 filter，实现 dubbo 接口的日志拦截，以下是自己完的一个小例子，同样也是供需要的同学参考。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;filter 具体实现如下：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo.filter;
+
+import com.alibaba.dubbo.rpc.Filter;  
+import com.alibaba.dubbo.rpc.Invocation;  
+import com.alibaba.dubbo.rpc.Invoker;  
+import com.alibaba.dubbo.rpc.Result;  
+import com.alibaba.dubbo.rpc.RpcException;  
+import com.alibaba.dubbo.rpc.service.GenericService;  
+import org.apache.commons.lang3.StringUtils;  
+import org.slf4j.Logger;  
+import org.slf4j.LoggerFactory;
+
+/**  
+* @author bridgeli  
+*/  
+public class DubboServiceFilter implements Filter {
+
+private static final Logger LOGGER = LoggerFactory.getLogger(DubboServiceFilter.class);
+
+@Override  
+public Result invoke(Invoker&amp;lt;?&amp;gt; invoker, Invocation invocation) throws RpcException {  
+// 打印入参日志  
+String className = invocation.getInvoker().getInterface().getName();  
+String methodName = invocation.getMethodName();  
+String arguments = StringUtils.join(invocation.getArguments(), &amp;#34;;&amp;#34;);  
+LOGGER.info(&amp;#34;调用 dubbo 服务接口: &amp;#34; + className + &amp;#34;#&amp;#34; + methodName + &amp;#34;，参数：&amp;#34; + arguments);  
+//开始时间  
+long startTime = System.currentTimeMillis();  
+//执行接口调用逻辑  
+Result result = invoker.invoke(invocation);  
+//调用耗时  
+long elapsed = System.currentTimeMillis() &amp;amp;#8211; startTime;  
+//如果发生异常 则打印异常日志  
+if (result.hasException() &amp;amp;&amp;amp; invoker.getInterface() != GenericService.class) {  
+LOGGER.error(&amp;#34;dubbo执行异常，接口：&amp;#34; + className + &amp;#34;#&amp;#34; + methodName + &amp;#34;，参数：&amp;#34; + arguments, result.getException());  
+} else {  
+//打印响应日志  
+LOGGER.info(&amp;#34;dubbo服务响应成功：&amp;#34; + className + &amp;#34;#&amp;#34; + methodName + &amp;#34;，参数：&amp;#34; + arguments + &amp;#34;，返回值：&amp;#34; + result.getValue() + &amp;#34;，用时：&amp;#34; + elapsed);  
+}  
+//返回结果响应结果  
+return result;  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;在/src/main/resources/META-INF/dubbo目录下新增纯文本文件 com.alibaba.dubbo.rpc.Filter 内容为：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+dubboServiceFilter=cn.bridgeli.demo.filter.DubboServiceFilter
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;最后在服务提供者配置文件中添加配置使拦截器生效：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;dubbo:provider filter=&amp;#34;dubboServiceFilter&amp;#34;/&amp;gt;  
+或者  
+&amp;lt;dubbo:service filter=&amp;#34;dubboServiceFilter&amp;#34;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样即可实现。不过需要说明的是，因为我们项目用的 dubbo 版本是：2.5.3，所以包名和配置名还都是：com.alibaba.dubbo，而最新的版本阿里已经捐献给 apache，所以都变成了：org.apache.dubbo。最后的最后想说的是，具体大家可以参考 dubbo 的官方文档，个人认为 dubbo 的官方文档写的是极好的，各种通俗易懂。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>DFA算法应用之敏感词过滤</title>
+      <link>http://localhost:1313/posts/2016-05-02-dfa%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8%E4%B9%8B%E6%95%8F%E6%84%9F%E8%AF%8D%E8%BF%87%E6%BB%A4/</link>
+      <pubDate>Mon, 02 May 2016 12:38:56 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-05-02-dfa%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8%E4%B9%8B%E6%95%8F%E6%84%9F%E8%AF%8D%E8%BF%87%E6%BB%A4/</guid>
+      <description>&lt;p&gt;公司在做一个社区应用，由于我朝特色，众所周知社区应用有一个很重要的就是要进行敏感词的过滤，这块由一个同事负责，听他说，有一个算法叫DFA，可以做这个，个人比较感兴趣，就到网上查了一些资料，有一篇文章写的特别好，老夫的这篇文章就是把其核心的部分（就是怎么应用，老夫一直有一个观点，理论弱于实践，理论懂得再多不会用一点用没有，所以老夫认为应用是核心）摘出来，留作笔记，如果有想了解其原理的，请点击下方的参考资料，好了，既然是应用那么就直接上代码了：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.dfa;
+
+import java.util.HashSet;  
+import java.util.Iterator;  
+import java.util.Map;  
+import java.util.Set;
+
+public class SensitivewordFilter {  
+@SuppressWarnings(&amp;#34;rawtypes&amp;#34;)  
+private Map sensitiveWordMap = null;  
+public static int minMatchTYpe = 1; // 最小匹配规则  
+public static int maxMatchType = 2; // 最大匹配规则
+
+/**  
+* 初始化敏感词库  
+*/  
+public SensitivewordFilter() {  
+sensitiveWordMap = new SensitiveWordInit().initKeyWord();  
+}
+
+/**  
+* 判断文字是否包含敏感字符  
+*  
+* @param txt  
+* 文字  
+* @param matchType  
+* 匹配规则 1：最小匹配规则，2：最大匹配规则  
+* @return 若包含返回true，否则返回false  
+*/  
+public boolean isContaintSensitiveWord(String txt, int matchType) {  
+boolean flag = false;  
+for (int i = 0; i &amp;lt; txt.length(); i++) {  
+int matchFlag = this.CheckSensitiveWord(txt, i, matchType); // 判断是否包含敏感字符  
+if (matchFlag &amp;gt; 0) {  
+flag = true;  
+}  
+}  
+return flag;  
+}
+
+/**  
+* 获取文字中的敏感词  
+*  
+* @param txt  
+* 文字  
+* @param matchType  
+* 匹配规则&amp;amp;nbsp;1：最小匹配规则，2：最大匹配规则  
+* @return  
+*/  
+public Set&amp;lt;String&amp;gt; getSensitiveWord(String txt, int matchType) {  
+Set&amp;lt;String&amp;gt; sensitiveWordList = new HashSet&amp;lt;String&amp;gt;();
+
+for (int i = 0; i &amp;lt; txt.length(); i++) {  
+int length = CheckSensitiveWord(txt, i, matchType);  
+if (length &amp;gt; 0) {  
+sensitiveWordList.add(txt.substring(i, i + length));  
+i = i + length &amp;amp;#8211; 1; // 减1的原因，是因为for会自增  
+}  
+}
+
+return sensitiveWordList;  
+}
+
+/**  
+* 替换敏感字字符  
+*  
+* @param txt  
+* @param matchType  
+* @param replaceChar  
+\* 替换字符，默认\*  
+*/  
+public String replaceSensitiveWord(String txt, int matchType, String replaceChar) {  
+String resultTxt = txt;  
+Set&amp;lt;String&amp;gt; set = getSensitiveWord(txt, matchType); // 获取所有的敏感词  
+Iterator&amp;lt;String&amp;gt; iterator = set.iterator();  
+String word = null;  
+String replaceString = null;  
+while (iterator.hasNext()) {  
+word = iterator.next();  
+replaceString = getReplaceChars(replaceChar, word.length());  
+resultTxt = resultTxt.replaceAll(word, replaceString);  
+}
+
+return resultTxt;  
+}
+
+/**  
+* 获取替换字符串  
+*  
+* @param replaceChar  
+* @param length  
+* @return  
+*/  
+private String getReplaceChars(String replaceChar, int length) {  
+String resultReplace = replaceChar;  
+for (int i = 1; i &amp;lt; length; i++) {  
+resultReplace += replaceChar;  
+}
+
+return resultReplace;  
+}
+
+/**  
+* 检查文字中是否包含敏感字符，检查规则如下：&amp;lt;br&amp;gt;  
+*  
+* @param txt  
+* @param beginIndex  
+* @param matchType  
+* @return，如果存在，则返回敏感词字符的长度，不存在返回0  
+*/  
+@SuppressWarnings({ &amp;#34;rawtypes&amp;#34; })  
+public int CheckSensitiveWord(String txt, int beginIndex, int matchType) {  
+boolean flag = false; // 敏感词结束标识位：用于敏感词只有1位的情况  
+int matchFlag = 0; // 匹配标识数默认为0  
+char word = 0;  
+Map nowMap = sensitiveWordMap;  
+for (int i = beginIndex; i &amp;lt; txt.length(); i++) {  
+word = txt.charAt(i);  
+nowMap = (Map) nowMap.get(word); // 获取指定key  
+if (nowMap != null) { // 存在，则判断是否为最后一个  
+matchFlag++; // 找到相应key，匹配标识+1  
+if (&amp;#34;1&amp;#34;.equals(nowMap.get(&amp;#34;isEnd&amp;#34;))) { // 如果为最后一个匹配规则,结束循环，返回匹配标识数  
+flag = true; // 结束标志位为true  
+if (SensitivewordFilter.minMatchTYpe == matchType) { // 最小规则，直接返回,最大规则还需继续查找  
+break;  
+}  
+}  
+} else { // 不存在，直接返回  
+break;  
+}  
+}  
+if (matchFlag &amp;lt; 2 || !flag) { // 长度必须大于等于1，为词  
+matchFlag = 0;  
+}  
+return matchFlag;  
+}
+
+public static void main(String[] args) {  
+SensitivewordFilter filter = new SensitivewordFilter();  
+System.out.println(&amp;#34;敏感词的数量：&amp;#34; + filter.sensitiveWordMap.size());  
+String string = &amp;#34;太多的伤感情怀也许只局限于饲养基地 荧幕中的情节，主人公尝试着去用某种方式渐渐的很潇洒地释自杀指南怀那些自己经历的伤感。&amp;#34;  
++ &amp;#34;然后法轮功 我们的扮演的角色就是跟随着主人公的喜红客联盟 怒哀乐而过于牵强的把自己的情感也附加于银幕情节中，然后感动就流泪，&amp;#34;  
++ &amp;#34;难过就躺在某一个人的怀里尽情的阐述心扉或者手机卡复制器一个人一杯红酒一部电影在夜三级片 深人静的晚上，关上电话静静的发呆着。&amp;#34;;  
+Set&amp;lt;String&amp;gt; set = filter.getSensitiveWord(string, 1);  
+System.out.println(&amp;#34;语句中包含敏感词的个数为：&amp;#34; + set.size() + &amp;#34;。包含：&amp;#34; + set);  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个主要是应用，DFA的核心是下面：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>SpringMVC中Interceptor和自定义filter的典型应用</title>
+      <link>http://localhost:1313/posts/2015-03-08-springmvc%E4%B8%ADinterceptor%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89filter%E7%9A%84%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8/</link>
+      <pubDate>Sun, 08 Mar 2015 15:03:43 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-03-08-springmvc%E4%B8%ADinterceptor%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89filter%E7%9A%84%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8/</guid>
+      <description>&lt;p&gt;今天写写老夫最擅长的Java web，在Java web中Interceptor和filter应用十分广泛，今天就写一个在我们的项目中的一个最基本的应用，过滤或者拦截未登录用户访问某些资源。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;SpringMVC中Interceptor&lt;br&gt;
+SpringMVC 中的Interceptor 拦截器是相当重要和相当有用的，它的主要作用是拦截用户的请求并进行相应的处理。比如通过它来进行权限验证，或者是来判断用户是否登陆等等。今天就写一个Interceptor在开发中的典型应用：某一系统某些方法肯定是需要用户登陆才能访问的，而另外一些肯定不需要用户登陆就能访问（这样的例子很多，老夫就不举例说明了），那么我们怎么做，才能做到呢？这个时候Interceptor就派上用场了，下面是一个小例子，供参考：&lt;br&gt;
+spring-servlet.xml核心代码如下：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;  
+&amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34;  
+xmlns:mvc=&amp;#34;http://www.springframework.org/schema/mvc&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;  
+xmlns:p=&amp;#34;http://www.springframework.org/schema/p&amp;#34; xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34;  
+xsi:schemaLocation=&amp;#34;http://www.springframework.org/schema/beans  
+http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+http://www.springframework.org/schema/context  
+http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+http://www.springframework.org/schema/mvc  
+http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd&amp;#34;&amp;gt;
+
+&amp;lt;mvc:interceptors&amp;gt;  
+&amp;lt;bean id=&amp;#34;permissionInterceptor&amp;#34; class=&amp;#34;cn.bridgeli.demo.interceptor.PermissionInterceptor&amp;#34;&amp;gt;&amp;lt;/bean&amp;gt;  
+&amp;lt;/mvc:interceptors&amp;gt;
+
+&amp;amp;#8230;&amp;amp;#8230;
+
+&amp;lt;/beans&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;对应的Interceptor的实现：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.demo.interceptor;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.ModelAndViewDefiningException;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.util.UrlPathHelper;
+
+import cn.bridgeli.demo.entity.User;
+
+public class PermissionInterceptor extends HandlerInterceptorAdapter {
+
+    private UrlPathHelper urlPathHelper = new UrlPathHelper();
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+                             Object handler) throws Exception {
+        User user = (User) request.getSession().getAttribute(&amp;#34;USER&amp;#34;);
+        String url = urlPathHelper.getLookupPathForRequest(request);
+        int flag = url.indexOf(&amp;#34;/admin/&amp;#34;);
+        if (user == null &amp;amp;&amp;amp; flag != -1) {
+            ModelAndView mav = new ModelAndView(&amp;#34;error/permissionerror&amp;#34;);
+            mav.addObject(&amp;#34;ERRORMSG&amp;#34;, &amp;#34;对不起，您没有登录，无法使用该功能！&amp;#34;);
+            throw new ModelAndViewDefiningException(mav);
+        }
+        return true;
+    }
+
+}  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;关于InterceptorAdapter的更多用法，大家可以参考http://haohaoxuexi.iteye.com/blog/1750680，老夫以为这篇文章说的相对比较详细易懂，除此之外，我们还可以通过自定义filter来实现；&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

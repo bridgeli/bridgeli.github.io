@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>微信 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E5%BE%AE%E4%BF%A1/</link>
+    <description>Recent content in 微信 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 15 Mar 2015 14:17:09 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%BE%AE%E4%BF%A1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>微信JS SDK Demo（Java版）</title>
+      <link>http://localhost:1313/posts/2015-03-15-%E5%BE%AE%E4%BF%A1js-sdkdemojava%E7%89%88/</link>
+      <pubDate>Sun, 15 Mar 2015 14:17:09 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-03-15-%E5%BE%AE%E4%BF%A1js-sdkdemojava%E7%89%88/</guid>
+      <description>&lt;p&gt;前几天在公司开发一个功能：微信分享，要求是分享的不是用户当前看到的这个页面，大家知道这在以前其实很简单的，但去年的最后一天，微信大力打击诱导分享、关注之后，以前的分享就不能用了，好在后来微信开放了JS SDK接口，可以满足这个需求，由于网上的例子写的都很简单，而且大多都是php，今天老夫就记录一下自己用Java如何实现的这个功能，窃以为比网上的很多Demo更具有实用性，大家在使用中如果有什么疑问，欢迎留言交流。废话到此为止，下面看看如何实现，当然了首先肯定要参考微信的文档：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html，其实这个文档上面说的已经比较详细了，但是距离真正使用当然还是有一定的距离的，在说老夫的代码之前，再多说一句，想调用微信的JS SDK，请确保你有一个经过微信认证的服务号，否则你是调用不了的，好，下面就看代码了：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$(&amp;amp;#8216;.share&amp;amp;#8217;).tap(function(){
+    var urlCurrery = window.location.href.split(&amp;amp;#8216;#&amp;amp;#8217;)[0];
+    $.ajax({
+            type : &amp;#34;post&amp;#34;,
+            url : &amp;amp;#8216;share.do&amp;amp;#8217;,
+    data : {&amp;amp;#8216;urlCurrery&amp;amp;#8217;:urlCurrery},
+    success : function(data) {
+        var dataObj = eval(data)[0];
+        var url =dataObj.url;
+        var jsapi_ticket =dataObj.jsapi_ticket;
+        var nonce_str =dataObj.nonceStr;
+        var timestamp =dataObj.timestamp;
+        var signature =dataObj.signature;
+
+        wx.config({
+                debug: true,
+                appId: &amp;amp;#8216;wxed530ac0b8b55a8a&amp;amp;#8217;,
+        timestamp: timestamp,
+                nonceStr: nonce_str,
+                signature: signature,
+                jsApiList: [  
+&amp;amp;#8216;checkJsApi&amp;amp;#8217;,  
+&amp;amp;#8216;onMenuShareTimeline&amp;amp;#8217;,  
+&amp;amp;#8216;onMenuShareAppMessage&amp;amp;#8217;  
+]  
+});
+
+        wx.ready(function () {
+            wx.onMenuShareAppMessage({
+                    title: &amp;amp;#8216;分享测试&amp;amp;#8217;,
+            desc: &amp;amp;#8216;分享测试&amp;amp;#8217;,
+            link: &amp;amp;#8216;https://bridgeli.cn&amp;amp;#8217;,  
+            imgUrl: &amp;amp;#8221;,
+
+            success: function (res) {
+                alert(&amp;amp;#8216;已分享&amp;amp;#8217;);
+            }  
+});
+            wx.onMenuShareTimeline({
+                    title: &amp;amp;#8216;分享测试&amp;amp;#8217;,
+            link: &amp;amp;#8216;https://bridgeli.cn&amp;amp;#8217;,  
+            imgUrl: &amp;amp;#8221;,
+
+            success: function (res) {
+                alert(&amp;amp;#8216;已分享&amp;amp;#8217;);
+            }  
+});
+            alert(&amp;amp;#8216;已注册获取“发送给朋友”状态事件&amp;amp;#8217;);
+            alert(&amp;amp;#8216;已注册获取“分享到朋友圈”状态事件&amp;amp;#8217;);
+        });
+    }  
+});
+
+});  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;经过分析微信的文档我们知道：如果想使用分享功能，那么请给分享注册事件，所以我们这里给文本中一个class为：share 的dom，绑定了分享事件，也就是说，我们想改变分享url，必须先点击一下该button，否则是不行的；另外通过文档里面的常见错误，我们可以知道，参与签名的url必须是动态获取的，如果不是，请通过ajax传到后台，为了强调这一点，微信专门用红色标注了，所以老夫在给class为share的button绑定事件的同时，将当前页面的 url （文中用：urlCurrery表示的）通用ajax传到后台 share.do 参与签名，我们一会再说后台怎么实现，接着分析前台代码，在经过后台签名之后，后台会传给前台一些数据，封装在data里面，这些就是我们需要的数据，相信通过微信的文档，所有人都能看得明白，就不多做解释了，在 wx.ready()方法里，老夫举了两个例子分别是分享给朋友和分享到朋友圈，其中的参数 link 就是你要分享的 url ，这一点很重要，这样就实现了我们分析的不是当前页面的 url 的需求，好了前台的说完了，下面就要看后台是怎么实现的了，这个其实很简单&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

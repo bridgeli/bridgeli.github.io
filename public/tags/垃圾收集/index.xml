@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>垃圾收集 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86/</link>
+    <description>Recent content in 垃圾收集 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 11 Feb 2017 13:58:44 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java GC之对象已死吗</title>
+      <link>http://localhost:1313/posts/2017-02-11-java-gc%E4%B9%8B%E5%AF%B9%E8%B1%A1%E5%B7%B2%E6%AD%BB%E5%90%97/</link>
+      <pubDate>Sat, 11 Feb 2017 13:58:44 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2017-02-11-java-gc%E4%B9%8B%E5%AF%B9%E8%B1%A1%E5%B7%B2%E6%AD%BB%E5%90%97/</guid>
+      <description>&lt;p&gt;差不多两年以前曾经写过一篇文章：&lt;a href=&#34;https://www.bridgeli.cn/archives/156&#34; title=&#34;JAVA 性能调优&#34;&gt;JAVA 性能调优&lt;/a&gt;，其实在那篇文章中只是简单的说了，对象的分布。这篇文章继续对分布于堆中的对象的生命周期进行说明，也就是确定堆中的这些对象哪些还是“活着”的，哪些是已经“死去”（即不可能再被任何途径使用的对象）的。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;引用计数算法&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;有很多人认为判断对象是否活着的算法是这样的：给对象添加一个引用计数器，每当有一个地方引用他的时候，计数器就加1，引用失效的时候，计数器减1，当计数器的数值为0时就是不可能在被引用的对象，此时就就可以认为是已死的对象。引用计数器算法实现简单，效率也很高，是一个不错的算法，但是主流的Java虚拟机并没有采用这种算法来管理内存，其中最主要的原因就是：它很难解决对象之间循环引用的问题。&lt;br&gt;
+举一个简单的例子：对象objA和objB都有字段instance，赋值令，除此之外，这两个对象再无任何引用，实际上他们已经不可能在被访问到，但是他们因为相互引用对方，计数器都不可能为0，计数器算法是无法通知GC收集器收集他们的。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package demo;
+
+/**  
+* testGC()方法执行后，objA和objB会不会被GC呢？  
+*  
+* @author BridgeLi  
+*  
+*/  
+public class ReferenceCountingGC {
+
+public Object instance = null;  
+private static final int _1MB = 1024 * 1024;
+
+// 这个成员的唯一意义就是占用内存，以便能在GC日志中看清楚是否被回收过  
+private byte[] bigSize = new byte[2 * _1MB];
+
+public static void testGC() {  
+ReferenceCountingGC objA = new ReferenceCountingGC();  
+ReferenceCountingGC objB = new ReferenceCountingGC();  
+objA.instance = objB;  
+objB.instance = objA;
+
+objA = null;  
+objB = null;
+
+// 假设发生了GC，看objA和objB是否能被回收  
+System.gc();  
+}
+
+public static void main(String[] args) {  
+ReferenceCountingGC.testGC();  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;从这个例子的运行结果来看，虚拟机并没有这两个对象存在相互引用就不收集他们，从而证明了Java虚拟机不是通过引用计数算法来判断对象是否已死的。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

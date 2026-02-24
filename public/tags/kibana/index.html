@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Kibana | 分享技术带来的喜悦</title>
+<meta name="keywords" content="">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/tags/kibana/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/kibana/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/kibana/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/tags/">Tags</a></div>
+  <h1>
+    Kibana
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">使用 docker 一键部署 ELK(包含中文分词) 服务脚本
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前几天公司有个需求要做全文索引，于是写了一个脚本使用 docker 一键部署 ELK 服务，内容如下：
+#!/bin/bash set -e echo &#34;==================================================&#34; echo &#34;🚀 开始部署 ELK &#43; MySQL 同步（中文分词 &#43; 固定索引）&#34; echo &#34;==================================================&#34; \# ==================== 配置区（请修改）==================== MYSQL_HOST=&#34;192.168.124.6&#34; # ✏️ 修改为你的 MySQL IP MYSQL_USER=&#34;root&#34; # 读取权限用户 MYSQL_PASSWORD=&#34;123456&#34; # 用户密码 MYSQL_DB=&#34;ams&#34; # 数据库名 ELASTIC_PASSWORD=&#34;i*B4j6eD&#43;g0e&#34; # ES 密码（至少 8 位，含大小写&#43;数字） ES_VERSION=&#34;8.11.3&#34; # 必须与 IK 插件版本一致 LOGSTASH_VERSION=&#34;8.11.3&#34; \# ======================================================== \# 项目路径 ROOT_DIR=&#34;/project/elastic-sync&#34; mkdir -p &#34;$ROOT_DIR&#34; cd &#34;$ROOT_DIR&#34; echo &#34;📁 创建项目目录结构&#34; mkdir -p config/mysql config data/es data/kibana logs/logstash plugins/ik \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 下载 IK 分词插件 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212; IK_URL=&#34;https://release.infinilabs.com/analysis-ik/stable/elasticsearch-analysis-ik-ik-${ES_VERSION}.zip&#34; IK_DIR=&#34;$ROOT_DIR/plugins/ik&#34; if [ ! -f &#34;$IK_DIR/plugin-descriptor.properties&#34; ]; then echo &#34;📥 正在下载 IK 分词插件 v${ES_VERSION}&amp;#8230;&#34; wget -q &#34;$IK_URL&#34; -O /tmp/ik.zip unzip -q /tmp/ik.zip -d &#34;$IK_DIR&#34; rm /tmp/ik.zip chown -R 1000:1000 &#34;$IK_DIR&#34; echo &#34;✅ IK 插件安装完成&#34; else echo &#34;ℹ️ IK 插件已存在，跳过安装&#34; fi \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 elasticsearch.yml &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- cat &gt; config/elasticsearch.yml &lt;&lt; EOF cluster.name: production-cluster node.name: node-1 node.roles: [ data, master, ingest ] path: data: /usr/share/elasticsearch/data logs: /usr/share/elasticsearch/logs network.host: 0.0.0.0 http.port: 9200 http.cors.enabled: true http.cors.allow-origin: &#34;*&#34; discovery.type: single-node xpack.security.enabled: true xpack.security.http.ssl.enabled: false xpack.monitoring.collection.enabled: true EOF \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 logstash.yml &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- cat &gt; config/logstash.yml &lt;&lt; EOF http.host: &#34;0.0.0.0&#34; xpack.monitoring.enabled: false config.reload.automatic: false EOF \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 logstash.conf &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- cat &gt; config/logstash.conf &lt;&lt; EOF input { jdbc { jdbc_connection_string =&gt; &#34;jdbc:mysql://$MYSQL_HOST:3306/$MYSQL_DB?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai&#34; jdbc_user =&gt; &#34;$MYSQL_USER&#34; jdbc_password =&gt; &#34;$MYSQL_PASSWORD&#34; jdbc_driver_library =&gt; &#34;/usr/share/logstash/mysql/mysql-connector-java-8.0.30.jar&#34; jdbc_driver_class =&gt; &#34;com.mysql.cj.jdbc.Driver&#34; jdbc_default_timezone =&gt; &#34;Asia/Shanghai&#34; statement =&gt; &#34; SELECT * FROM article WHERE updated_at &gt;= :sql_last_value ORDER BY updated_at ASC &#34; use_column_value =&gt; true tracking_column =&gt; &#34;updated_at&#34; tracking_column_type =&gt; &#34;timestamp&#34; last_run_metadata_path =&gt; &#34;/usr/share/logstash/.logstash_jdbc_last_run&#34; schedule =&gt; &#34;\*/2 \* \* \* *&#34; } } filter { \# 清洗 content 字段中的 HTML 标签 if [content] { mutate { gsub =&gt; [ &#34;content&#34;, &#34;&lt;[^&gt;]*&gt;&#34;, &#34;&#34; # 删除所有 HTML 标签：&lt;p&gt;、&lt;div&gt;、&lt;span&gt; 等 ] } \# 可选：进一步清理多余的空白字符 mutate { gsub =&gt; [ &#34;content&#34;, &#34;\s&#43;&#34;, &#34; &#34; # 多个空白字符（空格、换行、制表符）合并为一个空格 ] } mutate { strip =&gt; [&#34;content&#34;] # 去除首尾空格 } } \# 如果 del_flag 是 1，标记该记录用于删除 if [del_flag] == 1 { mutate { add_tag =&gt; [&#34;delete_document&#34;] } } } output { if &#34;delete_document&#34; in [tags] { elasticsearch { hosts =&gt; [&#34;http://elasticsearch:9200&#34;] user =&gt; &#34;elastic&#34; password =&gt; &#34;$ELASTIC_PASSWOR&#34; action =&gt; &#34;delete&#34; document_id =&gt; &#34;%{id}&#34; index =&gt; &#34;articles&#34; } } else { elasticsearch { hosts =&gt; [&#34;http://elasticsearch:9200&#34;] user =&gt; &#34;elastic&#34; password =&gt; &#34;$ELASTIC_PASSWOR&#34; index =&gt; &#34;articles&#34; # ✅ 固定索引 document_id =&gt; &#34;%{id}&#34; # 支持 varchar id doc_as_upsert =&gt; true # 更新覆盖 } } stdout { codec =&gt; rubydebug } } EOF \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 docker-compose.yml &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- cat &gt; docker-compose.yml &lt;&lt; EOF services: elasticsearch: image: docker.elastic.co/elasticsearch/elasticsearch:$ES_VERSION container_name: elasticsearch environment: &amp;#8211; discovery.type=single-node &amp;#8211; ES_JAVA_OPTS=-Xms2g -Xmx2g &amp;#8211; xpack.security.enabled=true &amp;#8211; xpack.security.http.ssl.enabled=false &amp;#8211; ELASTIC_PASSWORD=$ELASTIC_PASSWORD ports: &amp;#8211; &#34;9200:9200&#34; volumes: &amp;#8211; ./data/es:/usr/share/elasticsearch/data &amp;#8211; ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml &amp;#8211; ./plugins/ik:/usr/share/elasticsearch/plugins/ik networks: &amp;#8211; elastic restart: unless-stopped healthcheck: test: [&#34;CMD-SHELL&#34;, &#34;curl -f http://localhost:9200 || exit 1&#34;] interval: 30s timeout: 10s retries: 3 kibana: image: docker.elastic.co/kibana/kibana:$LOGSTASH_VERSION container_name: kibana depends_on: elasticsearch: condition: service_healthy environment: &amp;#8211; ELASTICSEARCH_HOSTS=[&#34;http://elasticsearch:9200&#34;] &amp;#8211; ELASTICSEARCH_USERNAME=elastic &amp;#8211; ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD &amp;#8211; SERVER_NAME=kibana.example.com &amp;#8211; I18N_LOCALE=zh-CN ports: &amp;#8211; &#34;5601:5601&#34; volumes: &amp;#8211; ./data/kibana:/usr/share/kibana/data networks: &amp;#8211; elastic restart: unless-stopped logstash: image: docker.elastic.co/logstash/logstash:$LOGSTASH_VERSION container_name: logstash depends_on: &amp;#8211; elasticsearch volumes: &amp;#8211; ./config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf &amp;#8211; ./config/logstash.yml:/usr/share/logstash/config/logstash.yml &amp;#8211; ./logs/logstash:/var/log/logstash &amp;#8211; ./config/mysql:/usr/share/logstash/mysql networks: &amp;#8211; elastic restart: unless-stopped networks: elastic: driver: bridge EOF \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 下载 MySQL JDBC 驱动 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- JDBC_JAR=&#34;config/mysql/mysql-connector-java-8.0.30.jar&#34; if [ ! -f &#34;$JDBC_JAR&#34; ]; then echo &#34;📥 下载 MySQL JDBC 驱动&amp;#8230;&#34; mkdir -p config/mysql wget -q https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30.jar -O &#34;$JDBC_JAR&#34; echo &#34;✅ JDBC 驱动下载完成&#34; fi \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 设置权限 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- echo &#34;🔐 设置目录权限&#34; chown -R 1000:1000 data/es plugins/ik chmod -R 755 config logs chmod -R 777 data/kibana \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成创建索引脚本 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- cat &gt; create-index.sh &lt;&lt; &amp;#8216;EOF&amp;#8217; #!/bin/bash echo &#34;🔄 正在创建索引 &amp;#8216;articles&amp;#8217; 并配置 IK 分词器&amp;#8230;&#34; curl -X PUT &#34;http://localhost:9200/articles&#34; \ -u elastic:$ELASTIC_PASSWORD \ -H &#34;Content-Type: application/json&#34; \ -d &amp;#8216; { &#34;settings&#34;: { &#34;index&#34;: { &#34;number_of_shards&#34;: 1, &#34;number_of_replicas&#34;: 1 }, &#34;analysis&#34;: { &#34;analyzer&#34;: { &#34;ik_analyzer&#34;: { &#34;type&#34;: &#34;custom&#34;, &#34;tokenizer&#34;: &#34;ik_max_word&#34;, &#34;filter&#34;: [&#34;lowercase&#34;] } } } }, &#34;mappings&#34;: { &#34;properties&#34;: { &#34;id&#34;: { &#34;type&#34;: &#34;keyword&#34; }, &#34;title&#34;: { &#34;type&#34;: &#34;text&#34;, &#34;analyzer&#34;: &#34;ik_max_word&#34;, &#34;search_analyzer&#34;: &#34;ik_smart&#34; }, &#34;content&#34;: { &#34;type&#34;: &#34;text&#34;, &#34;analyzer&#34;: &#34;ik_max_word&#34;, &#34;search_analyzer&#34;: &#34;ik_smart&#34; }, &#34;author&#34;: { &#34;type&#34;: &#34;keyword&#34; }, &#34;created_at&#34;: { &#34;type&#34;: &#34;date&#34; }, &#34;updated_at&#34;: { &#34;type&#34;: &#34;date&#34; } } } }&amp;#8217; &amp;&amp; echo &#34;✅ 索引 &amp;#8216;articles&amp;#8217; 创建成功！&#34; EOF chmod &#43;x create-index.sh \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 完成 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- echo &#34;==================================================&#34; echo &#34;🎉 部署准备完成！&#34; echo &#34;==================================================&#34; echo &#34;&#34; echo &#34;📌 下一步操作：&#34; echo &#34;1. 检查配置：nano setup-elastic-sync.sh （修改 MySQL 地址、用户、密码）&#34; echo &#34;2. 增加权限：chmod &#43;x setup-elastic-sync.sh&#34; echo &#34;3. 执行脚本：sudo ./setup-elastic-sync.sh&#34; echo &#34;4. 启动服务：sudo docker compose up -d&#34; echo &#34;5. 创建索引：bash ./create-index.sh&#34; echo &#34;6. 访问 Kibana：http://你的服务器IP:5601&#34; echo &#34; &amp;#8211; 用户：elastic&#34; echo &#34; &amp;#8211; 密码：$ELASTIC_PASSWORD&#34; echo &#34;&#34; echo &#34;💡 首次运行会全量同步 articles 表，之后每 2 分钟增量同步&#34; echo &#34;🔍 在 Kibana 中搜索中文（如“阿里巴巴”），应能命中结果&#34; echo &#34;&#34; echo &#34;⚠️ 注意：必须先运行 create-index.sh 再让 Logstash 写入，否则分词无效！&#34; 如果 kibana 用 elastic 用户连不上，通过 Elasticsearch 的 Security API 为内置用户 kibana_system 修改密码：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-08-28 09:26:14 +0000 +0000'>August 28, 2025</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>891 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 使用 docker 一键部署 ELK(包含中文分词) 服务脚本" href="http://localhost:1313/posts/2025-08-28-%E4%BD%BF%E7%94%A8-docker-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2-elk-%E6%9C%8D%E5%8A%A1%E8%84%9A%E6%9C%AC/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>MySQL，spring | 分享技术带来的喜悦</title>
+<meta name="keywords" content="">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/tags/mysqlspring/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/mysqlspring/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/mysqlspring/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/tags/">Tags</a></div>
+  <h1>
+    MySQL，spring
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Spring加Mybatis实现MySQL数据库主从读写分离
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>上周在一个同事的指点下，实现了Spring加Mybatis实现了MySQL的主从读写分离，今天记一下笔记，以供自己今后参考，下面是配置文件的写法。
+数据源也就是jdbc.properties，因为是主从读写分离，那么肯定有两个数据源了 jdbc.driver=org.mariadb.jdbc.Driver \# 从库，只读 slave.jdbc.url=jdbc:mariadb://xxx.xxx.xxx.xxx:3306/xxx?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;noAccessToProcedureBodies=true&amp;autoReconnect=true slave.jdbc.username=xxx slave.jdbc.password=xxx \# 主库，需要写 master.jdbc.url=jdbc:mariadb://xxx.xxx.xxx.xxx:3306/xxx?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;noAccessToProcedureBodies=true&amp;autoReconnect=true master.jdbc.username=xxx master.jdbc.password=xxx 这个非常简单和普通的区别不是很大，另外数据库的驱动是：mariadb，动下面就是第二个配置文件spring.xml
+spring.xml &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;beans xmlns=&#34;http://www.springframework.org/schema/beans&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xmlns:context=&#34;http://www.springframework.org/schema/context&#34; xsi:schemaLocation=&#34; http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd &#34;&gt; &lt;!&amp;#8211; Import properties file &amp;#8211;&gt; &lt;context:property-placeholder location=&#34;classpath:jdbc.properties&#34; /&gt; &lt;!&amp;#8211; Auto Scan &amp;#8211;&gt; &lt;context:component-scan base-package=&#34;cn.bridgeli.demo&#34; /&gt; &lt;/beans&gt; 这个文件很简单，有两个作用，①. 引入数据源配置文件；②. spring扫描的文件的路径
+spring-mybatis.xml配置文件 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;beans xmlns=&#34;http://www.springframework.org/schema/beans&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xmlns:tx=&#34;http://www.springframework.org/schema/tx&#34; xmlns:aop=&#34;http://www.springframework.org/schema/aop&#34; xsi:schemaLocation=&#34; http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd &#34;&gt; &lt;bean id=&#34;slaveDataSourceImpl&#34; class=&#34;com.jolbox.bonecp.BoneCPDataSource&#34; destroy-method=&#34;close&#34;&gt; &lt;property name=&#34;driverClass&#34; value=&#34;${jdbc.driver}&#34; /&gt; &lt;property name=&#34;jdbcUrl&#34; value=&#34;${slave.jdbc.url}&#34; /&gt; &lt;property name=&#34;username&#34; value=&#34;${slave.jdbc.username}&#34; /&gt; &lt;property name=&#34;password&#34; value=&#34;${slave.jdbc.password}&#34; /&gt; &lt;!&amp;#8211; 检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0 &amp;#8211;&gt; &lt;property name=&#34;idleConnectionTestPeriodInMinutes&#34; value=&#34;10&#34; /&gt; &lt;!&amp;#8211; 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 &amp;#8211;&gt; &lt;property name=&#34;idleMaxAgeInMinutes&#34; value=&#34;10&#34; /&gt; &lt;!&amp;#8211; 每个分区最大的连接数 &amp;#8211;&gt; &lt;property name=&#34;maxConnectionsPerPartition&#34; value=&#34;20&#34; /&gt; &lt;!&amp;#8211; 每个分区最小的连接数 &amp;#8211;&gt; &lt;property name=&#34;minConnectionsPerPartition&#34; value=&#34;10&#34; /&gt; &lt;!&amp;#8211; 分区数 ，默认值2，最小1，推荐3-4，视应用而定 &amp;#8211;&gt; &lt;property name=&#34;partitionCount&#34; value=&#34;3&#34; /&gt; &lt;!&amp;#8211; 每次去拿数据库连接的时候一次性要拿几个,默认值：2 &amp;#8211;&gt; &lt;property name=&#34;acquireIncrement&#34; value=&#34;3&#34; /&gt; &lt;!&amp;#8211; 缓存prepared statements的大小，默认值：0 &amp;#8211;&gt; &lt;property name=&#34;statementsCacheSize&#34; value=&#34;50&#34; /&gt; &lt;!&amp;#8211; 在做keep-alive的时候的SQL语句 &amp;#8211;&gt; &lt;property name=&#34;connectionTestStatement&#34; value=&#34;select 1 from dual&#34; /&gt; &lt;!&amp;#8211; 在每次到数据库取连接的时候执行的SQL语句，只执行一次 &amp;#8211;&gt; &lt;property name=&#34;initSQL&#34; value=&#34;select 1 from dual&#34; /&gt; &lt;property name=&#34;closeConnectionWatch&#34; value=&#34;false&#34; /&gt; &lt;property name=&#34;logStatementsEnabled&#34; value=&#34;true&#34; /&gt; &lt;property name=&#34;transactionRecoveryEnabled&#34; value=&#34;true&#34; /&gt; &lt;/bean&gt; &lt;bean id=&#34;masterDataSourceImpl&#34; class=&#34;com.jolbox.bonecp.BoneCPDataSource&#34; destroy-method=&#34;close&#34;&gt; &lt;property name=&#34;driverClass&#34; value=&#34;${jdbc.driver}&#34; /&gt; &lt;property name=&#34;jdbcUrl&#34; value=&#34;${master.jdbc.url}&#34; /&gt; &lt;property name=&#34;username&#34; value=&#34;${master.jdbc.username}&#34; /&gt; &lt;property name=&#34;password&#34; value=&#34;${master.jdbc.password}&#34; /&gt; &lt;!&amp;#8211; 检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0 &amp;#8211;&gt; &lt;property name=&#34;idleConnectionTestPeriodInMinutes&#34; value=&#34;10&#34; /&gt; &lt;!&amp;#8211; 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 &amp;#8211;&gt; &lt;property name=&#34;idleMaxAgeInMinutes&#34; value=&#34;10&#34; /&gt; &lt;!&amp;#8211; 每个分区最大的连接数 &amp;#8211;&gt; &lt;property name=&#34;maxConnectionsPerPartition&#34; value=&#34;20&#34; /&gt; &lt;!&amp;#8211; 每个分区最小的连接数 &amp;#8211;&gt; &lt;property name=&#34;minConnectionsPerPartition&#34; value=&#34;10&#34; /&gt; &lt;!&amp;#8211; 分区数 ，默认值2，最小1，推荐3-4，视应用而定 &amp;#8211;&gt; &lt;property name=&#34;partitionCount&#34; value=&#34;3&#34; /&gt; &lt;!&amp;#8211; 每次去拿数据库连接的时候一次性要拿几个,默认值：2 &amp;#8211;&gt; &lt;property name=&#34;acquireIncrement&#34; value=&#34;3&#34; /&gt; &lt;!&amp;#8211; 缓存prepared statements的大小，默认值：0 &amp;#8211;&gt; &lt;property name=&#34;statementsCacheSize&#34; value=&#34;50&#34; /&gt; &lt;!&amp;#8211; 在做keep-alive的时候的SQL语句 &amp;#8211;&gt; &lt;property name=&#34;connectionTestStatement&#34; value=&#34;select 1 from dual&#34; /&gt; &lt;!&amp;#8211; 在每次到数据库取连接的时候执行的SQL语句，只执行一次 &amp;#8211;&gt; &lt;property name=&#34;initSQL&#34; value=&#34;select 1 from dual&#34; /&gt; &lt;property name=&#34;closeConnectionWatch&#34; value=&#34;false&#34; /&gt; &lt;property name=&#34;logStatementsEnabled&#34; value=&#34;true&#34; /&gt; &lt;property name=&#34;transactionRecoveryEnabled&#34; value=&#34;true&#34; /&gt; &lt;/bean&gt; &lt;!&amp;#8211; DataSource/Master &amp;#8211;&gt; &lt;bean id=&#34;masterDataSource&#34; class=&#34;org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy&#34;&gt; &lt;property name=&#34;targetDataSource&#34; ref=&#34;masterDataSourceImpl&#34; /&gt; &lt;/bean&gt; &lt;bean id=&#34;masterTransactionManager&#34; class=&#34;org.springframework.jdbc.datasource.DataSourceTransactionManager&#34;&gt; &lt;property name=&#34;dataSource&#34; ref=&#34;masterDataSource&#34; /&gt; &lt;/bean&gt; &lt;bean id=&#34;masterTransactionTemplate&#34; class=&#34;org.springframework.transaction.support.TransactionTemplate&#34;&gt; &lt;property name=&#34;transactionManager&#34; ref=&#34;masterTransactionManager&#34; /&gt; &lt;/bean&gt; &lt;!&amp;#8211; DataSource/Slave &amp;#8211;&gt; &lt;bean id=&#34;slaveDataSource&#34; class=&#34;org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy&#34;&gt; &lt;property name=&#34;targetDataSource&#34; ref=&#34;slaveDataSourceImpl&#34; /&gt; &lt;/bean&gt; &lt;bean id=&#34;slaveTransactionManager&#34; class=&#34;org.springframework.jdbc.datasource.DataSourceTransactionManager&#34;&gt; &lt;property name=&#34;dataSource&#34; ref=&#34;slaveDataSource&#34; /&gt; &lt;/bean&gt; &lt;bean id=&#34;slaveTransactionTemplate&#34; class=&#34;org.springframework.transaction.support.TransactionTemplate&#34;&gt; &lt;property name=&#34;transactionManager&#34; ref=&#34;slaveTransactionManager&#34; /&gt; &lt;/bean&gt; &lt;!&amp;#8211; Mybatis/Master &amp;#8211;&gt; &lt;bean id=&#34;masterSqlSessionFactory&#34; class=&#34;org.mybatis.spring.SqlSessionFactoryBean&#34;&gt; &lt;property name=&#34;dataSource&#34; ref=&#34;masterDataSource&#34;&gt;&lt;/property&gt; &lt;property name=&#34;configLocation&#34; value=&#34;classpath:mybatis.xml&#34; /&gt; &lt;property name=&#34;typeAliasesPackage&#34; value=&#34;cn.bridgeli.demo.entity&#34; /&gt; &lt;property name=&#34;mapperLocations&#34;&gt; &lt;list&gt; &lt;value&gt;classpath:cn/bridgeli/demo/mapper/master/*.xml&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;/bean&gt; &lt;bean class=&#34;org.mybatis.spring.mapper.MapperScannerConfigurer&#34;&gt; &lt;property name=&#34;basePackage&#34; value=&#34;cn.bridgeli.demo.mapper.master&#34; /&gt; &lt;property name=&#34;sqlSessionFactoryBeanName&#34; value=&#34;masterSqlSessionFactory&#34; /&gt; &lt;/bean&gt; &lt;!&amp;#8211; Mybatis/Slave &amp;#8211;&gt; &lt;bean id=&#34;slaveSqlSessionFactory&#34; class=&#34;org.mybatis.spring.SqlSessionFactoryBean&#34;&gt; &lt;property name=&#34;dataSource&#34; ref=&#34;slaveDataSource&#34;&gt;&lt;/property&gt; &lt;property name=&#34;configLocation&#34; value=&#34;classpath:mybatis.xml&#34; /&gt; &lt;property name=&#34;typeAliasesPackage&#34; value=&#34;cn.bridgeli.demo.entity&#34; /&gt; &lt;property name=&#34;mapperLocations&#34;&gt; &lt;list&gt; &lt;value&gt;classpath:cn/bridgeli/demo/mapper/slave/*.xml&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;/bean&gt; &lt;bean class=&#34;org.mybatis.spring.mapper.MapperScannerConfigurer&#34;&gt; &lt;property name=&#34;basePackage&#34; value=&#34;cn.bridgeli.demo.mapper.slave&#34; /&gt; &lt;property name=&#34;sqlSessionFactoryBeanName&#34; value=&#34;slaveSqlSessionFactory&#34; /&gt; &lt;/bean&gt; &lt;!&amp;#8211; Configuration transaction advice &amp;#8211;&gt; &lt;tx:advice id=&#34;txAdvice&#34; transaction-manager=&#34;masterTransactionManager&#34;&gt; &lt;tx:attributes&gt; &lt;tx:method name=&#34;add*&#34; propagation=&#34;REQUIRED&#34; /&gt; &lt;tx:method name=&#34;update*&#34; propagation=&#34;REQUIRED&#34; /&gt; &lt;tx:method name=&#34;delete*&#34; propagation=&#34;REQUIRED&#34; /&gt; &lt;tx:method name=&#34;get*&#34; read-only=&#34;true&#34; propagation=&#34;SUPPORTS&#34; /&gt; &lt;tx:method name=&#34;list*&#34; read-only=&#34;true&#34; propagation=&#34;SUPPORTS&#34; /&gt; &lt;/tx:attributes&gt; &lt;/tx:advice&gt; &lt;!&amp;#8211; Configuration transaction aspect &amp;#8211;&gt; &lt;aop:config&gt; &lt;aop:pointcut id=&#34;systemServicePointcut&#34; expression=&#34;execution(\* cn.bridgeli.demo.service.\*.*(..))&#34; /&gt; &lt;aop:advisor advice-ref=&#34;txAdvice&#34; pointcut-ref=&#34;systemServicePointcut&#34; /&gt; &lt;/aop:config&gt; &lt;/beans&gt; 这个配置文件老夫是完整的copy了下来，看起来也比较易懂，就不做解释了，需要说明的mybatis下那些dao的接口，分别对应cn.bridgeli.demo.mapper.master、cn.bridgeli.demo.mapper.slave，cn.bridgeli.demo.mapper.master下的这些dao接口是要写的，另一个是读的，这些接口对应的配置文件肯定就是他们对应的文件夹下面的xml文件了，在将来的项目中几乎可以照抄
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-05-03 15:19:38 +0000 +0000'>May 3, 2015</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>502 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Spring加Mybatis实现MySQL数据库主从读写分离" href="http://localhost:1313/posts/2015-05-03-spring%E5%8A%A0mybatis%E5%AE%9E%E7%8E%B0mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%BB%E4%BB%8E%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

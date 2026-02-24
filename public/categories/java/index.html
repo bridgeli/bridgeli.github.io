@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Java | 分享技术带来的喜悦</title>
+<meta name="keywords" content="">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/categories/java/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/java/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/categories/java/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/categories/">Categories</a></div>
+  <h1>
+    Java
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">本地开发不同项目使用不同版本 JDK 的解决方案
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>一般我们在公司工作中，很少有人就负责一个项目，而负责不同的项目，由于各种原因使用的 JDK 版本可能并不相同，如果存在不兼容的情况，那么本地 mvn clean compile 的时候就会报错，这个时候就需要我们去修改我们设置的环境变量，如果多个项目同时开发，那么就需要时不时切来切去，特别烦人，其实这个问题 maven 早就替大家考虑过了，我们只需要：
+修改 maven 的 toolchains.xml 文件 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;!&amp;#8211; Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the &#34;License&#34;); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &#34;AS IS&#34; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. &amp;#8211;&gt; &lt;!&amp;#8211; | This is the toolchains file for Maven. It can be specified at two levels: | | 1. User Level. This toolchains.xml file provides configuration for a single user, | and is normally provided in ${user.home}/.m2/toolchains.xml. | | NOTE: This location can be overridden with the CLI option: | | -t /path/to/user/toolchains.xml | | 2. Global Level. This toolchains.xml file provides configuration for all Maven | users on a machine (assuming they&amp;#8217;re all using the same Maven | installation). It&amp;#8217;s normally provided in | ${maven.conf}/toolchains.xml. | | NOTE: This location can be overridden with the CLI option: | | -gt /path/to/global/toolchains.xml | | The sections in this sample file are intended to give you a running start at | getting the most out of your Maven installation. |&amp;#8211;&gt; &lt;toolchains xmlns=&#34;http://maven.apache.org/TOOLCHAINS/1.1.0&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xsi:schemaLocation=&#34;http://maven.apache.org/TOOLCHAINS/1.1.0 http://maven.apache.org/xsd/toolchains-1.1.0.xsd&#34;&gt; &lt;!&amp;#8211; | With toolchains you can refer to installations on your system. This | way you don&amp;#8217;t have to hardcode paths in your pom.xml. | | Every toolchain consist of 3 elements: | * type: the type of tool. An often used value is &amp;#8216;jdk&amp;#8217;. Toolchains-aware | plugins should document which type you must use. | | * provides: A list of key/value-pairs. | Based on the toolchain-configuration in the pom.xml Maven will search for | matching &lt;provides/&gt; configuration. You can decide for yourself which key-value | pairs to use. Often used keys are &amp;#8216;version&amp;#8217;, &amp;#8216;vendor&amp;#8217; and &amp;#8216;arch&amp;#8217;. By default | the version has a special meaning. If you configured in the pom.xml &amp;#8216;1.5&amp;#8217; | Maven will search for 1.5 and above. | | * configuration: Additional configuration for this tool. | Look for documentation of the toolchains-aware plugin which configuration elements | can be used. | | See also https://maven.apache.org/guides/mini/guide-using-toolchains.html | | General example &lt;toolchain&gt; &lt;type/&gt; &lt;provides&gt; &lt;version&gt;1.0&lt;/version&gt; &lt;/provides&gt; &lt;configuration/&gt; &lt;/toolchain&gt; | JDK examples &lt;toolchain&gt; &lt;type&gt;jdk&lt;/type&gt; &lt;provides&gt; &lt;version&gt;1.5&lt;/version&gt; &lt;vendor&gt;sun&lt;/vendor&gt; &lt;/provides&gt; &lt;configuration&gt; &lt;jdkHome&gt;/path/to/jdk/1.5&lt;/jdkHome&gt; &lt;/configuration&gt; &lt;/toolchain&gt; &lt;toolchain&gt; &lt;type&gt;jdk&lt;/type&gt; &lt;provides&gt; &lt;version&gt;1.6&lt;/version&gt; &lt;vendor&gt;sun&lt;/vendor&gt; &lt;/provides&gt; &lt;configuration&gt; &lt;jdkHome&gt;/path/to/jdk/1.6&lt;/jdkHome&gt; &lt;/configuration&gt; &lt;/toolchain&gt; &amp;#8211;&gt; &lt;toolchain&gt; &lt;type&gt;jdk&lt;/type&gt; &lt;provides&gt; &lt;version&gt;17&lt;/version&gt; &lt;/provides&gt; &lt;configuration&gt; &lt;jdkHome&gt;D:\J2EE\Java\jdk-17&lt;/jdkHome&gt; &lt;/configuration&gt; &lt;/toolchain&gt; &lt;toolchain&gt; &lt;type&gt;jdk&lt;/type&gt; &lt;provides&gt; &lt;version&gt;8&lt;/version&gt; &lt;/provides&gt; &lt;configuration&gt; &lt;jdkHome&gt;D:\J2EE\Java\jdk1.8.0_311&lt;/jdkHome&gt; &lt;/configuration&gt; &lt;/toolchain&gt; &lt;/toolchains&gt; 修改项目的 pom.xml 文件 &lt;profiles&gt; &lt;profile&gt; &lt;id&gt;dev&lt;/id&gt; &lt;activation&gt; &lt;activeByDefault&gt;false&lt;/activeByDefault&gt; &lt;/activation&gt; &lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; &lt;artifactId&gt;maven-toolchains-plugin&lt;/artifactId&gt; &lt;version&gt;3.1.0&lt;/version&gt; &lt;executions&gt; &lt;execution&gt; &lt;goals&gt; &lt;goal&gt;toolchain&lt;/goal&gt; &lt;/goals&gt; &lt;/execution&gt; &lt;/executions&gt; &lt;configuration&gt; &lt;toolchains&gt; &lt;jdk&gt; &lt;version&gt;8&lt;/version&gt; &lt;/jdk&gt; &lt;/toolchains&gt; &lt;/configuration&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt; &lt;/profile&gt; &lt;/profiles&gt; 修改完我们在编译的时候只需要运行： mvn clean compile -Pdev 即可，这样编译就会自动用 jdk8 也不是系统环境变量配置的，当然还有更简单的，我们可以修改 pom.xml 中的配置，只需要把：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-12-25 02:24:23 +0000 +0000'>December 25, 2025</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>522 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 本地开发不同项目使用不同版本 JDK 的解决方案" href="http://localhost:1313/posts/2025-12-25-%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E4%B8%8D%E5%90%8C%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC-jdk-%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">使用 docker 一键部署 ELK(包含中文分词) 服务脚本
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前几天公司有个需求要做全文索引，于是写了一个脚本使用 docker 一键部署 ELK 服务，内容如下：
+#!/bin/bash set -e echo &#34;==================================================&#34; echo &#34;🚀 开始部署 ELK &#43; MySQL 同步（中文分词 &#43; 固定索引）&#34; echo &#34;==================================================&#34; \# ==================== 配置区（请修改）==================== MYSQL_HOST=&#34;192.168.124.6&#34; # ✏️ 修改为你的 MySQL IP MYSQL_USER=&#34;root&#34; # 读取权限用户 MYSQL_PASSWORD=&#34;123456&#34; # 用户密码 MYSQL_DB=&#34;ams&#34; # 数据库名 ELASTIC_PASSWORD=&#34;i*B4j6eD&#43;g0e&#34; # ES 密码（至少 8 位，含大小写&#43;数字） ES_VERSION=&#34;8.11.3&#34; # 必须与 IK 插件版本一致 LOGSTASH_VERSION=&#34;8.11.3&#34; \# ======================================================== \# 项目路径 ROOT_DIR=&#34;/project/elastic-sync&#34; mkdir -p &#34;$ROOT_DIR&#34; cd &#34;$ROOT_DIR&#34; echo &#34;📁 创建项目目录结构&#34; mkdir -p config/mysql config data/es data/kibana logs/logstash plugins/ik \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 下载 IK 分词插件 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212; IK_URL=&#34;https://release.infinilabs.com/analysis-ik/stable/elasticsearch-analysis-ik-ik-${ES_VERSION}.zip&#34; IK_DIR=&#34;$ROOT_DIR/plugins/ik&#34; if [ ! -f &#34;$IK_DIR/plugin-descriptor.properties&#34; ]; then echo &#34;📥 正在下载 IK 分词插件 v${ES_VERSION}&amp;#8230;&#34; wget -q &#34;$IK_URL&#34; -O /tmp/ik.zip unzip -q /tmp/ik.zip -d &#34;$IK_DIR&#34; rm /tmp/ik.zip chown -R 1000:1000 &#34;$IK_DIR&#34; echo &#34;✅ IK 插件安装完成&#34; else echo &#34;ℹ️ IK 插件已存在，跳过安装&#34; fi \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 elasticsearch.yml &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- cat &gt; config/elasticsearch.yml &lt;&lt; EOF cluster.name: production-cluster node.name: node-1 node.roles: [ data, master, ingest ] path: data: /usr/share/elasticsearch/data logs: /usr/share/elasticsearch/logs network.host: 0.0.0.0 http.port: 9200 http.cors.enabled: true http.cors.allow-origin: &#34;*&#34; discovery.type: single-node xpack.security.enabled: true xpack.security.http.ssl.enabled: false xpack.monitoring.collection.enabled: true EOF \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 logstash.yml &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- cat &gt; config/logstash.yml &lt;&lt; EOF http.host: &#34;0.0.0.0&#34; xpack.monitoring.enabled: false config.reload.automatic: false EOF \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 logstash.conf &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- cat &gt; config/logstash.conf &lt;&lt; EOF input { jdbc { jdbc_connection_string =&gt; &#34;jdbc:mysql://$MYSQL_HOST:3306/$MYSQL_DB?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai&#34; jdbc_user =&gt; &#34;$MYSQL_USER&#34; jdbc_password =&gt; &#34;$MYSQL_PASSWORD&#34; jdbc_driver_library =&gt; &#34;/usr/share/logstash/mysql/mysql-connector-java-8.0.30.jar&#34; jdbc_driver_class =&gt; &#34;com.mysql.cj.jdbc.Driver&#34; jdbc_default_timezone =&gt; &#34;Asia/Shanghai&#34; statement =&gt; &#34; SELECT * FROM article WHERE updated_at &gt;= :sql_last_value ORDER BY updated_at ASC &#34; use_column_value =&gt; true tracking_column =&gt; &#34;updated_at&#34; tracking_column_type =&gt; &#34;timestamp&#34; last_run_metadata_path =&gt; &#34;/usr/share/logstash/.logstash_jdbc_last_run&#34; schedule =&gt; &#34;\*/2 \* \* \* *&#34; } } filter { \# 清洗 content 字段中的 HTML 标签 if [content] { mutate { gsub =&gt; [ &#34;content&#34;, &#34;&lt;[^&gt;]*&gt;&#34;, &#34;&#34; # 删除所有 HTML 标签：&lt;p&gt;、&lt;div&gt;、&lt;span&gt; 等 ] } \# 可选：进一步清理多余的空白字符 mutate { gsub =&gt; [ &#34;content&#34;, &#34;\s&#43;&#34;, &#34; &#34; # 多个空白字符（空格、换行、制表符）合并为一个空格 ] } mutate { strip =&gt; [&#34;content&#34;] # 去除首尾空格 } } \# 如果 del_flag 是 1，标记该记录用于删除 if [del_flag] == 1 { mutate { add_tag =&gt; [&#34;delete_document&#34;] } } } output { if &#34;delete_document&#34; in [tags] { elasticsearch { hosts =&gt; [&#34;http://elasticsearch:9200&#34;] user =&gt; &#34;elastic&#34; password =&gt; &#34;$ELASTIC_PASSWOR&#34; action =&gt; &#34;delete&#34; document_id =&gt; &#34;%{id}&#34; index =&gt; &#34;articles&#34; } } else { elasticsearch { hosts =&gt; [&#34;http://elasticsearch:9200&#34;] user =&gt; &#34;elastic&#34; password =&gt; &#34;$ELASTIC_PASSWOR&#34; index =&gt; &#34;articles&#34; # ✅ 固定索引 document_id =&gt; &#34;%{id}&#34; # 支持 varchar id doc_as_upsert =&gt; true # 更新覆盖 } } stdout { codec =&gt; rubydebug } } EOF \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成 docker-compose.yml &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- cat &gt; docker-compose.yml &lt;&lt; EOF services: elasticsearch: image: docker.elastic.co/elasticsearch/elasticsearch:$ES_VERSION container_name: elasticsearch environment: &amp;#8211; discovery.type=single-node &amp;#8211; ES_JAVA_OPTS=-Xms2g -Xmx2g &amp;#8211; xpack.security.enabled=true &amp;#8211; xpack.security.http.ssl.enabled=false &amp;#8211; ELASTIC_PASSWORD=$ELASTIC_PASSWORD ports: &amp;#8211; &#34;9200:9200&#34; volumes: &amp;#8211; ./data/es:/usr/share/elasticsearch/data &amp;#8211; ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml &amp;#8211; ./plugins/ik:/usr/share/elasticsearch/plugins/ik networks: &amp;#8211; elastic restart: unless-stopped healthcheck: test: [&#34;CMD-SHELL&#34;, &#34;curl -f http://localhost:9200 || exit 1&#34;] interval: 30s timeout: 10s retries: 3 kibana: image: docker.elastic.co/kibana/kibana:$LOGSTASH_VERSION container_name: kibana depends_on: elasticsearch: condition: service_healthy environment: &amp;#8211; ELASTICSEARCH_HOSTS=[&#34;http://elasticsearch:9200&#34;] &amp;#8211; ELASTICSEARCH_USERNAME=elastic &amp;#8211; ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD &amp;#8211; SERVER_NAME=kibana.example.com &amp;#8211; I18N_LOCALE=zh-CN ports: &amp;#8211; &#34;5601:5601&#34; volumes: &amp;#8211; ./data/kibana:/usr/share/kibana/data networks: &amp;#8211; elastic restart: unless-stopped logstash: image: docker.elastic.co/logstash/logstash:$LOGSTASH_VERSION container_name: logstash depends_on: &amp;#8211; elasticsearch volumes: &amp;#8211; ./config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf &amp;#8211; ./config/logstash.yml:/usr/share/logstash/config/logstash.yml &amp;#8211; ./logs/logstash:/var/log/logstash &amp;#8211; ./config/mysql:/usr/share/logstash/mysql networks: &amp;#8211; elastic restart: unless-stopped networks: elastic: driver: bridge EOF \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 下载 MySQL JDBC 驱动 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- JDBC_JAR=&#34;config/mysql/mysql-connector-java-8.0.30.jar&#34; if [ ! -f &#34;$JDBC_JAR&#34; ]; then echo &#34;📥 下载 MySQL JDBC 驱动&amp;#8230;&#34; mkdir -p config/mysql wget -q https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30.jar -O &#34;$JDBC_JAR&#34; echo &#34;✅ JDBC 驱动下载完成&#34; fi \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 设置权限 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- echo &#34;🔐 设置目录权限&#34; chown -R 1000:1000 data/es plugins/ik chmod -R 755 config logs chmod -R 777 data/kibana \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 生成创建索引脚本 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- cat &gt; create-index.sh &lt;&lt; &amp;#8216;EOF&amp;#8217; #!/bin/bash echo &#34;🔄 正在创建索引 &amp;#8216;articles&amp;#8217; 并配置 IK 分词器&amp;#8230;&#34; curl -X PUT &#34;http://localhost:9200/articles&#34; \ -u elastic:$ELASTIC_PASSWORD \ -H &#34;Content-Type: application/json&#34; \ -d &amp;#8216; { &#34;settings&#34;: { &#34;index&#34;: { &#34;number_of_shards&#34;: 1, &#34;number_of_replicas&#34;: 1 }, &#34;analysis&#34;: { &#34;analyzer&#34;: { &#34;ik_analyzer&#34;: { &#34;type&#34;: &#34;custom&#34;, &#34;tokenizer&#34;: &#34;ik_max_word&#34;, &#34;filter&#34;: [&#34;lowercase&#34;] } } } }, &#34;mappings&#34;: { &#34;properties&#34;: { &#34;id&#34;: { &#34;type&#34;: &#34;keyword&#34; }, &#34;title&#34;: { &#34;type&#34;: &#34;text&#34;, &#34;analyzer&#34;: &#34;ik_max_word&#34;, &#34;search_analyzer&#34;: &#34;ik_smart&#34; }, &#34;content&#34;: { &#34;type&#34;: &#34;text&#34;, &#34;analyzer&#34;: &#34;ik_max_word&#34;, &#34;search_analyzer&#34;: &#34;ik_smart&#34; }, &#34;author&#34;: { &#34;type&#34;: &#34;keyword&#34; }, &#34;created_at&#34;: { &#34;type&#34;: &#34;date&#34; }, &#34;updated_at&#34;: { &#34;type&#34;: &#34;date&#34; } } } }&amp;#8217; &amp;&amp; echo &#34;✅ 索引 &amp;#8216;articles&amp;#8217; 创建成功！&#34; EOF chmod &#43;x create-index.sh \# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- 完成 &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;- echo &#34;==================================================&#34; echo &#34;🎉 部署准备完成！&#34; echo &#34;==================================================&#34; echo &#34;&#34; echo &#34;📌 下一步操作：&#34; echo &#34;1. 检查配置：nano setup-elastic-sync.sh （修改 MySQL 地址、用户、密码）&#34; echo &#34;2. 增加权限：chmod &#43;x setup-elastic-sync.sh&#34; echo &#34;3. 执行脚本：sudo ./setup-elastic-sync.sh&#34; echo &#34;4. 启动服务：sudo docker compose up -d&#34; echo &#34;5. 创建索引：bash ./create-index.sh&#34; echo &#34;6. 访问 Kibana：http://你的服务器IP:5601&#34; echo &#34; &amp;#8211; 用户：elastic&#34; echo &#34; &amp;#8211; 密码：$ELASTIC_PASSWORD&#34; echo &#34;&#34; echo &#34;💡 首次运行会全量同步 articles 表，之后每 2 分钟增量同步&#34; echo &#34;🔍 在 Kibana 中搜索中文（如“阿里巴巴”），应能命中结果&#34; echo &#34;&#34; echo &#34;⚠️ 注意：必须先运行 create-index.sh 再让 Logstash 写入，否则分词无效！&#34; 如果 kibana 用 elastic 用户连不上，通过 Elasticsearch 的 Security API 为内置用户 kibana_system 修改密码：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-08-28 09:26:14 +0000 +0000'>August 28, 2025</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>891 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 使用 docker 一键部署 ELK(包含中文分词) 服务脚本" href="http://localhost:1313/posts/2025-08-28-%E4%BD%BF%E7%94%A8-docker-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2-elk-%E6%9C%8D%E5%8A%A1%E8%84%9A%E6%9C%AC/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">关于 Redis incr 的一个问题
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前一段时间有一个需求，需要计数，理所当地的使用了 redis 的 incr 方法。代码大概如下：
+@Scheduled(cron = &#34;0 0/10 \* \* * ?&#34;) public void test() { long yellowInterval = 5L; boolean isReachable = false; // TODO long delta = isReachable ? -1L : 1L; ValueOperations&lt;String, Long&gt; valueOperations = redisTemplate.opsForValue(); String key = RFID_NETWORK_STATUS_PREFIX &#43; rfDevice.getId(); Long increment = valueOperations.increment(key, delta); if (increment == null || increment &lt;= 0L) { } } else if (increment &gt;= yellowInterval) { if (Constants.RFID_NETWORK_STATUS_GREEN.equals(rfDevice.getNetworkStatus())) { } if (increment &gt;= yellowInterval * 3) { valueOperations.set(key, yellowInterval * 3); } } 大概就是某个操作之后记一下数，加一或者减一，如果加到了某个值，就把它设置为某个值。我们这里先不考虑并发问题。结果在运行的时候遇到了一个问题，报错信息如下：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-07-30 10:23:46 +0000 +0000'>July 30, 2025</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>274 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 关于 Redis incr 的一个问题" href="http://localhost:1313/posts/2025-07-30-%E5%85%B3%E4%BA%8E-redis-incr-%E7%9A%84%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Gradle 项目打包构建中的两个小问题
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 打包的时候报错，提示 jar 重复，具体详情： * What went wrong: Execution failed for task &amp;#8216;:web-admin:bootJar&amp;#8217;. &gt; Entry BOOT-INF/lib/jaxb-core-4.0.3.jar is a duplicate but no duplicate handling strategy has been set. Please refer to https://docs.gradle.org/7.6.3/dsl/org.gradle.api.tasks.Copy.html#org.gradle.api.tasks.Copy:duplicatesStrategy for details. * Try: &gt; Run with &amp;#8211;stacktrace option to get the stack trace. &gt; Run with &amp;#8211;info or &amp;#8211;debug option to get more log output. &gt; Run with &amp;#8211;scan to get full insights. 在打包Spring Boot应用时，BOOT-INF/lib/jaxb-core-4.0.3.jar 文件出现了重复项，而构建脚本中没有设置处理重复文件的策略。Gradle不允许默认情况下存在重复文件，因此构建失败。要解决这个问题，只修改构建配置：
+bootJar { duplicatesStrategy = DuplicatesStrategy.EXCLUDE } 这段代码告诉 Gradle 在发现重复文件时排除它们。根据你的需求，你也可以选择其他策略如 DuplicatesStrategy.INCLUDE 或者 DuplicatesStrategy.WARN。然后清理和重新构建项目即可。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-05-17 07:42:46 +0000 +0000'>May 17, 2025</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>144 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Gradle 项目打包构建中的两个小问题" href="http://localhost:1313/posts/2025-05-17-gradle-%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E6%9E%84%E5%BB%BA%E4%B8%AD%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">nginx 代理 sse 接口，报：(failed) net::ERR HTTP2 PROTOCOL ERROR
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前一段时间曾写了一篇关于Spring MVC 通过 SSE 实现消息推送的小文章，后来系统上线的时候，遇到了一个小问题，打开浏览器的 network，看到接口报：(failed) net::ERR HTTP2 PROTOCOL ERROR，通常是因为 HTTP/2 协议与 SSE 的某些特性不兼容所导致的。SSE 是基于 HTTP 协议的服务器推送技术，它要求连接保持打开状态以便服务器可以持续发送更新给客户端。我们使用的 nginx version 是：nginx/1.26.1
+只需要按如下配置即可解决：
+server { listen 80; server_name bridgeli.com; access_log /var/log/nginx/bridgeli_access.log; error_log /var/log/nginx/bridgeli_error.log warn; location ^~ /admin-api/ { proxy_pass http://192.168.124.34:8080/; \# 确保使用HTTP/1.1来支持SSE proxy_http_version 1.1; \# 关闭代理连接的“Connection”头，以避免潜在的问题 proxy_set_header Connection &amp;#8221;; \# 增加超时设置，确保长时间连接不会被关闭 proxy_read_timeout 86400s; proxy_send_timeout 86400s; \# 如果需要禁用HTTP/2（可选） \# 注意：这个设置是在server块中，而不是location块中 \# listen 80 http2 off; 对于HTTP/2协议错误特别有用 } location / { root /project/www/bridgeli/admin/; try_files $uri $uri/ /index.html; } } </p>
+  </div>
+  <footer class="entry-footer"><span title='2025-04-03 07:49:30 +0000 +0000'>April 3, 2025</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>75 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to nginx 代理 sse 接口，报：(failed) net::ERR HTTP2 PROTOCOL ERROR" href="http://localhost:1313/posts/2025-04-03-nginx-%E4%BB%A3%E7%90%86-sse-%E6%8E%A5%E5%8F%A3%E6%8A%A5failed-neterr-http2-protocol-error/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">关于 druid 监控的两个小问题
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前一段时间做一个小需求，需要展示 druid 的监控页面，我们都知道 druid 监控地址是：http://ip:port/druid/index.html，但是当时一直报 404，后来查了资料，引入的 jar 包：
+&lt;dependency&gt; &lt;groupId&gt;com.alibaba&lt;/groupId&gt; &lt;artifactId&gt;druid&lt;/artifactId&gt; &lt;version&gt;1.2.24&lt;/version&gt; &lt;/dependency&gt; 应该是因为不是通过 starter 包引入的，所以需要手动配置：
+package cn.bridgeli.demo; import com.alibaba.druid.support.jakarta.StatViewServlet; import com.alibaba.druid.support.jakarta.WebStatFilter; import com.alibaba.druid.util.Utils; import jakarta.servlet.Filter; import jakarta.servlet.FilterChain; import jakarta.servlet.ServletException; import jakarta.servlet.ServletRequest; import jakarta.servlet.ServletResponse; import org.springframework.boot.web.servlet.FilterRegistrationBean; import org.springframework.boot.web.servlet.ServletRegistrationBean; import org.springframework.context.annotation.Bean; import org.springframework.context.annotation.Configuration; import java.io.IOException; @Configuration public class DruidConfig { @Bean public ServletRegistrationBean&lt;StatViewServlet&gt; statViewServlet() { ServletRegistrationBean&lt;StatViewServlet&gt; servletRegistrationBean = new ServletRegistrationBean&lt;&gt;(new StatViewServlet(), &#34;/druid/*&#34;); // 设置登录用户名和密码 servletRegistrationBean.addInitParameter(&#34;loginUsername&#34;, &#34;BridgeLi&#34;); servletRegistrationBean.addInitParameter(&#34;loginPassword&#34;, &#34;BridgeLi&#34;); return servletRegistrationBean; } @Bean public FilterRegistrationBean&lt;WebStatFilter&gt; webStatFilter() { FilterRegistrationBean&lt;WebStatFilter&gt; filterRegistrationBean = new FilterRegistrationBean&lt;&gt;(new WebStatFilter()); filterRegistrationBean.addUrlPatterns(&#34;/*&#34;); filterRegistrationBean.addInitParameter(&#34;exclusions&#34;, &#34;\*.js,\*.gif,\*.jpg,\*.png,\*.css,\*.ico,/druid/*&#34;); return filterRegistrationBean; } } 另外一个小问题就是，这么引入之后，打开监控页最下面会有 alibaba 的广告，一般情况下，我们肯定是想去掉的，广告代码所在的位置在 support/http/resources/js/common.js 这个 js 里面，网上有人说直接解压删掉，重新打包就行了，但是这个有问题就是必须用重新打包的这个 jar，搜了一下资料，其实去掉也很简单，在上面的那个类里面增加一个 配置过滤掉即可：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-03-12 09:44:14 +0000 +0000'>March 12, 2025</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>310 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 关于 druid 监控的两个小问题" href="http://localhost:1313/posts/2025-03-12-%E5%85%B3%E4%BA%8E-druid-%E7%9B%91%E6%8E%A7%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Spring MVC 通过 SSE 实现消息推送
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>又好久没有写文章了，自从有了大模型之后写文章的态度越来越提不起兴趣了，有问题，直接问大模型即可。前几天公司有个需求，想用 SSE 实现，之前从没写过，所以让大模型直接写，然后实现超级简单：
+编写 SSE 服务，来进行创建链接和发送消息 package cn.bridgeli.demo; import lombok.Getter; import lombok.extern.slf4j.Slf4j; import org.apache.commons.collections4.CollectionUtils; import org.springframework.stereotype.Service; import org.springframework.web.servlet.mvc.method.annotation.SseEmitter; import java.io.IOException; import java.util.List; import java.util.Map; import java.util.concurrent.ConcurrentHashMap; @Slf4j @Getter @Service public class SseService { private final Map&lt;String, SseEmitter&gt; emitters = new ConcurrentHashMap&lt;&gt;(); public SseEmitter stream(String usrId) { SseEmitter emitter = emitters.computeIfAbsent(usrId, k -&gt; new SseEmitter(Long.MAX_VALUE)); emitter.onCompletion(() -&gt; { log.info(&#34;SSE emitter completed&#34;); emitters.remove(usrId); }); emitter.onError((throwable) -&gt; { log.error(&#34;Error occurred in SSE emitter&#34;, throwable); emitter.complete(); emitters.remove(usrId); }); emitter.onTimeout(() -&gt; { log.warn(&#34;SSE emitter timed out&#34;); emitter.complete(); emitters.remove(usrId); }); // 可选：连接成功时向客户端发送一个初始事件 try { emitter.send(SseEmitter.event().name(&#34;connect&#34;).data(&#34;连接成功&#34;)); } catch (IOException e) { log.error(&#34;Error occurred while sending initial event&#34;, e); emitter.completeWithError(e); } return emitter; } public void send(List&lt;String&gt; userIds, String name, Object object) { if (!emitters.isEmpty()) { // 遍历所有用户的 SseEmitter，推送数据 if (CollectionUtils.isEmpty(userIds)) { emitters.forEach((userId, emitter) -&gt; { try { emitter.send(SseEmitter.event().name(name).data(object)); } catch (IOException e) { // 如果发送失败，则移除该用户的 emitter log.error(&#34;Error occurred while sending event to user {}&#34;, userId, e); emitter.completeWithError(e); emitters.remove(userId); } }); } else { userIds.forEach(userId -&gt; { SseEmitter emitter = emitters.get(userId); if (emitter != null) { try { emitter.send(SseEmitter.event().name(name).data(object)); } catch (IOException e) { // 如果发送失败，则移除该用户的 emitter log.error(&#34;Error occurred while sending event to user {}&#34;, userId, e); emitter.completeWithError(e); emitters.remove(userId); } } }); } } } } 编写对应的 Controller 给前端提供接口： package cn.bridgeli.demo; import cn.bridgeli.BaseAuthController; import io.swagger.v3.oas.annotations.tags.Tag; import jakarta.annotation.Resource; import lombok.extern.slf4j.Slf4j; import org.springframework.http.MediaType; import org.springframework.web.bind.annotation.GetMapping; import org.springframework.web.bind.annotation.RequestMapping; import org.springframework.web.bind.annotation.RestController; import org.springframework.web.servlet.mvc.method.annotation.SseEmitter; @Slf4j @RestController @Tag(name = &#34;SSE 推送服务&#34;) @RequestMapping(&#34;/auth/common/sse&#34;) public class SseController extends BaseAuthController { @Resource private SseService sseService; @GetMapping(value = &#34;/stream&#34;, produces = MediaType.TEXT_EVENT_STREAM_VALUE) public SseEmitter stream() { return sseService.stream(getLoginUsr().getUsrId()); } } 消息推送具体实现： package cn.bridgeli.demo; import cn.bridgeli.common.SseService; import cn.bridgeli.monitor.MonitorService; import cn.bridgeli.vo.CpuInfoVo; import jakarta.annotation.Resource; import lombok.extern.slf4j.Slf4j; import org.springframework.scheduling.annotation.Scheduled; import org.springframework.stereotype.Component; import org.springframework.web.servlet.mvc.method.annotation.SseEmitter; import java.util.Map; @Component @Slf4j public class ScheduledTask { @Resource private MonitorService monitorService; @Resource private SseService sseService; /** * 每分钟执行一次 */ @Scheduled(cron = &#34;0 0/1 \* \* * ?&#34;) public void updateOrderStatus() { log.info(&#34;=============定时任务=============&#34;); Map&lt;String, SseEmitter&gt; emitters = sseService.getEmitters(); if (null == emitters || emitters.isEmpty()) { log.info(&#34;sse emitters is empty&#34;); return; } CpuInfoVo cpuData = monitorService.getCpuData(); sseService.send(null, &#34;cpu&#34;, cpuData); } } 其实就是前端连接之后创建一个连接，保存连接，然后别的地方产生消息，推送消息，我的实例是通过 oshi 获取 CPU 使用率，实现对 CPU 的实时监控。
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-02-27 01:26:08 +0000 +0000'>February 27, 2025</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>338 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Spring MVC 通过 SSE 实现消息推送" href="http://localhost:1313/posts/2025-02-27-spring-mvc-%E9%80%9A%E8%BF%87-sse-%E5%AE%9E%E7%8E%B0%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">全国中小企业融资综合信用服务平台-省级节点数据接口规范-河南省营商环境和社会信用建设中心
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>开始之前先说一点题外话，几年前曾经看过一个视频，其中一个观点大概就是程序员是一个反传统的群体，其他群体掌握了某个技术，一般都是当做内部商业机密，而程序员则不一样，喜欢开源，尤其 GPL 协议的开源，不仅自己毫无保留的开源，还要求使用他的软件也得开源，也正是这种开源造就了互联网的蓬勃发展。我目前所在公司因为是做金融相关的公司，国家出于某些原因，要求要上报相关的数据到省平台，而省平台的技术采用的是 webservice，和我们目前习惯的 http 接口不太一样，所以前一段时间在写这个的时候走了不少弯路，而网上也没有参考资料，所以决定把相关的核心代码公布出来，供需要的同学参考。需要说明的是：这是我们河南省的系统相关接口，不知道外省是否一致，省平台给的接口文档名是：全国中小企业融资综合信用服务平台省级节点数据接口规范V5.3.pdf，首页写的是：全国中小企业融资综合信用服务平台省级节点数据接口规范，国家公共信用信息中心，河南省营商环境和社会信用建设中心，2024年7月
+jar 包引入 &lt;dependency&gt; &lt;groupId&gt;cn.hutool&lt;/groupId&gt; &lt;artifactId&gt;hutool-all&lt;/artifactId&gt; &lt;version&gt;5.8.10&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.bouncycastle&lt;/groupId&gt; &lt;artifactId&gt;bcprov-jdk15on&lt;/artifactId&gt; &lt;version&gt;1.70&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.bouncycastle&lt;/groupId&gt; &lt;artifactId&gt;bcpkix-jdk15on&lt;/artifactId&gt; &lt;version&gt;1.70&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.apache.cxf&lt;/groupId&gt; &lt;artifactId&gt;cxf-rt-frontend-jaxws&lt;/artifactId&gt; &lt;version&gt;4.0.5&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.apache.cxf&lt;/groupId&gt; &lt;artifactId&gt;cxf-rt-transports-http&lt;/artifactId&gt; &lt;version&gt;4.0.5&lt;/version&gt; &lt;/dependency&gt; 上报工具类，其中：queryData 方法是用来查询，sendData 方法用来上报数据 package cn.bridgeli.demo; import cn.hutool.core.util.RandomUtil; import com.alibaba.fastjson.JSONObject; import lombok.extern.slf4j.Slf4j; import org.apache.commons.codec.CharEncoding; import org.apache.commons.lang3.StringUtils; import org.apache.cxf.endpoint.Client; import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory; import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey; import org.bouncycastle.util.encoders.Base64; import org.bouncycastle.util.encoders.Hex; import javax.xml.namespace.QName; import java.io.File; import java.io.FileInputStream; import java.io.FileOutputStream; import java.io.IOException; import java.io.InputStream; import java.math.BigInteger; import java.security.PublicKey; @Slf4j public class XyhnUtil { private static String pubKey; private static String queryPubKey; private static PublicKey reportPublicKey; // private static XyhnConfig xyhnConfig = SpringUtils.getBean(XyhnConfig.class); private static XyhnConfig xyhnConfig = null; /** * 授权查询省平台接口 * * @param method 要调取的方法名 * @param object 查询方法的参数（不包含：publicKey、appKey） * @return 省平台解密后的数据 */ public static String queryData(String method, JSONObject object) { //1、组装报文 if (StringUtils.isEmpty(queryPubKey)) { queryPubKey = convertFileToBase64(xyhnConfig.getQueryPubKeyPath()); } object.put(&#34;publicKey&#34;, queryPubKey); object.put(&#34;appKey&#34;, xyhnConfig.getQueryAppKey()); //2、发送报文 String jsonRes = callInterface(&#34;query&#34;, method, object.toJSONString()); //3、解密返回数据 JSONObject json = JSONObject.parseObject(jsonRes); Boolean success = json.getBoolean(&#34;success&#34;); if (&#34;uploadLicense&#34;.equals(method)) { if (null == success || !success) { return jsonRes; } } else if (&#34;cancelLicense&#34;.equals(method)) { if (null != success &amp;&amp; success) { return jsonRes; } } BigInteger d = new BigInteger(xyhnConfig.getQueryPriKey(), 16); BCECPrivateKey bcecPrivateKey = GMUtil.getPrivatekeyFromD(d); String key0 = json.getString(&#34;key&#34;); String data = json.getString(&#34;data&#34;); String signatureData = json.getString(&#34;signatureData&#34;); byte[] decode = Hex.decode(key0); // sm2解密 byte[] bytes1 = GMUtil.sm2Decrypt(decode, bcecPrivateKey); // sm4解密 String content = GMUtil.sm4Decrypt(new String(bytes1), data); log.info(&#34;content: &#34; &#43; content); // 4、验签 File file = base64ToFileEx(json.getString(&#34;pubKey&#34;)); PublicKey publicKey = GMUtil.getPublickeyFromX509File(file); byte[] signatureData1 = Hex.decode(signatureData); boolean verifyRes = GMUtil.verifySm3WithSm2(content.getBytes(), xyhnConfig.getUserId().getBytes(), signatureData1, publicKey); log.info(&#34;method 验签结果：&#34; &#43; verifyRes); if (!verifyRes) { return null; } return content; } private static PublicKey getPublicKey() { //1、组装报文 if (StringUtils.isEmpty(pubKey)) { pubKey = convertFileToBase64(xyhnConfig.getPubKeyPath()); } JSONObject jsonObject = new JSONObject(); jsonObject.put(&#34;key&#34;, xyhnConfig.getAppKey()); JSONObject object = new JSONObject(); object.put(&#34;requestData&#34;, jsonObject); object.put(&#34;publicKey&#34;, pubKey); //2、发送报文 String jsonRes = callInterface(&#34;report&#34;, &#34;getPublicKey&#34;, object.toJSONString()); //3、解密返回数据 JSONObject json = JSONObject.parseObject(jsonRes); BigInteger d = new BigInteger(xyhnConfig.getPriKey(), 16); BCECPrivateKey bcecPrivateKey = GMUtil.getPrivatekeyFromD(d); String key0 = json.getString(&#34;key&#34;); String data = json.getString(&#34;data&#34;); String signatureData = json.getString(&#34;signatureData&#34;); byte[] decode = Hex.decode(key0); // sm2解密 byte[] bytes1 = GMUtil.sm2Decrypt(decode, bcecPrivateKey); // sm4解密 String returnData = GMUtil.sm4Decrypt(new String(bytes1), data); log.info(&#34;returnData:&#34; &#43; returnData); // 4、验签 File file = base64ToFileEx(returnData); PublicKey publicKey = GMUtil.getPublickeyFromX509File(file); byte[] signatureData1 = Hex.decode(signatureData); boolean verifyRes = GMUtil.verifySm3WithSm2(returnData.getBytes(), xyhnConfig.getUserId().getBytes(), signatureData1, publicKey); log.info(&#34;getPublicKey 接口验签结果：&#34; &#43; verifyRes); if (!verifyRes) { return null; } return publicKey; } public static String sendData(String jsonStr, String method) { log.info(&#34;调用省平台方法名：&#34; &#43; method &#43; &#34;，参数：&#34; &#43; jsonStr); try { if (StringUtils.isEmpty(pubKey)) { // 解析公钥 pubKey = convertFileToBase64(xyhnConfig.getPubKeyPath()); } if (reportPublicKey == null) { //请求接口，获取公钥 reportPublicKey = getPublicKey(); } // 1、摘要签名 sm2withsm3 byte[] msg = jsonStr.getBytes(CharEncoding.ISO_8859_1); byte[] userIdBytes = xyhnConfig.getUserId().getBytes(); BigInteger d = new BigInteger(xyhnConfig.getPriKey(), 16); BCECPrivateKey bcecPrivateKey = GMUtil.getPrivatekeyFromD(d); byte[] sig = GMUtil.signSm3WithSm2(msg, userIdBytes, bcecPrivateKey); String signature = Hex.toHexString(sig); // 2、sm4加密数据报文 String key1 = RandomUtil.randomString(16); String jsonobj = GMUtil.sm4Encrypt(key1, jsonStr); //3、sm2加密16位随机码key byte[] datamsg = GMUtil.sm2Encrypt(key1.getBytes(), reportPublicKey); String s = Hex.toHexString(datamsg); //4、组装并发送报文 JSONObject jsonObject2 = new JSONObject(); jsonObject2.put(&#34;requestData&#34;, jsonobj); // sm4加密的数据集 jsonObject2.put(&#34;key&#34;, s); // sm2加密的16位随机码 jsonObject2.put(&#34;signatureData&#34;, signature); // 签名 jsonObject2.put(&#34;publicKey&#34;, pubKey); // 我的公钥 jsonObject2.put(&#34;appKey&#34;, xyhnConfig.getAppKey()); // 数据授权的key String setFPRes = callInterface(&#34;report&#34;, method, jsonObject2.toJSONString()); return setFPRes; } catch (Exception ex) { log.error(&#34;请求省平台接口异常&#34;, ex); return null; } } /** * 请求接口 * * @param type，report 回传数据，query 查询 * @param method * @param json * @return */ private static String callInterface(String type, String method, String json) { log.info(&#34;调用省平台类型:&#34; &#43; type &#43; &#34;，接口：&#34; &#43; method &#43; &#34;，参数：&#34; &#43; json); Client client = null; QName name = null; JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance(); String result = null; try { if (&#34;report&#34;.equals(type)) { client = dcf.createClient(xyhnConfig.getWsAddr()); name = new QName(xyhnConfig.getNamespaceURI(), method); } else if (&#34;query&#34;.equals(type)) { client = dcf.createClient(xyhnConfig.getQueryWsAddr()); name = new QName(xyhnConfig.getQueryNamespaceURI(), method); } Object[] objects = client.invoke(name, json); result = objects[0].toString(); } catch (Exception e) { log.error(&#34;调用省平台接口报错&#34;, e); } finally { if (client != null) { try { client.close(); } catch (Exception e) { log.error(&#34;关闭Client资源时发生异常&#34;, e); } } } log.info(&#34;调用省平台类型:&#34; &#43; type &#43; &#34;，接口：&#34; &#43; method &#43; &#34;，返回值：&#34; &#43; result); return result; } private static String convertFileToBase64(String imgPath) { byte[] data = null; // 读取图片字节数组 try (InputStream in = new FileInputStream(imgPath);) { data = new byte[in.available()]; in.read(data); } catch (IOException e) { log.error(&#34;IOException&#34;, e); } // 对字节数组进行Base64编码，得到Base64编码的字符串 String base64Str = java.util.Base64.getEncoder().encodeToString(data); return base64Str; } private static File base64ToFileEx(String base64) { if (StringUtils.isBlank(base64)) { return null; } byte[] buff = Base64.decode(base64); File file = null; FileOutputStream fout = null; try { file = File.createTempFile(&#34;tmp&#34;, null); fout = new FileOutputStream(file); fout.write(buff); file.deleteOnExit(); } catch (IOException e) { e.printStackTrace(); } finally { if (fout != null) { try { fout.close(); } catch (IOException e) { e.printStackTrace(); } } } return file; } } 用到的工具类 package cn.bridgeli.demo; import lombok.extern.slf4j.Slf4j; import org.bouncycastle.asn1.ASN1EncodableVector; import org.bouncycastle.asn1.ASN1Integer; import org.bouncycastle.asn1.ASN1Sequence; import org.bouncycastle.asn1.DERSequence; import org.bouncycastle.asn1.gm.GMNamedCurves; import org.bouncycastle.asn1.x9.X9ECParameters; import org.bouncycastle.crypto.InvalidCipherTextException; import org.bouncycastle.crypto.engines.SM2Engine; import org.bouncycastle.crypto.params.ECDomainParameters; import org.bouncycastle.crypto.params.ECPrivateKeyParameters; import org.bouncycastle.crypto.params.ECPublicKeyParameters; import org.bouncycastle.crypto.params.ParametersWithRandom; import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey; import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey; import org.bouncycastle.jcajce.spec.SM2ParameterSpec; import org.bouncycastle.jce.provider.BouncyCastleProvider; import org.bouncycastle.jce.spec.ECParameterSpec; import org.bouncycastle.jce.spec.ECPrivateKeySpec; import org.bouncycastle.util.encoders.Hex; import javax.crypto.Cipher; import javax.crypto.spec.SecretKeySpec; import java.io.File; import java.io.FileInputStream; import java.io.IOException; import java.math.BigInteger; import java.nio.charset.StandardCharsets; import java.security.Key; import java.security.PrivateKey; import java.security.PublicKey; import java.security.SecureRandom; import java.security.Security; import java.security.Signature; import java.security.cert.CertificateFactory; import java.security.cert.X509Certificate; import java.util.Arrays; @Slf4j public class GMUtil { private static X9ECParameters x9ECParameters = GMNamedCurves.getByName(&#34;sm2p256v1&#34;); private static ECDomainParameters ecDomainParameters; private static ECParameterSpec ecParameterSpec; public static byte[] signSm3WithSm2(byte[] msg, byte[] userId, PrivateKey privateKey) { return rsAsn1ToPlainByteArray(signSm3WithSm2Asn1Rs(msg, userId, privateKey)); } public static byte[] signSm3WithSm2Asn1Rs(byte[] msg, byte[] userId, PrivateKey privateKey) { try { SM2ParameterSpec parameterSpec = new SM2ParameterSpec(userId); Signature signer = Signature.getInstance(&#34;SM3withSM2&#34;, &#34;BC&#34;); signer.setParameter(parameterSpec); signer.initSign(privateKey, new SecureRandom()); signer.update(msg, 0, msg.length); byte[] sig = signer.sign(); return sig; } catch (Exception e) { throw new RuntimeException(e); } } public static boolean verifySm3WithSm2(byte[] msg, byte[] userId, byte[] rs, PublicKey publicKey) { return verifySm3WithSm2Asn1Rs(msg, userId, rsPlainByteArrayToAsn1(rs), publicKey); } public static boolean verifySm3WithSm2Asn1Rs(byte[] msg, byte[] userId, byte[] rs, PublicKey publicKey) { try { SM2ParameterSpec parameterSpec = new SM2ParameterSpec(userId); Signature verifier = Signature.getInstance(&#34;SM3withSM2&#34;, &#34;BC&#34;); verifier.setParameter(parameterSpec); verifier.initVerify(publicKey); verifier.update(msg, 0, msg.length); return verifier.verify(rs); } catch (Exception e) { throw new RuntimeException(e); } } public static byte[] changeC1C2C3ToC1C3C2(byte[] c1c2c3) { int c1Len = (x9ECParameters.getCurve().getFieldSize() &#43; 7) / 8 * 2 &#43; 1; byte[] result = new byte[c1c2c3.length]; System.arraycopy(c1c2c3, 0, result, 0, c1Len); System.arraycopy(c1c2c3, c1c2c3.length &amp;#8211; 32, result, c1Len, 32); System.arraycopy(c1c2c3, c1Len, result, c1Len &#43; 32, c1c2c3.length &amp;#8211; c1Len &amp;#8211; 32); return result; } public static byte[] changeC1C3C2ToC1C2C3(byte[] c1c3c2) { int c1Len = (x9ECParameters.getCurve().getFieldSize() &#43; 7) / 8 * 2 &#43; 1; byte[] result = new byte[c1c3c2.length]; System.arraycopy(c1c3c2, 0, result, 0, c1Len); System.arraycopy(c1c3c2, c1Len &#43; 32, result, c1Len, c1c3c2.length &amp;#8211; c1Len &amp;#8211; 32); System.arraycopy(c1c3c2, c1Len, result, c1c3c2.length &amp;#8211; 32, 32); return result; } public static byte[] sm2Decrypt(byte[] data, PrivateKey key) { return sm2DecryptOld(changeC1C3C2ToC1C2C3(data), key); } public static byte[] sm2Encrypt(byte[] data, PublicKey key) { return changeC1C2C3ToC1C3C2(sm2EncryptOld(data, key)); } public static byte[] sm2EncryptOld(byte[] data, PublicKey key) { BCECPublicKey localECPublicKey = (BCECPublicKey) key; ECPublicKeyParameters ecPublicKeyParameters = new ECPublicKeyParameters(localECPublicKey.getQ(), ecDomainParameters); SM2Engine sm2Engine = new SM2Engine(); sm2Engine.init(true, new ParametersWithRandom(ecPublicKeyParameters, new SecureRandom())); try { return sm2Engine.processBlock(data, 0, data.length); } catch (InvalidCipherTextException e) { throw new RuntimeException(e); } } public static byte[] sm2DecryptOld(byte[] data, PrivateKey key) { BCECPrivateKey localECPrivateKey = (BCECPrivateKey) key; ECPrivateKeyParameters ecPrivateKeyParameters = new ECPrivateKeyParameters(localECPrivateKey.getD(), ecDomainParameters); SM2Engine sm2Engine = new SM2Engine(); sm2Engine.init(false, ecPrivateKeyParameters); try { return sm2Engine.processBlock(data, 0, data.length); } catch (InvalidCipherTextException e) { throw new RuntimeException(e); } } public static byte[] sm4Encrypt(byte[] keyBytes, byte[] plain) { byte[] keyBytes0; if (keyBytes.length != 16) { keyBytes0 = new byte[16]; for (int i = 0; i &lt; keyBytes0.length; &#43;&#43;i) { if (keyBytes.length &gt; i) { keyBytes0[i] = keyBytes[i]; } } keyBytes = keyBytes0; } if (plain.length % 16 != 0) { keyBytes0 = new byte[16 * (plain.length / 16 &#43; 1)]; System.arraycopy(plain, 0, keyBytes0, 0, plain.length); plain = keyBytes0; } try { Key key = new SecretKeySpec(keyBytes, &#34;SM4&#34;); Cipher out = Cipher.getInstance(&#34;SM4/ECB/NoPadding&#34;, &#34;BC&#34;); out.init(1, key); return out.doFinal(plain); } catch (Exception e) { throw new RuntimeException(e); } } public static byte[] sm4Decrypt(byte[] keyBytes, byte[] cipher) { byte[] keyBytes0; if (keyBytes.length != 16) { keyBytes0 = new byte[16]; for (int i = 0; i &lt; keyBytes0.length; &#43;&#43;i) { if (keyBytes.length &gt; i) { keyBytes0[i] = keyBytes[i]; } } keyBytes = keyBytes0; } if (cipher.length % 16 != 0) { keyBytes0 = new byte[16 * (cipher.length / 16 &#43; 1)]; System.arraycopy(cipher, 0, keyBytes0, 0, cipher.length); cipher = keyBytes0; } try { Key key = new SecretKeySpec(keyBytes, &#34;SM4&#34;); Cipher in = Cipher.getInstance(&#34;SM4/ECB/NoPadding&#34;, &#34;BC&#34;); in.init(2, key); byte[] bytes = in.doFinal(cipher); for (int i = bytes.length &amp;#8211; 1; i &gt;= 0; &amp;#8211;i) { if (bytes[i] != 0) { byte[] bytes1 = new byte[i &#43; 1]; System.arraycopy(bytes, 0, bytes1, 0, i &#43; 1); bytes = bytes1; i = -1; } } return bytes; } catch (Exception e) { throw new RuntimeException(e); } } public static String sm4Encrypt(String key, String plan) { byte[] keyBytes = new byte[16]; byte[] keyBytes0 = key.getBytes(StandardCharsets.UTF_8); for (int i = 0; i &lt; keyBytes.length; &#43;&#43;i) { if (keyBytes0.length &gt; i) { keyBytes[i] = keyBytes0[i]; } } byte[] cipher = plan.getBytes(StandardCharsets.UTF_8); byte[] bytes = sm4Encrypt(keyBytes, cipher); return Hex.toHexString(bytes).toUpperCase(); } public static String sm4Decrypt(String key, String cipher) { byte[] keyBytes = new byte[16]; byte[] keyBytes0 = key.getBytes(StandardCharsets.UTF_8); for (int i = 0; i &lt; keyBytes.length; &#43;&#43;i) { if (keyBytes0.length &gt; i) { keyBytes[i] = keyBytes0[i]; } } byte[] cipherbytes = Hex.decode(cipher); byte[] bytes = sm4Decrypt(keyBytes, cipherbytes); return new String(bytes, StandardCharsets.UTF_8); } private static byte[] bigIntToFixexLengthBytes(BigInteger rOrS) { byte[] rs = rOrS.toByteArray(); if (rs.length == 32) { return rs; } else if (rs.length == 33 &amp;&amp; rs[0] == 0) { return Arrays.copyOfRange(rs, 1, 33); } else if (rs.length &lt; 32) { byte[] result = new byte[32]; Arrays.fill(result, (byte) 0); System.arraycopy(rs, 0, result, 32 &amp;#8211; rs.length, rs.length); return result; } else { throw new RuntimeException(&#34;err rs: &#34; &#43; Hex.toHexString(rs)); } } private static byte[] rsAsn1ToPlainByteArray(byte[] rsDer) { ASN1Sequence seq = ASN1Sequence.getInstance(rsDer); byte[] r = bigIntToFixexLengthBytes(ASN1Integer.getInstance(seq.getObjectAt(0)).getValue()); byte[] s = bigIntToFixexLengthBytes(ASN1Integer.getInstance(seq.getObjectAt(1)).getValue()); byte[] result = new byte[64]; System.arraycopy(r, 0, result, 0, r.length); System.arraycopy(s, 0, result, 32, s.length); return result; } private static byte[] rsPlainByteArrayToAsn1(byte[] sign) { if (sign.length != 64) { throw new RuntimeException(&#34;err rs. &#34;); } else { BigInteger r = new BigInteger(1, Arrays.copyOfRange(sign, 0, 32)); BigInteger s = new BigInteger(1, Arrays.copyOfRange(sign, 32, 64)); ASN1EncodableVector v = new ASN1EncodableVector(); v.add(new ASN1Integer(r)); v.add(new ASN1Integer(s)); try { return (new DERSequence(v)).getEncoded(&#34;DER&#34;); } catch (IOException var5) { throw new RuntimeException(var5); } } } public static BCECPrivateKey getPrivatekeyFromD(BigInteger d) { ECPrivateKeySpec ecPrivateKeySpec = new ECPrivateKeySpec(d, ecParameterSpec); return new BCECPrivateKey(&#34;EC&#34;, ecPrivateKeySpec, BouncyCastleProvider.CONFIGURATION); } public static PublicKey getPublickeyFromX509File(File file) { try { CertificateFactory cf = CertificateFactory.getInstance(&#34;X.509&#34;, &#34;BC&#34;); FileInputStream in = new FileInputStream(file); X509Certificate x509 = (X509Certificate) cf.generateCertificate(in); return x509.getPublicKey(); } catch (Exception var4) { throw new RuntimeException(var4); } } static { ecDomainParameters = new ECDomainParameters(x9ECParameters.getCurve(), x9ECParameters.getG(), x9ECParameters.getN()); ecParameterSpec = new ECParameterSpec(x9ECParameters.getCurve(), x9ECParameters.getG(), x9ECParameters.getN()); if (Security.getProvider(&#34;BC&#34;) == null) { Security.addProvider(new BouncyCastleProvider()); } } } 相关配置 package cn.bridgeli.demo; import lombok.Data; import org.springframework.boot.context.properties.ConfigurationProperties; import org.springframework.stereotype.Component; @Data @Component @ConfigurationProperties(prefix = &#34;xyhn&#34;) //@RefreshScope public class XyhnConfig { private String userId; private String platformId; private String appKey; private String priKey; private String wsAddr; private String namespaceURI; private String pubKeyPath; private String queryAppKey; private String queryPriKey; private String queryWsAddr; private String queryNamespaceURI; private String queryPubKeyPath; } 以上是上报和查询数据的核心方法，下面是查询具体数据的封装
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-09-24 06:37:18 +0000 +0000'>September 24, 2024</span>&nbsp;·&nbsp;<span>13 min</span>&nbsp;·&nbsp;<span>2571 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 全国中小企业融资综合信用服务平台-省级节点数据接口规范-河南省营商环境和社会信用建设中心" href="http://localhost:1313/posts/2024-09-24-%E5%85%A8%E5%9B%BD%E4%B8%AD%E5%B0%8F%E4%BC%81%E4%B8%9A%E8%9E%8D%E8%B5%84%E7%BB%BC%E5%90%88%E4%BF%A1%E7%94%A8%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0-%E7%9C%81%E7%BA%A7%E8%8A%82%E7%82%B9%E6%95%B0%E6%8D%AE/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">使用 knife4j 实现 Swagger 文档增强
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>相信使用 Java 开发的人，对 Swagger 一定不会感到陌生，不过个人对 Swagger 一直没有太多好感，因为他的 UI 实在太难看了，用起来也颇为不顺手，所以国内有人开发了 knife4j 对 Swagger 进行增强，随着时间的推移，现在很多项目都在从 Java8 到 Java17，SpringBoot2 到 SpringBoot3 的迁移，发现 knife4j 现在也开始做了支持，而且用起来更方便。下面简单说一说如何使用。
+引入依赖 &lt;dependency&gt; &lt;groupId&gt;com.github.xiaoymin&lt;/groupId&gt; &lt;artifactId&gt;knife4j-openapi3-jakarta-spring-boot-starter&lt;/artifactId&gt; &lt;version&gt;4.5.0&lt;/version&gt; &lt;/dependency&gt; 从中我们可以看到 artifactId 做了全新的修改，这个需要注意。另外 Spring Boot 3 只支持 OpenAPI3 规范。Knife4j提供的 starter 已经引用 springdoc-openapi 的 jar，大家需注意避免 jar 包冲突，引入之后，其余的配置，开发者即可完全参考 springdoc-openapi 的项目说明，Knife4j 只提供了增强部分，如果要启用 Knife4j 的增强功能，可以在配置文件中进行开启，其实个人测试就算完全不配置，此时也已经可以通过 http://ip:port/doc.html 查看文档：
+knife4j: enable: true basic: enable: true username: BridgeLi password: BridgeLi springdoc: default-flat-param-object: true 最后，使用 OpenAPI3 的规范注解，注释各个 Spring 的 Rest 接口。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-06-10 05:56:21 +0000 +0000'>June 10, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>205 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 使用 knife4j 实现 Swagger 文档增强" href="http://localhost:1313/posts/2024-06-10-%E4%BD%BF%E7%94%A8-knife4j-%E5%AE%9E%E7%8E%B0-swagger-%E6%96%87%E6%A1%A3%E5%A2%9E%E5%BC%BA/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">如何构建一个可重复读流 InputStream 的 HttpServletRequest？
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>之前在某公司工作的时候，领导要求所有前端向后端传递的参数都要经过前端加密，后端解密。说一句题外话：个人认为这种操作纯属脱裤子放屁，没啥用。因为前端代码都是公开的，无论你采用对称加密、非对称加密，或者摘要算法验签等等，对于稍懂技术的人来说，稍稍分析一下就能找到前端加密的方法，然后直接用相同的方式加密就行，所以这就是障眼法，只能骗骗不懂技术的人。不过领导的要求吗，既然定下来了，那么我们总要服从。因为每个方法都需要有这个解密或者验签的过程，我们自然而然想要到了通过 Filter、Interceptor 或者 AOP 等技术统一来做，不可能在各个方法中做这件事，在但是我们都知道，对于 post、put 等请求，参数都是放在请求体中的，需要通过流读出来，而流是不可以重复读的，所以我们应该怎么来解决这个问题，来构造一个可以重复读流 InputStream 的 HttpServletRequest。
+解决方法：使用自定义类来缓存 stream 即可 RequestWrapper 类：缓存字节数据
+package cn.bridgeli.filter; import cn.bridgeli.utils.http.HttpHelper; import javax.servlet.ReadListener; import javax.servlet.ServletInputStream; import javax.servlet.http.HttpServletRequest; import javax.servlet.http.HttpServletRequestWrapper; import java.io.BufferedReader; import java.io.ByteArrayInputStream; import java.io.IOException; import java.io.InputStreamReader; import java.nio.charset.StandardCharsets; /** * 构建可重复读取inputStream的request * * @author BridgeLi */ public class RepeatedlyRequestWrapper extends HttpServletRequestWrapper { private final byte[] body; public RepeatedlyRequestWrapper(HttpServletRequest request) { super(request); body = HttpHelper.getBodyString(request).getBytes(StandardCharsets.UTF_8); } @Override public BufferedReader getReader() throws IOException { return new BufferedReader(new InputStreamReader(getInputStream())); } @Override public ServletInputStream getInputStream() throws IOException { final ByteArrayInputStream bais = new ByteArrayInputStream(body); return new ServletInputStream() { @Override public int read() throws IOException { return bais.read(); } @Override public int available() throws IOException { return body.length; } @Override public boolean isFinished() { return false; } @Override public boolean isReady() { return false; } @Override public void setReadListener(ReadListener readListener) { } }; } } package cn.bridgeli.utils.http; import org.slf4j.Logger; import org.slf4j.LoggerFactory; import javax.servlet.ServletRequest; import java.io.BufferedReader; import java.io.IOException; import java.io.InputStream; import java.io.InputStreamReader; import java.nio.charset.StandardCharsets; /** * 通用http工具封装 * * @author BridgeLi */ public class HttpHelper { private static final Logger LOGGER = LoggerFactory.getLogger(HttpHelper.class); public static String getBodyString(ServletRequest request) { StringBuilder sb = new StringBuilder(); try (InputStream inputStream = request.getInputStream()) { BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8)); String line = &#34;&#34;; while ((line = reader.readLine()) != null) { sb.append(line); } } catch (IOException e) { LOGGER.error(&#34;getBodyString出现问题！&#34;, e); } return sb.toString(); } } 然后，可以在 Servlet 或 Filter 中使用 RepeatableFilter 替换原始的 HttpServletRequest。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-05-03 11:48:02 +0000 +0000'>May 3, 2024</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>343 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 如何构建一个可重复读流 InputStream 的 HttpServletRequest？" href="http://localhost:1313/posts/2024-05-03-%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E6%B5%81-inputstream-%E7%9A%84-httpservletrequest/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="http://localhost:1313/categories/java/page/2/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

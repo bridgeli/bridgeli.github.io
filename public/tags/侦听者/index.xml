@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>侦听者 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E4%BE%A6%E5%90%AC%E8%80%85/</link>
+    <description>Recent content in 侦听者 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 23 Nov 2014 10:41:16 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E4%BE%A6%E5%90%AC%E8%80%85/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>设计模式之侦听者模式</title>
+      <link>http://localhost:1313/posts/2014-11-23-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E4%BE%A6%E5%90%AC%E8%80%85%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Sun, 23 Nov 2014 10:41:16 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2014-11-23-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E4%BE%A6%E5%90%AC%E8%80%85%E6%A8%A1%E5%BC%8F/</guid>
+      <description>&lt;p&gt;关于技术，老夫一直认为应该以实用为主，至于那些理论性的东西，用得多了慢慢就理解了，所以为了说明今天这个设计模式，我们先提出一个问题：我们知道很多系统都有注册功能，有些呢，直接返回您已注册成功请直接登录，而有些注册则要求相对比较比较高，例如注册成功之后需要向用户填写的手机发送短信、Email发送邮件之类的，关于这个问题，大家立马想到的也许是这么来实现吧：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.regdemo.service;
+
+public class UserService {
+
+  public void register(String username, String password) {  
+  // 非空验证
+
+  // save到数据库
+
+  // 发送短信说,注册成功
+
+  // 发送邮件说,注册成功  
+  }  
+}  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这是一个很中规中矩的写法，我们都知道面向对象有一个原则是：单一职责原则，也即是最小知识化原则，好像也称迪米特原则和不和陌生人说话，不管怎么说，就是一个类只管一个类型的东西，一个方法只干一件事，例如本例中的注册，那么应该只干注册一件事，至于什么发短信啊，发邮件啊，本质上来说和注册是没有关系的，所以我们可以把发短信，发邮件的方法提取出来，放到其他的地方，例如放到工具类里面，那么提取出来是不是就是最好的了呢？我们应该知道面向对象还有一个原则：开闭原则，这个原则是说，对扩展开放对修改关闭，也就是说，当我们需求发生变化的时候，不应该依赖于去修改源码，而是依赖于对源码的扩展，所以关于我们这个例子：假设有一天我们不需要发送短信了，或者需要有第三种通知用户的方式，您是否能做到不修改源码呢？肯定做不到吧，只有把调用发送短信的代码删了，或者在下面添加第三种通知方式，所以这么做肯定还是不够的，那么为了满足：开闭原则，我们就要引入今天的设计模式：侦听者模式，且看下面的例子：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.regdemo.service;
+
+import cn.bridgeli.regdemo.listener.EventLinstener;
+
+public class UserService {
+
+    public void register(String username, String password) {
+// 非空验证
+
+// save到数据库
+
+        EventLinstener eventLinstener = new EventLinstener();
+        String data = &amp;#34;注册成功&amp;#34;;
+        eventLinstener.dispatchEvent(&amp;#34;REGSUCESSED&amp;#34;, data);
+    }
+} 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;核心类EventLinstener&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.regdemo.listener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class EventLinstener {
+
+    public static Map&amp;lt;String, List&amp;lt;Observer&amp;gt;&amp;gt; events = new HashMap&amp;lt;String, List&amp;lt;Observer&amp;gt;&amp;gt;();
+
+    static {
+        List&amp;lt;Observer&amp;gt; reg = new ArrayList&amp;lt;Observer&amp;gt;();
+        reg.add(new EmailObserver());
+        reg.add(new SmsObserver());
+        events.put(&amp;#34;REGSUCESSED&amp;#34;, reg);
+    }
+
+    public void dispatchEvent(String eventName, Object object) {
+        List&amp;lt;Observer&amp;gt; observers = events.get(eventName);
+        if (null != object &amp;amp;&amp;amp; !observers.isEmpty()) {
+            for (Observer observer : observers) {
+                observer.execute(object);
+            }
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;侦听者抽象类Observer&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

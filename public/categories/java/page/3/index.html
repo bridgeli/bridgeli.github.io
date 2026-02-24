@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Java | 分享技术带来的喜悦</title>
+<meta name="keywords" content="">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/categories/java/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/java/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/categories/java/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/categories/">Categories</a></div>
+  <h1>
+    Java
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">以 Java 为例简单说明常见 IO 模型
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> BIO 我们先看一个 Java 例子：
+package cn.bridgeli.demo; import java.io.BufferedReader; import java.io.IOException; import java.io.InputStream; import java.io.InputStreamReader; import java.net.ServerSocket; import java.net.Socket; /** * @author bridgeli */ public class SocketBIO { public static void main(String[] args) throws Exception { ServerSocket server = new ServerSocket(9090, 20); System.out.println(&#34;step1: new ServerSocket(9090) &#34;); while (true) { Socket client = server.accept(); System.out.println(&#34;step2:client: &#34; &#43; client.getPort()); new Thread(new Runnable() { @Override public void run() { InputStream inputStream = null; BufferedReader reader = null; try { inputStream = client.getInputStream(); reader = new BufferedReader(new InputStreamReader(inputStream)); while (true) { String dataLine = reader.readLine(); //阻塞2 if (null != dataLine) { System.out.println(dataLine); } else { client.close(); break; } } System.out.println(&#34;客户端断开&#34;); } catch (IOException e) { e.printStackTrace(); } finally { if (null != reader) { try { reader.close(); } catch (IOException e) { e.printStackTrace(); } } if (null!= inputStream) { try { inputStream.close(); } catch (IOException e) { e.printStackTrace(); } } } } }).start(); } } } BIO 是最初始的 IO 模型，该模型有两个大问题：1. accept 是阻塞的；2. read 也是阻塞的，也就是说我们的服务器起来之后，首先会在 accept 处阻塞，等待客户端连接，但有一个客户端连接的时候，我们可以从客户端处读取数据，这个时候也是阻塞的，所以我们的系统只能是单连接的，当有多个客户端连接的时候，只能一个一个的排着队连接，然后从客户端中读取数据，为了实现多连接，这就要求我们必须启用线程来解决，最开始等待客户端连接，然后有一个客户端连上了之后，启动一个线程读取客户端的数据，然后主线程继续等待客户端连接。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-03-30 13:35:01 +0000 +0000'>March 30, 2021</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>586 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 以 Java 为例简单说明常见 IO 模型" href="http://localhost:1313/posts/2021-03-30-%E4%BB%A5-java-%E4%B8%BA%E4%BE%8B%E7%AE%80%E5%8D%95%E8%AF%B4%E6%98%8E%E5%B8%B8%E8%A7%81-io-%E6%A8%A1%E5%9E%8B/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Java 的引用类型和使用场景
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>每种编程语言都有自己操作内存中元素的方式，例如在 C 和 C&#43;&#43; 里是通过指针，而在 Java 中则是通过“引用”。在 JDK.1.2 之后，Java 对引用的概念进行了扩充，将引用分为了：强引用（Strong Reference）、软引用（Soft Reference）、弱引用（Weak Reference）、虚引用（Phantom Reference）4 种，这 4 种引用的强度依次减弱，今天这篇文章就简单介绍一下这四种类型，并简单说一下他们的使用场景。
+1， 强引用（Strong Reference）
+强引用类型，是我们最常讲的一个类型，我们先看一个例子：
+package cn.bridgeli.demo.reference; /** * @author BridgeLi * @date 2021/2/26 10:02 */ public class User { @Override protected void finalize() throws Throwable { super.finalize(); System.out.println(&#34;finalize&#34;); } } package cn.bridgeli.demo.reference; import org.junit.Test; /** * @author BridgeLi * @date 2021/2/26 10:03 */ public class StrongReferenceTest { @Test public void testStrongReference() { User user = new User(); user = null; System.gc(); try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); } } } 我们都知道当一个实例对象具有强引用时，垃圾回收器不会回收该对象，当内存不足时，宁愿 OOM，也就是抛出 OutOfMemeryError 异常也不会回收强引用的对象，因为 JVM 认为强引用的对象是用户正在使用的对象，它无法分辨出到底该回收哪个，强行回收有可能导致系统严重错误。但是当对象被赋值为 null 之后，会被回收，并且会执行对象的 finalize 函数，此时我们可以通过该函数拯救自己，但是有两点需要注意一个是只能拯救一次，当再次被垃圾回收的时候就不能拯救了，另一个就是有事没事千万不要重写次函数，本例只是为了说明问题重写了此函数，如果在工作中误重写了此函数，可能会导致垃圾不能回收，最终 OOM，另外有熟悉 GC 的同学没？猜一下我为什么要 sleep 一下？
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-02-28 08:26:07 +0000 +0000'>February 28, 2021</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>449 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Java 的引用类型和使用场景" href="http://localhost:1313/posts/2021-02-28-java-%E7%9A%84%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">用两个线程交替打印数字和字母
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前一段时间听马士兵老师讲课，讲到某公司的一个面试，两个线程，其中一个线程输出ABC，另一个线程输出123，如何控制两个线程交叉输出1A2B3C，由于本人多线程掌握的一直不是很好，所以听完这道题，个人感觉收获良多，这是一个学习笔记。这道题有多种解法，不过有些属于纯炫技，所以只记录常见的三种解法。首先看第一种
+park 和 unpark package cn.bridgeli.demo; import com.google.common.collect.Lists; import java.util.List; import java.util.concurrent.locks.LockSupport; /** * @author BridgeLi * @date 2021/2/6 16:14 */ public class Thread_Communication_Park_Unpark { static Thread t1 = null; static Thread t2 = null; public static void main(String[] args) { final List&lt;Integer&gt; integers = Lists.newArrayList(1, 2, 3, 4, 5, 6, 7); final List&lt;String&gt; strings = Lists.newArrayList(&#34;A&#34;, &#34;B&#34;, &#34;C&#34;, &#34;D&#34;, &#34;E&#34;, &#34;F&#34;, &#34;G&#34;); t1 = new Thread(() -&gt; integers.forEach(item -&gt; { System.out.print(item); LockSupport.unpark(t2); LockSupport.park(); }), &#34;t1&#34;); t2 = new Thread(() -&gt; strings.forEach(item -&gt; { LockSupport.park(); System.out.print(item); LockSupport.unpark(t1); }), &#34;t2&#34;); t1.start(); t2.start(); } } 这个是最简单的实现方法，LockSupport.park() 使当前线程阻塞，而 LockSupport.unpark() 则表示唤醒一个线程，所以他需要一个参数，表示你要唤醒哪个线程，很好理解，也比较简单。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-02-07 07:06:13 +0000 +0000'>February 7, 2021</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>413 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 用两个线程交替打印数字和字母" href="http://localhost:1313/posts/2021-02-07-%E7%94%A8%E4%B8%A4%E4%B8%AA%E7%BA%BF%E7%A8%8B%E4%BA%A4%E6%9B%BF%E6%89%93%E5%8D%B0%E6%95%B0%E5%AD%97%E5%92%8C%E5%AD%97%E6%AF%8D/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">利用 DeferredResult 实现 http 轮询实时返回数据接口
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>博客有半年没更新了，不是我偷懒，而是之前服务器到期了，开博客这么多年，钱其实花了不少，但是没有一点收益，所以上了谷歌广告，如果文章对你稍稍有一点帮助，希望能花一秒钟帮忙点一下广告，谢谢。
+今天这篇文章呢，不难，其实是解答我一直以来心里的一个疑问。是这样的，之前看五八技术委员会主席沈剑老师的公众号架构师之路的一篇文章：http 如何像 tcp 一样实时的收消息，里面其中的一个方案是用 http 短连接轮询的方式实现“伪长连接”。但是对于轮询，我们的第一反应肯定是有延时，但是标题不是说的是实时吗？当然我们可以把轮询的时长缩短一些，先不说这样大部分时间的轮询调用，可能都没消息返回，造成服务器资源浪费，轮询时间再短也是有延时啊，所以难道是伪实时？反正一般消息延时个三五秒，甚至十秒八秒一分钟，大家也不会在意，只会认为对方返回慢，对不起，这是我们程序员的锅，但是 http 真的不能实现实时吗？沈剑老师提出了一种方法：首选 webim 和 webserver 之间建立一条 http 连接，专门用作消息通道，这条连接叫 http 消息连接。然后会有如下处理：
+没有消息到达的时候，这个 http 消息连接将被夯住，不返回，由于 http 是短连接，这个 http 消息连接最多被夯住 90 秒，就会被断开（这是浏览器或者 webserver 的行为）； 在 1 的情况下，如果 http 消息连接被断开，立马再发起一个 http 消息连接； 此时在在 1 和 2 的配合下，浏览器与 webserver 之间将永远有一条消息连接在，然后还有一种情况
+每次收到消息时，这个消息连接就能及时将消息带回浏览器页面，并且在返回后，会立马再发起一个 http 消息连接 这样就能做到使用 http 端连接轮询的方式实现了实时收消息。不过需要说明的是，其实还有一种情况：消息到达时，上一个 http 消息连接正在返回，也就是第二种情况的时候突然来了一个消息，此时没有 http 消息连接可用。虽然理论上 http 消息连接的返回是瞬时的，没有消息连接可用出现的概率极小，但是根据墨菲定律我们知道，这种情况肯定会出现，所以这种情况下我们可以将消息暂存入消息池中，下一个消息连接到达后，无需等待，直接去消息池中取消息，将将消息带回，然后立刻返回生成新的消息连接即可。
+以上过程，可以参考沈剑老师的公众号，链接：https://mp.weixin.qq.com/s/6BCucq6QsH8lfDGLtQCl2A
+不过以上都不是今天这篇文章的重点，和今天这篇文章的标题也没有任何关系。重点是当时看了沈剑老师的这篇文章后我一直有一个疑问：第一步的时候如何夯住？总不能 sleep 吧，这多不优雅啊，由于一直以为没有遇到过类似的需求，所以这么几年来我也没深究这个问题，但是心里确实一直记着，直到前一段时间，听马士兵教育的公开课，当时再讲类似的问题的时候提到了夯住 http 的连接（具体是哪个问题，还真不记得了），虽然当时上课的老师没提怎么实现，但是评论区我问了一下，如何夯住不返回？然后有一个同学回复说，用 DeferredResult，然后下课后搜了一下资料，果然可以，如下是实现的笔记，所以这才是重点，希望对有这个疑问的同学也有一点帮助。
+消息返回实体类，大家可以根据实际情况，自己定义即可： package cn.bridgeli.deferredresulttest.entity; import lombok.Data; import lombok.Getter; /** * @author bridgeli */ @Data public class DeferredResultResponse { private Integer code; private String msg; public enum Msg { TIMEOUT(&#34;超时&#34;), FAILED(&#34;失败&#34;), SUCCESS(&#34;成功&#34;); @Getter private String desc; Msg(String desc) { this.desc = desc; } } } controller 接口： package cn.bridgeli.deferredresulttest.controller; import cn.bridgeli.deferredresulttest.entity.DeferredResultResponse; import cn.bridgeli.deferredresulttest.service.DeferredResultService; import org.springframework.http.HttpStatus; import org.springframework.web.bind.annotation.GetMapping; import org.springframework.web.bind.annotation.RequestMapping; import org.springframework.web.bind.annotation.RequestParam; import org.springframework.web.bind.annotation.RestController; import org.springframework.web.context.request.async.DeferredResult; import javax.annotation.Resource; /** * @author bridgeli */ @RestController @RequestMapping(value = &#34;/deferred-result&#34;) public class DeferredResultController { @Resource private DeferredResultService deferredResultService; /** * 为了方便测试，简单模拟一个 * 多个请求用同一个requestId会出问题 */ private final String requestId = &#34;test&#34;; @GetMapping(value = &#34;/get&#34;) public DeferredResult&lt;DeferredResultResponse&gt; get(@RequestParam(value = &#34;timeout&#34;, required = false, defaultValue = &#34;10000&#34;) Long timeout) { DeferredResult&lt;DeferredResultResponse&gt; deferredResult = new DeferredResult&lt;&gt;(timeout); deferredResultService.process(requestId, deferredResult); return deferredResult; } /** * 设置DeferredResult对象的result属性，模拟异步操作 * * @param desired * @return */ @GetMapping(value = &#34;/result&#34;) public String settingResult(@RequestParam(value = &#34;desired&#34;, required = false, defaultValue = &#34;成功&#34;) String desired) { DeferredResultResponse deferredResultResponse = new DeferredResultResponse(); if (DeferredResultResponse.Msg.SUCCESS.getDesc().equals(desired)) { deferredResultResponse.setCode(HttpStatus.OK.value()); deferredResultResponse.setMsg(desired); } else { deferredResultResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value()); deferredResultResponse.setMsg(DeferredResultResponse.Msg.FAILED.getDesc()); } deferredResultService.settingResult(requestId, deferredResultResponse); return &#34;Done&#34;; } } 其中：/get 接口模拟沈剑老师说的消息连接，/result 接口模拟有一条新消息来了，然后 /get 接口会立即返回。主要注意的是 requestId，在实际项目中不能使用同一个，否则会出现问题，这个测一下就知道了，也很容易想到原因。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-01-09 07:48:48 +0000 +0000'>January 9, 2021</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>370 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 利用 DeferredResult 实现 http 轮询实时返回数据接口" href="http://localhost:1313/posts/2021-01-09-%E5%88%A9%E7%94%A8-deferredresult-%E5%AE%9E%E7%8E%B0-http-%E8%BD%AE%E8%AF%A2%E5%AE%9E%E6%97%B6%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">规则引擎入门
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>关于规则引擎，我们在工作中应该会经常遇到，例如我们对不同的用户给不同的折扣。前一段时间在网上闲逛，发现一个很简单的规则引擎，一下是学习笔记。
+在使用之前，我们要先导入 jar 包：
+&lt;dependency&gt; &lt;groupId&gt;org.jeasy&lt;/groupId&gt; &lt;artifactId&gt;easy-rules-core&lt;/artifactId&gt; &lt;version&gt;3.3.0&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.jeasy&lt;/groupId&gt; &lt;artifactId&gt;easy-rules-mvel&lt;/artifactId&gt; &lt;version&gt;3.3.0&lt;/version&gt; &lt;/dependency&gt; 一. 使用零配置的方式：
+规则引擎入口： package cn.bridgeli.demo.rule; import org.jeasy.rules.api.Facts; import org.jeasy.rules.api.Rules; import org.jeasy.rules.api.RulesEngine; import org.jeasy.rules.core.DefaultRulesEngine; import org.jeasy.rules.core.RulesEngineParameters; import org.junit.Test; /** * @author bridgeli */ public class ThreeEightRuleTest { @Test public void testRule() { /** * 创建规则执行引擎 * 注意: skipOnFirstAppliedRule意思是，只要匹配到第一条规则就跳过后面规则匹配 */ RulesEngineParameters parameters = new RulesEngineParameters().skipOnFirstAppliedRule(true); RulesEngine rulesEngine = new DefaultRulesEngine(parameters); //创建规则 Rules rules = new Rules(); rules.register(new EightRule()); rules.register(new ThreeRule()); rules.register(new ThreeEightRuleUnitGroup(new EightRule(), new ThreeRule())); rules.register(new OtherRule()); Facts facts = new Facts(); for (int i = 1; i &lt;= 50; i&#43;&#43;) { //规则因素，对应的name，要和规则里面的@Fact 一致 facts.put(&#34;number&#34;, i); //执行规则 rulesEngine.fire(rules, facts); System.out.println(); } } } 这个是判断 1- 50 里面，哪些是 3 的倍数、哪些是 8 的倍数、哪些是 3 和 8 的倍数。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2020-07-12 07:14:11 +0000 +0000'>July 12, 2020</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>583 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 规则引擎入门" href="http://localhost:1313/posts/2020-07-12-%E8%A7%84%E5%88%99%E5%BC%95%E6%93%8E%E5%85%A5%E9%97%A8/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">关于 CPU 乱序执行的证明
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在学习 volatile 关键字的时候，我们都知道他有两个作用：1. 内存可见性；2. 禁止指令重排序。但是我们一般都是说，那么怎么证明呢？请看下面这段代码：
+package cn.bridgeli.demo; /** * @author BridgeLi * @date 2020/7/4 10:27 */ public class Disorder { private static int x = 0; private static int y = 0; private static volatile int a = 0; private static volatile int b = 0; public static void main(String[] args) throws InterruptedException { int i = 0; for (; ; ) { i&#43;&#43;; x = 0; y = 0; a = 0; b = 0; Thread one = new Thread(new Runnable() { @Override public void run() { a = 1; x = b; } }, &#34;one&#34;); Thread two = new Thread(new Runnable() { @Override public void run() { b = 1; y = a; } }, &#34;two&#34;); one.start(); two.start(); one.join(); two.join(); if (0 == x &amp;&amp; 0 == y) { System.out.println(&#34;第 &#34; &#43; i &#43; &#34; 次（&#34; &#43; x &#43; &#34;, &#34; &#43; y &#43; &#34;)&#34;); break; } } } } 如果仔细分析这段代码，我们就会发现，如果 CPU 没有乱序执行，那么无论任何时候 x 和 y 都不可能同时为零，但是事实上，这段代码是有可能出现 x 和 y 同时为零的，具体大家可以自己测试，需要说明的时候，什么时候指令重排了，要看运气，可能很快出现，也可能要等一会。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2020-07-05 02:30:15 +0000 +0000'>July 5, 2020</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>257 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 关于 CPU 乱序执行的证明" href="http://localhost:1313/posts/2020-07-05-%E5%85%B3%E4%BA%8E-cpu-%E4%B9%B1%E5%BA%8F%E6%89%A7%E8%A1%8C%E7%9A%84%E8%AF%81%E6%98%8E/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Redis 实现布隆过滤器
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>昨天听马士兵教育张福刚讲公开课，里面讲解了布隆过滤器，今天无聊没事干，整理了一下笔记。关于布隆过滤器是什么东西，有什么应用场景就不做讨论了，网上有很多，大家可以自行了解，只记录实现：
+pom 依赖 &lt;dependency&gt; &lt;groupId&gt;redis.clients&lt;/groupId&gt; &lt;artifactId&gt;jedis&lt;/artifactId&gt; &lt;version&gt;3.3.0&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com.google.guava&lt;/groupId&gt; &lt;artifactId&gt;guava&lt;/artifactId&gt; &lt;version&gt;18.0&lt;/version&gt; &lt;/dependency&gt; 具体实现 package cn.bridgeli.demo; import com.google.common.hash.Funnels; import com.google.common.hash.Hashing; import org.junit.Before; import org.junit.Test; import redis.clients.jedis.Jedis; import redis.clients.jedis.JedisPool; import redis.clients.jedis.Pipeline; import java.nio.charset.StandardCharsets; /** * @author BridgeLi * @date 2020/6/6 16:38 */ public class BloomFilter { private Jedis jedis = null; /** * 预估的数据量 */ private static long n = 10000; /** * 容忍的错误率 */ private static double fpp = 0.01; private static long numBits = optimalNumOfBits(n, fpp); private static int numHashFunctions = optimalNumOfHashFunctions(n, numBits); /** * 根据预估数据量 n 和允许的错误率 fpp 计算需要的 bit 数组的长度 * * @param n * @param fpp * @return */ private static long optimalNumOfBits(long n, double fpp) { if (0 == fpp) { fpp = Double.MIN_VALUE; } return (long) (-n \* Math.log(fpp) / (Math.log(2) \* Math.log(2))); } /** * 根据预估的数据量和计算出来的需要的 bit 数组的长度，计算所需要的 hash 函数的个数 * * @param n * @param numBits * @return */ private static int optimalNumOfHashFunctions(long n, long numBits) { return Math.max(1, (int) Math.round((double) numBits / n * Math.log(2))); } /** * 预热数据 */ @Before public void testBloomFilterBefore() { BloomFilter bloomFilter = new BloomFilter(); bloomFilter.init(); for (int i = 0; i &lt; n; i&#43;&#43;) { bloomFilter.put(&#34;bf&#34;, String.valueOf(i &#43; 100)); } } /** * 过滤数据 */ @Test public void testBloomFilter() { BloomFilter bloomFilter = new BloomFilter(); bloomFilter.init(); int ex_count = 0; int ne_count = 0; for (int i = 0; i &lt; 2 * n; i&#43;&#43;) { boolean exist = bloomFilter.isExist(&#34;bf&#34;, String.valueOf(i &#43; 100)); if (exist) { ex_count&#43;&#43;; } else { ne_count&#43;&#43;; } } System.out.println(&#34;ex_count: &#34; &#43; ex_count &#43; &#34;, ne_count: &#34; &#43; ne_count); } private void init() { JedisPool jedisPool = new JedisPool(&#34;127.0.0.1&#34;, 6379); jedis = jedisPool.getResource(); } public boolean isExist(String where, String key) { long[] indexs = getIndexs(key); boolean result = false; try (Pipeline pipeline = jedis.pipelined()) { for (long index : indexs) { pipeline.getbit(where, index); } // 只要有一个位置为 false，即代表该数据不存在 result = !pipeline.syncAndReturnAll().contains(false); } catch (Exception e) { } return result; } public void put(String where, String key) { long[] indexs = getIndexs(key); try (Pipeline pipeline = jedis.pipelined()) { for (long index : indexs) { pipeline.setbit(where, index, true); } pipeline.sync(); } catch (Exception e) { } } private long[] getIndexs(String key) { long hash1 = Hashing.murmur3_128().hashObject(key, Funnels.stringFunnel(StandardCharsets.UTF_8)).asLong(); long hash2 = hash1 &gt;&gt;&gt; 16; long[] result = new long[numHashFunctions]; for (int i = 0; i &lt; numHashFunctions; i&#43;&#43;) { long combinedHash = hash1 &#43; i * hash2; if (combinedHash &lt; 0) { combinedHash = ~combinedHash; } result[i] = combinedHash % numBits; } return result; } } </p>
+  </div>
+  <footer class="entry-footer"><span title='2020-06-06 10:36:09 +0000 +0000'>June 6, 2020</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>411 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Redis 实现布隆过滤器" href="http://localhost:1313/posts/2020-06-06-redis-%E5%AE%9E%E7%8E%B0%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">关于 JPA 连表查询和 redis 序列化遇到的小问题
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>一、JPA
+连表查询时数据长度正常，内容都是重复的，MySQL 数据库运行查询语句结果正常 先看写法：
+package cn.bridgeli.demo.repository; import cn.bridgeli.demo.entity; import org.springframework.data.jpa.repository.JpaRepository; import org.springframework.data.jpa.repository.Query; import java.util.List; /** * @author BridgeLi */ public interface E1Repository extends JpaRepository&lt;E1, Integer&gt; { @Query(value = &#34;SELECT t1.id, t1.name, t2.score FROM t1 LEFT JOIN t2 ON t1.id = t2.t1_id LIMIT ?1, ?2&#34;, nativeQuery = true) List&lt;E1&gt; queryE1s(Integer pageNum, Integer pageSize); } package cn.bridgeli.demo.entity; import lombok.Data; import javax.persistence.Entity; import javax.persistence.Id; import javax.persistence.Transient; /** * @author BridgeLi */ @Data @Entity public class E1 { @Id private Integer id; private String name; @Transient private String course; private Integer score; } 整体大概就是有两张表 t1 和 t2，一对多的关系，t1 的主键是 t2 的外键，执行的截图我就不做了，问题呢，大概就是上面描述的那样，有一个连表查询的需求，JPA 做的，返回给前端的数据，返回长度是对的，但是内容都是重复的，当时第一次看到这个问题的时候，怀疑是 SQL 的问题，然后就把
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2020-04-11 12:42:56 +0000 +0000'>April 11, 2020</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>204 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 关于 JPA 连表查询和 redis 序列化遇到的小问题" href="http://localhost:1313/posts/2020-04-11-%E5%85%B3%E4%BA%8E-jpa-%E8%BF%9E%E8%A1%A8%E6%9F%A5%E8%AF%A2%E5%92%8C-redis-%E5%BA%8F%E5%88%97%E5%8C%96%E9%81%87%E5%88%B0%E7%9A%84%E5%B0%8F%E9%97%AE%E9%A2%98/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Dubbo 自定义拦截器
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>写了 Spring AOP 实现自定义注解，打印日志之后，感觉在调用第三方 dubbo 接口的时候，依然会有同样的问题，然后看了一下 dubbo 的官方文档，决定下一个 filter，实现 dubbo 接口的日志拦截，以下是自己完的一个小例子，同样也是供需要的同学参考。
+filter 具体实现如下： package cn.bridgeli.demo.filter; import com.alibaba.dubbo.rpc.Filter; import com.alibaba.dubbo.rpc.Invocation; import com.alibaba.dubbo.rpc.Invoker; import com.alibaba.dubbo.rpc.Result; import com.alibaba.dubbo.rpc.RpcException; import com.alibaba.dubbo.rpc.service.GenericService; import org.apache.commons.lang3.StringUtils; import org.slf4j.Logger; import org.slf4j.LoggerFactory; /** * @author bridgeli */ public class DubboServiceFilter implements Filter { private static final Logger LOGGER = LoggerFactory.getLogger(DubboServiceFilter.class); @Override public Result invoke(Invoker&lt;?&gt; invoker, Invocation invocation) throws RpcException { // 打印入参日志 String className = invocation.getInvoker().getInterface().getName(); String methodName = invocation.getMethodName(); String arguments = StringUtils.join(invocation.getArguments(), &#34;;&#34;); LOGGER.info(&#34;调用 dubbo 服务接口: &#34; &#43; className &#43; &#34;#&#34; &#43; methodName &#43; &#34;，参数：&#34; &#43; arguments); //开始时间 long startTime = System.currentTimeMillis(); //执行接口调用逻辑 Result result = invoker.invoke(invocation); //调用耗时 long elapsed = System.currentTimeMillis() &amp;#8211; startTime; //如果发生异常 则打印异常日志 if (result.hasException() &amp;&amp; invoker.getInterface() != GenericService.class) { LOGGER.error(&#34;dubbo执行异常，接口：&#34; &#43; className &#43; &#34;#&#34; &#43; methodName &#43; &#34;，参数：&#34; &#43; arguments, result.getException()); } else { //打印响应日志 LOGGER.info(&#34;dubbo服务响应成功：&#34; &#43; className &#43; &#34;#&#34; &#43; methodName &#43; &#34;，参数：&#34; &#43; arguments &#43; &#34;，返回值：&#34; &#43; result.getValue() &#43; &#34;，用时：&#34; &#43; elapsed); } //返回结果响应结果 return result; } } 在/src/main/resources/META-INF/dubbo目录下新增纯文本文件 com.alibaba.dubbo.rpc.Filter 内容为： dubboServiceFilter=cn.bridgeli.demo.filter.DubboServiceFilter 最后在服务提供者配置文件中添加配置使拦截器生效： &lt;dubbo:provider filter=&#34;dubboServiceFilter&#34;/&gt; 或者 &lt;dubbo:service filter=&#34;dubboServiceFilter&#34;/&gt; 这样即可实现。不过需要说明的是，因为我们项目用的 dubbo 版本是：2.5.3，所以包名和配置名还都是：com.alibaba.dubbo，而最新的版本阿里已经捐献给 apache，所以都变成了：org.apache.dubbo。最后的最后想说的是，具体大家可以参考 dubbo 的官方文档，个人认为 dubbo 的官方文档写的是极好的，各种通俗易懂。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2020-03-22 08:57:44 +0000 +0000'>March 22, 2020</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>176 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Dubbo 自定义拦截器" href="http://localhost:1313/posts/2020-03-22-dubbo-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8B%A6%E6%88%AA%E5%99%A8/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Spring AOP 实现自定义注解
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>自工作后，除了一些小项目配置事务使用过 AOP，真正自己写 AOP 机会很少，另一方面在工作后还没有写过自定义注解，一直很好奇注解是怎么实现他想要的功能的，刚好做项目的时候，经常有人日志打得不够全，经常出现问题了，查日志的才发现忘记打了，所以趁此机会，搜了一些资料，用 AOP &#43; 自定义注解，实现请求拦截，自定义打日志，玩一下这两个东西，以下是自己完的一个小例子，也供需要的同学参考。
+注解如下： package cn.bridgeli.demo.annotation; import java.lang.annotation.ElementType; import java.lang.annotation.Retention; import java.lang.annotation.RetentionPolicy; import java.lang.annotation.Target; /** * @author bridgeli */ @Target(ElementType.METHOD) @Retention(RetentionPolicy.RUNTIME) public @interface MyLog { /** * 方法描述 * * @return */ String desc() default &#34;&#34;; } 切面 package cn.bridgeli.demo.annotation; import cn.bridgeli.utils.AuthorizeUtil; import cn.bridgeli.entity.Principal; import lombok.extern.slf4j.Slf4j; import org.apache.commons.lang3.StringUtils; import org.aspectj.lang.ProceedingJoinPoint; import org.aspectj.lang.annotation.Around; import org.aspectj.lang.annotation.Aspect; import org.aspectj.lang.annotation.Pointcut; import org.springframework.stereotype.Component; /** * @author bridgeli * 1. 这是一个切面类 */ @Aspect @Component @Slf4j public class MyLogAspect { /** * 2. PointCut表示这是一个切点，@annotation表示这个切点切到一个注解上，后面带该注解的全类名 * 切面最主要的就是切点，所有的故事都围绕切点发生 * logPointCut()代表切点名称 */ @Pointcut(&#34;@annotation(cn.bridgeli.demo.annotation.MyLog)&#34;) public void logPointCut() { } /** * 3. 环绕通知 * * @param joinPoint * @param myLog * @return */ @Around(value = &#34;logPointCut() &amp;&amp; @annotation(myLog)&#34;, argNames = &#34;joinPoint,myLog&#34;) public Object logAround(ProceedingJoinPoint joinPoint, MyLog myLog) { // 获取方法名 String methodFullPathName = joinPoint.getTarget().getClass().getName() &#43; &#34;#&#34; &#43; joinPoint.getSignature().getName(); // 获取参数 String params = StringUtils.join(joinPoint.getArgs(), &#34;;&#34;); Principal currentUser = AuthorizeUtil.getCurrentUser(); log.info(&#34;当前登陆用户：&#34; &#43; (null == currentUser ? &#34;&#34; : currentUser.toString()) &#43; &#34;，进入 [ &#34; &#43; methodFullPathName &#43; &#34; ] 方法, 方法的描述：&#34; &#43; myLog.desc() &#43; &#34;，参数为:&#34; &#43; params); // 继续执行方法 long startTime = System.currentTimeMillis(); Object result = null; try { result = joinPoint.proceed(); } catch (Throwable e) { log.error(&#34;切面执行报错，参数：&#34; &#43; params, e); } long elapsed = System.currentTimeMillis() &amp;#8211; startTime; log.info(&#34;[ &#34; &#43; methodFullPathName &#43; &#34; ] 方法执行结束，返回值为：&#34; &#43; (null == result ? &#34;&#34; : result.toString()) &#43; &#34;，用时：&#34; &#43; elapsed); return result; } } 然后只需要在想使用的地方 @MyLog 就可以了，当然也可以加上 @MyLog(desc = “这是方法描述”)，这样打出来的日志还会有方法是做什么的，别人看日志的时候能够一目了然。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2020-03-15 07:32:50 +0000 +0000'>March 15, 2020</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>248 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Spring AOP 实现自定义注解" href="http://localhost:1313/posts/2020-03-15-spring-aop-%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/categories/java/page/2/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="http://localhost:1313/categories/java/page/4/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

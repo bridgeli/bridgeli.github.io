@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head>
+	<meta name="generator" content="Hugo 0.156.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>分享技术带来的喜悦</title>
+<meta name="keywords" content="博客, 技术, Java">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">MySQL sort 分页重复数据（转载）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前两天在写一个东西的时候，测试的同学说发现一个问题，排序分页，第二页和第一页有重复数据，当时我看了一下，确实有这个问题，然后就想到几年前我就曾经遇到过这个问题，淘宝数据库内核月报上也做了说明，所以这个时候就体现出了老程序员的价值：踩过的坑多，坑坑相连也就都成了平地，考虑到很多人不知道这个问题，所以把原文转载过来，以期能够让更多的人看到，原文如下：
+背景 6.5 号，小编在 Aliyun 的论坛中发现一位开发者提的一个问题，说 RDS 发现了一个超级大 BUG，吓的小编一身冷汗 = =!! 赶紧来看看，背景是一个 RDS 用户创建了一张表，在一个都是 NULL 值的非索引字段上进行了排序并分页，用户发现第二页和第一页的数据有重复，然后以为是 NULL 值的问题，把这个字段都更新成相同的值，发现问题照旧。详细的信息可以登录阿里云的官方论坛查看。
+小编进行了尝试，确实如此，并且 5.5 的版本和 5.6 的版本行为不一致，所以，必须要查明原因。
+原因调查 在 MySQL 5.6 的版本上，优化器在遇到 order by limit 语句的时候，做了一个优化，即使用了 priority queue。参考伪代码：
+while (get_next_sortkey()) { if (using priority queue) push sort key into queue else { if (no free space in sort_keys buffers) { sort sort_keys buffer; dump sorted sequence to &amp;#8216;tempfile&amp;#8217;; dump BUFFPEK describing sequence location into &amp;#8216;buffpek_pointers&amp;#8217;; } put sort key into &amp;#8216;sort_keys&amp;#8217;; } } if (sort_keys has some elements &amp;&amp; dumped at least once) sort-dump-dump as above; else don&amp;#8217;t sort, leave sort_keys array to be sorted by caller 使用 priority queue 的目的，就是在不能使用索引有序性的时候，如果要排序，并且使用了limit n，那么只需要在排序的过程中，保留 n 条记录即可，这样虽然不能解决所有记录都需要排序的开销，但是只需要 sort buffer 少量的内存就可以完成排序。
+之所以 5.6 出现了第二页数据重复的问题，是因为 priority queue 使用了堆排序的排序方法，而堆排序是一个不稳定的排序方法，也就是相同的值可能排序出来的结果和读出来的数据顺序不一致。
+5.5 没有这个优化，所以也就不会出现这个问题。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2019-01-26 14:59:01 +0000 +0000'>January 26, 2019</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>197 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to MySQL sort 分页重复数据（转载）" href="http://localhost:1313/posts/2019-01-26-mysql-sort-%E5%88%86%E9%A1%B5%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE%E8%BD%AC%E8%BD%BD/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Maven 打包 Excel 文件损坏
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前几天在项目中遇到一个小问题，有一个 Excel 文件放在 classpath 下，通过流下载下来，本地测试的时候一点问题都没，但是部署到测试环境却不行了，说文件已损坏，然后打不开，简单代码如下：
+@RequestMapping(value = &#34;/export&#34;, method = RequestMethod.GET) public void export(HttpServletResponse response) { ServletOutputStream servletOutputStream = null; String filename = &#34;template.xlsx&#34;; InputStream inputStream = ExcelHandleController.class.getClassLoader().getResourceAsStream(filename); try { byte[] b = new byte[inputStream.available()]; inputStream.read(b); response.setCharacterEncoding(StandardCharsets.UTF_8.name()); response.setHeader(&#34;Content-Disposition&#34;, &#34;attachment;filename=&#34; &#43; filename); response.setContentType(&#34;application/octet-stream;charset=UTF-8&#34;); //获取响应报文输出流对象 servletOutputStream = response.getOutputStream(); //输出 servletOutputStream.write(b); } catch (IOException e) { logger.error(&#34;文件下载出错&#34;, e); } finally { if (null != inputStream) { try { inputStream.close(); } catch (IOException e) { logger.error(&#34;文件下载出错&#34;, e); } } if (null != servletOutputStream) { try { servletOutputStream.flush(); servletOutputStream.close(); } catch (IOException e) { logger.error(&#34;文件下载出错&#34;, e); } } } } 当时就感觉这代码很简单啊，没什么问题的，但是下载下来就是不对，想到是不是测试环境有什么问题，查了一下没什么特殊之处，最后发现 Git 上的代码中的文件并没有什么问题，但是打成 war 包解压之后这文件本身就已经损坏了，而且比对了一下两个文件，发现 war 包之中的文件变大了，搜了一下资料，才知道原来 maven 打包会对一些文件转码，这个过程中会损坏一些文件，所以打不开，网上的资料也挺多，最简单的就是增加一个 plugin，不让该文件转码，代码如下：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2019-01-13 09:10:03 +0000 +0000'>January 13, 2019</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>227 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Maven 打包 Excel 文件损坏" href="http://localhost:1313/posts/2019-01-13-maven-%E6%89%93%E5%8C%85-excel-%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Java 学习之路
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前几天刷微博，看到博主 @Java大本营 发了一个图片，总结 Java 一些常见的知识点，感觉挺好，整理成文字版，发在我的个人博客，作为一个大家学习复习的文档，也欢迎有人在评论中留下各种参考资料，一下是正文。
+一、基础篇
+JVM
+①. JVM 内存结构
+堆、栈、方法区、直接内存、堆和栈的区别 ②. Java 内存模型
+内存可见性、重排序、顺序一致性、volatile、锁、final
+③. 垃圾回收
+内存分配策略、垃圾收集器(G1)、GC 算法、GC 参数、对象存活的判定
+④. JVM 参数及调优
+⑤. Java 对象模型
+oop-klass、对象头
+⑥. HotSpot
+即时编译器、编译优化
+⑦. 类加载机制
+ClassLoader、类加载过程、双亲委派(破坏双亲委派)、模块化(jboss、modules、osgl、jigsaw)
+⑧. 虚拟机性能监控与故障处理工具
+jps、jstack、jmap、jstat、jconsole、jinfo、jhat、javap、btrace、tprofiler
+编译与反编译 javac、javap、jad、CRF
+Java 基础知识 ①. 阅读源代码
+String、Integer、Long、Enum、BigDecimal、ThreadLocal、ClassLoader &amp; URLClassLoader、ArrayList &amp; LinkedList、HashMap &amp; LinkedHashMap &amp; TreeMap &amp; ConcurrentHashMap、HashSet &amp; LinkedHashSet &amp; TreeSet
+②. Java 中各种变量的类型
+③. 熟悉 Java String 的使用，熟悉 String 的各种函数
+JDK 6 和 JDK 7 中 substring 的原理及区别、replaceFirst、replaceAll、replace 的区别、String 对 “&#43;” 的重载、String.valueOf 和 Integer.toString 的区别、字符串的不可变性
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-12-31 08:03:17 +0000 +0000'>December 31, 2018</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>717 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Java 学习之路" href="http://localhost:1313/posts/2018-12-31-java-%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">使用 Spring AOP 注意事项
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>说实话，由于我个人某些基础不是很牢固，所以前一段时间关于 Spring Aop 踩了一个坑，其实很简单，今天就记录一下，先说结论：
+不能被 Spring AOP 增强的方法：
+基于接口的动态代理：除 public 外的其它所有的方法，此外 public static 也不能被增强 基于 CGLib 的动态代理：private、static、final 的方法，也就是只有 public 和 protected 可以，但是要注意切入点语法的配置 测试用例如下，pom 文件：
+&lt;dependency&gt; &lt;groupId&gt;org.slf4j&lt;/groupId&gt; &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt; &lt;version&gt;1.7.7&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework&lt;/groupId&gt; &lt;artifactId&gt;spring-context&lt;/artifactId&gt; &lt;version&gt;4.3.11.RELEASE&lt;/version&gt; &lt;scope&gt;test&lt;/scope&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.aspectj&lt;/groupId&gt; &lt;artifactId&gt;aspectjweaver&lt;/artifactId&gt; &lt;version&gt;1.8.10&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework&lt;/groupId&gt; &lt;artifactId&gt;spring-context&lt;/artifactId&gt; &lt;version&gt;4.3.11.RELEASE&lt;/version&gt; &lt;/dependency&gt; 配置文件就比较简单了：
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;beans xmlns=&#34;http://www.springframework.org/schema/beans&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xmlns:context=&#34;http://www.springframework.org/schema/context&#34; xmlns:aop=&#34;http://www.springframework.org/schema/aop&#34; xsi:schemaLocation=&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd&#34;&gt; &lt;context:annotation-config/&gt; &lt;context:component-scan base-package=&#34;cn.bridgeli&#34;/&gt; &lt;aop:aspectj-autoproxy/&gt; &lt;/beans&gt; 切面类：
+package cn.bridgeli.demo.aop; import org.aspectj.lang.ProceedingJoinPoint; import org.aspectj.lang.annotation.Around; import org.aspectj.lang.annotation.Aspect; import org.aspectj.lang.annotation.Before; import org.aspectj.lang.annotation.Pointcut; import org.springframework.stereotype.Component; @Aspect @Component public class LogInterceptor { // @Pointcut(&#34;execution(\* \* com.bjsxt.service..*.add(..))&#34;) @Pointcut(&#34;execution(\* cn.bridgeli.demo.service..\*.*(..))&#34;) public void myMethod() { } @Before(&#34;myMethod()&#34;) public void before() { System.out.println(&#34;method before&#34;); } @Around(&#34;myMethod()&#34;) public void aroundMethod(ProceedingJoinPoint pjp) throws Throwable { System.out.println(&#34;method around start&#34;); pjp.proceed(); System.out.println(&#34;method around end&#34;); } } 测试类：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-11-25 11:48:23 +0000 +0000'>November 25, 2018</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>279 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 使用 Spring AOP 注意事项" href="http://localhost:1313/posts/2018-11-25-%E4%BD%BF%E7%94%A8-spring-aop-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">【转载】Redis 分布式锁进化史
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>按：系统架构经过多年演进，现在越来越多的系统采用微服务架构，而说到微服务架构必然牵涉到分布式，以前单体应用加锁是很简单的，但现在分布式系统下加锁就比较难了，我之前曾简单写过一篇文章，关于分布式锁的实现，但有一次发现实现的分布式锁是有问题的，因为出问题的概率很低，所以当时也没在意，前几天和朋友聊这个问题，想起来看过一篇文章，写的不错，今天特转载过来，希望能让更多的人看到，同时也加深一下记忆。原文链接是：http://tech.dianwoda.com/2018/04/11/redisfen-bu-shi-suo-jin-hua-shi/
+以下为原文：
+近两年来微服务变得越来越热门，越来越多的应用部署在分布式环境中，在分布式环境中，数据一致性是一直以来需要关注并且去解决的问题，分布式锁也就成为了一种广泛使用的技术，常用的分布式实现方式为Redis，Zookeeper，其中基于Redis的分布式锁的使用更加广泛。
+但是在工作和网络上看到过各个版本的Redis分布式锁实现，每种实现都有一些不严谨的地方，甚至有可能是错误的实现，包括在代码中，如果不能正确的使用分布式锁，可能造成严重的生产环境故障，本文主要对目前遇到的各种分布式锁以及其缺陷做了一个整理，并对如何选择合适的Redis分布式锁给出建议。
+一. 各个版本的Redis分布式锁
+V1.0 tryLock() { SETNX Key 1 EXPIRE Key Seconds } release() { DELETE Key } 这个版本应该是最简单的版本，也是出现频率很高的一个版本，首先给锁加一个过期时间操作是为了避免应用在服务重启或者异常导致锁无法释放后，不会出现锁一直无法被释放的情况。
+这个方案的一个问题在于每次提交一个Redis请求，如果执行完第一条命令后应用异常或者重启，锁将无法过期，一种改善方案就是使用Lua脚本（包含SETNX和EXPIRE两条命令），但是如果Redis仅执行了一条命令后crash或者发生主从切换，依然会出现锁没有过期时间，最终导致无法释放。
+另外一个问题在于，很多同学在释放分布式锁的过程中，无论锁是否获取成功，都在finally中释放锁，这样是一个锁的错误使用，这个问题将在后续的V3.0版本中解决。
+针对锁无法释放问题的一个解决方案基于GETSET命令来实现
+V1.1 基于GETSET tryLock() { NewExpireTime = CurrentTimestamp &#43; ExpireSeconds if (SETNX Key NewExpireTime Seconds) { oldExpireTime = GET(Key) if (oldExpireTime &lt; CurrentTimestamp) { NewExpireTime = CurrentTimestamp&#43;ExpireSeconds CurrentExpireTime = GETSET(Key,NewExpireTime) if (CurrentExpireTime == oldExpireTime) { return 1; } else { return 0; } } } } release() { DELETE key } 思路：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-10-14 09:32:11 +0000 +0000'>October 14, 2018</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>212 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 【转载】Redis 分布式锁进化史" href="http://localhost:1313/posts/2018-10-14-%E8%BD%AC%E8%BD%BDredis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E8%BF%9B%E5%8C%96%E5%8F%B2/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">【转载】设计 RPC 接口时，你有考虑过这些吗？
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>按：系统架构经过多年演进，现在越来越多的系统采用微服务架构，而微服务架构最重要的就是面向接口编程，所以接口的设计就尤为重要了，我一直认为一个好的接口自己会说话，也就是看到接口，我就知道这个接口是干啥的、参数是啥、返回值是啥以及可能会遇到哪些问题，但目前对 RPC 接口设计可以说有两派，前一段时间看了一篇文章是我的想法完全一样，特转载到本人博客，希望更多的能够看到、有更多的人参与讨论两种的优劣。
+在开始之前呢，先吐槽一个本文没有提到的问题，我不知道有些人是怎么想的，对外暴露的接口，也就是最终被打成 jar 包供外部服务依赖模块，有些人喜欢在里面引入各种无关的第三方依赖，我遇到过把 spring mvc、spring、mybatis、dubbo 等等还有其他的像 POI 什么乱七八糟的第三方 jar 都依赖进来的，说实话，我只想问：可以说脏话吗？不可以啊，那好吧，我无话可说了，我们开始看原文吧。
+RPC 框架的讨论一直是各个技术交流群中的热点话题，阿里的 dubbo，新浪微博的 motan，谷歌的 grpc，以及不久前蚂蚁金服开源的 sofa，都是比较出名的 RPC 框架。RPC 框架，或者一部分人习惯称之为服务治理框架，更多的讨论是存在于其技术架构，比如 RPC 的实现原理，RPC 各个分层的意义，具体 RPC 框架的源码分析…但却并没有太多话题和“如何设计 RPC 接口”这样的业务架构相关。
+可能很多小公司程序员还是比较关心这个问题的，这篇文章主要分享下一些个人眼中 RPC 接口设计的最佳实践。
+初识 RPC 接口设计 由于 RPC 中的术语每个程序员的理解可能不同，所以文章开始，先统一下 RPC 术语，方便后续阐述。
+大家都知道共享接口是 RPC 最典型的一个特点，每个服务对外暴露自己的接口，该模块一般称之为 api；外部模块想要实现对该模块的远程调用，则需要依赖其 api；每个服务都需要有一个应用来负责实现自己的 api，一般体现为一个独立的进程，该模块一般称之为 app。
+api 和 app 是构建微服务项目的最简单组成部分，如果使用 maven 的多 module 组织代码，则体现为如下的形式。
+serviceA 服务
+serviceA/pom.xml 定义父 pom 文件
+&lt;modules&gt; &lt;module&gt;serviceA-api&lt;/module&gt; &lt;module&gt;serviceA-app&lt;/module&gt; &lt;/modules&gt; &lt;packaging&gt;pom&lt;/packaging&gt; &lt;groupId&gt;moe.cnkirito&lt;/groupId&gt; &lt;artifactId&gt;serviceA&lt;/artifactId&gt; &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt; serviceA/serviceA-api/pom.xml 定义对外暴露的接口，最终会被打成 jar 包供外部服务依赖
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-09-02 08:05:17 +0000 +0000'>September 2, 2018</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>635 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 【转载】设计 RPC 接口时，你有考虑过这些吗？" href="http://localhost:1313/posts/2018-09-02-%E8%BD%AC%E8%BD%BD%E8%AE%BE%E8%AE%A1-rpc-%E6%8E%A5%E5%8F%A3%E6%97%B6%E4%BD%A0%E6%9C%89%E8%80%83%E8%99%91%E8%BF%87%E8%BF%99%E4%BA%9B%E5%90%97/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">关于 tomcat 排查错误的一个小小感悟
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前几天响应公司的要求，系统日志接入公司的 ELK，按照中间件的同学要求之后，果然不出意外的遇到了问题，项目跑不起来了，控制台 catalina.out 打印日志如下：
+Aug 16, 2018 10:02:21 AM org.apache.coyote.AbstractProtocol start INFO: Starting ProtocolHandler [&#34;http-apr-8144&#34;] Aug 16, 2018 10:02:21 AM org.apache.coyote.AbstractProtocol start INFO: Starting ProtocolHandler [&#34;ajp-apr-58144&#34;] Aug 16, 2018 10:02:21 AM org.apache.catalina.startup.Catalina start INFO: Server startup in 28819 ms Aug 16, 2018 10:02:23 AM org.apache.catalina.loader.WebappClassLoaderBase loadClass INFO: Illegal access: this web application instance has been stopped already. Could not load com.alibaba.rocketmq.shade.io.netty.util.concurren t.DefaultPromise$2. The eventual following stack trace is caused by an error thrown for debugging purposes as well as to attempt to terminate t he thread which caused the illegal access, and has no functional impact. java.lang.IllegalStateException at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1743) at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1701) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151) at java.lang.Thread.run(Thread.java:745) Exception in thread &#34;NettyClientWorkerThread_3&#34; java.lang.NoClassDefFoundError: com/alibaba/rocketmq/shade/io/netty/util/concurrent/DefaultPromi se$2 at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151) at java.lang.Thread.run(Thread.java:745) Caused by: java.lang.ClassNotFoundException: com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise$2 at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1858) at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1701) &amp;#8230; 4 more Aug 16, 2018 10:02:23 AM org.apache.catalina.loader.WebappClassLoaderBase loadClass INFO: Illegal access: this web application instance has been stopped already. Could not load com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise$2. The eventual following stack trace is caused by an error thrown for debugging purposes as well as to attempt to terminate the thread which caused the illegal access, and has no functional impact. java.lang.IllegalStateException at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1743) at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1701) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151) at java.lang.Thread.run(Thread.java:745) Exception in thread &#34;NettyClientWorkerThread_4&#34; java.lang.NoClassDefFoundError: com/alibaba/rocketmq/shade/io/netty/util/concurrent/DefaultPromise$2 at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151) at java.lang.Thread.run(Thread.java:745) Exception in thread &#34;NettyClientWorkerThread_2&#34; Exception in thread &#34;NettyClientWorkerThread_1&#34; java.lang.NoClassDefFoundError: com/alibaba/rocketmq/shade/io/netty/util/concurrent/DefaultPromise$2 at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151) at java.lang.Thread.run(Thread.java:745) java.lang.NoClassDefFoundError: com/alibaba/rocketmq/shade/io/netty/util/concurrent/DefaultPromise$2 at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151) at java.lang.Thread.run(Thread.java:745) Exception in thread &#34;NettyClientSelector_1&#34; java.lang.NoClassDefFoundError: com/alibaba/rocketmq/shade/io/netty/util/concurrent/DefaultPromise$2 at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:590) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise.setSuccess(DefaultPromise.java:398) at com.alibaba.rocketmq.shade.io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:151) at java.lang.Thread.run(Thread.java:745) Aug 16, 2018 10:02:28 AM org.apache.catalina.loader.WebappClassLoaderBase loadClass 很常见的一个错，java.lang.NoClassDefFoundError，找不到 com/alibaba/rocketmq/shade/io/netty/util/concurrent/DefaultPromise，但是不应该啊，因为什么都没有修改，之前都是跑的好好地，怎么会突然找不到这个类，莫名其妙，有同事说，是不是修改 jar 的版本之类的，不过我确实没有修改，只是引入了公司 ELK 相关的 jar 而已，而且看了一下这个类在 classpath 下是存在的，后来经同事提醒，这个地方可能不是真正的报错的地方，看一下 tomcat 的 localhost 日志，果然在发现了如下的报错：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-08-17 15:25:38 +0000 +0000'>August 17, 2018</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>387 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 关于 tomcat 排查错误的一个小小感悟" href="http://localhost:1313/posts/2018-08-17-%E5%85%B3%E4%BA%8E-tomcat-%E6%8E%92%E6%9F%A5%E9%94%99%E8%AF%AF%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%B0%8F%E6%84%9F%E6%82%9F/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">关于 MySQL 中 utf8 的问题
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>有一个段子，我每次看了都头皮发麻，这个段子是：
+手持两把锟斤拷，口中疾呼烫烫烫，脚踏千朵屯屯屯，笑看万物锘锘锘
+我相信凡是和我有一样感觉的应该都知道这是啥，所以为了避免这个问题，我们工作的建议就是，所有的地方都设置成：UTF-8，确实我们这样工作了很多年，不知道哪一年 emoji 突然火了，于是在上家公司做论坛的时候，有一个小伙伴遇到了类似于下面的一个小问题（我找不到原报错日志了）：
+Incorrect string value: ‘\xF0\x9F\x98\x83 &lt;…’ for column ‘summary’ at row 1 当时问我，我也不知道原因，然后经过一番搜索之后，发现原来是 MySQL 存储 emoji 时出错了，存储 emoji 的时候，不应该用 utf8，而是用 utf8mb4。
+随着移动互联网的到来，emoji 的应用越来越广泛，本以为这个问题大家都知道了，所以就没有深究过，想着自己记着就行了，但是不知道为什么最近这个问题突然火了，原来不是所有人都知道这个问题，甚至有人说，在做微信开发的时候，天知道微信用户会取什么昵称，所以不得已把用户的昵称都 base64 编码一下，展示的时候再解码，我只能表示：厉害，人民群众的智慧是无穷的。
+其实产生这个问题的原因也很简单，据说是 MySQL 的一个 bug：
+MySQL 的 utf8mb4 是真正的utf8。 MySQL 的 utf8 是一种专属的编码，它能够编码的 Unicode 字符并不多。 关于什么是编码，我相信大家应该都知道了，如果不知道请自行搜索（当年曾经给一个计算机在读博的学姐科普什么是 GBK、GB2312、GB18030、UTF-8、BIG5、ISO-8859-1 等等，也是心累），至于为什么 MySQL 的 utf8 不是真正的 utf8，这是一个历史原因，我搜索的资料是：MySQL 从 4.1 版本开始支持 UTF-8，也就是 2003 年，而今天使用的 UTF-8 标准（RFC 3629）是随后才出现的。
+所以现在我们看到的很多 MySQL（或者 MySQL 的分支：MariaDB）资料依然在建议，MySQL 的编码使用 utf8，这在绝大多数的情况下，确实也没有问题，但确实是错误的，最好的选择是，选用真正的 utf8，也就是：utf8mb4。对于已经选用 utf8 需要改用 utf8mb4 的项目，这有一个指南：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-08-04 06:49:19 +0000 +0000'>August 4, 2018</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>87 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 关于 MySQL 中 utf8 的问题" href="http://localhost:1313/posts/2018-08-04-%E5%85%B3%E4%BA%8E-mysql-%E4%B8%AD-utf8-%E7%9A%84%E9%97%AE%E9%A2%98/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">JVM 群关于 Autowired 的讨论
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前一段时间 JVM 群有人遇到了一个 stackoverflow 的问题，引发了一个关于 Autowired 的讨论，由于我做的项目可能比较小，并没有遇到过，但感觉这也许就是一个坑，记录下来
+，如果谁有遇到这个问题，说不定就有帮助。
+下面我会贴出来群里面的讨论，如果不想看，直接看我的得出的结论，所以 TL;DR 版：
+spring 中依赖注入有两个注解：Autowired 和 Resource。Resource 的注入的时候是 byName，而 Autowired 注入的时候是 byType，所以平时并没有很大的区别，但 Autowired 和 getBean(Object.class) 会导致栈很深，有可能会导致 stackoverflow，所以如果遇到这个栈很深，不使用 Autowired 会缓解一下，也就是根据我的理解，在项目中能用 Resource 还是用 Resource 比较好。
+原版群里的详细讨论如下图（至于深层次的原因，大家可以根据源码自己跟进看一下）：
+里面 深圳-随缘-颉 贴出的一张图：
+感谢这一群小伙伴，如果有信息泄漏，很抱歉。
+另外曾经有朋友因为 JVM 的存在，就认为 Java 没有内存泄漏的问题，这是对 Java 有多大的误解啊。
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-07-29 06:44:53 +0000 +0000'>July 29, 2018</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>43 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to JVM 群关于 Autowired 的讨论" href="http://localhost:1313/posts/2018-07-29-jvm-%E7%BE%A4%E5%85%B3%E4%BA%8E-autowired-%E7%9A%84%E8%AE%A8%E8%AE%BA/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Markdown 基本语法介绍
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Markdown 是我很喜欢的一个轻量级标记语言，但也因为不常写，所以有些语法记得不是很清楚，经常写的时候需要查一些资料，所以这次就把一些简单的常用的语法做个笔记。
+在介绍 markdown 语法之前，先写一点废话。
+一. markdown是什么？
+简单的一句话就是，Markdown 可谓是程序员必备的一种写作格式！你还在用 word 写文档么？简直 low 爆了，赶紧抛弃，从现在开始，立刻，马上，学习下 markdown。
+二. markdown有什么好处？
+简单说，语法简单、再也不用专注排版、兼容 html、还有其他的的很多很强大的功能（这么厉害，你的博客为啥不用？因为 WordPress 原生编辑器不支持 markdown，也一直没有安装第三方的插件，所以就没有）
+三. markdown 编辑器有哪些？
+个人最喜欢的开发工具是，GitHub 出品的 Atom，自带提示；之前也在 Windows 下用过 markdownpad，也还行，mac 下有很多人推荐 mou，另外据说 Sublime 也不错，还有一些在线工具据说也不错。
+四. markdown 语法
+标题 1 到 6：#1 到 #6 代码示例：
+\# 标题一 \### 标题三 区块：&gt; 代码示例：
+&gt; 这是区块 &gt; &gt; 第二行区块 斜体：*斜体* 代码示例：
+\*斜体\* 加粗：**加粗** 代码示例：
+\*\*该部分加粗\*\* 删除线：删除线 示例代码：
+~~这是加删除线的文字~~ 换行和分段 换行：只需在行末加两个空格键和一个回车键即可换行。快捷键：control &#43; 回车键
+分段：段落之间空一行即可
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-07-15 08:12:12 +0000 +0000'>July 15, 2018</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>196 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Markdown 基本语法介绍" href="http://localhost:1313/posts/2018-07-15-markdown-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E4%BB%8B%E7%BB%8D/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/page/5/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="http://localhost:1313/page/7/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

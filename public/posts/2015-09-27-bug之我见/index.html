@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Bug之我见 | 分享技术带来的喜悦</title>
+<meta name="keywords" content="bug, 严重程度, 优先级">
+<meta name="description" content="作为一个工作两年多的程序猿，可以说每天都在和bug打交道，一方面我们在源源不断的创造bug，另一方面我们又致力于消灭一个又一个被我们创造出来的bug。有人说，话不可绝对，否则就是错了，那么说句话的人有没有意识到他这句话就是绝对的呢？是不是也是错的呢？借用他这句话的意思，那么他说的这句话肯定也是错的，事实上也确实就是错的，因为在软件编程界有一句话：世界上没有bug的系统是不存在的，这句话可以说是绝对的正确的。那么世界上没有bug的系统既然是不存在的，那么这么多系统是怎么被上线又运行良好的呢？这就要从什么是bug，bug的严重程度，优先级说起。
+首先要说明的是，老夫是一个程序猿，作为一个软件开发者，对bug的理解肯定没有相关的QA人员理解深刻，所以难免有错误，既然如此老夫为什么又要越俎代庖写下这篇文章呢？因为老夫工作的这两年里，深深地感觉有相当一部分QA，对bug的理解并没有那么的深刻，所以老夫希望能够根据自己工作的经验、自己对bug的理解写出来，以期能够抛砖引玉，希望有识之士给予指点，好了，下面我们就开始从什么是bug说起。
+一. 什么是bug
+bug，在IT公司里，每天都会听到这个词，那么什么是bug呢？或者说什么不是bug呢？在IT公司里面，有一部分人员是专职的QA，那么是QA说这是bug就是bug的吗？因为他们最喜欢的提bug了，他们的工作也是提出软件中的各种bug，还是程序猿说这不是bug就不是bug了呢？因为程序猿最不喜欢听到的一句话也许就是：某某系统或者功能又出bug了吧。我想肯定都不是，因为如果QA说是bug就是bug的话，因为QA也可能对需求理解的并不充分或者说理解错误；但如果程序猿说不是bug就不是bug的话，那么世界上的所有系统将不会有bug，又何谈世界上没有bug的系统是不存在的呢？下面老夫给出自己的理解：
+
+系统说明书上有而系统上却没有这个功能；
+系统有这个功能，但是所表现出来的和软件需求说明书上的不一样；
+系统说明书上没有，而系统上却有这个功能；
+
+我想①和②大家都能理解的，就不举例说明了，但③可能有些人不能理解，需求说明书上没有，程序猿会做？当然不是不可能的，例如登陆的时候，需求说明上并没有验证码这一项，而程序猿根据自己的经验，很多系统都有，自作主张加上了，那么是不是一个bug呢？肯定是的，理解了什么是bug之后，我们看看bug的严重程度。
+二. bug的严重程度
+严重程度的英文是：Severity，一般来说不同公司对bug严重程度的是分级是不同的，但一般是根据系统是否符合产品说明书以及缺陷对于现阶段测试的影响而定义的，这里只给一个一般性的说明，一般来说bug可分一下五级：
+
+紧急（Crash）
+
+一般是：不能执行正常基本流程，或者重要功能没有实现，使系统崩溃或资源严重不足。无法正常更正的问题。
+例如：由于程序所引起的死机、非法退出、程序中断、死循发生死锁、数据通讯错误、功能与需求严重不符、异常退出、重要功能未实现等等
+需要说明的是：一般紧急问题需要版本立即处理，处理后立即发版本。
+
+非常高（Major）
+
+高一般是：影响其他模块功能不能正常操作，导致一些流程无法进行。
+如：小功能没有实现、系统所提供的功能或服务受明显的影响、非法操作数据溢出、一般的数值计算错误
+非常高的问题可视情况延迟处理，处理后需发版本，方便后期测试。
+
+高（Minor）
+
+一般是：用户常操作的基本功能没有实现，存在合理的更正办法，用户可进行基本操作。
+如：界面错误、格式错误、简单的输入限制未放在前台进行控制、小流程、功能错误
+紧急、非常高、高等级的Bug的修改直接影响到产品能否合格的交付。
+
+中（Trivial）
+
+中一般是：操作者使用不方便，但是不影响功能的实现。可改善的功能。数据边界不合理。
+如：辅助说明描述不清楚、显示格式不规范、系统处理未优化（性能）、长时间操作未给用户进度提示、提示或页面文字规范、操作时未给用户提示、个别不影响产品理解的错别字、文字排列不整齐等一些小问题、使操作者不方便，操作失误可能导致严重问题出现、浏览器、系统、数据兼容性
+
+低（Nice to Have）
+
+低一般是：易用性和建议性的功能
+如：不影响使用的瑕疵、更好的实现方式。
+需要说明的是，bug的严重程度一般应由测试人员定级
+三. bug的优先级
+bug的优先级的英文是：Priority，bug优先级应根据发版需求、公司要求、bug发生率和bug严重程度来划分。主要用于提示研发同事即时修复bug，使版本能按照预期发布，和严重程度一样，也分一下五级：
+
+紧急（Urgent）
+
+立即修复的bug，他阻止相关开发人员的进一步开发活动，立即进行修复工作；阻止与此密切相关功能的进一步测试
+
+非常高（Very High）
+
+本版本必须修复的bug
+
+高（High）
+
+必须修改，不一定马上修改，但需确定在某个特定里程碑结束前须修正
+
+中（Medium）
+
+时间允许应该修复的bug或可以暂时存在的bug
+
+低（Low）
+
+可不修复的建议，可以一直存在的问题
+四. bug的严重程度和优先级的关系
+看了bug的严重程度和优先级之后，我们再说说他们之间的关系？当时我和同事再说这个问题的时候，他们都认为这还用说，bug严重高的优先级也一定高啊！事实是这样的，事实上他们之间并没有关系，严重级别的bug不一定优先级别高；优先级别高的bug也不一定严重级别高。因为优先级别和暂时发版的模块密切相关，但是bug严重程度与暂时发版无关，另外Bug的优先级别和公司要求也有关，如电子商务网站，那么界面优化用户体验对于公司就很重要；虽然界面上的问题并不影响使用，所有严重级别不高，但优先级却非常高；而有些系统只是内部使用，界面优化就不那么重要了；还有一些网站只是数据正确性要求比较高，界面和操作要求不高等等。这些都是严重程度很低，优先级却不一定的例子，最后再给大家说一个windows的记事本的bug，大家可以新建一个记事本在里面输入：“联通”俩字保存退出，再打开看看，这个严重程度够大了吧？但微软却一直并没有修，说明了什么问题？类似的例子还有很多，大家可以自己想想：什么的bug严重级别很高，优先级也很高，什么的bug严重级别很高，优先级却很低，什么样的bug严重程度很低，优先级却很高，什么样的bug严重程度很低，优先级也很低。">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/posts/2015-09-27-bug%E4%B9%8B%E6%88%91%E8%A7%81/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2015-09-27-bug%E4%B9%8B%E6%88%91%E8%A7%81/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">文章</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Bug之我见
+    </h1>
+    <div class="post-meta"><span title='2015-09-27 15:02:54 +0000 +0000'>September 27, 2015</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>50 words</span>&nbsp;·&nbsp;<span>Bridge Li</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>作为一个工作两年多的程序猿，可以说每天都在和bug打交道，一方面我们在源源不断的创造bug，另一方面我们又致力于消灭一个又一个被我们创造出来的bug。有人说，话不可绝对，否则就是错了，那么说句话的人有没有意识到他这句话就是绝对的呢？是不是也是错的呢？借用他这句话的意思，那么他说的这句话肯定也是错的，事实上也确实就是错的，因为在软件编程界有一句话：世界上没有bug的系统是不存在的，这句话可以说是绝对的正确的。那么世界上没有bug的系统既然是不存在的，那么这么多系统是怎么被上线又运行良好的呢？这就要从什么是bug，bug的严重程度，优先级说起。<br>
+首先要说明的是，老夫是一个程序猿，作为一个软件开发者，对bug的理解肯定没有相关的QA人员理解深刻，所以难免有错误，既然如此老夫为什么又要越俎代庖写下这篇文章呢？因为老夫工作的这两年里，深深地感觉有相当一部分QA，对bug的理解并没有那么的深刻，所以老夫希望能够根据自己工作的经验、自己对bug的理解写出来，以期能够抛砖引玉，希望有识之士给予指点，好了，下面我们就开始从什么是bug说起。</p>
+<p>一. 什么是bug</p>
+<p>bug，在IT公司里，每天都会听到这个词，那么什么是bug呢？或者说什么不是bug呢？在IT公司里面，有一部分人员是专职的QA，那么是QA说这是bug就是bug的吗？因为他们最喜欢的提bug了，他们的工作也是提出软件中的各种bug，还是程序猿说这不是bug就不是bug了呢？因为程序猿最不喜欢听到的一句话也许就是：某某系统或者功能又出bug了吧。我想肯定都不是，因为如果QA说是bug就是bug的话，因为QA也可能对需求理解的并不充分或者说理解错误；但如果程序猿说不是bug就不是bug的话，那么世界上的所有系统将不会有bug，又何谈世界上没有bug的系统是不存在的呢？下面老夫给出自己的理解：</p>
+<ol>
+<li>系统说明书上有而系统上却没有这个功能；</li>
+<li>系统有这个功能，但是所表现出来的和软件需求说明书上的不一样；</li>
+<li>系统说明书上没有，而系统上却有这个功能；</li>
+</ol>
+<p>我想①和②大家都能理解的，就不举例说明了，但③可能有些人不能理解，需求说明书上没有，程序猿会做？当然不是不可能的，例如登陆的时候，需求说明上并没有验证码这一项，而程序猿根据自己的经验，很多系统都有，自作主张加上了，那么是不是一个bug呢？肯定是的，理解了什么是bug之后，我们看看bug的严重程度。</p>
+<p>二. bug的严重程度</p>
+<p>严重程度的英文是：Severity，一般来说不同公司对bug严重程度的是分级是不同的，但一般是根据系统是否符合产品说明书以及缺陷对于现阶段测试的影响而定义的，这里只给一个一般性的说明，一般来说bug可分一下五级：</p>
+<ol>
+<li>紧急（Crash）</li>
+</ol>
+<p>一般是：不能执行正常基本流程，或者重要功能没有实现，使系统崩溃或资源严重不足。无法正常更正的问题。<br>
+例如：由于程序所引起的死机、非法退出、程序中断、死循发生死锁、数据通讯错误、功能与需求严重不符、异常退出、重要功能未实现等等<br>
+需要说明的是：一般紧急问题需要版本立即处理，处理后立即发版本。</p>
+<ol start="2">
+<li>非常高（Major）</li>
+</ol>
+<p>高一般是：影响其他模块功能不能正常操作，导致一些流程无法进行。<br>
+如：小功能没有实现、系统所提供的功能或服务受明显的影响、非法操作数据溢出、一般的数值计算错误<br>
+非常高的问题可视情况延迟处理，处理后需发版本，方便后期测试。</p>
+<ol start="3">
+<li>高（Minor）</li>
+</ol>
+<p>一般是：用户常操作的基本功能没有实现，存在合理的更正办法，用户可进行基本操作。<br>
+如：界面错误、格式错误、简单的输入限制未放在前台进行控制、小流程、功能错误<br>
+紧急、非常高、高等级的Bug的修改直接影响到产品能否合格的交付。</p>
+<ol start="4">
+<li>中（Trivial）</li>
+</ol>
+<p>中一般是：操作者使用不方便，但是不影响功能的实现。可改善的功能。数据边界不合理。<br>
+如：辅助说明描述不清楚、显示格式不规范、系统处理未优化（性能）、长时间操作未给用户进度提示、提示或页面文字规范、操作时未给用户提示、个别不影响产品理解的错别字、文字排列不整齐等一些小问题、使操作者不方便，操作失误可能导致严重问题出现、浏览器、系统、数据兼容性</p>
+<ol start="5">
+<li>低（Nice to Have）</li>
+</ol>
+<p>低一般是：易用性和建议性的功能<br>
+如：不影响使用的瑕疵、更好的实现方式。<br>
+需要说明的是，bug的严重程度一般应由测试人员定级</p>
+<p>三. bug的优先级</p>
+<p>bug的优先级的英文是：Priority，bug优先级应根据发版需求、公司要求、bug发生率和bug严重程度来划分。主要用于提示研发同事即时修复bug，使版本能按照预期发布，和严重程度一样，也分一下五级：</p>
+<ol>
+<li>紧急（Urgent）</li>
+</ol>
+<p>立即修复的bug，他阻止相关开发人员的进一步开发活动，立即进行修复工作；阻止与此密切相关功能的进一步测试</p>
+<ol start="2">
+<li>非常高（Very High）</li>
+</ol>
+<p>本版本必须修复的bug</p>
+<ol start="3">
+<li>高（High）</li>
+</ol>
+<p>必须修改，不一定马上修改，但需确定在某个特定里程碑结束前须修正</p>
+<ol start="4">
+<li>中（Medium）</li>
+</ol>
+<p>时间允许应该修复的bug或可以暂时存在的bug</p>
+<ol start="5">
+<li>低（Low）</li>
+</ol>
+<p>可不修复的建议，可以一直存在的问题</p>
+<p>四. bug的严重程度和优先级的关系</p>
+<p>看了bug的严重程度和优先级之后，我们再说说他们之间的关系？当时我和同事再说这个问题的时候，他们都认为这还用说，bug严重高的优先级也一定高啊！事实是这样的，事实上他们之间并没有关系，严重级别的bug不一定优先级别高；优先级别高的bug也不一定严重级别高。因为优先级别和暂时发版的模块密切相关，但是bug严重程度与暂时发版无关，另外Bug的优先级别和公司要求也有关，如电子商务网站，那么界面优化用户体验对于公司就很重要；虽然界面上的问题并不影响使用，所有严重级别不高，但优先级却非常高；而有些系统只是内部使用，界面优化就不那么重要了；还有一些网站只是数据正确性要求比较高，界面和操作要求不高等等。这些都是严重程度很低，优先级却不一定的例子，最后再给大家说一个windows的记事本的bug，大家可以新建一个记事本在里面输入：“联通”俩字保存退出，再打开看看，这个严重程度够大了吧？但微软却一直并没有修，说明了什么问题？类似的例子还有很多，大家可以自己想想：什么的bug严重级别很高，优先级也很高，什么的bug严重级别很高，优先级却很低，什么样的bug严重程度很低，优先级却很高，什么样的bug严重程度很低，优先级也很低。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/bug/">Bug</a></li>
+      <li><a href="http://localhost:1313/tags/%E4%B8%A5%E9%87%8D%E7%A8%8B%E5%BA%A6/">严重程度</a></li>
+      <li><a href="http://localhost:1313/tags/%E4%BC%98%E5%85%88%E7%BA%A7/">优先级</a></li>
+    </ul>
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Bug之我见 on x"
+            href="https://x.com/intent/tweet/?text=Bug%e4%b9%8b%e6%88%91%e8%a7%81&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-09-27-bug%25E4%25B9%258B%25E6%2588%2591%25E8%25A7%2581%2f&amp;hashtags=bug%2c%e4%b8%a5%e9%87%8d%e7%a8%8b%e5%ba%a6%2c%e4%bc%98%e5%85%88%e7%ba%a7">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Bug之我见 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-09-27-bug%25E4%25B9%258B%25E6%2588%2591%25E8%25A7%2581%2f&amp;title=Bug%e4%b9%8b%e6%88%91%e8%a7%81&amp;summary=Bug%e4%b9%8b%e6%88%91%e8%a7%81&amp;source=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-09-27-bug%25E4%25B9%258B%25E6%2588%2591%25E8%25A7%2581%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Bug之我见 on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-09-27-bug%25E4%25B9%258B%25E6%2588%2591%25E8%25A7%2581%2f&title=Bug%e4%b9%8b%e6%88%91%e8%a7%81">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Bug之我见 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-09-27-bug%25E4%25B9%258B%25E6%2588%2591%25E8%25A7%2581%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Bug之我见 on whatsapp"
+            href="https://api.whatsapp.com/send?text=Bug%e4%b9%8b%e6%88%91%e8%a7%81%20-%20http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-09-27-bug%25E4%25B9%258B%25E6%2588%2591%25E8%25A7%2581%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Bug之我见 on telegram"
+            href="https://telegram.me/share/url?text=Bug%e4%b9%8b%e6%88%91%e8%a7%81&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-09-27-bug%25E4%25B9%258B%25E6%2588%2591%25E8%25A7%2581%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Bug之我见 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=Bug%e4%b9%8b%e6%88%91%e8%a7%81&u=http%3a%2f%2flocalhost%3a1313%2fposts%2f2015-09-27-bug%25E4%25B9%258B%25E6%2588%2591%25E8%25A7%2581%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

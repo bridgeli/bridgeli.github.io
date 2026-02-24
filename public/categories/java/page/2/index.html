@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Java | 分享技术带来的喜悦</title>
+<meta name="keywords" content="">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/categories/java/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/java/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/categories/java/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/categories/">Categories</a></div>
+  <h1>
+    Java
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>自从 ChatGPT 横空出世之后，突然没了写博客的兴趣，因为无论有什么问题，随便往 ChatGPT 一帖，结果就哗哗的出来了，今天这个问题就是。前一段时间和某公司联调接口，对方的接口测试环境好好的，一上线调不通，报错信息就是标题，只见贴到 ChatGPT，ChatGPT 回答如下：
+这个错误通常是由于缺少信任证书或证书链不完整导致的。解决方法通常有两种：
+**添加证书到信任库**：获取正确的证书，并将其添加到 Java 的信任库中。可以使用 `keytool` 工具来完成此操作。具体步骤如下： – 首先，使用以下命令导出证书：
+keytool -printcert -rfc -sslserver &lt;hostname&gt; -port &lt;port&gt; 其中 &lt;hostname&gt; 和 &lt;port&gt; 是你要访问的 HTTPS 接口的主机名和端口号。
+– 然后将证书导出到一个文件中。
+– 最后，使用以下命令将证书添加到 Java 的信任库中：
+keytool -importcert -file &lt;certificate-file&gt; -keystore &lt;path-to-truststore&gt; -alias &lt;alias&gt; 其中 &lt;certificate-file&gt; 是你导出的证书文件，&lt;path-to-truststore&gt; 是 Java 信任库的路径，&lt;alias&gt; 是证书的别名。
+**忽略证书验证**：如果你确定你要连接的服务器是安全的，并且不需要严格的证书验证，你可以在 Java 代码中忽略证书验证。但这不是推荐的做法，因为可能会导致安全风险。你可以使用 `TrustManager` 接口实现自定义的信任管理器，然后将其应用于 SSL 连接。下面是一个简单的示例代码： import javax.net.ssl.*; import java.security.cert.X509Certificate; public class SSLCertificateIgnore { public static void main(String[] args) throws Exception { // Create a trust manager that does not validate certificate chains TrustManager[] trustAllCerts = new TrustManager[]{ new X509TrustManager() { public X509Certificate[] getAcceptedIssuers() { return null; } public void checkClientTrusted(X509Certificate[] certs, String authType) { } public void checkServerTrusted(X509Certificate[] certs, String authType) { } } }; // Install the all-trusting trust manager SSLContext sc = SSLContext.getInstance(&#34;SSL&#34;); sc.init(null, trustAllCerts, null); HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory()); // Now you can access the HTTPS endpoint without certificate validation } } 请注意，这种方法会降低安全性，因为它会使你的应用程序容易受到中间人攻击。因此，最好的做法是第一种方法，即添加正确的证书到信任库中。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-04-21 05:46:06 +0000 +0000'>April 21, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>146 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target" href="http://localhost:1313/posts/2024-04-21-javax-net-ssl-sslhandshakeexception-sun-security-validator-validatorexception-pkix-path-building-failed-sun-security-provider-certpath-suncertpathbuilderexception-unable-to-find-valid-certificatio/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">AntPathMatcher 路径匹配
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>公司项目使用 AntPathMatcher 路径匹配是否登陆，之前没有接触过，刚好趁这次机会学习了一番。
+一、基本规则
+1、? 匹配一个字符（除过操作系统默认的文件分隔符）
+2、* 匹配0个或多个字符
+3、** 匹配0个或多个目录
+4、{spring:[a-z]&#43;} 将正则表达式 [a-z]&#43; 匹配到的值，赋值给名为 spring 的路径变量
+PS：必须是完全匹配才行，在 SpringMVC 中只有完全匹配才会进入 controller 层的方法
+二、注意事项：
+1、匹配文件路径，需要匹配某目录下及其各级子目录下所有的文件，使用 /*/* 而非 *.*，因为有的文件不一定含有文件后缀
+2、匹配文件路径，使用 AntPathMatcher 创建一个对象时，需要注意 AntPathMatcher 也有有参构造，传递路径分隔符参数 pathSeparator，对于文件路径的匹配来说，可以根据不同的操作系统来传递各自的文件分隔符，以此防止匹配文件路径错误
+3、最长匹配规则（has more characters），即越精确的模式越会被优先匹配到。例如，URL请求 /app/dir/file.jsp，现在存在两个路径匹配模式 /*/*.jsp 和 /app/dir/*.jsp，那么会根据模式 /app/dir/*.jsp 来匹配
+三、实例
+可以参考若依框架：com.ruoyi.gateway.filter.AuthFilter 和 com.ruoyi.gateway.filter.XssFilter
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-03-27 03:09:39 +0000 +0000'>March 27, 2022</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>45 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to AntPathMatcher 路径匹配" href="http://localhost:1313/posts/2022-03-27-antpathmatcher-%E8%B7%AF%E5%BE%84%E5%8C%B9%E9%85%8D/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">身份证校验方法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>我国的身份证编制是有标准的，每一位都不是随便瞎写的，就像我国的地图坐标经纬度一样，并不是真是的经纬度，而是人为加入了偏转，被称为：火星坐标系，但是工作中发现很多人并不了解，在工作中，用户输入的身份证号是否正确，我们根据这个规则是可以做初步校验的，当然真是的校验肯定是要通过公安部授权的接口，这是收费的。但是初步校验是真简单的，我个人发现有些系统并没有加入，所以今天写一篇小文章，做一个常用的工具类来校验身份证号，至于具体的规则，大家可以搜一下这个国标：GB11643-1999，代码如下：
+package cn.bridgeli.demo; import org.apache.commons.lang3.StringUtils; import org.junit.Assert; import org.junit.Test; /** * @author BridgeLi * @date 2022/1/23 15:01 */ public class IdNoUtil { @Test public void testId() { String IdNo = &#34;&#34;; boolean b = validateIdNo(IdNo); Assert.assertTrue(b); } public static boolean validateIdNo(String IdNo) { if (StringUtils.isBlank(IdNo) || IdNo.length() != 18) { return false; } char[] charArray = IdNo.toCharArray(); //前十七位加权因子 int[] idCardWi = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2}; //这是除以11后，可能产生的11位余数对应的验证码 String[] idCardY = {&#34;1&#34;, &#34;0&#34;, &#34;X&#34;, &#34;9&#34;, &#34;8&#34;, &#34;7&#34;, &#34;6&#34;, &#34;5&#34;, &#34;4&#34;, &#34;3&#34;, &#34;2&#34;}; int sum = 0; for (int i = 0; i &lt; 17; i&#43;&#43;) { int current = Integer.parseInt(String.valueOf(charArray[i])); int count = current * idCardWi[i]; sum &#43;= count; } char idCardLast = charArray[17]; int idCardMod = sum % 11; if (idCardY[idCardMod].equalsIgnoreCase(String.valueOf(idCardLast))) { return true; } else { return false; } } } </p>
+  </div>
+  <footer class="entry-footer"><span title='2022-01-23 08:49:35 +0000 +0000'>January 23, 2022</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>144 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 身份证校验方法" href="http://localhost:1313/posts/2022-01-23-%E8%BA%AB%E4%BB%BD%E8%AF%81%E6%A0%A1%E9%AA%8C%E6%96%B9%E6%B3%95/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">JWT 实际应用例子
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>JWT 是什么，很多网站都有例子，但是如何使用，却不是很多，今天就介绍一个很具体的、能在项目中实际应用的例子。
+pom &lt;dependency&gt; &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt; &lt;artifactId&gt;jjwt&lt;/artifactId&gt; &lt;version&gt;0.9.1&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com.auth0&lt;/groupId&gt; &lt;artifactId&gt;java-jwt&lt;/artifactId&gt; &lt;version&gt;3.4.0&lt;/version&gt; &lt;/dependency&gt; Java 代码 package cn.bridgeli.demo; import io.jsonwebtoken.Claims; import io.jsonwebtoken.JwtBuilder; import io.jsonwebtoken.Jwts; import io.jsonwebtoken.SignatureAlgorithm; import java.util.Date; import java.util.HashMap; import java.util.Map; import java.util.UUID; public class JwtUtil { static String key = &#34;key&#34;; /** * 用户登录成功后生成Jwt * 使用Hs256算法 私匙使用用户密码 * * @param ttlMillis jwt过期时间 * @param user 登录成功的user对象 * @return */ public static String createJWT(long ttlMillis, User user) { //指定签名的时候使用的签名算法，也就是header那部分，jjwt已经将这部分内容封装好了。 SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256; //生成JWT的时间 long nowMillis = System.currentTimeMillis(); Date now = new Date(nowMillis); //创建payload的私有声明（根据特定的业务需要添加，如果要拿这个做验证，一般是需要和jwt的接收方提前沟通好验证方式的） Map&lt;String, Object&gt; claims = new HashMap&lt;&gt;(); // claims.put(&#34;id&#34;, user.getId()); claims.put(&#34;username&#34;, user.getUsername()); // claims.put(&#34;password&#34;, user.getPassword()); //生成签发人 String subject = user.getUsername(); //下面就是在为payload添加各种标准声明和私有声明了 //这里其实就是new一个JwtBuilder，设置jwt的body JwtBuilder builder = Jwts.builder() //如果有私有声明，一定要先设置这个自己创建的私有的声明，这个是给builder的claim赋值，一旦写在标准的声明赋值之后，就是覆盖了那些标准的声明的 .setClaims(claims) //设置jti(JWT ID)：是JWT的唯一标识，根据业务需要，这个可以设置为一个不重复的值，主要用来作为一次性token,从而回避重放攻击。 .setId(UUID.randomUUID().toString()) //iat: jwt的签发时间 .setIssuedAt(now) //代表这个JWT的主体，即它的所有人，这个是一个json格式的字符串，可以存放什么userid，roldid之类的，作为什么用户的唯一标志。 .setSubject(subject) //设置签名使用的签名算法和签名使用的秘钥 .signWith(signatureAlgorithm, key); if (ttlMillis &gt;= 0) { long expMillis = nowMillis &#43; ttlMillis; Date exp = new Date(expMillis); //设置过期时间 builder.setExpiration(exp); } return builder.compact(); } /** * Token的解密 * * @param token 加密后的token * @param user 用户的对象 * @return */ public static Claims parseJWT(String token, User user) { //签名秘钥，和生成的签名的秘钥一模一样 //得到DefaultJwtParser Claims claims = Jwts.parser() //设置签名的秘钥 .setSigningKey(key) //设置需要解析的jwt .parseClaimsJws(token).getBody(); return claims; } /** * 校验token * 在这里可以使用官方的校验，我这里校验的是token中携带的密码于数据库一致的话就校验通过 * * @param token * @param user * @return */ public static Boolean isVerify(String token, User user) { //签名秘钥，和生成的签名的秘钥一模一样 //得到DefaultJwtParser Claims claims = Jwts.parser() //设置签名的秘钥 .setSigningKey(key) //设置需要解析的jwt .parseClaimsJws(token).getBody(); if (claims.get(&#34;username&#34;).equals(user.getUsername())) { return true; } return false; } } </p>
+  </div>
+  <footer class="entry-footer"><span title='2021-12-26 08:24:00 +0000 +0000'>December 26, 2021</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>223 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to JWT 实际应用例子" href="http://localhost:1313/posts/2021-12-26-jwt-%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E4%BE%8B%E5%AD%90/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">关于 CPU 的缓存的证明和应用
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 证明： 首先，我们都知道现在的 CPU 多核技术，同时会有三级缓存（L1，L2，L3 ），如图：
+缓存基本上来说就是把后面的数据加载到离自己近的地方，对于 CPU 来说，是一个字节一个字节的加载数据的吗？其实不是的，一般来说都是要一块一块的加载的，对于这样的一块一块的数据单位，我们叫做“Cache Line”，中文翻译：缓存行，一般来说，一个主流的 CPU 的 Cache Line 是 64 Bytes，也就是 8 个 64 位的整型，这就是 CPU 从内存中捞数据上来的最小数据单位。那么这个如何证明呢？
+package cn.bridgeli.demo; import java.util.concurrent.CountDownLatch; /** * @author BridgeLi * @date 2021/11/29 20:41 */ public class CacheLineTest { private static long loop = 1_0000_0000L; private static class T { // private volatile long x1, x2, x3, x4, x5, x6, x7; private volatile long x = 0L; // private volatile long x8, x9, x10, x11, x12, x13, x14; } private static T[] arr = new T[2]; static { arr[0] = new T(); arr[1] = new T(); } public static void main(String[] args) throws InterruptedException { CountDownLatch countDownLatch = new CountDownLatch(2); Thread t1 = new Thread(() -&gt; { for (long i = 0; i &lt; loop; i&#43;&#43;) { arr[0].x = i; } countDownLatch.countDown(); }, &#34;t1&#34;); Thread t2 = new Thread(() -&gt; { for (long i = 0; i &lt; loop; i&#43;&#43;) { arr[1].x = i; } countDownLatch.countDown(); }, &#34;t2&#34;); long currentTimeMillis = System.currentTimeMillis(); t1.start(); t2.start(); countDownLatch.await(); System.out.println(System.currentTimeMillis() &amp;#8211; currentTimeMillis); } } 我们定义了一个长度为 2 的数组，数组中的元素是 T 类型，T 有一个属性 x，我们同时启动两个线程分别给第一个元素和第二个元素中的 x 复制从 0 到一亿减 1，这个时候我们测试他耗时多少，不同的电脑配置肯定是不同的，我的电脑大概是四千多毫秒，然后我们把 T 对象中属性 x 前后各被注释调的一行打开再跑一次看看，变成了大概 700 毫秒，相差整整 6 倍！这是为何？
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-11-29 14:32:58 +0000 +0000'>November 29, 2021</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>279 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 关于 CPU 的缓存的证明和应用" href="http://localhost:1313/posts/2021-11-29-%E5%85%B3%E4%BA%8E-cpu-%E7%9A%84%E7%BC%93%E5%AD%98%E7%9A%84%E8%AF%81%E6%98%8E%E5%92%8C%E5%BA%94%E7%94%A8/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">神奇的 (a == (Integer) 1 &amp;&amp; a == (Integer) 2 &amp;&amp; a == (Integer) 3) = true
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前一段时间看了一篇文章 (a == (Integer) 1 &amp;&amp; a == (Integer) 2 &amp;&amp; a == (Integer) 3) 是否可以为 true，当时第一反应怎么可能，谁知道再往下看，作者竟然给出来如下代码，一运行神奇的事出现了，真的为 true，代码如下：
+package cn.bridgeli.demo; import java.lang.reflect.Field; public class Magic { public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException { Class cache = Integer.class.getDeclaredClasses()[0]; Field c = cache.getDeclaredField(&#34;cache&#34;); c.setAccessible(true); Integer[] array = (Integer[]) c.get(cache); // array[129] is 1 array[130] = array[129]; // Set 2 to be 1 array[131] = array[129]; // Set 3 to be 1 Integer a = 1; if (a == (Integer) 1 &amp;&amp; a == (Integer) 2 &amp;&amp; a == (Integer) 3) { System.out.println(true); } else { System.out.println(false); } } } 因为作者没有给出解释，所以就研究了一番，发现需要基础非常扎实才能写出这段代码，这段代码之所以为 true，要理解如下几个问题：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-10-31 03:24:36 +0000 +0000'>October 31, 2021</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>344 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 神奇的 (a == (Integer) 1 && a == (Integer) 2 && a == (Integer) 3) = true" href="http://localhost:1313/posts/2021-10-31-%E7%A5%9E%E5%A5%87%E7%9A%84-a-integer-1-a-integer-2-a-integer-3-true/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">GeoHash 算法的 Java 版实现
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>之前曾经做过一个类 LBS 的小需求，当时是用 redis 做的，就是这篇文章，其实 GeoHash 算法，我们也可以自己实现，具体如下：
+package cn.bridgeli.demo; import java.util.ArrayList; import java.util.BitSet; import java.util.HashMap; public class GeoHash { public static final double MINLAT = -90; public static final double MAXLAT = 90; public static final double MINLNG = -180; public static final double MAXLNG = 180; private static int numbits = 5 * 5; //经纬度单独编码长度 private static double minLat; private static double minLng; private final static char[] digits = {&amp;#8216;0&amp;#8217;, &amp;#8216;1&amp;#8217;, &amp;#8216;2&amp;#8217;, &amp;#8216;3&amp;#8217;, &amp;#8216;4&amp;#8217;, &amp;#8216;5&amp;#8217;, &amp;#8216;6&amp;#8217;, &amp;#8216;7&amp;#8217;, &amp;#8216;8&amp;#8217;, &amp;#8216;9&amp;#8217;, &amp;#8216;b&amp;#8217;, &amp;#8216;c&amp;#8217;, &amp;#8216;d&amp;#8217;, &amp;#8216;e&amp;#8217;, &amp;#8216;f&amp;#8217;, &amp;#8216;g&amp;#8217;, &amp;#8216;h&amp;#8217;, &amp;#8216;j&amp;#8217;, &amp;#8216;k&amp;#8217;, &amp;#8216;m&amp;#8217;, &amp;#8216;n&amp;#8217;, &amp;#8216;p&amp;#8217;, &amp;#8216;q&amp;#8217;, &amp;#8216;r&amp;#8217;, &amp;#8216;s&amp;#8217;, &amp;#8216;t&amp;#8217;, &amp;#8216;u&amp;#8217;, &amp;#8216;v&amp;#8217;, &amp;#8216;w&amp;#8217;, &amp;#8216;x&amp;#8217;, &amp;#8216;y&amp;#8217;, &amp;#8216;z&amp;#8217;}; //定义编码映射关系 final static HashMap&lt;Character, Integer&gt; lookup = new HashMap&lt;Character, Integer&gt;(); //初始化编码映射内容 static { int i = 0; for (char c : digits) { lookup.put(c, i&#43;&#43;); } } public GeoHash() { setMinLatLng(); } public String encode(double lat, double lon) { BitSet latbits = getBits(lat, -90, 90); BitSet lonbits = getBits(lon, -180, 180); StringBuilder buffer = new StringBuilder(); for (int i = 0; i &lt; numbits; i&#43;&#43;) { buffer.append((lonbits.get(i)) ? &amp;#8216;1&amp;#8217; : &amp;#8216;0&amp;#8217;); buffer.append((latbits.get(i)) ? &amp;#8216;1&amp;#8217; : &amp;#8216;0&amp;#8217;); } String code = base32(Long.parseLong(buffer.toString(), 2)); //Log.i(&#34;okunu&#34;, &#34;encode lat = &#34; &#43; lat &#43; &#34; lng = &#34; &#43; lon &#43; &#34; code = &#34; &#43; code); return code; } public ArrayList&lt;String&gt; getAroundGeoHash(double lat, double lon) { //Log.i(&#34;okunu&#34;, &#34;getArroundGeoHash lat = &#34; &#43; lat &#43; &#34; lng = &#34; &#43; lon); ArrayList&lt;String&gt; list = new ArrayList&lt;&gt;(); double uplat = lat &#43; minLat; double downLat = lat &amp;#8211; minLat; double leftlng = lon &amp;#8211; minLng; double rightLng = lon &#43; minLng; String leftUp = encode(uplat, leftlng); list.add(leftUp); String leftMid = encode(lat, leftlng); list.add(leftMid); String leftDown = encode(downLat, leftlng); list.add(leftDown); String midUp = encode(uplat, lon); list.add(midUp); String midMid = encode(lat, lon); list.add(midMid); String midDown = encode(downLat, lon); list.add(midDown); String rightUp = encode(uplat, rightLng); list.add(rightUp); String rightMid = encode(lat, rightLng); list.add(rightMid); String rightDown = encode(downLat, rightLng); list.add(rightDown); //Log.i(&#34;okunu&#34;, &#34;getArroundGeoHash list = &#34; &#43; list.toString()); return list; } //根据经纬度和范围，获取对应的二进制 private BitSet getBits(double lat, double floor, double ceiling) { BitSet buffer = new BitSet(numbits); for (int i = 0; i &lt; numbits; i&#43;&#43;) { double mid = (floor &#43; ceiling) / 2; if (lat &gt;= mid) { buffer.set(i); floor = mid; } else { ceiling = mid; } } return buffer; } //将经纬度合并后的二进制进行指定的32位编码 private String base32(long i) { char[] buf = new char[65]; int charPos = 64; boolean negative = (i &lt; 0); if (!negative) { i = -i; } while (i &lt;= -32) { buf[charPos&amp;#8211;] = digits[(int) (-(i % 32))]; i /= 32; } buf[charPos] = digits[(int) (-i)]; if (negative) { buf[&amp;#8211;charPos] = &amp;#8216;-&amp;#8216;; } return new String(buf, charPos, (65 &amp;#8211; charPos)); } private void setMinLatLng() { minLat = MAXLAT &amp;#8211; MINLAT; for (int i = 0; i &lt; numbits; i&#43;&#43;) { minLat /= 2.0; } minLng = MAXLNG &amp;#8211; MINLNG; for (int i = 0; i &lt; numbits; i&#43;&#43;) { minLng /= 2.0; } } //根据二进制和范围解码 private double decode(BitSet bs, double floor, double ceiling) { double mid = 0; for (int i = 0; i &lt; bs.length(); i&#43;&#43;) { mid = (floor &#43; ceiling) / 2; if (bs.get(i)) { floor = mid; } else { ceiling = mid; } } return mid; } //对编码后的字符串解码 public double[] decode(String geohash) { StringBuilder buffer = new StringBuilder(); for (char c : geohash.toCharArray()) { int i = lookup.get(c) &#43; 32; buffer.append(Integer.toString(i, 2).substring(1)); } BitSet lonset = new BitSet(); BitSet latset = new BitSet(); //偶数位，经度 int j = 0; for (int i = 0; i &lt; numbits * 2; i &#43;= 2) { boolean isSet = false; if (i &lt; buffer.length()) { isSet = buffer.charAt(i) == &amp;#8216;1&amp;#8217;; } lonset.set(j&#43;&#43;, isSet); } //奇数位，纬度 j = 0; for (int i = 1; i &lt; numbits * 2; i &#43;= 2) { boolean isSet = false; if (i &lt; buffer.length()) { isSet = buffer.charAt(i) == &amp;#8216;1&amp;#8217;; } latset.set(j&#43;&#43;, isSet); } double lon = decode(lonset, -180, 180); double lat = decode(latset, -90, 90); return new double[]{lat, lon}; } public static void main(String[] args) { GeoHash geohash = new GeoHash(); String s = geohash.encode(39.923201, 116.390705); System.out.println(&#34;geohash：&#34; &#43; s); ArrayList&lt;String&gt; aroundGeoHash = geohash.getAroundGeoHash(39.923201, 116.390705); for (String s1 : aroundGeoHash) { System.out.println(&#34;aroundGeoHash：&#34; &#43; s1); } double[] geo = geohash.decode(s); System.out.println(geo[0] &#43; &#34; &#34; &#43; geo[1]); } } 参考：https://www.jianshu.com/p/2fd0cf12e5ba
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-09-25 06:02:54 +0000 +0000'>September 25, 2021</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>701 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to GeoHash 算法的 Java 版实现" href="http://localhost:1313/posts/2021-09-25-geohash-%E7%AE%97%E6%B3%95%E7%9A%84-java-%E7%89%88%E5%AE%9E%E7%8E%B0/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Spring boot 自动装配实现的原理 – 文字简述版
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 当启动 Spring boot 应用程序的时候，会先创建 SpringApplication 的对象，在对象的构造方法中会进行某些参数的初始化工作，最主要的是判断当前应用程序的类型以及初始化器和监听器，在这个过程中会加载整个应用程序的 spring.factories 文件，将文件的内容放到缓存对象中，方便后续获取。
+SpringApplication 对象创建完成之后，开始执行 run 方法，来完成整个启动，启动过程中最主要的有两个方法，第一个叫做 prepareContext，第二个叫做 refreshContext，在这两个关键步骤中完成了自动装配的核心功能，前面的处理逻辑包含了上下文对象的创建，banner 的打印，异常报告器的准备等各个准备工作，方便后续来进行调用。
+在 prepareContext 方法中主要完成的是对上下文对象的初始化操作，包含了属性值的设置，比如环境对象，在整个过程中有一个非常重要的方法，叫做 load，load 主要完成一件事，将当前启动类作为一个 beanDefinition 注册到 registry 中，方便后续在进行 BeanFactoryPostProcessor 调用执行的时候，找到对应的主类，来完成 @SpringBootApplication、@EnableAutoConfiguration 等注解的解析工作。
+在 refreshContext 方法中会进行整个容器的刷新过程，会调用 Spring 中的 refresh 方法，refresh 中有 13 个非常关键的方法，来完成整个 Spring 应用程序的启动，在自动装配过程中，会调用 invokeBeanFactoryPostProcessor 方法，在此方法中主要对 ConfigurationClassPostProcessor 类的处理，他是 BeanFactoryPostProcessor 的子类也是，BeanDefinitionRegistryPostProcessor 的子类，在调用的时候会先调用 BeanDefinitionRegistryPostProcessor 中的 postProcessBeanDefinitionRegistry 方法，然后调用 BeanFactoryPostProcessor 中的 postProcessBeanFactory 方法，在执行 postProcessBeanDefinitionRegistry 方法的时候会解析处理各种注解，包含 @PropertySource、@ComponentScan、@ComponentScans、@Bean、@Import 等注解，最主要的是 @Import 注解的解析。
+在解析 @Import 注解的时候，会有一个 getImport 的方法，从主类开始递归解析注解，把所有包含 @Import 的注解都解析道，然后在 processImport 方法中对 Import 的类进行分类，此处最主要的是识别 AutoConfigurationImportSelect 归属于 ImportSelect 的子类，在后续过程中会调用 deferredImportSelectorHandler 中的 process 方法，来完善 EnableAutoConfiguration 的加载。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-08-29 03:34:29 +0000 +0000'>August 29, 2021</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>82 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Spring boot 自动装配实现的原理 – 文字简述版" href="http://localhost:1313/posts/2021-08-29-spring-boot-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86-%E6%96%87%E5%AD%97%E7%AE%80%E8%BF%B0%E7%89%88/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">好用的 IDEA 插件
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>好久没有好好的写过博客了，不过这一篇也没打算好好写。前一段时间换工作，所谓工欲善其事，必先利其器，所以常用的软件都需要重新配置，而作为一名 Java 程序员，最重要的就是 IDEA 了，所以这次就写一下，我个人认为比较好用的 IDEA 插件，以及他们的作用，后面如果发现更好用的插件了，也会在这篇文章里面更新。
+IDE Eval Reset，开发者：zhile.io 大家众所周知的，IDEA 很好用，但是付费软件，还不便宜，但是在国内很多人都是找各种方法破解，人家也在做反破解，一直搞攻防战，但是 IDEA 有一个很人性的一点，可以试用 30 天，所以这个插件就是让大家无限试用。
+安装完成之后，在 Help 菜单下面会多一个：Eval Rest 的子菜单，就可以重制 30 天的有效期，当然也可以选上右下角的：Auto reset before per restart，啥功能不用说了吧。
+最后多说一句：请大家最好不要滥用此功能，最好还是支持正版。
+Maven Helper，开发者：Vojtech Krasa 在我刚工作的时候的那个年代，我们 build 还用 Ant，现在可能很多人都没听说过了，后来才开始用 maven，但无论无论如何都还有一个巨大的问题，jar 包冲突，有时会出莫名其妙的问题，所以这个插件就是用来分析 maven 项目的 jar 冲突的。
+装上这个插件之后，在 pom 文件左下方会多一个：Dependency Analyzer 的子菜单，点一下，就可以看到那些 jar 冲突了，然后选中，在右侧排除掉即可。
+GsonFormatPlus，开发者：mars-men 在我们的工作中，使用第三方的接口，现在数据一般都是用 json，所以不可避免的要用对象和 json 的互转，而我们根据 json 写对象的时候，自己一行一行的写，不仅容易错，而且还没有效率，唯一的好处就是锻炼大家打字的说平，所以这个插件应运而生了，他可以很轻松的根据 json 数据，生成实体类。
+安装完成后，我们只需要新建一个实体类，然后在该类中，摁下 option &#43; s 键，然后把 json 数据 copy 到那个框里面，就可以直接生成相应的实体类了，巨方便快捷。
+any-rule，开发者：any-rule 在我们工作中，自从有了正则表达式，我们的工作量可能减轻了很多，但很多时候写正则表达式也挺头疼的，最起码我是这样的，老是写不对。所以这个插件就是帮我们生成一些常见的正则表达式。
+安装完成后，你只需要摁下 option &#43; a，然后就可以看到一些常见的正则表达式，选择合适的即可。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-07-17 12:47:57 +0000 +0000'>July 17, 2021</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>156 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 好用的 IDEA 插件" href="http://localhost:1313/posts/2021-07-17-%E5%A5%BD%E7%94%A8%E7%9A%84-idea-%E6%8F%92%E4%BB%B6/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">再谈 ThreadLocal
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>几年前我曾经写过两篇关于 ThreadLocal 的文章，分别是ThreadLocal类之简单理解和ThreadLocal类之简单应用示例，不过限于当时的水平，有些问题并没有说的很明白，所以今天再写一篇文章，重新说说这个类。
+我们首先看一个例子：
+package cn.bridgeli.demo; /** * @author BridgeLi * @date 2021/4/21 11:02 */ public class User { String name = &#34;Denny&#34;; } 然后我们有一个操作：
+package cn.bridgeli.demo; import org.junit.Test; /** * @author BridgeLi * @date 2021/4/21 10:28 */ public class ThreadTest { private User user = new User(); @Test public void testThreadLocal() { new Thread(() -&gt; { try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); } System.out.println(user.name); }).start(); new Thread(() -&gt; user.name = &#34;BridgeLi&#34;).start(); try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); } } } 这个时候我们就知道一定会有线程安全问题，所以我们怎么解决这个问题呢？就是 ThreadLocal，请看下面：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-04-22 09:49:30 +0000 +0000'>April 22, 2021</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>478 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 再谈 ThreadLocal" href="http://localhost:1313/posts/2021-04-22-%E5%86%8D%E8%B0%88-threadlocal/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/categories/java/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="http://localhost:1313/categories/java/page/3/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Zookeeper on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/zookeeper/</link>
+    <description>Recent content in Zookeeper on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 26 Jul 2015 14:05:52 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/zookeeper/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dubbo和zookeeper入门实例</title>
+      <link>http://localhost:1313/posts/2015-07-26-dubbo%E5%92%8Czookeeper%E5%85%A5%E9%97%A8%E5%AE%9E%E4%BE%8B/</link>
+      <pubDate>Sun, 26 Jul 2015 14:05:52 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-07-26-dubbo%E5%92%8Czookeeper%E5%85%A5%E9%97%A8%E5%AE%9E%E4%BE%8B/</guid>
+      <description>&lt;p&gt;公司项目里用到了dubbo，感觉挺好玩，以前没有玩过，自己抽时间就小小研究了一下，今天记录一下自己的学习成果。&lt;br&gt;
+关于Dubbo和zookeeper是干嘛的，网上一搜一大堆所以就不多做介绍了，想了解的可以自己搜搜看，今天就只记录怎么跑一个最基本的Dubbo和zookeeper小示例程序是怎么跑起来的，当然虽然是一个demo，但和真实环境也是无差的哦。&lt;/p&gt;
+&lt;p&gt;一. 安装zookeeper&lt;/p&gt;
+&lt;p&gt;要想使用Dubbo，必须给Dubbo一个注册中心，当然这个注册中心不一定必须是zookeeper，也可以是redis等，但用zookeeper是一个相对比较好的方式，咱们暂且就这么办。&lt;br&gt;
+关于zookeeper的安装，老夫窃以为这篇文章写得非常棒，就不多赘述了，大家可以直接参考：http://blog.csdn.net/wxwzy738/article/details/16330253，看了这篇文章，大家立马就会就明白怎么一回事了，看过自知。&lt;/p&gt;
+&lt;p&gt;二. Dubbo实现&lt;/p&gt;
+&lt;p&gt;Dubbo的实现肯定是要靠自己写代码啦，我的代码使用maven编译的，引入的jar文件如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;依赖的jar文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;junit&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;junit&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;4.12&amp;lt;/version&amp;gt;  
+&amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;com.alibaba&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;dubbo&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;2.5.3&amp;lt;/version&amp;gt;  
+&amp;lt;exclusions&amp;gt;  
+&amp;lt;exclusion&amp;gt;  
+&amp;lt;artifactId&amp;gt;spring&amp;lt;/artifactId&amp;gt;  
+&amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;  
+&amp;lt;/exclusion&amp;gt;  
+&amp;lt;/exclusions&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;org.slf4j&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;slf4j-log4j12&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;1.7.7&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;com.101tec&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;zkclient&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;0.5&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;spring-test&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;4.1.7.RELEASE&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;spring-context&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;4.1.7.RELEASE&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其中junit和spring-test大家肯定看出来是干嘛的了，为了跑测试，Dubbo分为生产者和消费者，接下来我们先看看生产者是怎么实现的&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;生产者的实现&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;①. 配置文件applicationProvider.xml&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;  
+&amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34;  
+xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;  
+xmlns:dubbo=&amp;#34;http://code.alibabatech.com/schema/dubbo&amp;#34;  
+xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34;  
+xsi:schemaLocation=&amp;#34;  
+http://www.springframework.org/schema/beans  
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+http://www.springframework.org/schema/context  
+http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+http://code.alibabatech.com/schema/dubbo  
+http://code.alibabatech.com/schema/dubbo/dubbo.xsd&amp;#34;&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; Auto Scan &amp;amp;#8211;&amp;gt;  
+&amp;lt;context:component-scan base-package=&amp;#34;cn.bridgeli.provider&amp;#34; /&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; Application name &amp;amp;#8211;&amp;gt;  
+&amp;lt;dubbo:application name=&amp;#34;hello-world-app&amp;#34; /&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; registry address, used for service to register itself &amp;amp;#8211;&amp;gt;  
+&amp;lt;dubbo:registry address=&amp;#34;zookeeper://127.0.0.1:2181&amp;#34; /&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; expose this service through dubbo protocol, through port 20880 &amp;amp;#8211;&amp;gt;  
+&amp;lt;!&amp;amp;#8211;  
+&amp;lt;dubbo:protocol name=&amp;#34;dubbo&amp;#34; port=&amp;#34;20880&amp;#34; /&amp;gt;  
+&amp;lt;dubbo:protocol name=&amp;#34;dubbo&amp;#34; port=&amp;#34;9090&amp;#34; server=&amp;#34;netty&amp;#34;  
+client=&amp;#34;netty&amp;#34; codec=&amp;#34;dubbo&amp;#34; serialization=&amp;#34;hessian2&amp;#34; charset=&amp;#34;UTF-8&amp;#34;  
+threadpool=&amp;#34;fixed&amp;#34; threads=&amp;#34;100&amp;#34; queues=&amp;#34;0&amp;#34; iothreads=&amp;#34;9&amp;#34; buffer=&amp;#34;8192&amp;#34;  
+accepts=&amp;#34;1000&amp;#34; payload=&amp;#34;8388608&amp;#34; /&amp;gt;  
+&amp;amp;#8211;&amp;gt;  
+&amp;lt;!&amp;amp;#8211; Service interface Concurrent Control &amp;amp;#8211;&amp;gt;  
+&amp;lt;!&amp;amp;#8211; &amp;lt;dubbo:service interface=&amp;#34;cn.bridgeli.provider.service.ProviderService&amp;#34; ref=&amp;#34;providerService&amp;#34;/&amp;gt; &amp;amp;#8211;&amp;gt;  
+&amp;lt;!&amp;amp;#8211; 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类 &amp;amp;#8211;&amp;gt;  
+&amp;lt;dubbo:annotation package=&amp;#34;cn.bridgeli.provider.service&amp;#34; /&amp;gt;  
+&amp;lt;!&amp;amp;#8211; Default Protocol &amp;amp;#8211;&amp;gt;  
+&amp;lt;!&amp;amp;#8211;  
+&amp;lt;dubbo:protocol server=&amp;#34;netty&amp;#34; /&amp;gt;  
+&amp;amp;#8211;&amp;gt;  
+&amp;lt;/beans&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注释很详细，不解释，就是dubbo和spring的集成&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

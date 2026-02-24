@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>MySQL 备份及恢复脚本 | 分享技术带来的喜悦</title>
+<meta name="keywords" content="备份与恢复">
+<meta name="description" content="作为开发，我们都知道数据备份的重要性，而数据备份最重要的就是数据库备份，前一段时间由于操作失误，误删过一次数据库，所以特把备份和恢复脚本分享出来，作为笔记。
+
+MySQL 备份脚本
+
+
+#!/bin/bash  
+\# ===================================================================  
+\# MySQL 分库全量备份脚本（生产级 | 自适应 &amp;#8211;source-data / &amp;#8211;master-data）  
+\# 功能：  
+\# &amp;#8211; 自动发现用户数据库  
+\# &amp;#8211; 每库独立压缩备份  
+\# &amp;#8211; 自动选择 &amp;#8211;source-data (8.0&#43;) 或 &amp;#8211;master-data (5.7)  
+\# &amp;#8211; 智能处理 GTID（仅在启用时设置）  
+\# &amp;#8211; 提取 binlog 位置生成 .info 文件  
+\# &amp;#8211; 清理 N 天前旧备份  
+\# 作者：BridgeLi  
+\# 版本：1.0  
+\# ===================================================================
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 配置区  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+BACKUP_DIR=&#34;/project/backup/mysql/dbs&#34;  
+CNF_FILE=&#34;/project/backup/mysql/my.cnf&#34;  
+RETENTION_DAYS=7  
+MIN_FREE_SPACE_GB=5
+
+HOSTNAME=$(hostname -s)  
+DT=$(date &#43;%Y-%m-%d_%H%M%S)
+
+\# 排除系统库  
+EXCLUDED_DBS=&#34;^(mysql|sys|information_schema|performance_schema)$&#34;
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 初始化 &amp; 依赖检查  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+for cmd in mysql mysqldump gzip gunzip df date awk sed; do  
+command -v &#34;$cmd&#34; &gt;/dev/null || { echo &#34;错误：缺少命令 &amp;#8216;$cmd&amp;#8217;&#34;; exit 1; }  
+done
+
+mkdir -p &#34;$BACKUP_DIR&#34; || { echo &#34;错误：无法创建目录 $BACKUP_DIR&#34;; exit 1; }
+
+LOG_FILE=&#34;$BACKUP_DIR/backup.log&#34;
+
+LOCK_FILE=&#34;$BACKUP_DIR/.backup.lock&#34;  
+if [ -f &#34;$LOCK_FILE&#34; ]; then  
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 错误：锁文件存在，可能已有备份在运行。&#34;  
+exit 1  
+fi  
+trap &#34;rm -f &amp;#8216;$LOCK_FILE&amp;#8217;&#34; EXIT  
+touch &#34;$LOCK_FILE&#34;
+
+AVAILABLE_GB=$(df -P &#34;$BACKUP_DIR&#34; | tail -1 | awk &amp;#8216;{print int($4/1024/1024)}&amp;#8217;)  
+if [ &#34;$AVAILABLE_GB&#34; -lt &#34;$MIN_FREE_SPACE_GB&#34; ]; then  
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 错误：磁盘空间不足 (${AVAILABLE_GB}GB &lt; ${MIN_FREE_SPACE_GB}GB)&#34;  
+exit 1  
+fi
+
+exec &gt; &gt;(tee -a &#34;$LOG_FILE&#34;) 2&gt;&amp;1  
+echo &#34;\[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)\] \[$HOSTNAME\] 开始全量分库备份&amp;#8230;&#34;
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 检测 MySQL 版本和 GTID 状态  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+MYSQL_CMD=&#34;mysql &amp;#8211;defaults-extra-file=$CNF_FILE -sN&#34;
+
+\# 获取 MySQL 主版本（57, 80）  
+MYSQL_VERSION=$($MYSQL_CMD -e &#34;SELECT REPLACE(LEFT(VERSION(), 4), &amp;#8216;.&amp;#8217;, &amp;#8221;);&#34;)  
+if ! [[ &#34;$MYSQL_VERSION&#34; =~ ^[0-9]&#43;$ ]]; then  
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 错误：无法获取 MySQL 版本&#34;  
+exit 1  
+fi
+
+\# 选择 source-data / master-data  
+if [ &#34;$MYSQL_VERSION&#34; -ge 80 ]; then  
+REPLICATION_OPT=&#34;&amp;#8211;source-data=2&#34;  
+else  
+REPLICATION_OPT=&#34;&amp;#8211;master-data=2&#34;  
+fi
+
+\# 检查 GTID 是否启用  
+GTID_MODE=$($MYSQL_CMD -e &#34;SELECT @@GLOBAL.gtid_mode;&#34; 2&gt;/dev/null || echo &#34;OFF&#34;)  
+if [[ &#34;$GTID_MODE&#34; =~ ^(ON|ON_PERMISSIVE|OFF_PERMISSIVE)$ ]]; then  
+GTID_PURGED_OPT=&#34;&amp;#8211;set-gtid-purged=ON&#34;  
+GTID_ENABLED=true  
+else  
+GTID_PURGED_OPT=&#34;&amp;#8211;set-gtid-purged=OFF&#34;  
+GTID_ENABLED=false  
+fi
+
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] MySQL 版本: $MYSQL_VERSION, 使用: $REPLICATION_OPT, GTID: ${GTID_MODE:-OFF}&#34;
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 获取所有非系统数据库  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+dbs=()  
+while IFS= read -r db; do  
+[[ -z &#34;$db&#34; ]] &amp;&amp; continue  
+if [[ ! &#34;$db&#34; =~ $EXCLUDED_DBS ]]; then  
+dbs&#43;=(&#34;$db&#34;)  
+fi  
+done &lt; &lt;($MYSQL_CMD -e &#34;SHOW DATABASES;&#34; 2&gt;&gt;&#34;$LOG_FILE&#34;)
+
+if [ ${#dbs[@]} -eq 0 ]; then  
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 警告：未找到可备份的数据库。&#34;  
+exit 0  
+fi  
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 发现 ${#dbs[@]} 个数据库: ${dbs[*]}&#34;
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 执行备份  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+SUCCESS_COUNT=0  
+FAILURE_COUNT=0  
+START_TIME=$(date &#43;%s)
+
+for db in &#34;${dbs[@]}&#34;; do  
+DUMP_FILE=&#34;${db}-${DT}.sql.gz&#34;  
+DUMP_PATH=&#34;$BACKUP_DIR/$DUMP_FILE&#34;  
+INFO_PATH=&#34;${DUMP_PATH%.gz}.info&#34;
+
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 正在备份: $db -&gt; $DUMP_PATH&#34;
+
+mysqldump &amp;#8211;defaults-extra-file=&#34;$CNF_FILE&#34; \  
+&amp;#8211;single-transaction \  
+&amp;#8211;routines \  
+&amp;#8211;triggers \  
+$REPLICATION_OPT \  
+$GTID_PURGED_OPT \  
+&amp;#8211;databases &#34;$db&#34; 2&gt;&gt;&#34;$LOG_FILE&#34; | gzip -c &gt; &#34;$DUMP_PATH&#34;
+
+if [ $? -eq 0 ] &amp;&amp; [ -s &#34;$DUMP_PATH&#34; ] &amp;&amp; gunzip -t &#34;$DUMP_PATH&#34; &gt;/dev/null 2&gt;&amp;1; then  
+\# 提取 binlog 位置（source/master 兼容）  
+read master_file master_pos &lt; &lt;(gzip -dc &#34;$DUMP_PATH&#34; | sed -n &#34;/^&amp;#8211; CHANGE MASTER TO / s/.\*LOG_FILE=&amp;#8217;\\([^&amp;#8217;]\*\\)&amp;#8217;,.\*LOG_POS=\\([0-9]\*\\).*/\\1 \\2/p&#34; | head -1)
+
+\# 提取 GTID（仅当启用）  
+if [ &#34;$GTID_ENABLED&#34; = true ]; then  
+gtid_purged=$(gzip -dc &#34;$DUMP_PATH&#34; | sed -n &#34;s/^SET @@GLOBAL.GTID_PURGED=&amp;#8217;\\([^&amp;#8217;]*\)&amp;#8217;;\$/\\1/p&#34; | head -1)  
+[ -z &#34;$gtid_purged&#34; ] &amp;&amp; gtid_purged=&#34;NONE&#34;  
+else  
+gtid_purged=&#34;DISABLED&#34;  
+fi
+
+\# 写入 .info  
+{  
+[ -n &#34;$master_file&#34; ] &amp;&amp; echo &#34;File: $master_file&#34;  
+[ -n &#34;$master_pos&#34; ] &amp;&amp; echo &#34;Position: $master_pos&#34;  
+echo &#34;GTID: $gtid_purged&#34;  
+} &gt; &#34;$INFO_PATH&#34;
+
+chmod 600 &#34;$DUMP_PATH&#34; &#34;$INFO_PATH&#34; 2&gt;/dev/null || true
+
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 成功: $db (binlog: $master_file, pos: $master_pos, gtid: $gtid_purged)&#34;  
+((SUCCESS_COUNT&#43;&#43;))  
+else  
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 失败: $db&#34;  
+rm -f &#34;$DUMP_PATH&#34; &#34;$INFO_PATH&#34;  
+((FAILURE_COUNT&#43;&#43;))  
+fi  
+done
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 清理 N 天前的旧备份  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+if [ $FAILURE_COUNT -eq 0 ]; then  
+cleanup_old() {  
+local pattern=&#34;$1&#34;  
+local now_ts=$(date &#43;%s)  
+local files=()  
+mapfile -t files &lt; &lt;(find &#34;$BACKUP_DIR&#34; -name &#34;$pattern&#34; -type f 2&gt;/dev/null)
+
+for file in &#34;${files[@]}&#34;; do  
+if [[ &#34;$file&#34; =~ -([0-9]{4})-([0-9]{2})-([0-9]{2})_([0-9]{2})([0-9]{2})([0-9]{2})\. ]]; then  
+\# 提取各部分：年、月、日、时、分、秒  
+local y=${BASH_REMATCH[1]}  
+local m=${BASH_REMATCH[2]}  
+local d=${BASH_REMATCH[3]}  
+local H=${BASH_REMATCH[4]}  
+local M=${BASH_REMATCH[5]}  
+local S=${BASH_REMATCH[6]}
+
+\# 构造合法日期字符串：2025-09-25 02:00:01  
+local datetime=&#34;$y-$m-$d $H:$M:$S&#34;
+
+\# 转换为时间戳  
+local file_ts=$(date -d &#34;$datetime&#34; &#43;%s 2&gt;/dev/null) || continue
+
+local age_days=$(( (now_ts &amp;#8211; file_ts) / 86400 ))
+
+if [ $age_days -ge $RETENTION_DAYS ]; then  
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 清理过期文件: $file (已存在 $age_days 天)&#34;  
+rm -f &#34;$file&#34;  
+fi  
+fi  
+done  
+}
+
+cleanup_old &#34;*.sql.gz&#34;  
+cleanup_old &#34;*.info&#34;
+
+END_TIME=$(date &#43;%s)  
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 备份完成: 成功 $SUCCESS_COUNT，失败 $FAILURE_COUNT，耗时 $((END_TIME &amp;#8211; START_TIME)) 秒&#34;  
+else  
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 警告：有 $FAILURE_COUNT 个数据库备份失败，跳过清理。&#34;  
+exit 1  
+fi
+
+exit 0
+
+MySQL binlog 备份脚本：
+
+
+#!/bin/bash  
+\# ===================================================================  
+\# MySQL Binlog 增量备份脚本（优化版）  
+\# 配合全量备份实现 PITR  
+\# 作者：BridgeLi  
+\# 版本：1.0  
+\# ===================================================================
+
+\# 配置参数  
+BINLOG_DIR=&#34;/var/lib/mysql&#34;  
+BACKUP_DIR=&#34;/project/backup/mysql/binlogs&#34;  
+CNF_FILE=&#34;/project/backup/mysql/my.cnf&#34;  
+LOG_FILE=&#34;$BACKUP_DIR/binlog_backup.log&#34;  
+LOCK_FILE=&#34;$BACKUP_DIR/.backup.lock&#34;  
+LAST_COPIED_FILE=&#34;$BACKUP_DIR/.last_binlog&#34;
+
+\# 创建备份目录  
+mkdir -p &#34;$BACKUP_DIR&#34; || { echo &#34;[$(date)] 错误：无法创建备份目录 $BACKUP_DIR&#34; &gt;&amp;2; exit 1; }
+
+\# 使用 flock 防止并发执行  
+exec 200&gt;&#34;$LOCK_FILE&#34;  
+if ! flock -n 200; then  
+echo &#34;[$(date)] 错误：备份脚本已在运行，退出。&#34; | tee -a &#34;$LOG_FILE&#34;  
+exit 1  
+fi
+
+\# 重定向所有输出到日志  
+exec &gt;&gt; &#34;$LOG_FILE&#34; 2&gt;&amp;1  
+echo &#34;==================================&#34;  
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 开始 binlog 增量备份&amp;#8230;&#34;
+
+\# 获取当前活跃 binlog  
+CURRENT_LOG=$(mysql &amp;#8211;defaults-extra-file=&#34;$CNF_FILE&#34; -sN -e &#34;SHOW MASTER STATUS;&#34; 2&gt;/dev/null | awk &amp;#8216;{print $1}&amp;#8217;)  
+if [ -z &#34;$CURRENT_LOG&#34; ]; then  
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 错误：无法获取当前 binlog 名称，请检查 MySQL 连接或权限。&#34;  
+exit 1  
+fi
+
+echo &#34;当前活跃 binlog: $CURRENT_LOG&#34;
+
+\# 读取上次备份的 binlog  
+if [[ -f &#34;$LAST_COPIED_FILE&#34; ]]; then  
+LAST_LOG=$(cat &#34;$LAST_COPIED_FILE&#34;)  
+echo &#34;上次已备份至: $LAST_LOG&#34;  
+else  
+LAST_LOG=&#34;&#34;  
+echo &#34;首次运行，将备份所有历史 binlog（除当前外）。&#34;  
+fi
+
+COPIED=0  
+cd &#34;$BINLOG_DIR&#34; || { echo &#34;无法进入 binlog 目录: $BINLOG_DIR&#34;; exit 1; }
+
+\# 获取所有 binlog 文件并按版本排序  
+mapfile -t LOGS &lt; &lt;(find . -maxdepth 1 -name &amp;#8216;mysql-bin.*&amp;#8217; -type f -printf &amp;#8216;%f\n&amp;#8217; | sort -V)
+
+for log in &#34;${LOGS[@]}&#34;; do  
+[[ ! -f &#34;$log&#34; ]] &amp;&amp; continue
+
+\# 跳过当前活跃的 binlog  
+[[ &#34;$log&#34; == &#34;$CURRENT_LOG&#34; ]] &amp;&amp; continue
+
+\# 判断是否需要备份：log &gt; LAST_LOG（版本排序）  
+if [[ -n &#34;$LAST_LOG&#34; ]]; then  
+\# 使用 sort -V 判断顺序  
+greater=$(printf &amp;#8216;%s\n%s&amp;#8217; &#34;$LAST_LOG&#34; &#34;$log&#34; | sort -V | tail -1)  
+if [[ &#34;$greater&#34; != &#34;$log&#34; || &#34;$log&#34; == &#34;$LAST_LOG&#34; ]]; then  
+continue  
+fi  
+fi
+
+\# 执行压缩备份  
+if gzip -c &#34;$log&#34; &gt; &#34;$BACKUP_DIR/${log}.gz&#34;; then  
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 已压缩备份: $log&#34;  
+((COPIED&#43;&#43;))  
+else  
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 错误：备份失败 $log&#34;  
+fi  
+done
+
+\# 原子更新最后备份的 binlog  
+echo &#34;$CURRENT_LOG&#34; &gt; &#34;${LAST_COPIED_FILE}.tmp&#34; &amp;&amp; mv &#34;${LAST_COPIED_FILE}.tmp&#34; &#34;$LAST_COPIED_FILE&#34;
+
+echo &#34;[$(date &#43;&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] binlog 增量备份完成，共复制 $COPIED 个文件。&#34;  
+echo &#34;==================================&#34;
+
+MySQL 健康检查脚本（非必需，只需要备份就行）
+
+
+#!/bin/bash  
+\# ===================================================================  
+\# MySQL 备份健康检查脚本（优化生产版 &amp;#8211; 已修复）  
+\# 功能：检查最近备份时效、磁盘使用率，记录日志，发送告警，输出 Prometheus 指标  
+\# 作者：BridgeLi  
+\# 版本：1.0  
+\# ===================================================================
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 配置参数  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+BACKUP_DIR=&#34;/project/backup/mysql/dbs&#34;  
+LOG_DIR=&#34;/var/log/mysql&#34;  
+LOG_FILE=&#34;$LOG_DIR/health_check.log&#34;  
+ALERT_EMAIL=&#34;admin@example.com&#34;  
+HOSTNAME=$(hostname -s)
+
+\# Prometheus 指标输出路径  
+PROM_FILE=&#34;/tmp/backup_health.prom&#34;  
+PROM_TMP_FILE=&#34;/tmp/backup_health.prom.tmp&#34;
+
+\# 告警阈值（小时）  
+MAX_BACKUP_AGE_HOURS=26  
+DISK_WARN_THRESHOLD=80  
+DISK_CRIT_THRESHOLD=90
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 创建日志目录（避免 tee 报错）  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+if [ ! -d &#34;$LOG_DIR&#34; ]; then  
+mkdir -p &#34;$LOG_DIR&#34; &amp;&amp; chmod 755 &#34;$LOG_DIR&#34;  
+[ $? -ne 0 ] &amp;&amp; echo &#34;ERROR: Cannot create log directory $LOG_DIR&#34; &amp;&amp; exit 1  
+fi
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 重定向输出：同时输出到日志和终端  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+exec &gt; &gt;(tee -a &#34;$LOG_FILE&#34;) 2&gt;&amp;1
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 检查最近一次备份是否在合理时间内  
+\# 输出：状态信息  
+\# 返回值：  
+\# 0 = OK  
+\# 1 = CRITICAL（超时）  
+\# 2 = ERROR（无备份）  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+check_last_backup() {  
+local latest_entry=$(find &#34;$BACKUP_DIR&#34; -name &#34;*.sql.gz&#34; -type f -printf &amp;#8216;%T@ %p\n&amp;#8217; 2&gt;/dev/null | sort -n | tail -1)
+
+if [ -z &#34;$latest_entry&#34; ]; then  
+echo &#34;ERROR no_recent_backup&#34;  
+return 2  
+fi
+
+\# 提取时间戳（取整数部分）  
+local mtime_epoch=$(echo &#34;$latest_entry&#34; | awk &amp;#8216;{split($1,a,&#34;.&#34;); print a[1]}&amp;#8217;)  
+local now_epoch=$(date &#43;%s)  
+local age_seconds=$((now_epoch &amp;#8211; mtime_epoch))  
+local age_hours=$((age_seconds / 3600))
+
+if [ $age_hours -gt $MAX_BACKUP_AGE_HOURS ]; then  
+echo &#34;CRITICAL backup_too_old $age_hours hours&#34;  
+return 1  
+else  
+echo &#34;OK last_backup $age_hours hours ago&#34;  
+return 0  
+fi  
+}
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 检查备份目录所在磁盘使用率  
+\# 返回值：  
+\# 0 = OK (&lt;80%)  
+\# 1 = CRITICAL (&gt;90%)  
+\# 2 = WARN (80%~90%)  
+\# 输出：状态信息  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+check_disk_usage() {  
+if [ ! -d &#34;$BACKUP_DIR&#34; ]; then  
+echo &#34;ERROR backup_dir_not_found: $BACKUP_DIR&#34;  
+return 1  
+fi
+
+local df_out=$(df -P &#34;$BACKUP_DIR&#34; 2&gt;/dev/null)  
+if [ -z &#34;$df_out&#34; ]; then  
+echo &#34;ERROR disk_check_failed&#34;  
+return 1  
+fi
+
+local used_percent=$(echo &#34;$df_out&#34; | tail -1 | awk &amp;#8216;{print $5}&amp;#8217; | tr -d &amp;#8216;%&amp;#8217;)
+
+if ! [[ &#34;$used_percent&#34; =~ ^[0-9]&#43;$ ]]; then  
+echo &#34;ERROR disk_usage_invalid: $used_percent&#34;  
+return 1  
+fi
+
+if [ $used_percent -gt $DISK_CRIT_THRESHOLD ]; then  
+echo &#34;CRITICAL disk_usage ${used_percent}%&#34;  
+return 1  
+elif [ $used_percent -gt $DISK_WARN_THRESHOLD ]; then  
+echo &#34;WARN disk_usage ${used_percent}%&#34;  
+return 2  
+else  
+echo &#34;OK disk_usage ${used_percent}%&#34;  
+return 0  
+fi  
+}
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 发送告警邮件  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+send_alert() {  
+local subject=&#34;$1&#34;  
+local body=&#34;$2&#34;
+
+if command -v mail &gt;/dev/null 2&gt;&amp;1; then  
+echo -e &#34;$body&#34; | mail -s &#34;$subject&#34; &#34;$ALERT_EMAIL&#34;  
+echo &#34;Alert sent to $ALERT_EMAIL&#34;  
+else  
+echo &#34;WARNING: &amp;#8216;mail&amp;#8217; command not available. Skipping alert.&#34;  
+logger &#34;MySQL Backup Alert: $subject | $body&#34;  
+fi  
+}
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 主逻辑开始  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+echo &#34;=== Backup Health Check ($(date)) on $HOSTNAME ===&#34;
+
+\# 执行检查，捕获输出和返回值（只执行一次！）  
+output1=$(check_last_backup)  
+res1=$?  
+echo &#34;$output1&#34;
+
+output2=$(check_disk_usage)  
+res2=$?  
+echo &#34;$output2&#34;
+
+\# 判断是否需要告警  
+alert_needed=false  
+if [ $res1 -eq 1 ] || [ $res1 -eq 2 ] || [ $res2 -eq 1 ]; then  
+alert_needed=true  
+fi
+
+\# 发送告警  
+if [ &#34;$alert_needed&#34; = true ]; then  
+subject=&#34;⚠️ MySQL 备份异常 &amp;#8211; $HOSTNAME&#34;  
+body=&#34;【备份状态】$output1\n【磁盘状态】$output2\n\n请立即检查备份目录：$BACKUP_DIR&#34;  
+send_alert &#34;$subject&#34; &#34;$body&#34;  
+else  
+echo &#34;All checks OK.&#34;  
+fi
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 输出 Prometheus 指标（原子写入）  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+(  
+echo &#34;# HELP mysql_backup_last_success_age_hours Age of last successful backup in hours, -1 if none&#34;  
+echo &#34;# TYPE mysql_backup_last_success_age_hours gauge&#34;  
+local latest_entry=$(find &#34;$BACKUP_DIR&#34; -name &#34;*.sql.gz&#34; -type f -printf &amp;#8216;%T@ %p\n&amp;#8217; 2&gt;/dev/null | sort -n | tail -1)  
+if [ -z &#34;$latest_entry&#34; ]; then  
+echo &#34;mysql_backup_last_success_age_hours -1&#34;  
+else  
+local mtime_epoch=$(echo &#34;$latest_entry&#34; | awk &amp;#8216;{split($1,a,&#34;.&#34;); print a[1]}&amp;#8217;)  
+local now=$(date &#43;%s)  
+local age_hours=$(( (now &amp;#8211; mtime_epoch) / 3600 ))  
+echo &#34;mysql_backup_last_success_age_hours $age_hours&#34;  
+fi
+
+echo &#34;&#34;  
+echo &#34;# HELP mysql_backup_disk_usage_percent Disk usage of the backup partition (%)&#34;  
+echo &#34;# TYPE mysql_backup_disk_usage_percent gauge&#34;  
+df -P &#34;$BACKUP_DIR&#34; 2&gt;/dev/null | tail -1 | awk &amp;#8216;{gsub(/%/,&#34;&#34;,$5); print &#34;mysql_backup_disk_usage_percent&#34;, $5}&amp;#8217;  
+) &gt; &#34;$PROM_TMP_FILE&#34; &amp;&amp; mv &#34;$PROM_TMP_FILE&#34; &#34;$PROM_FILE&#34;
+
+if [ $? -eq 0 ]; then  
+echo &#34;Prometheus metrics written to $PROM_FILE&#34;  
+else  
+echo &#34;ERROR: Failed to write Prometheus metrics&#34;  
+fi
+
+echo &#34;=== Check completed ===&#34;
+
+MySQL 恢复脚本
+
+
+#!/bin/bash  
+\# ===================================================================  
+\# MySQL Point-in-Time Recovery (PITR) 脚本  
+\# 功能：基于全量备份 &#43; binlog 恢复到指定时间点  
+\# 作者：BridgeLi  
+\# 版本：1.0  
+#  
+\# 用法：  
+\# ./mysql-pitr-restore.sh &#34;2025-09-24 10:00:00&#34; [数据库名]  
+\# ./mysql-pitr-restore.sh &amp;#8211;dry-run &#34;2025-09-24 10:00:00&#34; [db_name]  
+\# ./mysql-pitr-restore.sh &amp;#8211;help  
+#  
+\# 依赖：  
+\# mysql, mysqlbinlog, gzip, find, sort  
+\# ===================================================================
+
+set -euo pipefail # 严格模式：出错即退出
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 默认配置  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+BACKUP_DIR=&#34;/project/backup/mysql/dbs&#34;  
+BINLOG_DIR=&#34;/project/backup/mysql/binlogs&#34;  
+RESTORE_DIR=&#34;/tmp/mysql_restore_$$&#34; # 使用 PID 避免冲突  
+CNF_FILE=&#34;/project/backup/mysql/my.cnf&#34;  
+LOG_FILE=&#34;$BACKUP_DIR/restore.log&#34;
+
+DRY_RUN=0  
+DEBUG=0  
+TARGET_TIME=&#34;&#34;  
+TARGET_DB=&#34;&#34;
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 函数定义  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-
+
+usage() {  
+cat &lt;&lt; &amp;#8216;EOF&amp;#8217;  
+用法: ./mysql-pitr-restore.sh [选项] &lt;目标时间 &amp;#8216;YYYY-MM-DD HH:MM:SS&amp;#8217;&gt; [数据库名]
+
+选项:  
+&amp;#8211;dry-run 模拟执行，不真正恢复数据  
+&amp;#8211;debug 启用调试输出  
+&amp;#8211;help 显示此帮助信息
+
+示例:  
+./mysql-pitr-restore.sh &#34;2025-09-24 10:00:00&#34;  
+./mysql-pitr-restore.sh &amp;#8211;dry-run &#34;2025-09-24 10:00:00&#34; mydb  
+./mysql-pitr-restore.sh &amp;#8211;debug &#34;2025-09-24 12:30:00&#34;
+
+注意:  
+&amp;#8211; 全量备份文件需包含 CHANGE MASTER TO 语句以提取 binlog 位置  
+&amp;#8211; binlog 文件需为 .gz 压缩格式，命名如 mysql-bin.000001.gz  
+&amp;#8211; 恢复前请确保数据库无写入操作！
+
+EOF  
+}
+
+log() {  
+local level=&#34;${1}&#34;  
+shift  
+echo &#34;\[$(date &amp;#8216;&#43;%F %T&amp;#8217;)\] \[$level\] $*&#34; | tee -a &#34;$LOG_FILE&#34;  
+}
+
+debug() {  
+[[ $DEBUG -eq 1 ]] &amp;&amp; log &#34;DEBUG&#34; &#34;$@&#34;  
+}
+
+cleanup() {  
+if [[ -d &#34;$RESTORE_DIR&#34; ]]; then  
+debug &#34;正在清理临时目录: $RESTORE_DIR&#34;  
+rm -rf &#34;$RESTORE_DIR&#34;  
+fi  
+}  
+trap cleanup EXIT
+
+confirm_proceed() {  
+log &#34;WARN&#34; &#34;即将开始恢复至时间点: $TARGET_TIME&#34;  
+if [[ -n &#34;$TARGET_DB&#34; ]]; then  
+log &#34;INFO&#34; &#34;仅恢复数据库: $TARGET_DB&#34;  
+fi  
+log &#34;WARN&#34; &#34;请确保 MySQL 当前无写入操作，否则可能导致数据不一致！&#34;
+
+read -p &#34;确定继续？[y/N]: &#34; -n 1 -r  
+echo  
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then  
+log &#34;INFO&#34; &#34;用户取消操作&#34;  
+exit 1  
+fi  
+}
+
+find_latest_full_backup() {  
+local latest_file=&#34;&#34;  
+local latest_time=&#34;&#34;  
+local file time_str backup_time
+
+for file in &#34;$BACKUP_DIR&#34;/*.sql{,.gz}; do  
+[[ -f &#34;$file&#34; ]] || continue
+
+\# 提取时间戳：匹配 -YYYY-MM-DD_HHMMSS.sql 或 .sql.gz  
+if [[ &#34;$file&#34; =~ -([0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{6})\.sql(\.gz)?$ ]]; then  
+time_str=&#34;${BASH_REMATCH[1]}&#34;  
+backup_time=&#34;${time_str:0:10} ${time_str:11:2}:${time_str:13:2}:${time_str:15:2}&#34;
+
+debug &#34;发现备份: $file -&gt; 时间: $backup_time&#34;
+
+if [[ &#34;$backup_time&#34; &lt; &#34;$TARGET_TIME&#34; ]]; then  
+if [[ -z &#34;$latest_time&#34; || &#34;$backup_time&#34; &gt; &#34;$latest_time&#34; ]]; then  
+latest_file=&#34;$file&#34;  
+latest_time=&#34;$backup_time&#34;  
+fi  
+fi  
+else  
+debug &#34;跳过不匹配的文件: $file&#34;  
+fi  
+done
+
+if [[ -z &#34;$latest_file&#34; ]]; then  
+log &#34;ERROR&#34; &#34;未找到早于 $TARGET_TIME 的全量备份&#34;  
+return 1  
+fi
+
+echo &#34;$latest_file|$latest_time&#34;  
+}
+
+extract_binlog_position() {  
+local backup_file=&#34;$1&#34;  
+local content_cmd=&#34;gzip -dc&#34; # 默认是 .gz
+
+[[ &#34;$backup_file&#34; == *.sql ]] &amp;&amp; content_cmd=&#34;cat&#34;
+
+local line  
+line=$(eval &#34;$content_cmd&#34; &#34;$backup_file&#34; | sed -n &#34;s/.\*CHANGE MASTER TO MASTER_LOG_FILE=&amp;#8217;\([^&amp;#8217;]\*\)&amp;#8217;,.\*, MASTER_LOG_POS=\([0-9]\*\).*/\1 \2/p&#34; | head -1)
+
+if [[ -z &#34;$line&#34; ]]; then  
+log &#34;ERROR&#34; &#34;无法从备份中提取 binlog 位置信息，请检查是否启用 &amp;#8211;master-data=2&#34;  
+return 1  
+fi
+
+echo &#34;$line&#34;  
+}
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 参数解析  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+while [[ $# -gt 0 ]]; do  
+case $1 in  
+&amp;#8211;dry-run)  
+DRY_RUN=1  
+shift  
+;;  
+&amp;#8211;debug)  
+DEBUG=1  
+shift  
+;;  
+&amp;#8211;help)  
+usage  
+exit 0  
+;;  
+-*)  
+log &#34;ERROR&#34; &#34;未知选项: $1&#34;  
+usage  
+exit 1  
+;;  
+*)  
+break  
+;;  
+esac  
+done
+
+if [[ $# -lt 1 ]]; then  
+log &#34;ERROR&#34; &#34;缺少目标时间参数&#34;  
+usage  
+exit 1  
+fi
+
+TARGET_TIME=&#34;$1&#34;  
+if [[ ! &#34;$TARGET_TIME&#34; =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}\ [0-9]{2}:[0-9]{2}:[0-9]{2}$ ]]; then  
+log &#34;ERROR&#34; &#34;时间格式无效，应为 &amp;#8216;YYYY-MM-DD HH:MM:SS&amp;#8217;&#34;  
+exit 1  
+fi
+
+TARGET_DB=&#34;${2:-}&#34;
+
+\# 设置日志输出  
+exec &gt; &gt;(tee -a &#34;$LOG_FILE&#34;) 2&gt;&amp;1
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 主流程  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-
+
+log &#34;INFO&#34; &#34;开始 PITR 恢复流程，目标时间: $TARGET_TIME&#34;
+
+if (( DRY_RUN )); then  
+log &#34;DRYRUN&#34; &#34;运行在模拟模式 (&amp;#8211;dry-run)，不会执行实际恢复&#34;  
+fi
+
+\# 1. 查找最接近的全量备份  
+log &#34;INFO&#34; &#34;正在查找最接近且早于 $TARGET_TIME 的全量备份&amp;#8230;&#34;  
+result=$(find_latest_full_backup)  
+if [[ $? -ne 0 ]]; then  
+exit 1  
+fi
+
+FULL_BACKUP=$(echo &#34;$result&#34; | cut -d&amp;#8217;|&amp;#8217; -f1)  
+FULL_TIME=$(echo &#34;$result&#34; | cut -d&amp;#8217;|&amp;#8217; -f2)
+
+log &#34;INFO&#34; &#34;使用全量备份: $FULL_BACKUP (时间: $FULL_TIME)&#34;
+
+\# 2. 用户确认  
+if (( !DRY_RUN )); then  
+confirm_proceed  
+fi
+
+\# 3. 恢复全量数据  
+log &#34;INFO&#34; &#34;开始导入全量数据&amp;#8230;&#34;  
+if (( DRY_RUN )); then  
+log &#34;DRYRUN&#34; &#34;将导入: $FULL_BACKUP&#34;  
+else  
+mkdir -p &#34;$RESTORE_DIR&#34;  
+if [[ &#34;$FULL_BACKUP&#34; == *.gz ]]; then  
+if gzip -dc &#34;$FULL_BACKUP&#34; | mysql &amp;#8211;defaults-extra-file=&#34;$CNF_FILE&#34;; then  
+log &#34;INFO&#34; &#34;全量恢复成功&#34;  
+else  
+log &#34;ERROR&#34; &#34;全量导入失败&#34;  
+exit 1  
+fi  
+else  
+if mysql &amp;#8211;defaults-extra-file=&#34;$CNF_FILE&#34; &lt; &#34;$FULL_BACKUP&#34;; then  
+log &#34;INFO&#34; &#34;全量恢复成功&#34;  
+else  
+log &#34;ERROR&#34; &#34;全量导入失败&#34;  
+exit 1  
+fi  
+fi  
+fi
+
+\# 4. 提取 binlog 起始位置  
+log &#34;INFO&#34; &#34;提取 binlog 起始位置&amp;#8230;&#34;  
+position_line=$(extract_binlog_position &#34;$FULL_BACKUP&#34;)  
+if [[ $? -ne 0 ]]; then  
+exit 1  
+fi
+
+read -r START_FILE START_POS &lt;&lt;&lt; &#34;$position_line&#34;  
+log &#34;INFO&#34; &#34;从 binlog 开始应用: $START_FILE, 位置: $START_POS&#34;
+
+\# 5. 应用 binlog 到目标时间  
+log &#34;INFO&#34; &#34;开始应用 binlog 增量日志&amp;#8230;&#34;
+
+applied=0  
+for binlog_gz in $(find &#34;$BINLOG_DIR&#34; -name &#34;*.gz&#34; | sort); do  
+local binlog_base  
+binlog_base=$(basename &#34;$binlog_gz&#34; .gz)
+
+\# 跳过早于起始文件的日志  
+if [[ &#34;$binlog_base&#34; &lt; &#34;$START_FILE&#34; ]]; then  
+continue  
+fi
+
+log &#34;INFO&#34; &#34;处理 binlog: $binlog_base&#34;
+
+\# 解压到临时目录  
+mkdir -p &#34;$RESTORE_DIR/binlogs&#34;  
+local tmp_binlog=&#34;$RESTORE_DIR/binlogs/$binlog_base&#34;  
+if (( DRY_RUN )); then  
+log &#34;DRYRUN&#34; &#34;将解压并应用: $binlog_gz -&gt; $tmp_binlog&#34;  
+applied=1  
+continue  
+fi
+
+gzip -dc &#34;$binlog_gz&#34; &gt; &#34;$tmp_binlog&#34;
+
+\# 构建 mysqlbinlog 命令  
+local mysqlbinlog_cmd=(  
+mysqlbinlog  
+&amp;#8211;start-position=&#34;$START_POS&#34;  
+&amp;#8211;stop-datetime=&#34;$TARGET_TIME&#34;  
+&#34;${TARGET_DB:&#43;&amp;#8211;database=$TARGET_DB}&#34;  
+&#34;$tmp_binlog&#34;  
+)
+
+local mysql_cmd=(mysql &amp;#8211;defaults-extra-file=&#34;$CNF_FILE&#34;)
+
+debug &#34;执行命令: ${mysqlbinlog_cmd[\*]} | ${mysql_cmd[\*]}&#34;
+
+if &#34;${mysqlbinlog_cmd[@]}&#34; | &#34;${mysql_cmd[@]}&#34;; then  
+log &#34;INFO&#34; &#34;成功应用 binlog: $binlog_base&#34;  
+applied=1  
+else  
+local ret=$?  
+log &#34;INFO&#34; &#34;完成 binlog 应用（可能已到达目标时间或中断），返回码: $ret&#34;  
+applied=1  
+break # 关键：不再处理后续 binlog  
+fi
+
+rm -f &#34;$tmp_binlog&#34;  
+START_POS=4 # 下一个文件从事件头后开始  
+done
+
+\# 6. 结果汇报  
+if (( applied == 0 )); then  
+log &#34;WARN&#34; &#34;未应用任何 binlog，请检查 binlog 是否存在、时间范围是否合理&#34;  
+fi
+
+if (( DRY_RUN )); then  
+log &#34;DRYRUN&#34; &#34;模拟执行结束。真实恢复请移除 &amp;#8211;dry-run 参数。&#34;  
+else  
+log &#34;INFO&#34; &#34;恢复完成：已恢复至 $TARGET_TIME&#34;  
+log &#34;INFO&#34; &#34;请立即验证数据一致性，并检查关键业务逻辑。&#34;  
+fi
+
+exit 0
+
+my.cnf 文件（600 权限）
+
+
+[client]  
+user=用户名  
+password=密码  
+host=localhost  
+port=3306
+
+crontab 表达式
+
+
+\# 每天 2:00 全量备份  
+0 2 \* \* * /project/backup/mysql/backup_per_db.sh
+
+\# 每小时 0 分 增量 binlog  
+0 \* \* \* \* /project/backup/mysql/backup_binlog.sh
+
+\# 每天 3:10 健康检查  
+10 3 \* \* * /project/backup/mysql/check_backup_health.sh
+
+如果报：bash: ./backup_per_db.sh: /bin/bash^M: 坏的解释器: 没有那个文件或目录，解决方案：
+
+
+使用 vim 编辑器
+
+vim backup_per_db.sh
+
+在命令模式下执行：
+
+:set fileformat=unix  
+:wq
+">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/posts/2025-10-23-mysql-%E5%A4%87%E4%BB%BD%E5%8F%8A%E6%81%A2%E5%A4%8D%E8%84%9A%E6%9C%AC/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2025-10-23-mysql-%E5%A4%87%E4%BB%BD%E5%8F%8A%E6%81%A2%E5%A4%8D%E8%84%9A%E6%9C%AC/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">文章</a></div>
+    <h1 class="post-title entry-hint-parent">
+      MySQL 备份及恢复脚本
+    </h1>
+    <div class="post-meta"><span title='2025-10-23 09:51:35 +0000 +0000'>October 23, 2025</span>&nbsp;·&nbsp;<span>11 min</span>&nbsp;·&nbsp;<span>2332 words</span>&nbsp;·&nbsp;<span>Bridge Li</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>作为开发，我们都知道数据备份的重要性，而数据备份最重要的就是数据库备份，前一段时间由于操作失误，误删过一次数据库，所以特把备份和恢复脚本分享出来，作为笔记。</p>
+<ol>
+<li>MySQL 备份脚本</li>
+</ol>
+<pre tabindex="0"><code>
+#!/bin/bash  
+\# ===================================================================  
+\# MySQL 分库全量备份脚本（生产级 | 自适应 &amp;#8211;source-data / &amp;#8211;master-data）  
+\# 功能：  
+\# &amp;#8211; 自动发现用户数据库  
+\# &amp;#8211; 每库独立压缩备份  
+\# &amp;#8211; 自动选择 &amp;#8211;source-data (8.0+) 或 &amp;#8211;master-data (5.7)  
+\# &amp;#8211; 智能处理 GTID（仅在启用时设置）  
+\# &amp;#8211; 提取 binlog 位置生成 .info 文件  
+\# &amp;#8211; 清理 N 天前旧备份  
+\# 作者：BridgeLi  
+\# 版本：1.0  
+\# ===================================================================
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 配置区  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+BACKUP_DIR=&#34;/project/backup/mysql/dbs&#34;  
+CNF_FILE=&#34;/project/backup/mysql/my.cnf&#34;  
+RETENTION_DAYS=7  
+MIN_FREE_SPACE_GB=5
+
+HOSTNAME=$(hostname -s)  
+DT=$(date +%Y-%m-%d_%H%M%S)
+
+\# 排除系统库  
+EXCLUDED_DBS=&#34;^(mysql|sys|information_schema|performance_schema)$&#34;
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 初始化 &amp; 依赖检查  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+for cmd in mysql mysqldump gzip gunzip df date awk sed; do  
+command -v &#34;$cmd&#34; &gt;/dev/null || { echo &#34;错误：缺少命令 &amp;#8216;$cmd&amp;#8217;&#34;; exit 1; }  
+done
+
+mkdir -p &#34;$BACKUP_DIR&#34; || { echo &#34;错误：无法创建目录 $BACKUP_DIR&#34;; exit 1; }
+
+LOG_FILE=&#34;$BACKUP_DIR/backup.log&#34;
+
+LOCK_FILE=&#34;$BACKUP_DIR/.backup.lock&#34;  
+if [ -f &#34;$LOCK_FILE&#34; ]; then  
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 错误：锁文件存在，可能已有备份在运行。&#34;  
+exit 1  
+fi  
+trap &#34;rm -f &amp;#8216;$LOCK_FILE&amp;#8217;&#34; EXIT  
+touch &#34;$LOCK_FILE&#34;
+
+AVAILABLE_GB=$(df -P &#34;$BACKUP_DIR&#34; | tail -1 | awk &amp;#8216;{print int($4/1024/1024)}&amp;#8217;)  
+if [ &#34;$AVAILABLE_GB&#34; -lt &#34;$MIN_FREE_SPACE_GB&#34; ]; then  
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 错误：磁盘空间不足 (${AVAILABLE_GB}GB &lt; ${MIN_FREE_SPACE_GB}GB)&#34;  
+exit 1  
+fi
+
+exec &gt; &gt;(tee -a &#34;$LOG_FILE&#34;) 2&gt;&amp;1  
+echo &#34;\[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)\] \[$HOSTNAME\] 开始全量分库备份&amp;#8230;&#34;
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 检测 MySQL 版本和 GTID 状态  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+MYSQL_CMD=&#34;mysql &amp;#8211;defaults-extra-file=$CNF_FILE -sN&#34;
+
+\# 获取 MySQL 主版本（57, 80）  
+MYSQL_VERSION=$($MYSQL_CMD -e &#34;SELECT REPLACE(LEFT(VERSION(), 4), &amp;#8216;.&amp;#8217;, &amp;#8221;);&#34;)  
+if ! [[ &#34;$MYSQL_VERSION&#34; =~ ^[0-9]+$ ]]; then  
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 错误：无法获取 MySQL 版本&#34;  
+exit 1  
+fi
+
+\# 选择 source-data / master-data  
+if [ &#34;$MYSQL_VERSION&#34; -ge 80 ]; then  
+REPLICATION_OPT=&#34;&amp;#8211;source-data=2&#34;  
+else  
+REPLICATION_OPT=&#34;&amp;#8211;master-data=2&#34;  
+fi
+
+\# 检查 GTID 是否启用  
+GTID_MODE=$($MYSQL_CMD -e &#34;SELECT @@GLOBAL.gtid_mode;&#34; 2&gt;/dev/null || echo &#34;OFF&#34;)  
+if [[ &#34;$GTID_MODE&#34; =~ ^(ON|ON_PERMISSIVE|OFF_PERMISSIVE)$ ]]; then  
+GTID_PURGED_OPT=&#34;&amp;#8211;set-gtid-purged=ON&#34;  
+GTID_ENABLED=true  
+else  
+GTID_PURGED_OPT=&#34;&amp;#8211;set-gtid-purged=OFF&#34;  
+GTID_ENABLED=false  
+fi
+
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] MySQL 版本: $MYSQL_VERSION, 使用: $REPLICATION_OPT, GTID: ${GTID_MODE:-OFF}&#34;
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 获取所有非系统数据库  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+dbs=()  
+while IFS= read -r db; do  
+[[ -z &#34;$db&#34; ]] &amp;&amp; continue  
+if [[ ! &#34;$db&#34; =~ $EXCLUDED_DBS ]]; then  
+dbs+=(&#34;$db&#34;)  
+fi  
+done &lt; &lt;($MYSQL_CMD -e &#34;SHOW DATABASES;&#34; 2&gt;&gt;&#34;$LOG_FILE&#34;)
+
+if [ ${#dbs[@]} -eq 0 ]; then  
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 警告：未找到可备份的数据库。&#34;  
+exit 0  
+fi  
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 发现 ${#dbs[@]} 个数据库: ${dbs[*]}&#34;
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 执行备份  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+SUCCESS_COUNT=0  
+FAILURE_COUNT=0  
+START_TIME=$(date +%s)
+
+for db in &#34;${dbs[@]}&#34;; do  
+DUMP_FILE=&#34;${db}-${DT}.sql.gz&#34;  
+DUMP_PATH=&#34;$BACKUP_DIR/$DUMP_FILE&#34;  
+INFO_PATH=&#34;${DUMP_PATH%.gz}.info&#34;
+
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 正在备份: $db -&gt; $DUMP_PATH&#34;
+
+mysqldump &amp;#8211;defaults-extra-file=&#34;$CNF_FILE&#34; \  
+&amp;#8211;single-transaction \  
+&amp;#8211;routines \  
+&amp;#8211;triggers \  
+$REPLICATION_OPT \  
+$GTID_PURGED_OPT \  
+&amp;#8211;databases &#34;$db&#34; 2&gt;&gt;&#34;$LOG_FILE&#34; | gzip -c &gt; &#34;$DUMP_PATH&#34;
+
+if [ $? -eq 0 ] &amp;&amp; [ -s &#34;$DUMP_PATH&#34; ] &amp;&amp; gunzip -t &#34;$DUMP_PATH&#34; &gt;/dev/null 2&gt;&amp;1; then  
+\# 提取 binlog 位置（source/master 兼容）  
+read master_file master_pos &lt; &lt;(gzip -dc &#34;$DUMP_PATH&#34; | sed -n &#34;/^&amp;#8211; CHANGE MASTER TO / s/.\*LOG_FILE=&amp;#8217;\\([^&amp;#8217;]\*\\)&amp;#8217;,.\*LOG_POS=\\([0-9]\*\\).*/\\1 \\2/p&#34; | head -1)
+
+\# 提取 GTID（仅当启用）  
+if [ &#34;$GTID_ENABLED&#34; = true ]; then  
+gtid_purged=$(gzip -dc &#34;$DUMP_PATH&#34; | sed -n &#34;s/^SET @@GLOBAL.GTID_PURGED=&amp;#8217;\\([^&amp;#8217;]*\)&amp;#8217;;\$/\\1/p&#34; | head -1)  
+[ -z &#34;$gtid_purged&#34; ] &amp;&amp; gtid_purged=&#34;NONE&#34;  
+else  
+gtid_purged=&#34;DISABLED&#34;  
+fi
+
+\# 写入 .info  
+{  
+[ -n &#34;$master_file&#34; ] &amp;&amp; echo &#34;File: $master_file&#34;  
+[ -n &#34;$master_pos&#34; ] &amp;&amp; echo &#34;Position: $master_pos&#34;  
+echo &#34;GTID: $gtid_purged&#34;  
+} &gt; &#34;$INFO_PATH&#34;
+
+chmod 600 &#34;$DUMP_PATH&#34; &#34;$INFO_PATH&#34; 2&gt;/dev/null || true
+
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 成功: $db (binlog: $master_file, pos: $master_pos, gtid: $gtid_purged)&#34;  
+((SUCCESS_COUNT++))  
+else  
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 失败: $db&#34;  
+rm -f &#34;$DUMP_PATH&#34; &#34;$INFO_PATH&#34;  
+((FAILURE_COUNT++))  
+fi  
+done
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 清理 N 天前的旧备份  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+if [ $FAILURE_COUNT -eq 0 ]; then  
+cleanup_old() {  
+local pattern=&#34;$1&#34;  
+local now_ts=$(date +%s)  
+local files=()  
+mapfile -t files &lt; &lt;(find &#34;$BACKUP_DIR&#34; -name &#34;$pattern&#34; -type f 2&gt;/dev/null)
+
+for file in &#34;${files[@]}&#34;; do  
+if [[ &#34;$file&#34; =~ -([0-9]{4})-([0-9]{2})-([0-9]{2})_([0-9]{2})([0-9]{2})([0-9]{2})\. ]]; then  
+\# 提取各部分：年、月、日、时、分、秒  
+local y=${BASH_REMATCH[1]}  
+local m=${BASH_REMATCH[2]}  
+local d=${BASH_REMATCH[3]}  
+local H=${BASH_REMATCH[4]}  
+local M=${BASH_REMATCH[5]}  
+local S=${BASH_REMATCH[6]}
+
+\# 构造合法日期字符串：2025-09-25 02:00:01  
+local datetime=&#34;$y-$m-$d $H:$M:$S&#34;
+
+\# 转换为时间戳  
+local file_ts=$(date -d &#34;$datetime&#34; +%s 2&gt;/dev/null) || continue
+
+local age_days=$(( (now_ts &amp;#8211; file_ts) / 86400 ))
+
+if [ $age_days -ge $RETENTION_DAYS ]; then  
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 清理过期文件: $file (已存在 $age_days 天)&#34;  
+rm -f &#34;$file&#34;  
+fi  
+fi  
+done  
+}
+
+cleanup_old &#34;*.sql.gz&#34;  
+cleanup_old &#34;*.info&#34;
+
+END_TIME=$(date +%s)  
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 备份完成: 成功 $SUCCESS_COUNT，失败 $FAILURE_COUNT，耗时 $((END_TIME &amp;#8211; START_TIME)) 秒&#34;  
+else  
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 警告：有 $FAILURE_COUNT 个数据库备份失败，跳过清理。&#34;  
+exit 1  
+fi
+
+exit 0
+</code></pre><ol start="2">
+<li>MySQL binlog 备份脚本：</li>
+</ol>
+<pre tabindex="0"><code>
+#!/bin/bash  
+\# ===================================================================  
+\# MySQL Binlog 增量备份脚本（优化版）  
+\# 配合全量备份实现 PITR  
+\# 作者：BridgeLi  
+\# 版本：1.0  
+\# ===================================================================
+
+\# 配置参数  
+BINLOG_DIR=&#34;/var/lib/mysql&#34;  
+BACKUP_DIR=&#34;/project/backup/mysql/binlogs&#34;  
+CNF_FILE=&#34;/project/backup/mysql/my.cnf&#34;  
+LOG_FILE=&#34;$BACKUP_DIR/binlog_backup.log&#34;  
+LOCK_FILE=&#34;$BACKUP_DIR/.backup.lock&#34;  
+LAST_COPIED_FILE=&#34;$BACKUP_DIR/.last_binlog&#34;
+
+\# 创建备份目录  
+mkdir -p &#34;$BACKUP_DIR&#34; || { echo &#34;[$(date)] 错误：无法创建备份目录 $BACKUP_DIR&#34; &gt;&amp;2; exit 1; }
+
+\# 使用 flock 防止并发执行  
+exec 200&gt;&#34;$LOCK_FILE&#34;  
+if ! flock -n 200; then  
+echo &#34;[$(date)] 错误：备份脚本已在运行，退出。&#34; | tee -a &#34;$LOG_FILE&#34;  
+exit 1  
+fi
+
+\# 重定向所有输出到日志  
+exec &gt;&gt; &#34;$LOG_FILE&#34; 2&gt;&amp;1  
+echo &#34;==================================&#34;  
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 开始 binlog 增量备份&amp;#8230;&#34;
+
+\# 获取当前活跃 binlog  
+CURRENT_LOG=$(mysql &amp;#8211;defaults-extra-file=&#34;$CNF_FILE&#34; -sN -e &#34;SHOW MASTER STATUS;&#34; 2&gt;/dev/null | awk &amp;#8216;{print $1}&amp;#8217;)  
+if [ -z &#34;$CURRENT_LOG&#34; ]; then  
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 错误：无法获取当前 binlog 名称，请检查 MySQL 连接或权限。&#34;  
+exit 1  
+fi
+
+echo &#34;当前活跃 binlog: $CURRENT_LOG&#34;
+
+\# 读取上次备份的 binlog  
+if [[ -f &#34;$LAST_COPIED_FILE&#34; ]]; then  
+LAST_LOG=$(cat &#34;$LAST_COPIED_FILE&#34;)  
+echo &#34;上次已备份至: $LAST_LOG&#34;  
+else  
+LAST_LOG=&#34;&#34;  
+echo &#34;首次运行，将备份所有历史 binlog（除当前外）。&#34;  
+fi
+
+COPIED=0  
+cd &#34;$BINLOG_DIR&#34; || { echo &#34;无法进入 binlog 目录: $BINLOG_DIR&#34;; exit 1; }
+
+\# 获取所有 binlog 文件并按版本排序  
+mapfile -t LOGS &lt; &lt;(find . -maxdepth 1 -name &amp;#8216;mysql-bin.*&amp;#8217; -type f -printf &amp;#8216;%f\n&amp;#8217; | sort -V)
+
+for log in &#34;${LOGS[@]}&#34;; do  
+[[ ! -f &#34;$log&#34; ]] &amp;&amp; continue
+
+\# 跳过当前活跃的 binlog  
+[[ &#34;$log&#34; == &#34;$CURRENT_LOG&#34; ]] &amp;&amp; continue
+
+\# 判断是否需要备份：log &gt; LAST_LOG（版本排序）  
+if [[ -n &#34;$LAST_LOG&#34; ]]; then  
+\# 使用 sort -V 判断顺序  
+greater=$(printf &amp;#8216;%s\n%s&amp;#8217; &#34;$LAST_LOG&#34; &#34;$log&#34; | sort -V | tail -1)  
+if [[ &#34;$greater&#34; != &#34;$log&#34; || &#34;$log&#34; == &#34;$LAST_LOG&#34; ]]; then  
+continue  
+fi  
+fi
+
+\# 执行压缩备份  
+if gzip -c &#34;$log&#34; &gt; &#34;$BACKUP_DIR/${log}.gz&#34;; then  
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 已压缩备份: $log&#34;  
+((COPIED++))  
+else  
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] 错误：备份失败 $log&#34;  
+fi  
+done
+
+\# 原子更新最后备份的 binlog  
+echo &#34;$CURRENT_LOG&#34; &gt; &#34;${LAST_COPIED_FILE}.tmp&#34; &amp;&amp; mv &#34;${LAST_COPIED_FILE}.tmp&#34; &#34;$LAST_COPIED_FILE&#34;
+
+echo &#34;[$(date +&amp;#8217;%Y-%m-%d %H:%M:%S&amp;#8217;)] binlog 增量备份完成，共复制 $COPIED 个文件。&#34;  
+echo &#34;==================================&#34;
+</code></pre><ol start="3">
+<li>MySQL 健康检查脚本（非必需，只需要备份就行）</li>
+</ol>
+<pre tabindex="0"><code>
+#!/bin/bash  
+\# ===================================================================  
+\# MySQL 备份健康检查脚本（优化生产版 &amp;#8211; 已修复）  
+\# 功能：检查最近备份时效、磁盘使用率，记录日志，发送告警，输出 Prometheus 指标  
+\# 作者：BridgeLi  
+\# 版本：1.0  
+\# ===================================================================
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 配置参数  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+BACKUP_DIR=&#34;/project/backup/mysql/dbs&#34;  
+LOG_DIR=&#34;/var/log/mysql&#34;  
+LOG_FILE=&#34;$LOG_DIR/health_check.log&#34;  
+ALERT_EMAIL=&#34;admin@example.com&#34;  
+HOSTNAME=$(hostname -s)
+
+\# Prometheus 指标输出路径  
+PROM_FILE=&#34;/tmp/backup_health.prom&#34;  
+PROM_TMP_FILE=&#34;/tmp/backup_health.prom.tmp&#34;
+
+\# 告警阈值（小时）  
+MAX_BACKUP_AGE_HOURS=26  
+DISK_WARN_THRESHOLD=80  
+DISK_CRIT_THRESHOLD=90
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 创建日志目录（避免 tee 报错）  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+if [ ! -d &#34;$LOG_DIR&#34; ]; then  
+mkdir -p &#34;$LOG_DIR&#34; &amp;&amp; chmod 755 &#34;$LOG_DIR&#34;  
+[ $? -ne 0 ] &amp;&amp; echo &#34;ERROR: Cannot create log directory $LOG_DIR&#34; &amp;&amp; exit 1  
+fi
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 重定向输出：同时输出到日志和终端  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+exec &gt; &gt;(tee -a &#34;$LOG_FILE&#34;) 2&gt;&amp;1
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 检查最近一次备份是否在合理时间内  
+\# 输出：状态信息  
+\# 返回值：  
+\# 0 = OK  
+\# 1 = CRITICAL（超时）  
+\# 2 = ERROR（无备份）  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+check_last_backup() {  
+local latest_entry=$(find &#34;$BACKUP_DIR&#34; -name &#34;*.sql.gz&#34; -type f -printf &amp;#8216;%T@ %p\n&amp;#8217; 2&gt;/dev/null | sort -n | tail -1)
+
+if [ -z &#34;$latest_entry&#34; ]; then  
+echo &#34;ERROR no_recent_backup&#34;  
+return 2  
+fi
+
+\# 提取时间戳（取整数部分）  
+local mtime_epoch=$(echo &#34;$latest_entry&#34; | awk &amp;#8216;{split($1,a,&#34;.&#34;); print a[1]}&amp;#8217;)  
+local now_epoch=$(date +%s)  
+local age_seconds=$((now_epoch &amp;#8211; mtime_epoch))  
+local age_hours=$((age_seconds / 3600))
+
+if [ $age_hours -gt $MAX_BACKUP_AGE_HOURS ]; then  
+echo &#34;CRITICAL backup_too_old $age_hours hours&#34;  
+return 1  
+else  
+echo &#34;OK last_backup $age_hours hours ago&#34;  
+return 0  
+fi  
+}
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 检查备份目录所在磁盘使用率  
+\# 返回值：  
+\# 0 = OK (&lt;80%)  
+\# 1 = CRITICAL (&gt;90%)  
+\# 2 = WARN (80%~90%)  
+\# 输出：状态信息  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+check_disk_usage() {  
+if [ ! -d &#34;$BACKUP_DIR&#34; ]; then  
+echo &#34;ERROR backup_dir_not_found: $BACKUP_DIR&#34;  
+return 1  
+fi
+
+local df_out=$(df -P &#34;$BACKUP_DIR&#34; 2&gt;/dev/null)  
+if [ -z &#34;$df_out&#34; ]; then  
+echo &#34;ERROR disk_check_failed&#34;  
+return 1  
+fi
+
+local used_percent=$(echo &#34;$df_out&#34; | tail -1 | awk &amp;#8216;{print $5}&amp;#8217; | tr -d &amp;#8216;%&amp;#8217;)
+
+if ! [[ &#34;$used_percent&#34; =~ ^[0-9]+$ ]]; then  
+echo &#34;ERROR disk_usage_invalid: $used_percent&#34;  
+return 1  
+fi
+
+if [ $used_percent -gt $DISK_CRIT_THRESHOLD ]; then  
+echo &#34;CRITICAL disk_usage ${used_percent}%&#34;  
+return 1  
+elif [ $used_percent -gt $DISK_WARN_THRESHOLD ]; then  
+echo &#34;WARN disk_usage ${used_percent}%&#34;  
+return 2  
+else  
+echo &#34;OK disk_usage ${used_percent}%&#34;  
+return 0  
+fi  
+}
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 发送告警邮件  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+send_alert() {  
+local subject=&#34;$1&#34;  
+local body=&#34;$2&#34;
+
+if command -v mail &gt;/dev/null 2&gt;&amp;1; then  
+echo -e &#34;$body&#34; | mail -s &#34;$subject&#34; &#34;$ALERT_EMAIL&#34;  
+echo &#34;Alert sent to $ALERT_EMAIL&#34;  
+else  
+echo &#34;WARNING: &amp;#8216;mail&amp;#8217; command not available. Skipping alert.&#34;  
+logger &#34;MySQL Backup Alert: $subject | $body&#34;  
+fi  
+}
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 主逻辑开始  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+echo &#34;=== Backup Health Check ($(date)) on $HOSTNAME ===&#34;
+
+\# 执行检查，捕获输出和返回值（只执行一次！）  
+output1=$(check_last_backup)  
+res1=$?  
+echo &#34;$output1&#34;
+
+output2=$(check_disk_usage)  
+res2=$?  
+echo &#34;$output2&#34;
+
+\# 判断是否需要告警  
+alert_needed=false  
+if [ $res1 -eq 1 ] || [ $res1 -eq 2 ] || [ $res2 -eq 1 ]; then  
+alert_needed=true  
+fi
+
+\# 发送告警  
+if [ &#34;$alert_needed&#34; = true ]; then  
+subject=&#34;⚠️ MySQL 备份异常 &amp;#8211; $HOSTNAME&#34;  
+body=&#34;【备份状态】$output1\n【磁盘状态】$output2\n\n请立即检查备份目录：$BACKUP_DIR&#34;  
+send_alert &#34;$subject&#34; &#34;$body&#34;  
+else  
+echo &#34;All checks OK.&#34;  
+fi
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 输出 Prometheus 指标（原子写入）  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+(  
+echo &#34;# HELP mysql_backup_last_success_age_hours Age of last successful backup in hours, -1 if none&#34;  
+echo &#34;# TYPE mysql_backup_last_success_age_hours gauge&#34;  
+local latest_entry=$(find &#34;$BACKUP_DIR&#34; -name &#34;*.sql.gz&#34; -type f -printf &amp;#8216;%T@ %p\n&amp;#8217; 2&gt;/dev/null | sort -n | tail -1)  
+if [ -z &#34;$latest_entry&#34; ]; then  
+echo &#34;mysql_backup_last_success_age_hours -1&#34;  
+else  
+local mtime_epoch=$(echo &#34;$latest_entry&#34; | awk &amp;#8216;{split($1,a,&#34;.&#34;); print a[1]}&amp;#8217;)  
+local now=$(date +%s)  
+local age_hours=$(( (now &amp;#8211; mtime_epoch) / 3600 ))  
+echo &#34;mysql_backup_last_success_age_hours $age_hours&#34;  
+fi
+
+echo &#34;&#34;  
+echo &#34;# HELP mysql_backup_disk_usage_percent Disk usage of the backup partition (%)&#34;  
+echo &#34;# TYPE mysql_backup_disk_usage_percent gauge&#34;  
+df -P &#34;$BACKUP_DIR&#34; 2&gt;/dev/null | tail -1 | awk &amp;#8216;{gsub(/%/,&#34;&#34;,$5); print &#34;mysql_backup_disk_usage_percent&#34;, $5}&amp;#8217;  
+) &gt; &#34;$PROM_TMP_FILE&#34; &amp;&amp; mv &#34;$PROM_TMP_FILE&#34; &#34;$PROM_FILE&#34;
+
+if [ $? -eq 0 ]; then  
+echo &#34;Prometheus metrics written to $PROM_FILE&#34;  
+else  
+echo &#34;ERROR: Failed to write Prometheus metrics&#34;  
+fi
+
+echo &#34;=== Check completed ===&#34;
+</code></pre><ol start="4">
+<li>MySQL 恢复脚本</li>
+</ol>
+<pre tabindex="0"><code>
+#!/bin/bash  
+\# ===================================================================  
+\# MySQL Point-in-Time Recovery (PITR) 脚本  
+\# 功能：基于全量备份 + binlog 恢复到指定时间点  
+\# 作者：BridgeLi  
+\# 版本：1.0  
+#  
+\# 用法：  
+\# ./mysql-pitr-restore.sh &#34;2025-09-24 10:00:00&#34; [数据库名]  
+\# ./mysql-pitr-restore.sh &amp;#8211;dry-run &#34;2025-09-24 10:00:00&#34; [db_name]  
+\# ./mysql-pitr-restore.sh &amp;#8211;help  
+#  
+\# 依赖：  
+\# mysql, mysqlbinlog, gzip, find, sort  
+\# ===================================================================
+
+set -euo pipefail # 严格模式：出错即退出
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 默认配置  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+BACKUP_DIR=&#34;/project/backup/mysql/dbs&#34;  
+BINLOG_DIR=&#34;/project/backup/mysql/binlogs&#34;  
+RESTORE_DIR=&#34;/tmp/mysql_restore_$$&#34; # 使用 PID 避免冲突  
+CNF_FILE=&#34;/project/backup/mysql/my.cnf&#34;  
+LOG_FILE=&#34;$BACKUP_DIR/restore.log&#34;
+
+DRY_RUN=0  
+DEBUG=0  
+TARGET_TIME=&#34;&#34;  
+TARGET_DB=&#34;&#34;
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 函数定义  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-
+
+usage() {  
+cat &lt;&lt; &amp;#8216;EOF&amp;#8217;  
+用法: ./mysql-pitr-restore.sh [选项] &lt;目标时间 &amp;#8216;YYYY-MM-DD HH:MM:SS&amp;#8217;&gt; [数据库名]
+
+选项:  
+&amp;#8211;dry-run 模拟执行，不真正恢复数据  
+&amp;#8211;debug 启用调试输出  
+&amp;#8211;help 显示此帮助信息
+
+示例:  
+./mysql-pitr-restore.sh &#34;2025-09-24 10:00:00&#34;  
+./mysql-pitr-restore.sh &amp;#8211;dry-run &#34;2025-09-24 10:00:00&#34; mydb  
+./mysql-pitr-restore.sh &amp;#8211;debug &#34;2025-09-24 12:30:00&#34;
+
+注意:  
+&amp;#8211; 全量备份文件需包含 CHANGE MASTER TO 语句以提取 binlog 位置  
+&amp;#8211; binlog 文件需为 .gz 压缩格式，命名如 mysql-bin.000001.gz  
+&amp;#8211; 恢复前请确保数据库无写入操作！
+
+EOF  
+}
+
+log() {  
+local level=&#34;${1}&#34;  
+shift  
+echo &#34;\[$(date &amp;#8216;+%F %T&amp;#8217;)\] \[$level\] $*&#34; | tee -a &#34;$LOG_FILE&#34;  
+}
+
+debug() {  
+[[ $DEBUG -eq 1 ]] &amp;&amp; log &#34;DEBUG&#34; &#34;$@&#34;  
+}
+
+cleanup() {  
+if [[ -d &#34;$RESTORE_DIR&#34; ]]; then  
+debug &#34;正在清理临时目录: $RESTORE_DIR&#34;  
+rm -rf &#34;$RESTORE_DIR&#34;  
+fi  
+}  
+trap cleanup EXIT
+
+confirm_proceed() {  
+log &#34;WARN&#34; &#34;即将开始恢复至时间点: $TARGET_TIME&#34;  
+if [[ -n &#34;$TARGET_DB&#34; ]]; then  
+log &#34;INFO&#34; &#34;仅恢复数据库: $TARGET_DB&#34;  
+fi  
+log &#34;WARN&#34; &#34;请确保 MySQL 当前无写入操作，否则可能导致数据不一致！&#34;
+
+read -p &#34;确定继续？[y/N]: &#34; -n 1 -r  
+echo  
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then  
+log &#34;INFO&#34; &#34;用户取消操作&#34;  
+exit 1  
+fi  
+}
+
+find_latest_full_backup() {  
+local latest_file=&#34;&#34;  
+local latest_time=&#34;&#34;  
+local file time_str backup_time
+
+for file in &#34;$BACKUP_DIR&#34;/*.sql{,.gz}; do  
+[[ -f &#34;$file&#34; ]] || continue
+
+\# 提取时间戳：匹配 -YYYY-MM-DD_HHMMSS.sql 或 .sql.gz  
+if [[ &#34;$file&#34; =~ -([0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{6})\.sql(\.gz)?$ ]]; then  
+time_str=&#34;${BASH_REMATCH[1]}&#34;  
+backup_time=&#34;${time_str:0:10} ${time_str:11:2}:${time_str:13:2}:${time_str:15:2}&#34;
+
+debug &#34;发现备份: $file -&gt; 时间: $backup_time&#34;
+
+if [[ &#34;$backup_time&#34; &lt; &#34;$TARGET_TIME&#34; ]]; then  
+if [[ -z &#34;$latest_time&#34; || &#34;$backup_time&#34; &gt; &#34;$latest_time&#34; ]]; then  
+latest_file=&#34;$file&#34;  
+latest_time=&#34;$backup_time&#34;  
+fi  
+fi  
+else  
+debug &#34;跳过不匹配的文件: $file&#34;  
+fi  
+done
+
+if [[ -z &#34;$latest_file&#34; ]]; then  
+log &#34;ERROR&#34; &#34;未找到早于 $TARGET_TIME 的全量备份&#34;  
+return 1  
+fi
+
+echo &#34;$latest_file|$latest_time&#34;  
+}
+
+extract_binlog_position() {  
+local backup_file=&#34;$1&#34;  
+local content_cmd=&#34;gzip -dc&#34; # 默认是 .gz
+
+[[ &#34;$backup_file&#34; == *.sql ]] &amp;&amp; content_cmd=&#34;cat&#34;
+
+local line  
+line=$(eval &#34;$content_cmd&#34; &#34;$backup_file&#34; | sed -n &#34;s/.\*CHANGE MASTER TO MASTER_LOG_FILE=&amp;#8217;\([^&amp;#8217;]\*\)&amp;#8217;,.\*, MASTER_LOG_POS=\([0-9]\*\).*/\1 \2/p&#34; | head -1)
+
+if [[ -z &#34;$line&#34; ]]; then  
+log &#34;ERROR&#34; &#34;无法从备份中提取 binlog 位置信息，请检查是否启用 &amp;#8211;master-data=2&#34;  
+return 1  
+fi
+
+echo &#34;$line&#34;  
+}
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 参数解析  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+while [[ $# -gt 0 ]]; do  
+case $1 in  
+&amp;#8211;dry-run)  
+DRY_RUN=1  
+shift  
+;;  
+&amp;#8211;debug)  
+DEBUG=1  
+shift  
+;;  
+&amp;#8211;help)  
+usage  
+exit 0  
+;;  
+-*)  
+log &#34;ERROR&#34; &#34;未知选项: $1&#34;  
+usage  
+exit 1  
+;;  
+*)  
+break  
+;;  
+esac  
+done
+
+if [[ $# -lt 1 ]]; then  
+log &#34;ERROR&#34; &#34;缺少目标时间参数&#34;  
+usage  
+exit 1  
+fi
+
+TARGET_TIME=&#34;$1&#34;  
+if [[ ! &#34;$TARGET_TIME&#34; =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}\ [0-9]{2}:[0-9]{2}:[0-9]{2}$ ]]; then  
+log &#34;ERROR&#34; &#34;时间格式无效，应为 &amp;#8216;YYYY-MM-DD HH:MM:SS&amp;#8217;&#34;  
+exit 1  
+fi
+
+TARGET_DB=&#34;${2:-}&#34;
+
+\# 设置日志输出  
+exec &gt; &gt;(tee -a &#34;$LOG_FILE&#34;) 2&gt;&amp;1
+
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-  
+\# 主流程  
+\# &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-
+
+log &#34;INFO&#34; &#34;开始 PITR 恢复流程，目标时间: $TARGET_TIME&#34;
+
+if (( DRY_RUN )); then  
+log &#34;DRYRUN&#34; &#34;运行在模拟模式 (&amp;#8211;dry-run)，不会执行实际恢复&#34;  
+fi
+
+\# 1. 查找最接近的全量备份  
+log &#34;INFO&#34; &#34;正在查找最接近且早于 $TARGET_TIME 的全量备份&amp;#8230;&#34;  
+result=$(find_latest_full_backup)  
+if [[ $? -ne 0 ]]; then  
+exit 1  
+fi
+
+FULL_BACKUP=$(echo &#34;$result&#34; | cut -d&amp;#8217;|&amp;#8217; -f1)  
+FULL_TIME=$(echo &#34;$result&#34; | cut -d&amp;#8217;|&amp;#8217; -f2)
+
+log &#34;INFO&#34; &#34;使用全量备份: $FULL_BACKUP (时间: $FULL_TIME)&#34;
+
+\# 2. 用户确认  
+if (( !DRY_RUN )); then  
+confirm_proceed  
+fi
+
+\# 3. 恢复全量数据  
+log &#34;INFO&#34; &#34;开始导入全量数据&amp;#8230;&#34;  
+if (( DRY_RUN )); then  
+log &#34;DRYRUN&#34; &#34;将导入: $FULL_BACKUP&#34;  
+else  
+mkdir -p &#34;$RESTORE_DIR&#34;  
+if [[ &#34;$FULL_BACKUP&#34; == *.gz ]]; then  
+if gzip -dc &#34;$FULL_BACKUP&#34; | mysql &amp;#8211;defaults-extra-file=&#34;$CNF_FILE&#34;; then  
+log &#34;INFO&#34; &#34;全量恢复成功&#34;  
+else  
+log &#34;ERROR&#34; &#34;全量导入失败&#34;  
+exit 1  
+fi  
+else  
+if mysql &amp;#8211;defaults-extra-file=&#34;$CNF_FILE&#34; &lt; &#34;$FULL_BACKUP&#34;; then  
+log &#34;INFO&#34; &#34;全量恢复成功&#34;  
+else  
+log &#34;ERROR&#34; &#34;全量导入失败&#34;  
+exit 1  
+fi  
+fi  
+fi
+
+\# 4. 提取 binlog 起始位置  
+log &#34;INFO&#34; &#34;提取 binlog 起始位置&amp;#8230;&#34;  
+position_line=$(extract_binlog_position &#34;$FULL_BACKUP&#34;)  
+if [[ $? -ne 0 ]]; then  
+exit 1  
+fi
+
+read -r START_FILE START_POS &lt;&lt;&lt; &#34;$position_line&#34;  
+log &#34;INFO&#34; &#34;从 binlog 开始应用: $START_FILE, 位置: $START_POS&#34;
+
+\# 5. 应用 binlog 到目标时间  
+log &#34;INFO&#34; &#34;开始应用 binlog 增量日志&amp;#8230;&#34;
+
+applied=0  
+for binlog_gz in $(find &#34;$BINLOG_DIR&#34; -name &#34;*.gz&#34; | sort); do  
+local binlog_base  
+binlog_base=$(basename &#34;$binlog_gz&#34; .gz)
+
+\# 跳过早于起始文件的日志  
+if [[ &#34;$binlog_base&#34; &lt; &#34;$START_FILE&#34; ]]; then  
+continue  
+fi
+
+log &#34;INFO&#34; &#34;处理 binlog: $binlog_base&#34;
+
+\# 解压到临时目录  
+mkdir -p &#34;$RESTORE_DIR/binlogs&#34;  
+local tmp_binlog=&#34;$RESTORE_DIR/binlogs/$binlog_base&#34;  
+if (( DRY_RUN )); then  
+log &#34;DRYRUN&#34; &#34;将解压并应用: $binlog_gz -&gt; $tmp_binlog&#34;  
+applied=1  
+continue  
+fi
+
+gzip -dc &#34;$binlog_gz&#34; &gt; &#34;$tmp_binlog&#34;
+
+\# 构建 mysqlbinlog 命令  
+local mysqlbinlog_cmd=(  
+mysqlbinlog  
+&amp;#8211;start-position=&#34;$START_POS&#34;  
+&amp;#8211;stop-datetime=&#34;$TARGET_TIME&#34;  
+&#34;${TARGET_DB:+&amp;#8211;database=$TARGET_DB}&#34;  
+&#34;$tmp_binlog&#34;  
+)
+
+local mysql_cmd=(mysql &amp;#8211;defaults-extra-file=&#34;$CNF_FILE&#34;)
+
+debug &#34;执行命令: ${mysqlbinlog_cmd[\*]} | ${mysql_cmd[\*]}&#34;
+
+if &#34;${mysqlbinlog_cmd[@]}&#34; | &#34;${mysql_cmd[@]}&#34;; then  
+log &#34;INFO&#34; &#34;成功应用 binlog: $binlog_base&#34;  
+applied=1  
+else  
+local ret=$?  
+log &#34;INFO&#34; &#34;完成 binlog 应用（可能已到达目标时间或中断），返回码: $ret&#34;  
+applied=1  
+break # 关键：不再处理后续 binlog  
+fi
+
+rm -f &#34;$tmp_binlog&#34;  
+START_POS=4 # 下一个文件从事件头后开始  
+done
+
+\# 6. 结果汇报  
+if (( applied == 0 )); then  
+log &#34;WARN&#34; &#34;未应用任何 binlog，请检查 binlog 是否存在、时间范围是否合理&#34;  
+fi
+
+if (( DRY_RUN )); then  
+log &#34;DRYRUN&#34; &#34;模拟执行结束。真实恢复请移除 &amp;#8211;dry-run 参数。&#34;  
+else  
+log &#34;INFO&#34; &#34;恢复完成：已恢复至 $TARGET_TIME&#34;  
+log &#34;INFO&#34; &#34;请立即验证数据一致性，并检查关键业务逻辑。&#34;  
+fi
+
+exit 0
+</code></pre><ol start="5">
+<li>my.cnf 文件（600 权限）</li>
+</ol>
+<pre tabindex="0"><code>
+[client]  
+user=用户名  
+password=密码  
+host=localhost  
+port=3306
+</code></pre><ol start="6">
+<li>crontab 表达式</li>
+</ol>
+<pre tabindex="0"><code>
+\# 每天 2:00 全量备份  
+0 2 \* \* * /project/backup/mysql/backup_per_db.sh
+
+\# 每小时 0 分 增量 binlog  
+0 \* \* \* \* /project/backup/mysql/backup_binlog.sh
+
+\# 每天 3:10 健康检查  
+10 3 \* \* * /project/backup/mysql/check_backup_health.sh
+</code></pre><ol start="7">
+<li>如果报：bash: ./backup_per_db.sh: /bin/bash^M: 坏的解释器: 没有那个文件或目录，解决方案：</li>
+</ol>
+<pre tabindex="0"><code>
+使用 vim 编辑器
+
+vim backup_per_db.sh
+
+在命令模式下执行：
+
+:set fileformat=unix  
+:wq
+</code></pre>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/">备份与恢复</a></li>
+    </ul>
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share MySQL 备份及恢复脚本 on x"
+            href="https://x.com/intent/tweet/?text=MySQL%20%e5%a4%87%e4%bb%bd%e5%8f%8a%e6%81%a2%e5%a4%8d%e8%84%9a%e6%9c%ac&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-10-23-mysql-%25E5%25A4%2587%25E4%25BB%25BD%25E5%258F%258A%25E6%2581%25A2%25E5%25A4%258D%25E8%2584%259A%25E6%259C%25AC%2f&amp;hashtags=%e5%a4%87%e4%bb%bd%e4%b8%8e%e6%81%a2%e5%a4%8d">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share MySQL 备份及恢复脚本 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-10-23-mysql-%25E5%25A4%2587%25E4%25BB%25BD%25E5%258F%258A%25E6%2581%25A2%25E5%25A4%258D%25E8%2584%259A%25E6%259C%25AC%2f&amp;title=MySQL%20%e5%a4%87%e4%bb%bd%e5%8f%8a%e6%81%a2%e5%a4%8d%e8%84%9a%e6%9c%ac&amp;summary=MySQL%20%e5%a4%87%e4%bb%bd%e5%8f%8a%e6%81%a2%e5%a4%8d%e8%84%9a%e6%9c%ac&amp;source=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-10-23-mysql-%25E5%25A4%2587%25E4%25BB%25BD%25E5%258F%258A%25E6%2581%25A2%25E5%25A4%258D%25E8%2584%259A%25E6%259C%25AC%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share MySQL 备份及恢复脚本 on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-10-23-mysql-%25E5%25A4%2587%25E4%25BB%25BD%25E5%258F%258A%25E6%2581%25A2%25E5%25A4%258D%25E8%2584%259A%25E6%259C%25AC%2f&title=MySQL%20%e5%a4%87%e4%bb%bd%e5%8f%8a%e6%81%a2%e5%a4%8d%e8%84%9a%e6%9c%ac">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share MySQL 备份及恢复脚本 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-10-23-mysql-%25E5%25A4%2587%25E4%25BB%25BD%25E5%258F%258A%25E6%2581%25A2%25E5%25A4%258D%25E8%2584%259A%25E6%259C%25AC%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share MySQL 备份及恢复脚本 on whatsapp"
+            href="https://api.whatsapp.com/send?text=MySQL%20%e5%a4%87%e4%bb%bd%e5%8f%8a%e6%81%a2%e5%a4%8d%e8%84%9a%e6%9c%ac%20-%20http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-10-23-mysql-%25E5%25A4%2587%25E4%25BB%25BD%25E5%258F%258A%25E6%2581%25A2%25E5%25A4%258D%25E8%2584%259A%25E6%259C%25AC%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share MySQL 备份及恢复脚本 on telegram"
+            href="https://telegram.me/share/url?text=MySQL%20%e5%a4%87%e4%bb%bd%e5%8f%8a%e6%81%a2%e5%a4%8d%e8%84%9a%e6%9c%ac&amp;url=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-10-23-mysql-%25E5%25A4%2587%25E4%25BB%25BD%25E5%258F%258A%25E6%2581%25A2%25E5%25A4%258D%25E8%2584%259A%25E6%259C%25AC%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share MySQL 备份及恢复脚本 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=MySQL%20%e5%a4%87%e4%bb%bd%e5%8f%8a%e6%81%a2%e5%a4%8d%e8%84%9a%e6%9c%ac&u=http%3a%2f%2flocalhost%3a1313%2fposts%2f2025-10-23-mysql-%25E5%25A4%2587%25E4%25BB%25BD%25E5%258F%258A%25E6%2581%25A2%25E5%25A4%258D%25E8%2584%259A%25E6%259C%25AC%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

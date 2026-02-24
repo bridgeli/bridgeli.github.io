@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>身份证号校验 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E8%BA%AB%E4%BB%BD%E8%AF%81%E5%8F%B7%E6%A0%A1%E9%AA%8C/</link>
+    <description>Recent content in 身份证号校验 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 23 Jan 2022 08:49:35 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E8%BA%AB%E4%BB%BD%E8%AF%81%E5%8F%B7%E6%A0%A1%E9%AA%8C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>身份证校验方法</title>
+      <link>http://localhost:1313/posts/2022-01-23-%E8%BA%AB%E4%BB%BD%E8%AF%81%E6%A0%A1%E9%AA%8C%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Sun, 23 Jan 2022 08:49:35 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2022-01-23-%E8%BA%AB%E4%BB%BD%E8%AF%81%E6%A0%A1%E9%AA%8C%E6%96%B9%E6%B3%95/</guid>
+      <description>&lt;p&gt;我国的身份证编制是有标准的，每一位都不是随便瞎写的，就像我国的地图坐标经纬度一样，并不是真是的经纬度，而是人为加入了偏转，被称为：火星坐标系，但是工作中发现很多人并不了解，在工作中，用户输入的身份证号是否正确，我们根据这个规则是可以做初步校验的，当然真是的校验肯定是要通过公安部授权的接口，这是收费的。但是初步校验是真简单的，我个人发现有些系统并没有加入，所以今天写一篇小文章，做一个常用的工具类来校验身份证号，至于具体的规则，大家可以搜一下这个国标：GB11643-1999，代码如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo;
+
+import org.apache.commons.lang3.StringUtils;  
+import org.junit.Assert;  
+import org.junit.Test;
+
+/**  
+* @author BridgeLi  
+* @date 2022/1/23 15:01  
+*/  
+public class IdNoUtil {
+
+@Test  
+public void testId() {  
+String IdNo = &amp;#34;&amp;#34;;  
+boolean b = validateIdNo(IdNo);  
+Assert.assertTrue(b);  
+}
+
+public static boolean validateIdNo(String IdNo) {  
+if (StringUtils.isBlank(IdNo) || IdNo.length() != 18) {  
+return false;  
+}  
+char[] charArray = IdNo.toCharArray();  
+//前十七位加权因子  
+int[] idCardWi = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};  
+//这是除以11后，可能产生的11位余数对应的验证码  
+String[] idCardY = {&amp;#34;1&amp;#34;, &amp;#34;0&amp;#34;, &amp;#34;X&amp;#34;, &amp;#34;9&amp;#34;, &amp;#34;8&amp;#34;, &amp;#34;7&amp;#34;, &amp;#34;6&amp;#34;, &amp;#34;5&amp;#34;, &amp;#34;4&amp;#34;, &amp;#34;3&amp;#34;, &amp;#34;2&amp;#34;};  
+int sum = 0;  
+for (int i = 0; i &amp;lt; 17; i++) {  
+int current = Integer.parseInt(String.valueOf(charArray[i]));  
+int count = current * idCardWi[i];  
+sum += count;  
+}  
+char idCardLast = charArray[17];  
+int idCardMod = sum % 11;  
+if (idCardY[idCardMod].equalsIgnoreCase(String.valueOf(idCardLast))) {  
+return true;  
+} else {  
+return false;  
+}  
+}
+
+}
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,65 @@
+baseURL = 'https://bridgeli.cn/'
+languageCode = 'zh-cn'
+title = "分享技术带来的喜悦"
+theme = 'PaperMod'
+draft = false
+
+# 作者信息
+[author]
+  name = 'Bridge Li'
+
+[params]
+  author = 'Bridge Li'
+  mainSections = ["posts", "post"]
+  description = '技术分享博客'
+  keywords = ['博客', '技术', 'Java']
+  defaultTheme = 'auto'
+  disableThemeToggle = false
+  ShowShareButtons = true
+  ShowReadingTime = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowWordCount = true
+
+[params.homeInfoParams]
+  Title = '欢迎来到我的博客'
+  Content = '这里记录了我的技术学习和思考'
+
+# 社交图标（可选）
+[[params.socialIcons]]
+  name = 'github'
+  url = 'https://github.com/bridgeli'
+
+# 菜单配置
+[[menu.main]]
+  identifier = 'posts'
+  name = '文章'
+  url = '/posts/'
+  weight = 1
+
+[[menu.main]]
+  identifier = 'about'
+  name = '关于'
+  url = '/about/'
+  weight = 2
+
+[[menu.main]]
+  identifier = 'archives'
+  name = '归档'
+  url = '/archives/'
+  weight = 3
+
+# 允许 HTML 渲染
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+# 分页配置
+[pagination]
+  pagerSize = 10
+
+# 分类和标签
+[taxonomies]
+  category = 'categories'
+  tag = 'tags'

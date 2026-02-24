@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>JConsole on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/jconsole/</link>
+    <description>Recent content in JConsole on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 04 Apr 2017 11:58:54 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/jconsole/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java GC之常见监控可视化工具总结（下）</title>
+      <link>http://localhost:1313/posts/2017-04-04-355/</link>
+      <pubDate>Tue, 04 Apr 2017 11:58:54 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2017-04-04-355/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/archives/349&#34; title=&#34;Java GC之常见监控与分析命令总结（上）&#34;&gt;上一篇文章&lt;/a&gt;总结一下监控和分析的常见命令，那些是基础，但是有些同学看到命令行就害怕，所以这篇文件总计一下两个常用的可视化工具。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;JConsole&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;JConsole工具在JDK/bin目录下，启动JConsole后，将自动搜索本机运行的jvm进程，不需要jps命令来查询指定。双击其中一个jvm进程即可开始监控，也可使用“远程进程”来连接远程服务器&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/JConsole_start.jpg&#34; alt=&#34;&#34; width=&#34;300&#34; height=&#34;73&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;进入JConsole主界面，有“概述”、“内存”、“线程”、“类”、“VM摘要”和”Mbean”六个页签：&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/JConsole_process.jpg&#34; alt=&#34;&#34; width=&#34;300&#34; height=&#34;73&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;内存页签相当于jstat命令，用于监视收集器管理的虚拟机内存(Java堆和永久代)变化趋势，还可在详细信息栏观察全部GC执行的时间及次数&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/JConsole_mem.jpg&#34; alt=&#34;&#34; width=&#34;300&#34; height=&#34;73&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;线程页签：线程长时间停顿的主要原因有：等待外部资源（数据库连接、网络资源、设备资源等）、死循环、锁等待（活锁和死锁）&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/JConsole_thread.jpg&#34; alt=&#34;&#34; width=&#34;300&#34; height=&#34;73&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;最后一个常用页签，VM页签，可清楚的了解显示指定的JVM参数及堆信息&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/JConsole_jntro.jpg&#34; alt=&#34;&#34; width=&#34;300&#34; height=&#34;73&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;VisualVM：多合一故障处理工具&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;VisualVM是一个集成多个JDK命令行工具的可视化工具。VisualVM基于NetBeans平台开发，它具备了插件扩展功能的特性，通过插件的扩展，可用于显示虚拟机进程及进程的配置和环境信息(jps，jinfo)，监视应用程序的CPU、GC、堆、方法区及线程的信息(jstat、jstack)等。VisualVM在JDK/bin目录下&lt;/p&gt;
+&lt;p&gt;①. 安装插件： 工具- 插件&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/Visual_GC.png&#34; alt=&#34;&#34; width=&#34;300&#34; height=&#34;73&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;②. 监控垃圾回收&lt;/p&gt;
+&lt;p&gt;在左侧的“Application”测看下，有个“Local”节点，所有本地正在运行的Java应用都将罗列在这里。Java VisualVM是一个Java应用。所以，它将自己也列在这里。为了方便学习，我们将监控Java VisualVM自身的垃圾回收过程。双击“Local”节点下的VisualVM图标，现在，应用监视窗口在右侧打开。我们关注的是“Visual GC”，点击它&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/GC.png&#34; alt=&#34;&#34; width=&#34;300&#34; height=&#34;73&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;再配合其他的标签页，例如“Threads”以及线程转储你，我们就可以深入详细地了解这方面的内容。在“监视”标签页，我们可以监控整个堆内存的使用情况，这些都不贴图了，大家可以随便玩。&lt;/p&gt;
+&lt;p&gt;③. 在VisualVM中生成dump文件&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/dump.png&#34; alt=&#34;&#34; width=&#34;300&#34; height=&#34;73&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;参考资料：周志明《深入理解Java虚拟机》第二版第四章&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

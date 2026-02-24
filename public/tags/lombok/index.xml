@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Lombok on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/lombok/</link>
+    <description>Recent content in Lombok on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 25 Feb 2018 11:34:01 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/lombok/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记一次使用 lombok 小小的成长感悟</title>
+      <link>http://localhost:1313/posts/2018-02-25-%E8%AE%B0%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8-lombok-%E5%B0%8F%E5%B0%8F%E7%9A%84%E6%88%90%E9%95%BF%E6%84%9F%E6%82%9F/</link>
+      <pubDate>Sun, 25 Feb 2018 11:34:01 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2018-02-25-%E8%AE%B0%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8-lombok-%E5%B0%8F%E5%B0%8F%E7%9A%84%E6%88%90%E9%95%BF%E6%84%9F%E6%82%9F/</guid>
+      <description>&lt;p&gt;公司项目里面用了 lombok，感觉这个东西真是个好东西，然后公司也用的简单，所以也没仔细看文档就开始想当然的用了，然后就悲剧了，今天就记录一下这件事，写一下经验教训，具体怎么用，大家可以看最后的参考。&lt;br&gt;
+lombok 有一个很好用的注解：@Data，当时以为这个注解就是相当于：@Getter和@Setter，所以有一次要重写 equals 和 hashcode 方法，然后就让 IDE 自动生成了，当时也没仔细看生成的是什么样子，然后就发现了 bug，仔细一看生成的 equals 方法原来是这样的：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo;
+
+import lombok.Data;
+
+import java.util.Objects;
+
+/**  
+* Created by bridgeli on 2018/2/25.  
+*/  
+@Data  
+public class LomBokTest {  
+private Integer id;  
+private String username;
+
+@Override  
+public boolean equals(Object o) {  
+if (this == o) {  
+return true;  
+}  
+if (o == null || getClass() != o.getClass()) {  
+return false;  
+}  
+if (!super.equals(o)) {  
+return false;  
+}  
+LomBokTest that = (LomBokTest) o;  
+return Objects.equals(id, that.id);  
+}
+
+@Override  
+public int hashCode() {  
+return Objects.hash(super.hashCode(), id);  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当时还以为是 idea 的 bug，因为是 idea 自动生成的，之前用 eclipse 自动生成从没问题，eclipse 自动生成的是这样的：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

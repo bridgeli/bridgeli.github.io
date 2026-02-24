@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Maven | 分享技术带来的喜悦</title>
+<meta name="keywords" content="">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/tags/maven/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/maven/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/maven/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/tags/">Tags</a></div>
+  <h1>
+    Maven
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">本地开发不同项目使用不同版本 JDK 的解决方案
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>一般我们在公司工作中，很少有人就负责一个项目，而负责不同的项目，由于各种原因使用的 JDK 版本可能并不相同，如果存在不兼容的情况，那么本地 mvn clean compile 的时候就会报错，这个时候就需要我们去修改我们设置的环境变量，如果多个项目同时开发，那么就需要时不时切来切去，特别烦人，其实这个问题 maven 早就替大家考虑过了，我们只需要：
+修改 maven 的 toolchains.xml 文件 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;!&amp;#8211; Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the &#34;License&#34;); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &#34;AS IS&#34; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. &amp;#8211;&gt; &lt;!&amp;#8211; | This is the toolchains file for Maven. It can be specified at two levels: | | 1. User Level. This toolchains.xml file provides configuration for a single user, | and is normally provided in ${user.home}/.m2/toolchains.xml. | | NOTE: This location can be overridden with the CLI option: | | -t /path/to/user/toolchains.xml | | 2. Global Level. This toolchains.xml file provides configuration for all Maven | users on a machine (assuming they&amp;#8217;re all using the same Maven | installation). It&amp;#8217;s normally provided in | ${maven.conf}/toolchains.xml. | | NOTE: This location can be overridden with the CLI option: | | -gt /path/to/global/toolchains.xml | | The sections in this sample file are intended to give you a running start at | getting the most out of your Maven installation. |&amp;#8211;&gt; &lt;toolchains xmlns=&#34;http://maven.apache.org/TOOLCHAINS/1.1.0&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xsi:schemaLocation=&#34;http://maven.apache.org/TOOLCHAINS/1.1.0 http://maven.apache.org/xsd/toolchains-1.1.0.xsd&#34;&gt; &lt;!&amp;#8211; | With toolchains you can refer to installations on your system. This | way you don&amp;#8217;t have to hardcode paths in your pom.xml. | | Every toolchain consist of 3 elements: | * type: the type of tool. An often used value is &amp;#8216;jdk&amp;#8217;. Toolchains-aware | plugins should document which type you must use. | | * provides: A list of key/value-pairs. | Based on the toolchain-configuration in the pom.xml Maven will search for | matching &lt;provides/&gt; configuration. You can decide for yourself which key-value | pairs to use. Often used keys are &amp;#8216;version&amp;#8217;, &amp;#8216;vendor&amp;#8217; and &amp;#8216;arch&amp;#8217;. By default | the version has a special meaning. If you configured in the pom.xml &amp;#8216;1.5&amp;#8217; | Maven will search for 1.5 and above. | | * configuration: Additional configuration for this tool. | Look for documentation of the toolchains-aware plugin which configuration elements | can be used. | | See also https://maven.apache.org/guides/mini/guide-using-toolchains.html | | General example &lt;toolchain&gt; &lt;type/&gt; &lt;provides&gt; &lt;version&gt;1.0&lt;/version&gt; &lt;/provides&gt; &lt;configuration/&gt; &lt;/toolchain&gt; | JDK examples &lt;toolchain&gt; &lt;type&gt;jdk&lt;/type&gt; &lt;provides&gt; &lt;version&gt;1.5&lt;/version&gt; &lt;vendor&gt;sun&lt;/vendor&gt; &lt;/provides&gt; &lt;configuration&gt; &lt;jdkHome&gt;/path/to/jdk/1.5&lt;/jdkHome&gt; &lt;/configuration&gt; &lt;/toolchain&gt; &lt;toolchain&gt; &lt;type&gt;jdk&lt;/type&gt; &lt;provides&gt; &lt;version&gt;1.6&lt;/version&gt; &lt;vendor&gt;sun&lt;/vendor&gt; &lt;/provides&gt; &lt;configuration&gt; &lt;jdkHome&gt;/path/to/jdk/1.6&lt;/jdkHome&gt; &lt;/configuration&gt; &lt;/toolchain&gt; &amp;#8211;&gt; &lt;toolchain&gt; &lt;type&gt;jdk&lt;/type&gt; &lt;provides&gt; &lt;version&gt;17&lt;/version&gt; &lt;/provides&gt; &lt;configuration&gt; &lt;jdkHome&gt;D:\J2EE\Java\jdk-17&lt;/jdkHome&gt; &lt;/configuration&gt; &lt;/toolchain&gt; &lt;toolchain&gt; &lt;type&gt;jdk&lt;/type&gt; &lt;provides&gt; &lt;version&gt;8&lt;/version&gt; &lt;/provides&gt; &lt;configuration&gt; &lt;jdkHome&gt;D:\J2EE\Java\jdk1.8.0_311&lt;/jdkHome&gt; &lt;/configuration&gt; &lt;/toolchain&gt; &lt;/toolchains&gt; 修改项目的 pom.xml 文件 &lt;profiles&gt; &lt;profile&gt; &lt;id&gt;dev&lt;/id&gt; &lt;activation&gt; &lt;activeByDefault&gt;false&lt;/activeByDefault&gt; &lt;/activation&gt; &lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; &lt;artifactId&gt;maven-toolchains-plugin&lt;/artifactId&gt; &lt;version&gt;3.1.0&lt;/version&gt; &lt;executions&gt; &lt;execution&gt; &lt;goals&gt; &lt;goal&gt;toolchain&lt;/goal&gt; &lt;/goals&gt; &lt;/execution&gt; &lt;/executions&gt; &lt;configuration&gt; &lt;toolchains&gt; &lt;jdk&gt; &lt;version&gt;8&lt;/version&gt; &lt;/jdk&gt; &lt;/toolchains&gt; &lt;/configuration&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt; &lt;/profile&gt; &lt;/profiles&gt; 修改完我们在编译的时候只需要运行： mvn clean compile -Pdev 即可，这样编译就会自动用 jdk8 也不是系统环境变量配置的，当然还有更简单的，我们可以修改 pom.xml 中的配置，只需要把：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-12-25 02:24:23 +0000 +0000'>December 25, 2025</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>522 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 本地开发不同项目使用不同版本 JDK 的解决方案" href="http://localhost:1313/posts/2025-12-25-%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E4%B8%8D%E5%90%8C%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC-jdk-%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Maven 打包 Excel 文件损坏
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前几天在项目中遇到一个小问题，有一个 Excel 文件放在 classpath 下，通过流下载下来，本地测试的时候一点问题都没，但是部署到测试环境却不行了，说文件已损坏，然后打不开，简单代码如下：
+@RequestMapping(value = &#34;/export&#34;, method = RequestMethod.GET) public void export(HttpServletResponse response) { ServletOutputStream servletOutputStream = null; String filename = &#34;template.xlsx&#34;; InputStream inputStream = ExcelHandleController.class.getClassLoader().getResourceAsStream(filename); try { byte[] b = new byte[inputStream.available()]; inputStream.read(b); response.setCharacterEncoding(StandardCharsets.UTF_8.name()); response.setHeader(&#34;Content-Disposition&#34;, &#34;attachment;filename=&#34; &#43; filename); response.setContentType(&#34;application/octet-stream;charset=UTF-8&#34;); //获取响应报文输出流对象 servletOutputStream = response.getOutputStream(); //输出 servletOutputStream.write(b); } catch (IOException e) { logger.error(&#34;文件下载出错&#34;, e); } finally { if (null != inputStream) { try { inputStream.close(); } catch (IOException e) { logger.error(&#34;文件下载出错&#34;, e); } } if (null != servletOutputStream) { try { servletOutputStream.flush(); servletOutputStream.close(); } catch (IOException e) { logger.error(&#34;文件下载出错&#34;, e); } } } } 当时就感觉这代码很简单啊，没什么问题的，但是下载下来就是不对，想到是不是测试环境有什么问题，查了一下没什么特殊之处，最后发现 Git 上的代码中的文件并没有什么问题，但是打成 war 包解压之后这文件本身就已经损坏了，而且比对了一下两个文件，发现 war 包之中的文件变大了，搜了一下资料，才知道原来 maven 打包会对一些文件转码，这个过程中会损坏一些文件，所以打不开，网上的资料也挺多，最简单的就是增加一个 plugin，不让该文件转码，代码如下：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2019-01-13 09:10:03 +0000 +0000'>January 13, 2019</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>227 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Maven 打包 Excel 文件损坏" href="http://localhost:1313/posts/2019-01-13-maven-%E6%89%93%E5%8C%85-excel-%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">上传 Java 库到 Maven central repository
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>之前看过 Trinea 写过一篇文章，如果上传 Java 库到 Maven central repository，前一段时间感觉公司封装的 mybatis-generator 不好用，完全没有解决原生的 mybatis-generator 的问题，所以就重新做了一次封装，主要是加了查询分页，然后就想到是不是可以上传到 Maven central repository 玩玩，看了一下 Trinea 的这篇文章感觉挺简单的（原文见后面参考资料），但实际上还是有一些坑，具体的可以看 Trinea 的这篇文章，我主要写一下遇到的一些坑。
+先说明一下，pom 文件请参考我的配置：https://github.com/bridgeli/mybatis-generator-plugin/blob/master/pom.xml，这里面所有的配置都是必须的，也是最少的了吧，自己写的时候修改一些内容，适配自己的就好了，Trinea 写的那个 pom 还是比较适合 Android。
+发布 release 版本的时候，使用命令
+mvn release:clean release:prepare release:perform 执行这个命令的时候，可能会遇到三个问题。
+Git 报错，使用 Git 几年了，进入会遇到这样的错误。错误信息： Unable to commit files [ERROR] Provider message: [ERROR] The git-add command failed. [ERROR] Command output: 实在不知道咋回事，可能是我有些文件没提交，反正提交之后就好了，看到有人说他报错是因为他不是 Git 管理的项目，我作为 Git 脑残粉，肯定是的，可能就是因为没有提交吧，反正最后就这么莫名其妙的解决了。
+提示没有 snapshot 版本，所以执行这个命令的时候，版本号和发布 snapshot 一样就好，而不是自己手动改成 release 版。 因为此时会发布一个 release 版本，会有 tag 推送到 GitHub 有可能会遇到 401，看到这个 error code，应该都清楚咋回事，没权限。不知道，病急乱投医，我是在 GitHub 上添加了一个 GPG key 并且在 pom 文件中新增一个 plugin。这个问题有人说是账号和密码错误，但是我很肯定我的账号和密码一点也没有错。 &lt;plugin&gt; &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; &lt;artifactId&gt;maven-gpg-plugin&lt;/artifactId&gt; &lt;version&gt;1.5&lt;/version&gt; &lt;executions&gt; &lt;execution&gt; &lt;id&gt;sign-artifacts&lt;/id&gt; &lt;phase&gt;verify&lt;/phase&gt; &lt;goals&gt; &lt;goal&gt;sign&lt;/goal&gt; &lt;/goals&gt; &lt;/execution&gt; &lt;/executions&gt; &lt;/plugin&gt; 最终解决了这个问题，关于这个问题，可能是我操作的问题没有看到过别人说过，另外在 GitHub 上他的颜色一直还是：灰的，没有显示使用过，所以可能是我操作的有问题，不需要在 GitHub 上添加这个 GPG key，具体大家可以测一下，我后期也会测试。
+另，需要说明的是，生成 GPG key 的时候用到的邮箱和我在 GitHub 上的邮箱，我用的不是同一个邮箱，建议还是用同一个吧，省得出莫名其妙的问题。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-05-20 08:17:54 +0000 +0000'>May 20, 2018</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>193 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 上传 Java 库到 Maven central repository" href="http://localhost:1313/posts/2018-05-20-%E4%B8%8A%E4%BC%A0-java-%E5%BA%93%E5%88%B0-maven-central-repository/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Maven私服之Nexus入门图文教程
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>老夫相信看到这篇文章的人一定已经知道maven和nexus分别是什么东西了，所以就不多做介绍了，下面直接从下载安装开始讲。
+下载安装 大家可以直接从这个链接http://www.sonatype.org/nexus/go/下载系统，下载完成之后解压到系统的任何文件夹下就可以了，老夫下载是：nexus-2.8.1-01，然后可就是安装了。
+解压一路进到nexus-2.8.1-01/bin/jsw。然后选择适合自己的系统的文件夹进去，老夫的电脑是win32，所以进去之后是这个样子
+然后用管理员身份先运行install-nexus.bat安装服务，然后运行console-nexus.bat，等起来之后直接在浏览器中输入：http://localhost:8081/nexus，我们看到下图就是成功了，忘了是不是需要安装服务：wrapper了，大家试一试就知道了。
+配置nexus 要管理Nexus，你首先需要以管理员身份登陆，点击界面右上角的login，输入默认的登录名和密码：admin/admin123，登陆成功后，你会看到左边的导航栏增加了很多内容，变成了下面这个样子
+这里，可以管理仓库，配置Nexus系统，管理任务，管理用户，角色，权限，查看系统的RSS源，管理及查看系统日志，等等。你会看到Nexus的功能十分丰富和强大，本文，老夫只介绍一些最基本的管理和操作。
+因为是老夫习惯于让大伙看了这篇文章就知道怎么做，所以这里多内容咱就不说了，直接上配置，点击左边Administration菜单下面的Repositories，找到右边仓库列表中的三个仓库Apache Snapshots，Codehaus Snapshots和Maven Central，然后再没有仓库的configuration下把Download Remote Indexes修改为true。如下图：
+然后在Apache Snapshots，Codehaus Snapshots和Maven Central这三个仓库上分别右键，选择Repari Index，这样Nexus就会去下载远程的索引文件。
+这样设置以后, Nexus会自动从远程中央仓库下载索引文件, 为了检验索引文件自动下载是否生效,可以切换到Browse Index看看是否生成了这些索引文件。
+添加一个代理仓库 加入我们想要代理Sonatype的公共仓库，其地址为：http://repository.sonatype.org/content/groups/public/。步骤如下，在Repositories面板的上方，点击Add，然后选择Proxy Repository，在下方的配置部分，我们填写如下的信息：Repository ID – sonatype；Repository Name – Sonatype Repository；Remote Storage Location – http://repository.sonatype.org/content/groups/public/。其余的保持默认值，需要注意的是Repository Policy，我们不要代理snapshot构件，至于原因老夫相信读者应该已经很清楚了，然后点击Save。因为比较简单就不上图了。
+管理宿主仓库 Nexus预定义了3个本地仓库，分别为Releases，Snapshots，和3rd Party。这三个仓库都有各自明确的目的。Releases用于部署我们自己的release构件，Snapshots用于部署我们自己的snapshot构件，而3rd Party用于部署第三方构件，有些构件如Oracle的JDBC驱动，我们不能从公共仓库下载到，我们就需要将其部署到自己的仓库中。
+当然你也可以创建自己的本地仓库，步骤和创建代理仓库类似，点击Repository面板上方的Add按钮，然后选择Hosted Repository，然后在下方的配置面板中输入id和name，注意这里我们不再需要填写远程仓库地址，Repository Type则为不可修改的hosted，而关于Repository Policy，你可以根据自己的需要选择Release或者Snapshot。
+管理Maven仓库组 Nexus 中仓库组的概念是Maven没有的，在Maven看来，不管你是hosted也好，proxy也好，或者group也好，对我都是一样的，我只管根据 groupId，artifactId，version等信息向你要构件。为了方便Maven的配置，Nexus能够将多个仓库，hosted或者 proxy合并成一个group，这样，Maven只需要依赖于一个group，便能使用所有该group包含的仓库的内容。
+最新neuxs默认自带了一个名为“Public Repositories”组，点击该组可以对他保护的仓库进行调整，把刚才建立的仓库Sonatype Repository加入其中，这样就不需要再在maven中明确指定仓库的地址了。同时创建一个Group ID为public-snapshots、Group Name为Public Snapshots Repositories的组，把Apache Snapshots、Codehaus Snapshots、Snapshots和Sonatype Repository也加入其中。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-01-31 14:03:25 +0000 +0000'>January 31, 2016</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>207 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Maven私服之Nexus入门图文教程" href="http://localhost:1313/posts/2016-01-31-maven%E7%A7%81%E6%9C%8D%E4%B9%8Bnexus%E5%9B%BE%E6%96%87%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">maven打包dubbo接口之最佳实践
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>之前刚开始学习dubbo的时候，曾写过一个入门的小例子，当时生产者也是用tomcat去跑的，其实dubbo只需要提供service层接口就好了，并不需要和http相关的东西，所以其实并不需要用tomcat去跑，我们完全打成其他的包直接去跑，这样dubbo接口也不会tomcat性能的限制，而打包可以说是maven最擅长的事情之一，今天就记录一下我们公司的实际项目中使用maven-assembly-plugin打包的方法。
+首先在pom文件中，添加maven-assembly-plugin插件 &lt;plugin&gt; &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt; &lt;configuration&gt; &lt;descriptor&gt;src/main/assembly/assembly.xml&lt;/descriptor&gt; &lt;/configuration&gt; &lt;executions&gt; &lt;execution&gt; &lt;id&gt;make-assembly&lt;/id&gt; &lt;phase&gt;package&lt;/phase&gt; &lt;goals&gt; &lt;goal&gt;single &lt;/goal&gt; &lt;/goals&gt; &lt;/execution&gt; &lt;/executions&gt; &lt;/plugin&gt; 在该插件的第四行我们指定了一个assembly.xml文件，下面我们就看看assembly.xml的内容
+assembly.xml文件 &lt;assembly&gt; &lt;id&gt;assembly&lt;/id&gt; &lt;formats&gt; &lt;format&gt;tar.gz&lt;/format&gt; &lt;/formats&gt; &lt;includeBaseDirectory&gt;true&lt;/includeBaseDirectory&gt; &lt;fileSets&gt; &lt;fileSet&gt; &lt;outputDirectory&gt;/&lt;/outputDirectory&gt; &lt;includes&gt; &lt;include&gt;README.txt&lt;/include&gt; &lt;/includes&gt; &lt;/fileSet&gt; &lt;fileSet&gt; &lt;directory&gt;src/main/scripts&lt;/directory&gt; &lt;outputDirectory&gt;/bin&lt;/outputDirectory&gt; &lt;/fileSet&gt; &lt;/fileSets&gt; &lt;dependencySets&gt; &lt;dependencySet&gt; &lt;useProjectArtifact&gt;true&lt;/useProjectArtifact&gt; &lt;outputDirectory&gt;lib&lt;/outputDirectory&gt; &lt;/dependencySet&gt; &lt;/dependencySets&gt; &lt;/assembly&gt; 该文件的第四行中的tar.gz指的就是打包的文件格式，对于Linux用户，对这个格式一定非常熟悉，当然大家也可以指定为zip格式，另外在该文件的第十五行，指定了一个scripts文件夹，那么这里面放的又是什么呢？我们知道打包之后的系统我们要跑起来才能用，那么这里面放的就是对我们的系统操作的一些脚本，打包之后，我们的系统都是一些jar文件，放在了倒数第四行指定的lib文件中，而这些脚本则放在了和lib同级的bin文件中，下面就让我们一一看看scripts中几个文件的内容
+scripts文件夹 ①. start.bat
+@echo off &amp; setlocal enabledelayedexpansion set LIB_JARS=&#34;&#34; cd ..lib for %%i in (*) do set LIB_JARS=!LIB_JARS!;..lib%%i cd ..bin if &#34;&#34;%1&#34;&#34; == &#34;&#34;debug&#34;&#34; goto debug if &#34;&#34;%1&#34;&#34; == &#34;&#34;jmx&#34;&#34; goto jmx java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main goto end :debug java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main goto end :jmx java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main :end pause ②. start.sh
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-12-20 13:56:50 +0000 +0000'>December 20, 2015</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>948 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to maven打包dubbo接口之最佳实践" href="http://localhost:1313/posts/2015-12-20-maven%E6%89%93%E5%8C%85%E4%B9%8Bdubbo%E6%8E%A5%E5%8F%A3%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

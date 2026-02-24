@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>分页 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E5%88%86%E9%A1%B5/</link>
+    <description>Recent content in 分页 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 26 Jan 2019 14:59:01 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%88%86%E9%A1%B5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MySQL sort 分页重复数据（转载）</title>
+      <link>http://localhost:1313/posts/2019-01-26-mysql-sort-%E5%88%86%E9%A1%B5%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE%E8%BD%AC%E8%BD%BD/</link>
+      <pubDate>Sat, 26 Jan 2019 14:59:01 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2019-01-26-mysql-sort-%E5%88%86%E9%A1%B5%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE%E8%BD%AC%E8%BD%BD/</guid>
+      <description>&lt;p&gt;前两天在写一个东西的时候，测试的同学说发现一个问题，排序分页，第二页和第一页有重复数据，当时我看了一下，确实有这个问题，然后就想到几年前我就曾经遇到过这个问题，淘宝数据库内核月报上也做了说明，所以这个时候就体现出了老程序员的价值：踩过的坑多，坑坑相连也就都成了平地，考虑到很多人不知道这个问题，所以把原文转载过来，以期能够让更多的人看到，原文如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;背景&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;6.5 号，小编在 Aliyun 的论坛中发现一位开发者提的一个问题，说 RDS 发现了一个超级大 BUG，吓的小编一身冷汗 = =!! 赶紧来看看，背景是一个 RDS 用户创建了一张表，在一个都是 NULL 值的非索引字段上进行了排序并分页，用户发现第二页和第一页的数据有重复，然后以为是 NULL 值的问题，把这个字段都更新成相同的值，发现问题照旧。详细的信息可以登录阿里云的&lt;a href=&#34;https://bbs.aliyun.com/read/248026.html&#34;&gt;官方论坛查看&lt;/a&gt;。&lt;br&gt;
+小编进行了尝试，确实如此，并且 5.5 的版本和 5.6 的版本行为不一致，所以，必须要查明原因。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;原因调查&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在 MySQL 5.6 的版本上，优化器在遇到 order by limit 语句的时候，做了一个优化，即使用了 priority queue。参考伪代码：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+while (get_next_sortkey())  
+{  
+if (using priority queue)  
+push sort key into queue  
+else  
+{  
+if (no free space in sort_keys buffers)  
+{  
+sort sort_keys buffer;  
+dump sorted sequence to &amp;amp;#8216;tempfile&amp;amp;#8217;;  
+dump BUFFPEK describing sequence location into &amp;amp;#8216;buffpek_pointers&amp;amp;#8217;;  
+}  
+put sort key into &amp;amp;#8216;sort_keys&amp;amp;#8217;;  
+}  
+}  
+if (sort_keys has some elements &amp;amp;&amp;amp; dumped at least once)  
+sort-dump-dump as above;  
+else  
+don&amp;amp;#8217;t sort, leave sort_keys array to be sorted by caller
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用 priority queue 的目的，就是在不能使用索引有序性的时候，如果要排序，并且使用了limit n，那么只需要在排序的过程中，保留 n 条记录即可，这样虽然不能解决所有记录都需要排序的开销，但是只需要 sort buffer 少量的内存就可以完成排序。&lt;br&gt;
+之所以 5.6 出现了第二页数据重复的问题，是因为 priority queue 使用了堆排序的排序方法，而堆排序是一个不稳定的排序方法，也就是相同的值可能排序出来的结果和读出来的数据顺序不一致。&lt;br&gt;
+5.5 没有这个优化，所以也就不会出现这个问题。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MyBatis下最好的分页实现：mybatis-paginator使用入门</title>
+      <link>http://localhost:1313/posts/2015-04-26-mybatis%E4%B8%8B%E6%9C%80%E5%A5%BD%E7%9A%84%E5%88%86%E9%A1%B5%E5%AE%9E%E7%8E%B0mybatis-paginator%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Sun, 26 Apr 2015 15:10:02 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-04-26-mybatis%E4%B8%8B%E6%9C%80%E5%A5%BD%E7%9A%84%E5%88%86%E9%A1%B5%E5%AE%9E%E7%8E%B0mybatis-paginator%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/</guid>
+      <description>&lt;p&gt;前两天写一个项目，发现在MyBatis下一个最好的分页实现类库mybatis-paginator，今天就写一篇其入门教程供大家参考。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;先引入maven依赖&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;com.github.miemiedev&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;mybatis-paginator&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;1.2.15&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;从这个依赖中，我们可以看到 1 他是mybatis的一个插件，2 其开源在GitHub上，感兴趣的可以去GitHub上搜源码看看，既然是mybatis的插件，下一步肯定就是和mybatis的集成了.&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;和mybatis集成&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;①. 新建一个mybatis.xml的配置文件，其内容如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34; ?&amp;gt;  
+&amp;lt;!DOCTYPE configuration PUBLIC &amp;#34;-//mybatis.org//DTD Config 3.0//EN&amp;#34; &amp;#34;http://mybatis.org/dtd/mybatis-3-config.dtd&amp;#34;&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;settings&amp;gt;  
+&amp;lt;setting name=&amp;#34;cacheEnabled&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;setting name=&amp;#34;lazyLoadingEnabled&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;/settings&amp;gt;
+
+&amp;lt;plugins&amp;gt;  
+&amp;lt;plugin  
+interceptor=&amp;#34;com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;dialectClass&amp;#34;  
+value=&amp;#34;com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;asyncTotalCount&amp;#34; value=&amp;#34;true&amp;#34; /&amp;gt;  
+&amp;lt;/plugin&amp;gt;  
+&amp;lt;/plugins&amp;gt;
+
+&amp;lt;/configuration&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;②. 和spring集成，即在spring-mybatis.xml中引入该文件&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;amp;#8230;&amp;amp;#8230;
+
+&amp;lt;bean id=&amp;#34;sqlSessionFactory&amp;#34; class=&amp;#34;org.mybatis.spring.SqlSessionFactoryBean&amp;#34;&amp;gt;  
+&amp;lt;property name=&amp;#34;dataSource&amp;#34; ref=&amp;#34;dataSource&amp;#34;&amp;gt;&amp;lt;/property&amp;gt;  
+&amp;lt;property name=&amp;#34;configLocation&amp;#34; value=&amp;#34;classpath:mybatis.xml&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;typeAliasesPackage&amp;#34; value=&amp;#34;cn.bridgeli.demo.entity&amp;#34; /&amp;gt;  
+&amp;lt;property name=&amp;#34;mapperLocations&amp;#34; value=&amp;#34;classpath:cn/bridgeli/demo/mapper/*.xml&amp;#34; /&amp;gt;  
+&amp;lt;/bean&amp;gt;
+
+&amp;amp;#8230;&amp;amp;#8230;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;因为这个文件太长，就不贴全文了，仅把位置这一块贴出来，当我们把这些配置工作做好之后，下一步就是如何使用了。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

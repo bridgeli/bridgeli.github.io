@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>LockSupport on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/locksupport/</link>
+    <description>Recent content in LockSupport on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 07 Feb 2021 07:06:13 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/locksupport/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>用两个线程交替打印数字和字母</title>
+      <link>http://localhost:1313/posts/2021-02-07-%E7%94%A8%E4%B8%A4%E4%B8%AA%E7%BA%BF%E7%A8%8B%E4%BA%A4%E6%9B%BF%E6%89%93%E5%8D%B0%E6%95%B0%E5%AD%97%E5%92%8C%E5%AD%97%E6%AF%8D/</link>
+      <pubDate>Sun, 07 Feb 2021 07:06:13 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2021-02-07-%E7%94%A8%E4%B8%A4%E4%B8%AA%E7%BA%BF%E7%A8%8B%E4%BA%A4%E6%9B%BF%E6%89%93%E5%8D%B0%E6%95%B0%E5%AD%97%E5%92%8C%E5%AD%97%E6%AF%8D/</guid>
+      <description>&lt;p&gt;前一段时间听马士兵老师讲课，讲到某公司的一个面试，两个线程，其中一个线程输出ABC，另一个线程输出123，如何控制两个线程交叉输出1A2B3C，由于本人多线程掌握的一直不是很好，所以听完这道题，个人感觉收获良多，这是一个学习笔记。这道题有多种解法，不过有些属于纯炫技，所以只记录常见的三种解法。首先看第一种&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;park 和 unpark&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo;
+
+import com.google.common.collect.Lists;
+
+import java.util.List;  
+import java.util.concurrent.locks.LockSupport;
+
+/**  
+* @author BridgeLi  
+* @date 2021/2/6 16:14  
+*/  
+public class Thread_Communication_Park_Unpark {
+
+static Thread t1 = null;  
+static Thread t2 = null;
+
+public static void main(String[] args) {
+
+final List&amp;lt;Integer&amp;gt; integers = Lists.newArrayList(1, 2, 3, 4, 5, 6, 7);  
+final List&amp;lt;String&amp;gt; strings = Lists.newArrayList(&amp;#34;A&amp;#34;, &amp;#34;B&amp;#34;, &amp;#34;C&amp;#34;, &amp;#34;D&amp;#34;, &amp;#34;E&amp;#34;, &amp;#34;F&amp;#34;, &amp;#34;G&amp;#34;);
+
+t1 = new Thread(() -&amp;gt; integers.forEach(item -&amp;gt; {  
+System.out.print(item);  
+LockSupport.unpark(t2);  
+LockSupport.park();  
+}), &amp;#34;t1&amp;#34;);
+
+t2 = new Thread(() -&amp;gt; strings.forEach(item -&amp;gt; {  
+LockSupport.park();  
+System.out.print(item);  
+LockSupport.unpark(t1);  
+}), &amp;#34;t2&amp;#34;);
+
+t1.start();  
+t2.start();  
+}
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个是最简单的实现方法，LockSupport.park() 使当前线程阻塞，而 LockSupport.unpark() 则表示唤醒一个线程，所以他需要一个参数，表示你要唤醒哪个线程，很好理解，也比较简单。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

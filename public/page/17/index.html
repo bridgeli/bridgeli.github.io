@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head>
+	<meta name="generator" content="Hugo 0.156.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>分享技术带来的喜悦</title>
+<meta name="keywords" content="博客, 技术, Java">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">长链接（URL）转短链接（URL）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>现在微博越来越流行，大家有事没事都喜欢在微博上说两句，但由于140字的限制，给我们在分析一些长链接的时候，带来了诸多不便，好在微博有自动缩短URL的功能，那我们是否可以自己缩短一个URL呢？答案是肯定的，下面就给出利用百度的API缩短URL的简单例子
+package cn.bridgeli.longurl2short; import java.io.BufferedReader; import java.io.InputStream; import java.io.InputStreamReader; import java.io.OutputStream; import java.net.HttpURLConnection; import java.net.URL; public class LongURL2Short { public static String httpRequest(String outputStr) { StringBuffer buffer = null; try { // 建立连接 URL url = new URL(&#34;http://dwz.cn/create.php&#34;); HttpURLConnection httpUrlConn = (HttpURLConnection) url.openConnection(); httpUrlConn.setDoInput(true); httpUrlConn.setDoOutput(true); httpUrlConn.setUseCaches(false); httpUrlConn.setRequestMethod(&#34;POST&#34;); if (null != outputStr) { OutputStream outputStream = httpUrlConn.getOutputStream(); // 注意编码格式，防止中文乱码 outputStr = &#34;url=&#34; &#43; outputStr; outputStream.write(outputStr.getBytes(&#34;UTF-8&#34;)); outputStream.close(); } // 获取输入流 InputStream inputStream = httpUrlConn.getInputStream(); InputStreamReader inputStreamReader = new InputStreamReader(inputStream, &#34;utf-8&#34;); BufferedReader bufferedReader = new BufferedReader(inputStreamReader); // 读取返回结果 buffer = new StringBuffer(); String str = null; while ((str = bufferedReader.readLine()) != null) { buffer.append(str); } // 释放资源 bufferedReader.close(); inputStreamReader.close(); inputStream.close(); httpUrlConn.disconnect(); } catch (Exception e) { e.printStackTrace(); } return buffer.toString(); } } package cn.bridgeli.longurl2short; import org.junit.Test; import com.google.gson.Gson; public class LongUrl2ShortTest { @Test public void testHttpRequest() { String str = LongURL2Short.httpRequest(&#34;http://mp.weixin.qq.com/wiki/index.php?title=%E9%95%BF%E9%93%BE%E6%8E%A5%E8%BD%AC%E7%9F%AD%E9%93%BE%E6%8E%A5%E6%8E%A5%E5%8F%A3&#34;); Gson gson = new Gson(); ShortUrl shortUrl = gson.fromJson(str, ShortUrl.class); System.out.println(shortUrl.getTinyurl()); } } package cn.bridgeli.longurl2short; public class ShortUrl { private String tinyurl; public String getTinyurl() { return tinyurl; } public void setTinyurl(String tinyurl) { this.tinyurl = tinyurl; } } 注：httpRequest方法和前一篇文章 如何用https协议发起一个post请求 极其类似，本质是一样的，另外该方法经本人测试会有bug：当长URL是.cn时，转换不成功，目前原因还没找到，猜测是由于转化后的URL的后缀也是.cn的原因，具体在测试。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-10-09 03:30:42 +0000 +0000'>October 9, 2014</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>183 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 长链接（URL）转短链接（URL）" href="http://localhost:1313/posts/2014-10-09-%E9%95%BF%E9%93%BE%E6%8E%A5url%E8%BD%AC%E7%9F%AD%E9%93%BE%E6%8E%A5url/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Jsoup在简单防御XSS攻击和网络爬虫的简单应用
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>跨站攻击一直是web安全的一大问题，稍有不慎就会中招，各种防不胜防，今天在网上闲逛，发现一个第三方JAR不仅可以简单防御还可以爬取网页，所以写一篇小文以记之，也供有需要的人参考。
+预防跨站攻击代码如下：
+@Test public void testJsoup() { String unsafe = &#34;&lt;p&gt;&lt;a href=&amp;#8217;http://example.com/&amp;#8217; onclick=&amp;#8217;stealCookies()&amp;#8217;&gt;Link,&lt;alert&gt;0&lt;/alert&gt;&lt;/a&gt;&lt;/p&gt;&#34;; String safe = Jsoup.clean(unsafe, Whitelist.basic()); System.out.println(safe); } 其中 unsafe 就是用户提交的数据，其中包含 onclick 和 alert 可能会有害，需要过滤，而 Whitelist.basic() 则是过滤规则，safe 就是过滤后的安全数据。
+在网络爬虫方面，曾听北京尚学堂马士兵老师讲过一次正则表达式的简单应用：抓取网页上的邮箱地址，有很多人记不住，但有了这个第三方工具，则轻松很多，他可以根据一个URL直接去抓取，省了不少事，猜测内部也是用正则实现的。
+网络爬虫代码如下：
+@Test public void testSpider() { String url = &#34;http://www.rijiben.com/&#34;; Document doc = null; try { doc = Jsoup.connect(url).get(); } catch (IOException e) { e.printStackTrace(); } if (null != doc) { Elements listrens = doc.getElementsByAttributeValue(&#34;class&#34;, &#34;listren&#34;); for (Element listren : listrens) { String text = listren.select(&#34;li&#34;).select(&#34;a&#34;).html(); System.out.println(text); } } else { System.err.println(&#34;网络出异常！&#34;); } } 这是抓取日记本上面，历史上的今日的例子，老夫打算将来用到自己的微信公众号上面，怎么样，是不是很简单？
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-09-30 02:00:32 +0000 +0000'>September 30, 2014</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>90 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Jsoup在简单防御XSS攻击和网络爬虫的简单应用" href="http://localhost:1313/posts/2014-09-30-jsoup%E5%9C%A8%E7%AE%80%E5%8D%95%E9%98%B2%E5%BE%A1xss%E6%94%BB%E5%87%BB%E5%92%8C%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">如何用https协议发起一个post请求
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>这两天研究了微信公众号的开发，发现微信做的太好了，前景太可怕了，如果按照这个趋势，那么将来手机上也许只装一个微信客户端也许就可以做任何事了，其中微信公众号开发自定义菜单时，微信要求用https协议post到微信服务器一个JSON字符串，这里面有两个难点：1. https协议，2. 如何post数据到微信服务器。刚好csdn博主柳峰，有一篇文章是讲解这个的，所以就拿来参考一下，具体代码如下：
+import java.security.cert.CertificateException; import java.security.cert.X509Certificate; import javax.net.ssl.X509TrustManager; public class MyX509TrustManager implements X509TrustManager { @Override public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException { } @Override public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException { } @Override public X509Certificate[] getAcceptedIssuers() { return null; } } 这个是说，相信所有的安全证书，无论是不是安全机构颁发
+public static JSONObject httpsRequest(String requestUrl, String requestMethod, String outputStr) { JSONObject jsonObject = null; StringBuffer buffer = new StringBuffer(); try { // 创建SSLContext对象，并使用我们指定的信任管理器初始化 TrustManager[] tm = { new MyX509TrustManager() }; SSLContext sslContext = SSLContext.getInstance(&#34;SSL&#34;, &#34;SunJSSE&#34;); sslContext.init(null, tm, new java.security.SecureRandom()); // 从上述SSLContext对象中得到SSLSocketFactory对象 SSLSocketFactory ssf = sslContext.getSocketFactory(); URL url = new URL(requestUrl); HttpsURLConnection httpUrlConn = (HttpsURLConnection) url.openConnection(); httpUrlConn.setSSLSocketFactory(ssf); httpUrlConn.setDoOutput(true); httpUrlConn.setDoInput(true); httpUrlConn.setUseCaches(false); // 设置请求方式（GET/POST） httpUrlConn.setRequestMethod(requestMethod); if (&#34;GET&#34;.equalsIgnoreCase(requestMethod)) { httpUrlConn.connect(); } // 当有数据需要提交时 if (null != outputStr) { OutputStream outputStream = httpUrlConn.getOutputStream(); // 注意编码格式，防止中文乱码 outputStream.write(outputStr.getBytes(&#34;UTF-8&#34;)); outputStream.close(); } // 将返回的输入流转换成字符串 InputStream inputStream = httpUrlConn.getInputStream(); InputStreamReader inputStreamReader = new InputStreamReader(inputStream, &#34;utf-8&#34;); BufferedReader bufferedReader = new BufferedReader(inputStreamReader); String str = null; while ((str = bufferedReader.readLine()) != null) { buffer.append(str); } bufferedReader.close(); inputStreamReader.close(); // 释放资源 inputStream.close(); inputStream = null; httpUrlConn.disconnect(); jsonObject = JSONObject.fromObject(buffer.toString()); } catch (ConnectException ce) { log.error(&#34;Weixin server connection timed out.&#34;); } catch (Exception e) { log.error(&#34;https request error:{}&#34;, e); } return jsonObject; } 这个就是通过https协议向某一个URL通过post或者get提交一个JSON字符串。另外在编程中还有一个常见的向某一个URL请求数据，代码如下：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-09-29 12:57:06 +0000 +0000'>September 29, 2014</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>274 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 如何用https协议发起一个post请求" href="http://localhost:1313/posts/2014-09-29-%E5%A6%82%E4%BD%95%E7%94%A8https%E5%8D%8F%E8%AE%AE%E5%8F%91%E8%B5%B7%E4%B8%80%E4%B8%AApost%E8%AF%B7%E6%B1%82/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">如何配置一个一键启动的绿色Java web项目
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>我们知道部署J2EE项目，要首先安装JDK，配环境变量，在安装tomcat，然后MySQL数据库（当然也可以是其他任何你喜欢的数据库），把项目打一个war包放到tomcat的webapps包下面，启动tomcat就可以了，但在某些情况下，例如测试美工等，尤其是美工他们的电脑很多时候没必要安装这些乱七八糟的东西，那么我们是否可以不安装这些东西，而让让美工们的电脑跑项目呢？答案是可以的，我们只需要拷贝一个JDK、MySQL、tomcat到美工的电脑，再把项目拷到tomcat的webapps下，写一个bat的文件，让bat文件设置JDK目录、安装MySQL的服务，调用tomcat启动的命令就可以了，srartup.bat代码如下：
+set HOME=C:Layout set JAVA_HOME=%HOME%jdk set CLASSPATH=%JAVA_HOME%lib set CATALINA_HOME=%HOME%tomcat set CATALINA_BASE=%HOME%tomcat set MYSQL_HOME=%HOME%mysql set PATH=%PATH%;%JAVA_HOME%bin;%MYSQL_HOME%bin; taskkill /f /im explorer.exe start explorer.exe RunDll32.exe USER32.DLL,UpdatePerUserSystemParameters echo start lms_mysql on localhost mysqld &amp;#8211;install lms_mysql &amp;#8211;defaults-file=%MYSQL_HOME%my.ini net start lms_mysql echo start tomcat on localhost @Rem Run Tomcat&amp;#8230; Call %CATALINA_HOME%binstartup.bat shutdown.bat
+@echo off echo stop lms_mysql net stop lms_mysql mysqld &amp;#8211;remove lms_mysql echo on Call %CATALINA_HOME%binshutdown.bat </p>
+  </div>
+  <footer class="entry-footer"><span title='2014-09-20 11:01:16 +0000 +0000'>September 20, 2014</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>61 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 如何配置一个一键启动的绿色Java web项目" href="http://localhost:1313/posts/2014-09-20-%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE%E4%B8%80%E4%B8%AA%E4%B8%80%E9%94%AE%E5%90%AF%E5%8A%A8%E7%9A%84%E7%BB%BF%E8%89%B2java-web%E9%A1%B9%E7%9B%AE/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">反射的简单应用：解决微信开发中if-else过多的问题
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前一段时间，闲着无聊玩微信开发，遇到一个问题：当关注者向公众号发送消息，请求一些服务时，由于是文本消息，所以当公众号拿到消息内容时，必须判断消息以什么打头，即：
+String content = requestMap.get(&#34;Content&#34;).trim(); if (&#34;?&#34;.equals(content) || &#34;？&#34;.equals(content)) { respContent = &#34;您好，我是生活小助手，请根据提示，回复内容选择服务：nn1 回复“天气”获取天气帮助n2 回复“歌曲”获取歌曲帮助n3 回复“公交”获取歌曲帮助n4 回复“火车”获取歌曲帮助&#34;; } else if (content.startsWith(&#34;歌曲&#34;)) { //TODO } else if (content.startsWith(&#34;天气&#34;)) { //TODO } else if (content.startsWith(&#34;物流&#34;)) { //TODO } else if (content.startsWith(&#34;公交&#34;)) { //TODO } else if (content.startsWith(&#34;火车&#34;)) { //TODO } else { respContent = &#34;亲，很抱歉，由于功能还不够完善，尚不能处理您回复的信息，请回复“？”显示主菜单，获取帮助，有此给您带来的不便，还请见谅！&#34;; } 来判断何种服务，调用具体的接口来处理，当你的功能越来越完善时，会导致if-else越来越多，多的会自己都搞不清了，另外这个方法也会越来越大，显然不是非常符合面向对象的单一职责原则。那么有没用一个比较好的方法来解决这个问题呢？我曾经的项目经理Zack曾经说过，上天不会这么惩罚一个后期维护代码的人，所以答案是勘定有，今天老夫就给大家带来一个解决方法，需要说明的是：这不是老夫的原创，是老夫研究捷微源码的找到的方法，老夫在捷微方法的基础上做了一些修改，所以先感谢捷微，感谢捷微的开发人员。最后需要说明的是，这个方法也不是很完善，如果有人参考的话，老样子，请做具体修改，但逻辑老夫保证不会有错。
+@Override public BaseMessage handleText(String content, String fromUsername, String toUsername) { String respContent = null; BaseMessage baseMessage = null; if (&#34;?&#34;.equals(content) || &#34;？&#34;.equals(content)) { respContent = &#34;您好，我是生活小助手，请根据提示，回复内容选择服务：nn1 回复“天气”获取天气帮助n2 回复“歌曲”获取歌曲帮助n3 回复“公交”获取公交帮助n4 回复“火车”获取火车帮助&#34;; } else { List&lt;WeixinExpandconfigEntity&gt; weixinExpandconfigEntities = new ArrayList&lt;WeixinExpandconfigEntity&gt;(); boolean isFind = false;// 是否找到关键字信息 for (WeixinExpandconfigEntity weixinExpandconfigEntity : weixinExpandconfigEntities) { // 如果已经找到关键字并处理业务，结束循环。 if (isFind) { break;// 如果找到结束循环 } String[] keys = weixinExpandconfigEntity.getKeyword().split(&#34;,&#34;); for (String k : keys) { if (content.indexOf(k) != -1) { String className = weixinExpandconfigEntity.getClassname(); String returnType = weixinExpandconfigEntity.getReturnType(); KeyService keyService = null; try { keyService = (KeyService) Class.forName(className).newInstance(); baseMessage = (BaseMessage) Class.forName(returnType).newInstance(); } catch (InstantiationException e) { e.printStackTrace(); } catch (IllegalAccessException e) { e.printStackTrace(); } catch (ClassNotFoundException e) { e.printStackTrace(); } keyService.excute(baseMessage, content.substring(2)); isFind = true; break; } } } } if (baseMessage == null) { TextMessage textMessage = new TextMessage(); textMessage.setContent(respContent); baseMessage = textMessage; } baseMessage.setToUserName(fromUsername); baseMessage.setFromUserName(toUsername); baseMessage.setCreateTime(new Date().getTime()); baseMessage.setFuncFlag(0); return baseMessage; } </p>
+  </div>
+  <footer class="entry-footer"><span title='2014-09-15 14:44:38 +0000 +0000'>September 15, 2014</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>201 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 反射的简单应用：解决微信开发中if-else过多的问题" href="http://localhost:1313/posts/2014-09-15-%E5%8F%8D%E5%B0%84%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8%E8%A7%A3%E5%86%B3%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E4%B8%ADif-else%E8%BF%87%E5%A4%9A%E7%9A%84%E9%97%AE%E9%A2%98/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">使用JDK自带的工具解析XML文档
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>XML和JSON字符串的解析，是Java程序猿的必备技能，关于XML和JSON如何解析，网上的例子可以说是一拉一大把，解析JSON的有什么GSON、json-lib等一大批做得非常好的第三方工具，解析XML的也有什么DOM4J、JDOM、SAX、DOM等等，今天大桥就给大家展示一下如何有JDK自己解析XML，废话不多说，代码如下：
+package cn.bridgeli.parsexmldemo.parsexml; import java.io.FileNotFoundException; import java.io.IOException; import javax.xml.parsers.DocumentBuilder; import javax.xml.parsers.DocumentBuilderFactory; import javax.xml.parsers.ParserConfigurationException; import org.w3c.dom.Attr; import org.w3c.dom.Document; import org.w3c.dom.NamedNodeMap; import org.w3c.dom.Node; import org.w3c.dom.NodeList; import org.xml.sax.SAXException; public class ParseXml { public void parserXml(String fileName) { try { DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); DocumentBuilder db = dbf.newDocumentBuilder(); Document document = db.parse(fileName); NodeList rootNode = document.getChildNodes(); parseNode(rootNode.item(0)); } catch (FileNotFoundException e) { System.out.println(e.getMessage()); } catch (ParserConfigurationException e) { System.out.println(e.getMessage()); } catch (SAXException e) { System.out.println(e.getMessage()); } catch (IOException e) { System.out.println(e.getMessage()); } } public void parseNode(Node node) { if (node == null) { return; } // if not have child if (!node.hasChildNodes()) { NamedNodeMap attrs = node.getAttributes(); if (attrs != null) { for (int i = 0; i &lt; attrs.getLength(); i&#43;&#43;) { Attr attribute = (Attr) attrs.item(i); System.out.print(&#34;AttributeName===&#34; &#43; attribute.getName() &#43; &#34; AttributeValue===&#34; &#43; attribute.getValue()); } } String str = node.getTextContent().toString().replaceAll(&#34;n&#34;, &#34;&#34;).replaceAll(&#34; &#34;, &#34;&#34;); if (!str.equals(&#34;&#34;)) { System.out.println(&#34;TextContent ===&#34; &#43; str); } } else { // get attributes NamedNodeMap attrs = node.getAttributes(); if (attrs != null) { for (int i = 0; i &lt; attrs.getLength(); i&#43;&#43;) { Attr attribute = (Attr) attrs.item(i); System.out.println(&#34;AttributeName===&#34; &#43; attribute.getName() &#43; &#34; AttributeValue===&#34; &#43; attribute.getValue()); } } // get child node NodeList nodes = node.getChildNodes(); for (int j = 0; j &lt; nodes.getLength(); j&#43;&#43;) { parseNode(nodes.item(j)); } } } } 具体可以参考：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-09-14 02:39:17 +0000 +0000'>September 14, 2014</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>216 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 使用JDK自带的工具解析XML文档" href="http://localhost:1313/posts/2014-09-14-%E4%BD%BF%E7%94%A8jdk%E8%87%AA%E5%B8%A6%E7%9A%84%E5%B7%A5%E5%85%B7%E8%A7%A3%E6%9E%90xml%E6%96%87%E6%A1%A3/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Java在线支付（利用易宝支付的接口）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>随着现在电商等平台如雨后春笋般的发展，在线支付越来越火，各种移动端的支付也是层出不穷，什么微信支付、微博支付等等，其实万变不离其宗，今天大桥就给大家讲解一个Java利用易宝支付在线支付的例子，当然首先要感谢一些传智播客的黎活明老师。
+在线支付的第一步，也就是用户在线支付看到的第一个页面，这个页面里主要包含三项：订单号、金额、所选银行，这三个缺一不可。 &lt;%@ page language=&#34;java&#34; import=&#34;java.util.*&#34; pageEncoding=&#34;GBK&#34;%&gt; &lt;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&gt; &lt;html&gt; &lt;head&gt; &amp;nbsp; &lt;title&gt;支付第一步,选择支付银行&lt;/title&gt; &lt;meta http-equiv=&#34;pragma&#34; content=&#34;no-cache&#34;&gt; &lt;meta http-equiv=&#34;cache-control&#34; content=&#34;no-cache&#34;&gt; &lt;meta http-equiv=&#34;expires&#34; content=&#34;0&#34;&gt; &lt;/head&gt; &amp;nbsp; &lt;body&gt; &lt;table width=&#34;960&#34; border=&#34;0&#34; align=&#34;center&#34;&gt; &lt;tr&gt; &lt;td width=&#34;536&#34; valign=&#34;top&#34;&gt; &lt;form action=&#34;${pageContext.request.contextPath}/servlet/yeepay/PaymentRequestServlet&#34; method=&#34;post&#34; name=&#34;paymentform&#34;&gt; &lt;table width=&#34;100%&#34; border=&#34;0&#34;&gt; &lt;tr&gt; &lt;td height=&#34;30&#34; colspan=&#34;4&#34;&gt; &lt;table width=&#34;100%&#34; height=&#34;50&#34; border=&#34;0&#34; cellpadding=&#34;0&#34; cellspacing=&#34;1&#34; bgcolor=&#34;#A2E0FF&#34;&gt; &lt;tr&gt; &lt;td align=&#34;center&#34; bgcolor=&#34;#F7FEFF&#34;&gt; &lt;h3&gt;订单号： &lt;INPUT TYPE=&#34;text&#34; NAME=&#34;orderid&#34;&gt; 应付金额：￥&lt;INPUT TYPE=&#34;text&#34; NAME=&#34;amount&#34; size=&#34;6&#34;&gt;元 &lt;/h3&gt; &lt;/td&gt; &lt;/tr&gt; &lt;/table&gt; &lt;/td&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td colspan=&#34;4&#34;&gt;&lt;/td&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td height=&#34;30&#34; colspan=&#34;4&#34; bgcolor=&#34;#F4F8FF&#34;&gt; &lt;span class=&#34;STYLE3&#34;&gt;请您选择在线支付银行&lt;/span&gt; &lt;/td&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td width=&#34;26%&#34; height=&#34;25&#34;&gt;&lt;INPUT TYPE=&#34;radio&#34; NAME=&#34;pd_FrpId&#34; value=&#34;CMBCHINA-NET&#34;&gt;招商银行 &lt;/td&gt; &lt;td width=&#34;25%&#34; height=&#34;25&#34;&gt;&lt;INPUT TYPE=&#34;radio&#34; NAME=&#34;pd_FrpId&#34; value=&#34;ICBC-NET&#34;&gt;工商银行 &lt;/td&gt; &lt;td width=&#34;25%&#34; height=&#34;25&#34;&gt;&lt;INPUT TYPE=&#34;radio&#34; NAME=&#34;pd_FrpId&#34; value=&#34;ABC-NET&#34;&gt;农业银行 &lt;/td&gt; &lt;td width=&#34;24%&#34; height=&#34;25&#34;&gt;&lt;INPUT TYPE=&#34;radio&#34; NAME=&#34;pd_FrpId&#34; value=&#34;CCB-NET&#34;&gt;建设银行 &lt;/td&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td height=&#34;25&#34;&gt;&lt;INPUT TYPE=&#34;radio&#34; NAME=&#34;pd_FrpId&#34; value=&#34;CMBC-NET&#34;&gt;中国民生银行总行 &lt;/td&gt; &lt;td height=&#34;25&#34;&gt;&lt;INPUT TYPE=&#34;radio&#34; NAME=&#34;pd_FrpId&#34; value=&#34;CEB-NET&#34;&gt;光大银行 &lt;/td&gt; &lt;td height=&#34;25&#34;&gt;&lt;INPUT TYPE=&#34;radio&#34; NAME=&#34;pd_FrpId&#34; value=&#34;BOCO-NET&#34;&gt;交通银行 &lt;/td&gt; &lt;td height=&#34;25&#34;&gt;&lt;INPUT TYPE=&#34;radio&#34; NAME=&#34;pd_FrpId&#34; value=&#34;SDB-NET&#34;&gt;深圳发展银行 &lt;/td&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td height=&#34;25&#34;&gt;&lt;INPUT TYPE=&#34;radio&#34; NAME=&#34;pd_FrpId&#34; value=&#34;BCCB-NET&#34;&gt;北京银行 &lt;/td&gt; &lt;td height=&#34;25&#34;&gt;&lt;INPUT TYPE=&#34;radio&#34; NAME=&#34;pd_FrpId&#34; value=&#34;CIB-NET&#34;&gt;兴业银行 &lt;/td&gt; &lt;td height=&#34;25&#34;&gt;&lt;INPUT TYPE=&#34;radio&#34; NAME=&#34;pd_FrpId&#34; value=&#34;SPDB-NET&#34;&gt;上海浦东发展银行 &lt;/td&gt; &lt;td&gt;&lt;INPUT TYPE=&#34;radio&#34; NAME=&#34;pd_FrpId&#34; value=&#34;ECITIC-NET&#34;&gt;中信银行 &lt;/td&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td colspan=&#34;4&#34;&gt;&lt;/td&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td colspan=&#34;4&#34; align=&#34;center&#34;&gt; &lt;input type=&#34;submit&#34; value=&#34; 确认支付 &#34;/&gt; &lt;/td&gt; &lt;/tr&gt; &lt;/table&gt; &lt;/form&gt; &lt;/td&gt; &lt;td colspan=&#34;2&#34; valign=&#34;top&#34;&gt; &lt;div class=&#34;divts&#34;&gt; &lt;table width=&#34;400&#34; border=&#34;0&#34; align=&#34;center&#34; cellpadding=&#34;5&#34; cellspacing=&#34;0&#34;&gt; &lt;/table&gt; &lt;/div&gt; &lt;div id=&#34;blankmessage&#34;&gt;&lt;/div&gt; &lt;/td&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td&gt;&lt;/td&gt; &lt;td width=&#34;290&#34;&gt;&lt;/td&gt; &lt;td width=&#34;120&#34;&gt;&lt;/td&gt; &lt;/tr&gt; &lt;/table&gt; &lt;/body&gt; &lt;/html&gt; 取得前台提交的三个参数，并封装易宝支付所需的其他参数，并把这些参数放到Request对象中。 package cn.bridgeli.servlet; import java.io.IOException; import javax.servlet.ServletException; import javax.servlet.http.HttpServlet; import javax.servlet.http.HttpServletRequest; import javax.servlet.http.HttpServletResponse; import cn.bridgeli.utils.ConfigInfo; import cn.bridgeli.utils.PanymentUtil; /** * 发起支付请求 */ public class PaymentRequestServlet extends HttpServlet { public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { this.doPost(request, response); } public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { request.setCharacterEncoding(&#34;GBK&#34;); String orderid = request.getParameter(&#34;orderid&#34;);//订单号 String amount = request.getParameter(&#34;amount&#34;);//支付金额 String pd_FrpId = request.getParameter(&#34;pd_FrpId&#34;);//选择的支付银行 String p1_MerId = ConfigInfo.getValue(&#34;p1_MerId&#34;); String keyValue = ConfigInfo.getValue(&#34;keyValue&#34;); String merchantCallbackURL = ConfigInfo.getValue(&#34;merchantCallbackURL&#34;); String messageType = &#34;Buy&#34;; // 请求命令,在线支付固定为Buy String currency = &#34;CNY&#34;; // 货币单位 String productDesc = &#34;&#34;; // 商品描述 String productCat = &#34;&#34;; // 商品种类 String productId = &#34;&#34;; // 商品ID String addressFlag = &#34;0&#34;; // 需要填写送货信息 0：不需要 1:需要 String sMctProperties = &#34;&#34;; // 商家扩展信息 String pr_NeedResponse = &#34;0&#34;; // 应答机制 String md5hmac = PanymentUtil.buildHmac(messageType, p1_MerId, orderid, amount, currency, productId, productCat, productDesc, merchantCallbackURL, addressFlag, sMctProperties, pd_FrpId, pr_NeedResponse, keyValue); request.setAttribute(&#34;messageType&#34;, messageType); request.setAttribute(&#34;merchantID&#34;, p1_MerId); request.setAttribute(&#34;orderId&#34;, orderid); request.setAttribute(&#34;amount&#34;, amount); request.setAttribute(&#34;currency&#34;, currency); request.setAttribute(&#34;productId&#34;, productId); request.setAttribute(&#34;productCat&#34;, productCat); request.setAttribute(&#34;productDesc&#34;, productDesc); request.setAttribute(&#34;merchantCallbackURL&#34;, merchantCallbackURL); request.setAttribute(&#34;addressFlag&#34;, addressFlag); request.setAttribute(&#34;sMctProperties&#34;, sMctProperties); request.setAttribute(&#34;frpId&#34;, pd_FrpId); request.setAttribute(&#34;pr_NeedResponse&#34;, pr_NeedResponse); request.setAttribute(&#34;hmac&#34;, md5hmac); request.getRequestDispatcher(&#34;/WEB-INF/page/connection.jsp&#34;).forward(request, response); } } 因为易宝支付所需的数据都是通过表单提交的，所以取得上一步封装的各个参数，通过一个表单提交到易宝支付提供的接口。所以表单的action应该是易宝支付的接口。 &lt;%@ page language=&#34;java&#34; pageEncoding=&#34;GBK&#34;%&gt; &lt;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34;&gt; &lt;html&gt; &lt;head&gt; &lt;title&gt;发起支付请求&lt;/title&gt; &amp;nbsp; &lt;meta http-equiv=&#34;pragma&#34; content=&#34;no-cache&#34;&gt; &lt;meta http-equiv=&#34;cache-control&#34; content=&#34;no-cache&#34;&gt; &lt;meta http-equiv=&#34;expires&#34; content=&#34;0&#34;&gt; &lt;/head&gt; &amp;nbsp; &lt;body onload=&#34;javascript:document.forms[0].submit()&#34;&gt; &lt;!&amp;#8211; http://tech.yeepay.com:8080/robot/debug.action &amp;#8211;&gt; &lt;form name=&#34;yeepay&#34; action=&#34;https://www.yeepay.com/app-merchant-proxy/node&#34; method=&amp;#8217;post&amp;#8217;&gt; &lt;input type=&amp;#8217;hidden&amp;#8217; name=&amp;#8217;p0_Cmd&amp;#8217; value=&#34;${messageType}&#34;&gt; &lt;!&amp;#8211; 请求命令,在线支付固定为Buy &amp;#8211;&gt; &lt;input type=&amp;#8217;hidden&amp;#8217; name=&amp;#8217;p1_MerId&amp;#8217; value=&#34;${merchantID}&#34;&gt; &lt;!&amp;#8211; 商家ID &amp;#8211;&gt; &lt;input type=&#34;hidden&#34; name=&#34;p2_Order&#34; value=&#34;${orderId}&#34;&gt; &lt;!&amp;#8211; 商家的交易定单号 &amp;#8211;&gt; &lt;input type=&amp;#8217;hidden&amp;#8217; name=&amp;#8217;p3_Amt&amp;#8217; value=&#34;${amount}&#34;&gt; &lt;!&amp;#8211; 订单金额 &amp;#8211;&gt; &lt;input type=&amp;#8217;hidden&amp;#8217; name=&amp;#8217;p4_Cur&amp;#8217; value=&#34;${currency}&#34;&gt; &lt;!&amp;#8211; 货币单位 &amp;#8211;&gt; &lt;input type=&amp;#8217;hidden&amp;#8217; name=&amp;#8217;p5_Pid&amp;#8217; value=&#34;${productId}&#34;&gt; &lt;!&amp;#8211; 商品ID &amp;#8211;&gt; &lt;input type=&amp;#8217;hidden&amp;#8217; name=&amp;#8217;p6_Pcat&amp;#8217; value=&#34;${productCat}&#34;&gt; &lt;!&amp;#8211; 商品种类 &amp;#8211;&gt; &lt;input type=&amp;#8217;hidden&amp;#8217; name=&amp;#8217;p7_Pdesc&amp;#8217; value=&#34;${productDesc}&#34;&gt; &lt;!&amp;#8211; 商品描述 &amp;#8211;&gt; &lt;input type=&amp;#8217;hidden&amp;#8217; name=&amp;#8217;p8_Url&amp;#8217; value=&#34;${merchantCallbackURL}&#34;&gt; &lt;!&amp;#8211; 交易结果通知地址 &amp;#8211;&gt; &lt;input type=&amp;#8217;hidden&amp;#8217; name=&amp;#8217;p9_SAF&amp;#8217; value=&#34;${addressFlag}&#34;&gt; &lt;!&amp;#8211; 需要填写送货信息 0：不需要 1:需要 &amp;#8211;&gt; &lt;input type=&amp;#8217;hidden&amp;#8217; name=&amp;#8217;pa_MP&amp;#8217; value=&#34;${sMctProperties}&#34;&gt; &lt;!&amp;#8211; 商家扩展信息 &amp;#8211;&gt; &lt;input type=&amp;#8217;hidden&amp;#8217; name=&amp;#8217;pd_FrpId&amp;#8217; value=&#34;${frpId}&#34;&gt; &lt;!&amp;#8211; 银行ID &amp;#8211;&gt; &lt;!&amp;#8211; 应答机制 为“1”: 需要应答机制;为“0”: 不需要应答机制 &amp;#8211;&gt; &lt;input type=&#34;hidden&#34; name=&#34;pr_NeedResponse&#34; value=&#34;0&#34;&gt; &lt;input type=&amp;#8217;hidden&amp;#8217; name=&amp;#8217;hmac&amp;#8217; value=&#34;${hmac}&#34;&gt; &lt;!&amp;#8211; MD5-hmac验证码 &amp;#8211;&gt; &lt;/form&gt; &lt;/body&gt; &lt;/html&gt; 编写易宝支付处理上一步处理数据完成后所返回的后台处理类（这个处理类必须在公网上，即使是测试程序，即可以访问的），并根据易宝支付所返回的数据，并完成一下几件事（也就是接收易宝支付处理结果的类）： (1). 判断支付的结果
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-09-13 03:26:10 +0000 +0000'>September 13, 2014</span>&nbsp;·&nbsp;<span>7 min</span>&nbsp;·&nbsp;<span>1441 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Java在线支付（利用易宝支付的接口）" href="http://localhost:1313/posts/2014-09-13-java%E5%9C%A8%E7%BA%BF%E6%94%AF%E4%BB%98%E5%88%A9%E7%94%A8%E6%98%93%E5%AE%9D%E6%94%AF%E4%BB%98%E7%9A%84%E6%8E%A5%E5%8F%A3/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">动态代理模拟Spring的AOP
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>这两天研究了一下Java的动态代理，自己闲着无聊，用动态代理模拟了一下Spring的AOP，代码如下，当然真正的Spring是直接操作二进制文件，很复杂，有兴趣的可以自己研究下。
+package cn.bridgeli.aop; public interface UserService { void addUser(); } package cn.bridgeli.aop; public class UserServiceImpl implements UserService { public void addUser() { System.out.println(&#34;User add&amp;#8230;&#34;); } } package cn.bridgeli.aop; import java.lang.reflect.InvocationHandler; import java.lang.reflect.Method; public class UserServiceProxy implements InvocationHandler { private UserService userService; public UserServiceProxy(UserService userService) { this.userService = userService; } public Object invoke(Object proxy, Method method, Object[] args) throws Throwable { System.out.println(&#34;User add start&amp;#8230;&#34;); Object object = method.invoke(userService, args); System.out.println(&#34;User add end&amp;#8230;&#34;); return object; } } package cn.bridgeli.aop; import java.lang.reflect.InvocationHandler; import java.lang.reflect.Proxy; import org.junit.Test; public class UserServiceTest { @Test public void testAddUser() { UserService userService = new UserServiceImpl(); InvocationHandler invocationHandler = new UserServiceProxy(userService); UserService userServiceProxy = (UserService) Proxy.newProxyInstance(userService.getClass().getClassLoader(), userService.getClass().getInterfaces(), invocationHandler); userServiceProxy.addUser(); } } </p>
+  </div>
+  <footer class="entry-footer"><span title='2014-09-12 13:21:07 +0000 +0000'>September 12, 2014</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>112 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 动态代理模拟Spring的AOP" href="http://localhost:1313/posts/2014-09-12-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E6%A8%A1%E6%8B%9Fspring%E7%9A%84aop/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">JXL解析Excel常用方法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>目前在市场上有两个最出名的第三方的JAR包：JXL和POI，他们在处理Excel上都有着不俗的表现，但他们有着细微的差别，主要差别如下：
+JXL在处理数据方面速度比较快，而POI相对较慢，当数据较少时，其实并不明显； JXL对图片的支持更好，而POI对图片的支持稍弱，但对图片也是支持的； JXL对公示的支持能力稍弱，对于复杂的公式显得无能为力，而POI则做得很好，所以如果做财务软件的话，请慎重选择，建议POI，否则很有可能会引起一些意想不到的问题； JXL的代码简单，也易于理解，下面是JXL处理Excel的常用方法（将来有可能的话，我会把POI的也贴出来，供大家参考）： import java.io.File; import java.io.IOException; import java.util.Date; import jxl.CellView; import jxl.Sheet; import jxl.Workbook; import jxl.format.Alignment; import jxl.format.Border; import jxl.format.BorderLineStyle; import jxl.format.CellFormat; import jxl.format.Colour; import jxl.format.VerticalAlignment; import jxl.write.Blank; import jxl.write.Boolean; import jxl.write.DateFormat; import jxl.write.DateTime; import jxl.write.Formula; import jxl.write.Label; import jxl.write.Number; import jxl.write.NumberFormat; import jxl.write.WritableCell; import jxl.write.WritableCellFormat; import jxl.write.WritableFont; import jxl.write.WritableSheet; import jxl.write.WritableWorkbook; import jxl.write.WriteException; import jxl.write.biff.RowsExceededException; import org.slf4j.Logger; import org.slf4j.LoggerFactory; public class JxlHelper { private static final Logger LOG = LoggerFactory.getLogger(JxlHelper.class); private WritableSheet sheet; public JxlHelper(WritableSheet sheet) { this.sheet = sheet; } public JxlHelper() { } public static WritableWorkbook createWritableWorkbook(String filePath) { WritableWorkbook wwb = null; try { wwb = Workbook.createWorkbook(new File(filePath)); } catch (IOException e) { LOG.error(&#34;Create Writable Workbook Failed: IOException&#34;, e); } return wwb; } public static WritableWorkbook createWritableWorkbook(String filePath, Workbook wb) { WritableWorkbook wwb = null; try { wwb = Workbook.createWorkbook(new File(filePath), wb); } catch (IOException e) { LOG.error(&#34;Create Writable Workbook Failed: IOException&#34;, e); } return wwb; } public static Workbook getWorkbook(String filePath) throws Exception { Workbook wb = Workbook.getWorkbook(new File(filePath)); return wb; } public void createSheet(WritableWorkbook wwb, String sheetName, int index) { try { wwb.createSheet(sheetName, index); } catch (Exception e) { LOG.error(&#34;Create Sheet Failed&#34;, e); } } public void copySheet(WritableWorkbook wwb, int copySheetIndex, String pasteSheetName, int pasteSheetIndex) { try { wwb.copySheet(copySheetIndex, pasteSheetName, pasteSheetIndex); } catch (Exception e) { LOG.error(&#34;Copy Sheet Failed&#34;, e); } } public void copySheet(WritableWorkbook wwb, String copySheetName, String pasteSheetName, int pasteSheetIndex) { try { wwb.copySheet(copySheetName, pasteSheetName, pasteSheetIndex); } catch (Exception e) { LOG.error(&#34;Copy Sheet Failed&#34;, e); } } public void removeSheet(WritableWorkbook wwb, int index) { try { wwb.removeSheet(index); } catch (Exception e) { LOG.error(&#34;Remove Sheet Failed&#34;, e); } } public Sheet[] getSheets(WritableWorkbook wwb) { return wwb.getSheets(); } public void setString(int column, int row, String value, int fontSize) throws WriteException { if (value != null) { sheet.addCell(new Label(column, row, value)); } else { sheet.addCell(new Blank(column, row)); } setCellStyle(column, row, fontSize); } public void setString(int column, int row, String value, CellFormat st) throws WriteException { if (value != null) { sheet.addCell(new Label(column, row, value, st)); } else { sheet.addCell(new Blank(column, row, st)); } } public void setNumber(int column, int row, double value, CellFormat st) throws WriteException { sheet.addCell(new Number(column, row, value, st)); } public void setFormatNumber(int column, int row, double value, int fontSize, LocationEnum location, String format) throws WriteException { Number numCell = new Number(column, row, value); sheet.addCell(numCell); WritableFont font = new WritableFont(WritableFont.createFont(SystemConstant.INVOICE_FONT), fontSize, WritableFont.NO_BOLD); NumberFormat numberFormat = null; WritableCellFormat cellFormat = null; if (!StringUtil.isNullOrEmpty(format)) { numberFormat = new NumberFormat(format); cellFormat = new WritableCellFormat(font, numberFormat); } else { cellFormat = new WritableCellFormat(font); } try { cellFormat.setBorder(Border.ALL, BorderLineStyle.THIN); if (location.equals(LocationEnum.LEFT)) { cellFormat.setBorder(Border.LEFT, BorderLineStyle.THICK); } else if (location.equals(LocationEnum.RIGHT)) { cellFormat.setBorder(Border.RIGHT, BorderLineStyle.THICK); } cellFormat.setAlignment(Alignment.RIGHT); cellFormat.setVerticalAlignment(VerticalAlignment.CENTRE); WritableCell writableCell = sheet.getWritableCell(column, row); writableCell.setCellFormat(cellFormat); } catch (WriteException e) { LOG.error(&#34;Set Format Number Failed: WriteException&#34;, e); } } public void setBoolean(int column, int row, boolean value) throws WriteException { Boolean boolCell = new Boolean(column, row, value); sheet.addCell(boolCell); } public void setFormatDateTime(int column, int row, Date value, String format) throws WriteException { if (value != null) { WritableCell writableCell = sheet.getWritableCell(column, row); CellFormat cf = writableCell.getCellFormat(); DateTime cell = new DateTime(column, row, value); DateFormat dateFormat = new DateFormat(format); WritableCellFormat wcf = new WritableCellFormat(dateFormat); wcf.setFont(new WritableFont(WritableFont.ARIAL)); wcf.setBorder(Border.LEFT, cf.getBorderLine(Border.LEFT)); wcf.setBorder(Border.RIGHT, cf.getBorderLine(Border.RIGHT)); wcf.setAlignment(Alignment.CENTRE); cell.setCellFormat(wcf); sheet.addCell(cell); } } public void setCellStype2(int column, int row) throws WriteException { WritableFont font = new WritableFont(WritableFont.ARIAL, 10, WritableFont.BOLD); WritableCellFormat cellFormat = new WritableCellFormat(font); cellFormat.setBorder(Border.ALL, BorderLineStyle.THIN); cellFormat.setAlignment(Alignment.CENTRE); cellFormat.setVerticalAlignment(VerticalAlignment.CENTRE); WritableCell writableCell = sheet.getWritableCell(column, row); writableCell.setCellFormat(cellFormat); } public void setFormatDateTime(int column, int row, Date value, CellFormat st) throws WriteException { if (value != null) { sheet.addCell(new DateTime(column, row, value, st)); } else { sheet.addCell(new Blank(column, row, st)); } } public void setFormula(int column, int row, String formula) { try { Formula f = new Formula(column, row, formula); sheet.addCell(f); WritableCellFormat cellFormat = new WritableCellFormat(); cellFormat.setAlignment(Alignment.LEFT); cellFormat.setVerticalAlignment(VerticalAlignment.CENTRE); cellFormat.setBorder(Border.ALL, BorderLineStyle.THIN); WritableCell writableCell = sheet.getWritableCell(column, row); writableCell.setCellFormat(cellFormat); } catch (Exception e) { LOG.error(&#34;Set Formula Failed&#34;, e); } } public void setFormula(int column, int row, String formula, CellFormat st) { try { sheet.addCell(new Formula(column, row, formula, st)); } catch (Exception e) { LOG.error(&#34;Set Formula Failed&#34;, e); } } public void setCellStyle(int column, int row, int fontSize) { WritableFont font = new WritableFont(WritableFont.ARIAL, fontSize, WritableFont.BOLD); WritableCellFormat cellFormat = new WritableCellFormat(font); try { cellFormat.setAlignment(Alignment.CENTRE); cellFormat.setVerticalAlignment(VerticalAlignment.CENTRE); WritableCell writableCell = sheet.getWritableCell(column, row); writableCell.setCellFormat(cellFormat); } catch (WriteException e) { LOG.error(&#34;Set Cell Style Failed: WriteException&#34;, e); } } public void setSumCellBorder(int column, int row, LocationEnum location, String format) { NumberFormat nf = null; if (StringUtil.isNotNull(format)) { nf = new NumberFormat(format); } WritableCellFormat cellFormat = new WritableCellFormat(nf); try { cellFormat.setBorder(Border.ALL, jxl.format.BorderLineStyle.THIN); cellFormat.setBorder(Border.TOP, jxl.format.BorderLineStyle.DOUBLE); if (location.equals(LocationEnum.RIGHT)) { cellFormat.setBorder(Border.RIGHT, jxl.format.BorderLineStyle.THICK); } cellFormat.setBorder(Border.BOTTOM, jxl.format.BorderLineStyle.THICK); cellFormat.setAlignment(Alignment.RIGHT); cellFormat.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE); WritableCell writableCell = sheet.getWritableCell(column, row); writableCell.setCellFormat(cellFormat); } catch (WriteException e) { LOG.error(&#34;Set Sum Cell Border Failed: WriteException&#34;, e); } } public void setCellStyle(int column, int row) { WritableFont font = new WritableFont(WritableFont.ARIAL); WritableCellFormat cellFormat = new WritableCellFormat(font); try { cellFormat.setAlignment(Alignment.LEFT); cellFormat.setVerticalAlignment(VerticalAlignment.TOP); } catch (WriteException e) { LOG.error(&#34;Set Cell Style Failed: WriteException&#34;, e); } WritableCell writableCell = sheet.getWritableCell(column, row); writableCell.setCellFormat(cellFormat); } public void hiddenRow(int row) throws RowsExceededException { // sheet.setRowView(row, true); CellView cv = new CellView(); cv.setHidden(true); sheet.setRowView(row, cv); } public void removeRow(int row) { sheet.removeRow(row); } public void insertRow(int row, int height) { sheet.insertRow(row); try { sheet.setRowView(row, height); } catch (RowsExceededException e) { LOG.error(&#34;Insert Row Failed: RowsExceededException&#34;, e); } } public void mergeCells(int columnStart, int rowsStart, int columnEnd, int rowsEnd) { try { sheet.mergeCells(columnStart, rowsStart, columnEnd, rowsEnd); } catch (RowsExceededException e) { LOG.error(&#34;Merge Cells Failed: RowsExceededException&#34;, e); } catch (WriteException e) { LOG.error(&#34;Merge Cells Failed: WriteException&#34;, e); } } public static void close(WritableWorkbook wwb, Workbook wb) { try { if (null != wwb) { wwb.close(); } if (null != wb) { wb.close(); } } catch (WriteException e) { LOG.error(&#34;Close WritableWorkbook or Workbook Failed: WriteException&#34;, e); } catch (IOException e) { LOG.error(&#34;Close WritableWorkbook or Workbook Failed: IOException&#34;, e); } } public void setBackgroundColour(int column, int row) { try { WritableCellFormat cellFormat = new WritableCellFormat(); cellFormat.setBackground(Colour.PALE_BLUE); cellFormat.setAlignment(Alignment.LEFT); WritableCell writableCell = sheet.getWritableCell(column, row); writableCell.setCellFormat(cellFormat); } catch (WriteException e) { LOG.error(&#34;Set Background Colour Failed: WriteException&#34;, e); } } } </p>
+  </div>
+  <footer class="entry-footer"><span title='2014-09-06 12:06:59 +0000 +0000'>September 6, 2014</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>995 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to JXL解析Excel常用方法" href="http://localhost:1313/posts/2014-09-06-jxl%E8%A7%A3%E6%9E%90excel%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Maven Missing artifact解决之道
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前几天没事用maven重构自己的微信公众平台开发的代码，当下载一个Jar包时，遇到一个问题：Missing artifact net.sf.json-lib:json-lib:jar:2.2.3，去仓库看，这个Jar包确实没下载下来，因为自己的maven是半路里出家的（自己完全在网上找的一些乱七八糟的资源自学的），所以不知道咋回事，于是就去网上找解决的办法，也许是没找对地方，死活就是解决不了（为避免误导大家，就不列举这些方法了），问同事怎么办，一同事说应该是你下载的时候的网断了之类的导致资源下载了一半，然后网再连上，就不接着下载了，感觉似乎挺有道理，删了还是不行，那是不是网站被和谐了，采用VPN结果还是不行，最后仔细观察，终于发现了一下端倪：
+也就是说
+&lt;dependency&gt; &lt;groupId&gt;net.sf.json-lib&lt;/groupId&gt; &lt;artifactId&gt;json-lib&lt;/artifactId&gt; &lt;version&gt;2.2.3&lt;/version&gt; &lt;/dependency&gt; 对应多个Jar，maven不知道下载那个Jar，所以就报错了，正确的解决方法是加一个标签：，即变成：
+&lt;dependency&gt; &lt;groupId&gt;net.sf.json-lib&lt;/groupId&gt; &lt;artifactId&gt;json-lib&lt;/artifactId&gt; &lt;version&gt;2.2.3&lt;/version&gt; &lt;classifier&gt;jdk13&lt;/classifier&gt; &lt;/dependency&gt; 就没问题了。
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-09-03 13:22:21 +0000 +0000'>September 3, 2014</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>17 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Maven Missing artifact解决之道" href="http://localhost:1313/posts/2014-09-03-maven-missing-artifact%E8%A7%A3%E5%86%B3%E4%B9%8B%E9%81%93/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/page/16/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="http://localhost:1313/page/18/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

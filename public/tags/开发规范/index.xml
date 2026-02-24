@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>开发规范 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/</link>
+    <description>Recent content in 开发规范 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 09 Jul 2017 12:14:44 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>程序猿的自我修养之开发规范</title>
+      <link>http://localhost:1313/posts/2017-07-09-%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E4%B9%8B%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/</link>
+      <pubDate>Sun, 09 Jul 2017 12:14:44 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2017-07-09-%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E4%B9%8B%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/</guid>
+      <description>&lt;p&gt;有感于公司代码比较乱，完全没有规范，而我则受益于实习的时候的老大zeak的严格要求，看到这种情况表示有点难以接受，所以和老大讨论后，基于阿里的规范经过删减写了这么一个标准，今天发出来，不仅供自己时时对照，也供大家参考，最后感谢一下阿里出这份标准。&lt;/p&gt;
+&lt;p&gt;一、 编程规约&lt;/p&gt;
+&lt;p&gt;（一）命令风格&lt;/p&gt;
+&lt;p&gt;整体要求，见名知义，英文为主，类名一般是名称或者形容词，方法名为动词&lt;/p&gt;
+&lt;p&gt;具体要求：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;代码中的命名均不能以下划线或美元符号开始，也不能以下划线或美元符号结束。除非特殊情况最好不要用美元符号（大家猜猜为啥？）&lt;/li&gt;
+&lt;li&gt;类名使用 UpperCamelCase 风格，必须遵从驼峰形式，但以下情形例外:BO / DTO / VO&lt;/li&gt;
+&lt;li&gt;方法名、参数名、成员变量、局部变量都统一使用 lowerCamelCase 风格，必须遵从 驼峰形式&lt;/li&gt;
+&lt;li&gt;常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚，不要嫌名字长&lt;/li&gt;
+&lt;li&gt;抽象类命名使用 Abstract 或 Base 开头;异常类命名使用 Exception 结尾;测试类 命名以它要测试的类的名称开始，以 Test 结尾，枚举类名建议带上 Enum 后缀，枚举成员名称需要全大写，单词间用下划线隔开&lt;/li&gt;
+&lt;li&gt;中括号是数组类型的一部分，数组定义如下:String[] args&lt;/li&gt;
+&lt;li&gt;POJO 类中布尔类型的变量，都不要加 is&lt;/li&gt;
+&lt;li&gt;包名统一使用小写，点分隔符之间有且仅有一个自然语义的英语单词。包名统一使用 单数形式，但是类名如果有复数含义，类名可以使用复数形式&lt;/li&gt;
+&lt;li&gt;杜绝完全不规范的缩写，避免望文不知义&lt;/li&gt;
+&lt;li&gt;如果使用到了设计模式，建议在类名中体现出具体模式&lt;/li&gt;
+&lt;li&gt;接口类中的方法和属性不要加任何修饰符号(public 也不要加)，并加上有效的 Javadoc 注释。尽量不要在接口里定义变量，如果一定要定义变量，肯定是 与接口方法相关，并且是整个应用的基础常量&lt;/li&gt;
+&lt;li&gt;各层命名规约:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ol&gt;
+&lt;li&gt;获取单个对象的方法用get或者find做前缀&lt;/li&gt;
+&lt;li&gt;获取多个对象的方法用list或者query做前缀。&lt;/li&gt;
+&lt;li&gt;获取统计值的方法用count做前缀。&lt;/li&gt;
+&lt;li&gt;插入的方法用save(推荐)或insert做前缀。&lt;/li&gt;
+&lt;li&gt;删除的方法用remove(推荐)或delete做前缀。&lt;/li&gt;
+&lt;li&gt;修改的方法用update做前缀。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;(二) 常量定义&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;不允许任何魔法值直接出现在代码中&lt;/li&gt;
+&lt;li&gt;long 或者 Long 初始赋值时，必须使用大写的 L，不能是小写的 l&lt;/li&gt;
+&lt;li&gt;如果变量值仅在一个范围内变化，且带有名称之外的延伸属性，定义为枚举类&lt;/li&gt;
+&lt;li&gt;常量类大写，各个单词之前下划线分开&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;(三) 代码格式&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;大括号的使用约定:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ol&gt;
+&lt;li&gt;左大括号前不换行。&lt;/li&gt;
+&lt;li&gt;左大括号后换行。&lt;/li&gt;
+&lt;li&gt;右大括号前换行。&lt;/li&gt;
+&lt;li&gt;右大括号后还有else等代码则不换行;表示终止的右大括号后必须换行。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;左小括号和字符之间不出现空格;同样，右小括号和字符之间也不出现空格&lt;/li&gt;
+&lt;li&gt;if/for/while/switch/do 等保留字与括号之间都必须加空格&lt;/li&gt;
+&lt;li&gt;任何二目、三目运算符的左右两边都需要加一个空格&lt;/li&gt;
+&lt;li&gt;缩进采用 4 个空格，禁止使用 tab 字符（根据今年stackoverflow公布数据，空格党的平均工资略高于tab党，大家猜猜为啥？）&lt;/li&gt;
+&lt;li&gt;单行字符数限制不超过 120 个，超出需要换行，换行时遵循如下原则:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ol&gt;
+&lt;li&gt;第二行相对第一行缩进 4 个空格，从第三行开始，不再继续缩进。&lt;/li&gt;
+&lt;li&gt;运算符与下文一起换行。&lt;/li&gt;
+&lt;li&gt;方法调用的点符号与下文一起换行。&lt;/li&gt;
+&lt;li&gt;在多个参数超长，在逗号后换行。&lt;/li&gt;
+&lt;li&gt;在括号前不要换行。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ol start=&#34;7&#34;&gt;
+&lt;li&gt;方法参数在定义和传入时，多个参数逗号后边必须加空格&lt;/li&gt;
+&lt;li&gt;没有必要增加若干空格来使某一行的字符与上一行对应位置的字符对齐&lt;/li&gt;
+&lt;li&gt;方法体内的执行语句组、变量的定义语句组、不同的业务逻辑之间或者不同的语义之间插入一个空行。相同业务逻辑和语义之间不需要插入空行，没有必要插入多个空行进行隔开&lt;/li&gt;
+&lt;li&gt;IDE的text file encoding设置为UTF-8; IDE中文件的换行符使用Unix格式， 不要使用 windows 格式。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;关于代码格式的设置，eclipse用户可以参考我的GitHub：&lt;a href=&#34;https://github.com/bridgeli/practical-doc/tree/master/eclipse_setting&#34; title=&#34;eclipse设置&#34; target=&#34;_blank&#34;&gt;eclipse设置&lt;/a&gt;，按照这个设置，当你保存的时候eclipse会自动帮你formatter你改动过的代码。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head>
+	<meta name="generator" content="Hugo 0.156.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>分享技术带来的喜悦</title>
+<meta name="keywords" content="博客, 技术, Java">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">GeoHash 算法的 Java 版实现
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>之前曾经做过一个类 LBS 的小需求，当时是用 redis 做的，就是这篇文章，其实 GeoHash 算法，我们也可以自己实现，具体如下：
+package cn.bridgeli.demo; import java.util.ArrayList; import java.util.BitSet; import java.util.HashMap; public class GeoHash { public static final double MINLAT = -90; public static final double MAXLAT = 90; public static final double MINLNG = -180; public static final double MAXLNG = 180; private static int numbits = 5 * 5; //经纬度单独编码长度 private static double minLat; private static double minLng; private final static char[] digits = {&amp;#8216;0&amp;#8217;, &amp;#8216;1&amp;#8217;, &amp;#8216;2&amp;#8217;, &amp;#8216;3&amp;#8217;, &amp;#8216;4&amp;#8217;, &amp;#8216;5&amp;#8217;, &amp;#8216;6&amp;#8217;, &amp;#8216;7&amp;#8217;, &amp;#8216;8&amp;#8217;, &amp;#8216;9&amp;#8217;, &amp;#8216;b&amp;#8217;, &amp;#8216;c&amp;#8217;, &amp;#8216;d&amp;#8217;, &amp;#8216;e&amp;#8217;, &amp;#8216;f&amp;#8217;, &amp;#8216;g&amp;#8217;, &amp;#8216;h&amp;#8217;, &amp;#8216;j&amp;#8217;, &amp;#8216;k&amp;#8217;, &amp;#8216;m&amp;#8217;, &amp;#8216;n&amp;#8217;, &amp;#8216;p&amp;#8217;, &amp;#8216;q&amp;#8217;, &amp;#8216;r&amp;#8217;, &amp;#8216;s&amp;#8217;, &amp;#8216;t&amp;#8217;, &amp;#8216;u&amp;#8217;, &amp;#8216;v&amp;#8217;, &amp;#8216;w&amp;#8217;, &amp;#8216;x&amp;#8217;, &amp;#8216;y&amp;#8217;, &amp;#8216;z&amp;#8217;}; //定义编码映射关系 final static HashMap&lt;Character, Integer&gt; lookup = new HashMap&lt;Character, Integer&gt;(); //初始化编码映射内容 static { int i = 0; for (char c : digits) { lookup.put(c, i&#43;&#43;); } } public GeoHash() { setMinLatLng(); } public String encode(double lat, double lon) { BitSet latbits = getBits(lat, -90, 90); BitSet lonbits = getBits(lon, -180, 180); StringBuilder buffer = new StringBuilder(); for (int i = 0; i &lt; numbits; i&#43;&#43;) { buffer.append((lonbits.get(i)) ? &amp;#8216;1&amp;#8217; : &amp;#8216;0&amp;#8217;); buffer.append((latbits.get(i)) ? &amp;#8216;1&amp;#8217; : &amp;#8216;0&amp;#8217;); } String code = base32(Long.parseLong(buffer.toString(), 2)); //Log.i(&#34;okunu&#34;, &#34;encode lat = &#34; &#43; lat &#43; &#34; lng = &#34; &#43; lon &#43; &#34; code = &#34; &#43; code); return code; } public ArrayList&lt;String&gt; getAroundGeoHash(double lat, double lon) { //Log.i(&#34;okunu&#34;, &#34;getArroundGeoHash lat = &#34; &#43; lat &#43; &#34; lng = &#34; &#43; lon); ArrayList&lt;String&gt; list = new ArrayList&lt;&gt;(); double uplat = lat &#43; minLat; double downLat = lat &amp;#8211; minLat; double leftlng = lon &amp;#8211; minLng; double rightLng = lon &#43; minLng; String leftUp = encode(uplat, leftlng); list.add(leftUp); String leftMid = encode(lat, leftlng); list.add(leftMid); String leftDown = encode(downLat, leftlng); list.add(leftDown); String midUp = encode(uplat, lon); list.add(midUp); String midMid = encode(lat, lon); list.add(midMid); String midDown = encode(downLat, lon); list.add(midDown); String rightUp = encode(uplat, rightLng); list.add(rightUp); String rightMid = encode(lat, rightLng); list.add(rightMid); String rightDown = encode(downLat, rightLng); list.add(rightDown); //Log.i(&#34;okunu&#34;, &#34;getArroundGeoHash list = &#34; &#43; list.toString()); return list; } //根据经纬度和范围，获取对应的二进制 private BitSet getBits(double lat, double floor, double ceiling) { BitSet buffer = new BitSet(numbits); for (int i = 0; i &lt; numbits; i&#43;&#43;) { double mid = (floor &#43; ceiling) / 2; if (lat &gt;= mid) { buffer.set(i); floor = mid; } else { ceiling = mid; } } return buffer; } //将经纬度合并后的二进制进行指定的32位编码 private String base32(long i) { char[] buf = new char[65]; int charPos = 64; boolean negative = (i &lt; 0); if (!negative) { i = -i; } while (i &lt;= -32) { buf[charPos&amp;#8211;] = digits[(int) (-(i % 32))]; i /= 32; } buf[charPos] = digits[(int) (-i)]; if (negative) { buf[&amp;#8211;charPos] = &amp;#8216;-&amp;#8216;; } return new String(buf, charPos, (65 &amp;#8211; charPos)); } private void setMinLatLng() { minLat = MAXLAT &amp;#8211; MINLAT; for (int i = 0; i &lt; numbits; i&#43;&#43;) { minLat /= 2.0; } minLng = MAXLNG &amp;#8211; MINLNG; for (int i = 0; i &lt; numbits; i&#43;&#43;) { minLng /= 2.0; } } //根据二进制和范围解码 private double decode(BitSet bs, double floor, double ceiling) { double mid = 0; for (int i = 0; i &lt; bs.length(); i&#43;&#43;) { mid = (floor &#43; ceiling) / 2; if (bs.get(i)) { floor = mid; } else { ceiling = mid; } } return mid; } //对编码后的字符串解码 public double[] decode(String geohash) { StringBuilder buffer = new StringBuilder(); for (char c : geohash.toCharArray()) { int i = lookup.get(c) &#43; 32; buffer.append(Integer.toString(i, 2).substring(1)); } BitSet lonset = new BitSet(); BitSet latset = new BitSet(); //偶数位，经度 int j = 0; for (int i = 0; i &lt; numbits * 2; i &#43;= 2) { boolean isSet = false; if (i &lt; buffer.length()) { isSet = buffer.charAt(i) == &amp;#8216;1&amp;#8217;; } lonset.set(j&#43;&#43;, isSet); } //奇数位，纬度 j = 0; for (int i = 1; i &lt; numbits * 2; i &#43;= 2) { boolean isSet = false; if (i &lt; buffer.length()) { isSet = buffer.charAt(i) == &amp;#8216;1&amp;#8217;; } latset.set(j&#43;&#43;, isSet); } double lon = decode(lonset, -180, 180); double lat = decode(latset, -90, 90); return new double[]{lat, lon}; } public static void main(String[] args) { GeoHash geohash = new GeoHash(); String s = geohash.encode(39.923201, 116.390705); System.out.println(&#34;geohash：&#34; &#43; s); ArrayList&lt;String&gt; aroundGeoHash = geohash.getAroundGeoHash(39.923201, 116.390705); for (String s1 : aroundGeoHash) { System.out.println(&#34;aroundGeoHash：&#34; &#43; s1); } double[] geo = geohash.decode(s); System.out.println(geo[0] &#43; &#34; &#34; &#43; geo[1]); } } 参考：https://www.jianshu.com/p/2fd0cf12e5ba
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-09-25 06:02:54 +0000 +0000'>September 25, 2021</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>701 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to GeoHash 算法的 Java 版实现" href="http://localhost:1313/posts/2021-09-25-geohash-%E7%AE%97%E6%B3%95%E7%9A%84-java-%E7%89%88%E5%AE%9E%E7%8E%B0/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Spring boot 自动装配实现的原理 – 文字简述版
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 当启动 Spring boot 应用程序的时候，会先创建 SpringApplication 的对象，在对象的构造方法中会进行某些参数的初始化工作，最主要的是判断当前应用程序的类型以及初始化器和监听器，在这个过程中会加载整个应用程序的 spring.factories 文件，将文件的内容放到缓存对象中，方便后续获取。
+SpringApplication 对象创建完成之后，开始执行 run 方法，来完成整个启动，启动过程中最主要的有两个方法，第一个叫做 prepareContext，第二个叫做 refreshContext，在这两个关键步骤中完成了自动装配的核心功能，前面的处理逻辑包含了上下文对象的创建，banner 的打印，异常报告器的准备等各个准备工作，方便后续来进行调用。
+在 prepareContext 方法中主要完成的是对上下文对象的初始化操作，包含了属性值的设置，比如环境对象，在整个过程中有一个非常重要的方法，叫做 load，load 主要完成一件事，将当前启动类作为一个 beanDefinition 注册到 registry 中，方便后续在进行 BeanFactoryPostProcessor 调用执行的时候，找到对应的主类，来完成 @SpringBootApplication、@EnableAutoConfiguration 等注解的解析工作。
+在 refreshContext 方法中会进行整个容器的刷新过程，会调用 Spring 中的 refresh 方法，refresh 中有 13 个非常关键的方法，来完成整个 Spring 应用程序的启动，在自动装配过程中，会调用 invokeBeanFactoryPostProcessor 方法，在此方法中主要对 ConfigurationClassPostProcessor 类的处理，他是 BeanFactoryPostProcessor 的子类也是，BeanDefinitionRegistryPostProcessor 的子类，在调用的时候会先调用 BeanDefinitionRegistryPostProcessor 中的 postProcessBeanDefinitionRegistry 方法，然后调用 BeanFactoryPostProcessor 中的 postProcessBeanFactory 方法，在执行 postProcessBeanDefinitionRegistry 方法的时候会解析处理各种注解，包含 @PropertySource、@ComponentScan、@ComponentScans、@Bean、@Import 等注解，最主要的是 @Import 注解的解析。
+在解析 @Import 注解的时候，会有一个 getImport 的方法，从主类开始递归解析注解，把所有包含 @Import 的注解都解析道，然后在 processImport 方法中对 Import 的类进行分类，此处最主要的是识别 AutoConfigurationImportSelect 归属于 ImportSelect 的子类，在后续过程中会调用 deferredImportSelectorHandler 中的 process 方法，来完善 EnableAutoConfiguration 的加载。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-08-29 03:34:29 +0000 +0000'>August 29, 2021</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>82 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Spring boot 自动装配实现的原理 – 文字简述版" href="http://localhost:1313/posts/2021-08-29-spring-boot-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86-%E6%96%87%E5%AD%97%E7%AE%80%E8%BF%B0%E7%89%88/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">好用的 IDEA 插件
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>好久没有好好的写过博客了，不过这一篇也没打算好好写。前一段时间换工作，所谓工欲善其事，必先利其器，所以常用的软件都需要重新配置，而作为一名 Java 程序员，最重要的就是 IDEA 了，所以这次就写一下，我个人认为比较好用的 IDEA 插件，以及他们的作用，后面如果发现更好用的插件了，也会在这篇文章里面更新。
+IDE Eval Reset，开发者：zhile.io 大家众所周知的，IDEA 很好用，但是付费软件，还不便宜，但是在国内很多人都是找各种方法破解，人家也在做反破解，一直搞攻防战，但是 IDEA 有一个很人性的一点，可以试用 30 天，所以这个插件就是让大家无限试用。
+安装完成之后，在 Help 菜单下面会多一个：Eval Rest 的子菜单，就可以重制 30 天的有效期，当然也可以选上右下角的：Auto reset before per restart，啥功能不用说了吧。
+最后多说一句：请大家最好不要滥用此功能，最好还是支持正版。
+Maven Helper，开发者：Vojtech Krasa 在我刚工作的时候的那个年代，我们 build 还用 Ant，现在可能很多人都没听说过了，后来才开始用 maven，但无论无论如何都还有一个巨大的问题，jar 包冲突，有时会出莫名其妙的问题，所以这个插件就是用来分析 maven 项目的 jar 冲突的。
+装上这个插件之后，在 pom 文件左下方会多一个：Dependency Analyzer 的子菜单，点一下，就可以看到那些 jar 冲突了，然后选中，在右侧排除掉即可。
+GsonFormatPlus，开发者：mars-men 在我们的工作中，使用第三方的接口，现在数据一般都是用 json，所以不可避免的要用对象和 json 的互转，而我们根据 json 写对象的时候，自己一行一行的写，不仅容易错，而且还没有效率，唯一的好处就是锻炼大家打字的说平，所以这个插件应运而生了，他可以很轻松的根据 json 数据，生成实体类。
+安装完成后，我们只需要新建一个实体类，然后在该类中，摁下 option &#43; s 键，然后把 json 数据 copy 到那个框里面，就可以直接生成相应的实体类了，巨方便快捷。
+any-rule，开发者：any-rule 在我们工作中，自从有了正则表达式，我们的工作量可能减轻了很多，但很多时候写正则表达式也挺头疼的，最起码我是这样的，老是写不对。所以这个插件就是帮我们生成一些常见的正则表达式。
+安装完成后，你只需要摁下 option &#43; a，然后就可以看到一些常见的正则表达式，选择合适的即可。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-07-17 12:47:57 +0000 +0000'>July 17, 2021</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>156 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 好用的 IDEA 插件" href="http://localhost:1313/posts/2021-07-17-%E5%A5%BD%E7%94%A8%E7%9A%84-idea-%E6%8F%92%E4%BB%B6/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">位图在 12306 中的应用
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>记得 12306 刚上线的时候，就在想 12306 是如何卖票，一趟车从北京到上海，中间经过了 N 个站，大家可以买其中的任意两站，而因为卖出了一个一张票，从北京到上海很多站的车票都会变动，当时就感觉这个算法太复杂了，一般人还真写不出来，由此虽然很多人都在吐槽 12306，但是我却一直任务 12306 特别牛，很多人吐槽的大学生水平肯定是做不出来的，前一段时间，听马士兵教育的周志磊老师讲课，提出 redis 中的位图解决，设计的很巧妙，突然感觉豁然开朗，如果你也有这个问题，不妨参考一下。至于什么是位图，就不多说了，如果不知道，可以简单搜索。
+首先说问题，我们假设一趟车是从 A 站到 B 站，中间有 C、D、E、F、G 站，这趟车有 1、2、3、5、6 个座位，任何一个人从可以买任意一趟车的任一个座，当然被别人买过了就不行，我们都坐过车，所以规则就不多说了，直接上算法。
+我们设置一个 key，例如 keyA 就代表，这趟车在 A 站的情况，所以默认情况下 keyA = 000000；同理其他站也是这个情况。假设此时有一个人甲买了从 A 站到 E 站的票 2 号靠，也就是 A、C、D 三站他是在 2 号座位上的，E 站就下车了，座位空出来了，所以此时 keyA、keyC、keyD 应该是 010000，其余还都是 000000，于此同时又来了一个人乙，他要买从 C 站到 F 站的票，那么他可以买哪些票呢？很明显除了 2 都可以买（被甲从 A 站到 E 站占了），我们怎么得到的这个结果呢？我们可以让 keyC、keyD、keyE，也就是乙要做的这三站的 key，按位做或运算，我们就可以得出结果：010000，第二位是 1，就代表座上有人我们不能买，其余的都可以买，假设他买了 4 号票，那么此时 keyA 是 010000，keyC、keyD 是 010100，keyE 是 000100，keyF、keyG、keyB 以为是 000000，所以假设此时来了一个人丙要买从 D 站到 B 站的票，我们只需要 keyD、keyE、keyF、keyG 按位或即可，得出的结果是 010100，也就是只有 2 号位（被甲在 D 到 E 的时候占了）和 4 号位（被乙从 D 站到 E 站的时候占了）不能买，其余的座位是可以随便买的，然后把相应的座位从出发站到终到站前面的一站标记成 1 即可，这样我们可以发现，我们只需要一个按位或运算，即可实现动态管理这趟车的车票，非常简单。而且位图八位才一个字节，一趟车一个车厢 118 座，按 16 个车厢算才 1888 位，236 个字节，占用内存非常少。而且 redis 原生支持位图或运算，速度也非常快。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-05-30 13:09:57 +0000 +0000'>May 30, 2021</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>100 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 位图在 12306 中的应用" href="http://localhost:1313/posts/2021-05-30-%E4%BD%8D%E5%9B%BE%E5%9C%A8-12306-%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">再谈 ThreadLocal
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>几年前我曾经写过两篇关于 ThreadLocal 的文章，分别是ThreadLocal类之简单理解和ThreadLocal类之简单应用示例，不过限于当时的水平，有些问题并没有说的很明白，所以今天再写一篇文章，重新说说这个类。
+我们首先看一个例子：
+package cn.bridgeli.demo; /** * @author BridgeLi * @date 2021/4/21 11:02 */ public class User { String name = &#34;Denny&#34;; } 然后我们有一个操作：
+package cn.bridgeli.demo; import org.junit.Test; /** * @author BridgeLi * @date 2021/4/21 10:28 */ public class ThreadTest { private User user = new User(); @Test public void testThreadLocal() { new Thread(() -&gt; { try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); } System.out.println(user.name); }).start(); new Thread(() -&gt; user.name = &#34;BridgeLi&#34;).start(); try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); } } } 这个时候我们就知道一定会有线程安全问题，所以我们怎么解决这个问题呢？就是 ThreadLocal，请看下面：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-04-22 09:49:30 +0000 +0000'>April 22, 2021</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>478 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 再谈 ThreadLocal" href="http://localhost:1313/posts/2021-04-22-%E5%86%8D%E8%B0%88-threadlocal/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">以 Java 为例简单说明常见 IO 模型
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> BIO 我们先看一个 Java 例子：
+package cn.bridgeli.demo; import java.io.BufferedReader; import java.io.IOException; import java.io.InputStream; import java.io.InputStreamReader; import java.net.ServerSocket; import java.net.Socket; /** * @author bridgeli */ public class SocketBIO { public static void main(String[] args) throws Exception { ServerSocket server = new ServerSocket(9090, 20); System.out.println(&#34;step1: new ServerSocket(9090) &#34;); while (true) { Socket client = server.accept(); System.out.println(&#34;step2:client: &#34; &#43; client.getPort()); new Thread(new Runnable() { @Override public void run() { InputStream inputStream = null; BufferedReader reader = null; try { inputStream = client.getInputStream(); reader = new BufferedReader(new InputStreamReader(inputStream)); while (true) { String dataLine = reader.readLine(); //阻塞2 if (null != dataLine) { System.out.println(dataLine); } else { client.close(); break; } } System.out.println(&#34;客户端断开&#34;); } catch (IOException e) { e.printStackTrace(); } finally { if (null != reader) { try { reader.close(); } catch (IOException e) { e.printStackTrace(); } } if (null!= inputStream) { try { inputStream.close(); } catch (IOException e) { e.printStackTrace(); } } } } }).start(); } } } BIO 是最初始的 IO 模型，该模型有两个大问题：1. accept 是阻塞的；2. read 也是阻塞的，也就是说我们的服务器起来之后，首先会在 accept 处阻塞，等待客户端连接，但有一个客户端连接的时候，我们可以从客户端处读取数据，这个时候也是阻塞的，所以我们的系统只能是单连接的，当有多个客户端连接的时候，只能一个一个的排着队连接，然后从客户端中读取数据，为了实现多连接，这就要求我们必须启用线程来解决，最开始等待客户端连接，然后有一个客户端连上了之后，启动一个线程读取客户端的数据，然后主线程继续等待客户端连接。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-03-30 13:35:01 +0000 +0000'>March 30, 2021</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>586 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 以 Java 为例简单说明常见 IO 模型" href="http://localhost:1313/posts/2021-03-30-%E4%BB%A5-java-%E4%B8%BA%E4%BE%8B%E7%AE%80%E5%8D%95%E8%AF%B4%E6%98%8E%E5%B8%B8%E8%A7%81-io-%E6%A8%A1%E5%9E%8B/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Java 的引用类型和使用场景
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>每种编程语言都有自己操作内存中元素的方式，例如在 C 和 C&#43;&#43; 里是通过指针，而在 Java 中则是通过“引用”。在 JDK.1.2 之后，Java 对引用的概念进行了扩充，将引用分为了：强引用（Strong Reference）、软引用（Soft Reference）、弱引用（Weak Reference）、虚引用（Phantom Reference）4 种，这 4 种引用的强度依次减弱，今天这篇文章就简单介绍一下这四种类型，并简单说一下他们的使用场景。
+1， 强引用（Strong Reference）
+强引用类型，是我们最常讲的一个类型，我们先看一个例子：
+package cn.bridgeli.demo.reference; /** * @author BridgeLi * @date 2021/2/26 10:02 */ public class User { @Override protected void finalize() throws Throwable { super.finalize(); System.out.println(&#34;finalize&#34;); } } package cn.bridgeli.demo.reference; import org.junit.Test; /** * @author BridgeLi * @date 2021/2/26 10:03 */ public class StrongReferenceTest { @Test public void testStrongReference() { User user = new User(); user = null; System.gc(); try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); } } } 我们都知道当一个实例对象具有强引用时，垃圾回收器不会回收该对象，当内存不足时，宁愿 OOM，也就是抛出 OutOfMemeryError 异常也不会回收强引用的对象，因为 JVM 认为强引用的对象是用户正在使用的对象，它无法分辨出到底该回收哪个，强行回收有可能导致系统严重错误。但是当对象被赋值为 null 之后，会被回收，并且会执行对象的 finalize 函数，此时我们可以通过该函数拯救自己，但是有两点需要注意一个是只能拯救一次，当再次被垃圾回收的时候就不能拯救了，另一个就是有事没事千万不要重写次函数，本例只是为了说明问题重写了此函数，如果在工作中误重写了此函数，可能会导致垃圾不能回收，最终 OOM，另外有熟悉 GC 的同学没？猜一下我为什么要 sleep 一下？
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-02-28 08:26:07 +0000 +0000'>February 28, 2021</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>449 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Java 的引用类型和使用场景" href="http://localhost:1313/posts/2021-02-28-java-%E7%9A%84%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">用两个线程交替打印数字和字母
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前一段时间听马士兵老师讲课，讲到某公司的一个面试，两个线程，其中一个线程输出ABC，另一个线程输出123，如何控制两个线程交叉输出1A2B3C，由于本人多线程掌握的一直不是很好，所以听完这道题，个人感觉收获良多，这是一个学习笔记。这道题有多种解法，不过有些属于纯炫技，所以只记录常见的三种解法。首先看第一种
+park 和 unpark package cn.bridgeli.demo; import com.google.common.collect.Lists; import java.util.List; import java.util.concurrent.locks.LockSupport; /** * @author BridgeLi * @date 2021/2/6 16:14 */ public class Thread_Communication_Park_Unpark { static Thread t1 = null; static Thread t2 = null; public static void main(String[] args) { final List&lt;Integer&gt; integers = Lists.newArrayList(1, 2, 3, 4, 5, 6, 7); final List&lt;String&gt; strings = Lists.newArrayList(&#34;A&#34;, &#34;B&#34;, &#34;C&#34;, &#34;D&#34;, &#34;E&#34;, &#34;F&#34;, &#34;G&#34;); t1 = new Thread(() -&gt; integers.forEach(item -&gt; { System.out.print(item); LockSupport.unpark(t2); LockSupport.park(); }), &#34;t1&#34;); t2 = new Thread(() -&gt; strings.forEach(item -&gt; { LockSupport.park(); System.out.print(item); LockSupport.unpark(t1); }), &#34;t2&#34;); t1.start(); t2.start(); } } 这个是最简单的实现方法，LockSupport.park() 使当前线程阻塞，而 LockSupport.unpark() 则表示唤醒一个线程，所以他需要一个参数，表示你要唤醒哪个线程，很好理解，也比较简单。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-02-07 07:06:13 +0000 +0000'>February 7, 2021</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>413 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 用两个线程交替打印数字和字母" href="http://localhost:1313/posts/2021-02-07-%E7%94%A8%E4%B8%A4%E4%B8%AA%E7%BA%BF%E7%A8%8B%E4%BA%A4%E6%9B%BF%E6%89%93%E5%8D%B0%E6%95%B0%E5%AD%97%E5%92%8C%E5%AD%97%E6%AF%8D/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">利用 DeferredResult 实现 http 轮询实时返回数据接口
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>博客有半年没更新了，不是我偷懒，而是之前服务器到期了，开博客这么多年，钱其实花了不少，但是没有一点收益，所以上了谷歌广告，如果文章对你稍稍有一点帮助，希望能花一秒钟帮忙点一下广告，谢谢。
+今天这篇文章呢，不难，其实是解答我一直以来心里的一个疑问。是这样的，之前看五八技术委员会主席沈剑老师的公众号架构师之路的一篇文章：http 如何像 tcp 一样实时的收消息，里面其中的一个方案是用 http 短连接轮询的方式实现“伪长连接”。但是对于轮询，我们的第一反应肯定是有延时，但是标题不是说的是实时吗？当然我们可以把轮询的时长缩短一些，先不说这样大部分时间的轮询调用，可能都没消息返回，造成服务器资源浪费，轮询时间再短也是有延时啊，所以难道是伪实时？反正一般消息延时个三五秒，甚至十秒八秒一分钟，大家也不会在意，只会认为对方返回慢，对不起，这是我们程序员的锅，但是 http 真的不能实现实时吗？沈剑老师提出了一种方法：首选 webim 和 webserver 之间建立一条 http 连接，专门用作消息通道，这条连接叫 http 消息连接。然后会有如下处理：
+没有消息到达的时候，这个 http 消息连接将被夯住，不返回，由于 http 是短连接，这个 http 消息连接最多被夯住 90 秒，就会被断开（这是浏览器或者 webserver 的行为）； 在 1 的情况下，如果 http 消息连接被断开，立马再发起一个 http 消息连接； 此时在在 1 和 2 的配合下，浏览器与 webserver 之间将永远有一条消息连接在，然后还有一种情况
+每次收到消息时，这个消息连接就能及时将消息带回浏览器页面，并且在返回后，会立马再发起一个 http 消息连接 这样就能做到使用 http 端连接轮询的方式实现了实时收消息。不过需要说明的是，其实还有一种情况：消息到达时，上一个 http 消息连接正在返回，也就是第二种情况的时候突然来了一个消息，此时没有 http 消息连接可用。虽然理论上 http 消息连接的返回是瞬时的，没有消息连接可用出现的概率极小，但是根据墨菲定律我们知道，这种情况肯定会出现，所以这种情况下我们可以将消息暂存入消息池中，下一个消息连接到达后，无需等待，直接去消息池中取消息，将将消息带回，然后立刻返回生成新的消息连接即可。
+以上过程，可以参考沈剑老师的公众号，链接：https://mp.weixin.qq.com/s/6BCucq6QsH8lfDGLtQCl2A
+不过以上都不是今天这篇文章的重点，和今天这篇文章的标题也没有任何关系。重点是当时看了沈剑老师的这篇文章后我一直有一个疑问：第一步的时候如何夯住？总不能 sleep 吧，这多不优雅啊，由于一直以为没有遇到过类似的需求，所以这么几年来我也没深究这个问题，但是心里确实一直记着，直到前一段时间，听马士兵教育的公开课，当时再讲类似的问题的时候提到了夯住 http 的连接（具体是哪个问题，还真不记得了），虽然当时上课的老师没提怎么实现，但是评论区我问了一下，如何夯住不返回？然后有一个同学回复说，用 DeferredResult，然后下课后搜了一下资料，果然可以，如下是实现的笔记，所以这才是重点，希望对有这个疑问的同学也有一点帮助。
+消息返回实体类，大家可以根据实际情况，自己定义即可： package cn.bridgeli.deferredresulttest.entity; import lombok.Data; import lombok.Getter; /** * @author bridgeli */ @Data public class DeferredResultResponse { private Integer code; private String msg; public enum Msg { TIMEOUT(&#34;超时&#34;), FAILED(&#34;失败&#34;), SUCCESS(&#34;成功&#34;); @Getter private String desc; Msg(String desc) { this.desc = desc; } } } controller 接口： package cn.bridgeli.deferredresulttest.controller; import cn.bridgeli.deferredresulttest.entity.DeferredResultResponse; import cn.bridgeli.deferredresulttest.service.DeferredResultService; import org.springframework.http.HttpStatus; import org.springframework.web.bind.annotation.GetMapping; import org.springframework.web.bind.annotation.RequestMapping; import org.springframework.web.bind.annotation.RequestParam; import org.springframework.web.bind.annotation.RestController; import org.springframework.web.context.request.async.DeferredResult; import javax.annotation.Resource; /** * @author bridgeli */ @RestController @RequestMapping(value = &#34;/deferred-result&#34;) public class DeferredResultController { @Resource private DeferredResultService deferredResultService; /** * 为了方便测试，简单模拟一个 * 多个请求用同一个requestId会出问题 */ private final String requestId = &#34;test&#34;; @GetMapping(value = &#34;/get&#34;) public DeferredResult&lt;DeferredResultResponse&gt; get(@RequestParam(value = &#34;timeout&#34;, required = false, defaultValue = &#34;10000&#34;) Long timeout) { DeferredResult&lt;DeferredResultResponse&gt; deferredResult = new DeferredResult&lt;&gt;(timeout); deferredResultService.process(requestId, deferredResult); return deferredResult; } /** * 设置DeferredResult对象的result属性，模拟异步操作 * * @param desired * @return */ @GetMapping(value = &#34;/result&#34;) public String settingResult(@RequestParam(value = &#34;desired&#34;, required = false, defaultValue = &#34;成功&#34;) String desired) { DeferredResultResponse deferredResultResponse = new DeferredResultResponse(); if (DeferredResultResponse.Msg.SUCCESS.getDesc().equals(desired)) { deferredResultResponse.setCode(HttpStatus.OK.value()); deferredResultResponse.setMsg(desired); } else { deferredResultResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value()); deferredResultResponse.setMsg(DeferredResultResponse.Msg.FAILED.getDesc()); } deferredResultService.settingResult(requestId, deferredResultResponse); return &#34;Done&#34;; } } 其中：/get 接口模拟沈剑老师说的消息连接，/result 接口模拟有一条新消息来了，然后 /get 接口会立即返回。主要注意的是 requestId，在实际项目中不能使用同一个，否则会出现问题，这个测一下就知道了，也很容易想到原因。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2021-01-09 07:48:48 +0000 +0000'>January 9, 2021</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>370 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 利用 DeferredResult 实现 http 轮询实时返回数据接口" href="http://localhost:1313/posts/2021-01-09-%E5%88%A9%E7%94%A8-deferredresult-%E5%AE%9E%E7%8E%B0-http-%E8%BD%AE%E8%AF%A2%E5%AE%9E%E6%97%B6%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">规则引擎入门
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>关于规则引擎，我们在工作中应该会经常遇到，例如我们对不同的用户给不同的折扣。前一段时间在网上闲逛，发现一个很简单的规则引擎，一下是学习笔记。
+在使用之前，我们要先导入 jar 包：
+&lt;dependency&gt; &lt;groupId&gt;org.jeasy&lt;/groupId&gt; &lt;artifactId&gt;easy-rules-core&lt;/artifactId&gt; &lt;version&gt;3.3.0&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.jeasy&lt;/groupId&gt; &lt;artifactId&gt;easy-rules-mvel&lt;/artifactId&gt; &lt;version&gt;3.3.0&lt;/version&gt; &lt;/dependency&gt; 一. 使用零配置的方式：
+规则引擎入口： package cn.bridgeli.demo.rule; import org.jeasy.rules.api.Facts; import org.jeasy.rules.api.Rules; import org.jeasy.rules.api.RulesEngine; import org.jeasy.rules.core.DefaultRulesEngine; import org.jeasy.rules.core.RulesEngineParameters; import org.junit.Test; /** * @author bridgeli */ public class ThreeEightRuleTest { @Test public void testRule() { /** * 创建规则执行引擎 * 注意: skipOnFirstAppliedRule意思是，只要匹配到第一条规则就跳过后面规则匹配 */ RulesEngineParameters parameters = new RulesEngineParameters().skipOnFirstAppliedRule(true); RulesEngine rulesEngine = new DefaultRulesEngine(parameters); //创建规则 Rules rules = new Rules(); rules.register(new EightRule()); rules.register(new ThreeRule()); rules.register(new ThreeEightRuleUnitGroup(new EightRule(), new ThreeRule())); rules.register(new OtherRule()); Facts facts = new Facts(); for (int i = 1; i &lt;= 50; i&#43;&#43;) { //规则因素，对应的name，要和规则里面的@Fact 一致 facts.put(&#34;number&#34;, i); //执行规则 rulesEngine.fire(rules, facts); System.out.println(); } } } 这个是判断 1- 50 里面，哪些是 3 的倍数、哪些是 8 的倍数、哪些是 3 和 8 的倍数。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2020-07-12 07:14:11 +0000 +0000'>July 12, 2020</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>583 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 规则引擎入门" href="http://localhost:1313/posts/2020-07-12-%E8%A7%84%E5%88%99%E5%BC%95%E6%93%8E%E5%85%A5%E9%97%A8/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/page/2/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="http://localhost:1313/page/4/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Dubbo on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/dubbo/</link>
+    <description>Recent content in Dubbo on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 22 Mar 2020 08:57:44 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/dubbo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dubbo 自定义拦截器</title>
+      <link>http://localhost:1313/posts/2020-03-22-dubbo-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8B%A6%E6%88%AA%E5%99%A8/</link>
+      <pubDate>Sun, 22 Mar 2020 08:57:44 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2020-03-22-dubbo-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8B%A6%E6%88%AA%E5%99%A8/</guid>
+      <description>&lt;p&gt;写了 Spring AOP 实现自定义注解，打印日志之后，感觉在调用第三方 dubbo 接口的时候，依然会有同样的问题，然后看了一下 dubbo 的官方文档，决定下一个 filter，实现 dubbo 接口的日志拦截，以下是自己完的一个小例子，同样也是供需要的同学参考。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;filter 具体实现如下：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo.filter;
+
+import com.alibaba.dubbo.rpc.Filter;  
+import com.alibaba.dubbo.rpc.Invocation;  
+import com.alibaba.dubbo.rpc.Invoker;  
+import com.alibaba.dubbo.rpc.Result;  
+import com.alibaba.dubbo.rpc.RpcException;  
+import com.alibaba.dubbo.rpc.service.GenericService;  
+import org.apache.commons.lang3.StringUtils;  
+import org.slf4j.Logger;  
+import org.slf4j.LoggerFactory;
+
+/**  
+* @author bridgeli  
+*/  
+public class DubboServiceFilter implements Filter {
+
+private static final Logger LOGGER = LoggerFactory.getLogger(DubboServiceFilter.class);
+
+@Override  
+public Result invoke(Invoker&amp;lt;?&amp;gt; invoker, Invocation invocation) throws RpcException {  
+// 打印入参日志  
+String className = invocation.getInvoker().getInterface().getName();  
+String methodName = invocation.getMethodName();  
+String arguments = StringUtils.join(invocation.getArguments(), &amp;#34;;&amp;#34;);  
+LOGGER.info(&amp;#34;调用 dubbo 服务接口: &amp;#34; + className + &amp;#34;#&amp;#34; + methodName + &amp;#34;，参数：&amp;#34; + arguments);  
+//开始时间  
+long startTime = System.currentTimeMillis();  
+//执行接口调用逻辑  
+Result result = invoker.invoke(invocation);  
+//调用耗时  
+long elapsed = System.currentTimeMillis() &amp;amp;#8211; startTime;  
+//如果发生异常 则打印异常日志  
+if (result.hasException() &amp;amp;&amp;amp; invoker.getInterface() != GenericService.class) {  
+LOGGER.error(&amp;#34;dubbo执行异常，接口：&amp;#34; + className + &amp;#34;#&amp;#34; + methodName + &amp;#34;，参数：&amp;#34; + arguments, result.getException());  
+} else {  
+//打印响应日志  
+LOGGER.info(&amp;#34;dubbo服务响应成功：&amp;#34; + className + &amp;#34;#&amp;#34; + methodName + &amp;#34;，参数：&amp;#34; + arguments + &amp;#34;，返回值：&amp;#34; + result.getValue() + &amp;#34;，用时：&amp;#34; + elapsed);  
+}  
+//返回结果响应结果  
+return result;  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;在/src/main/resources/META-INF/dubbo目录下新增纯文本文件 com.alibaba.dubbo.rpc.Filter 内容为：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+dubboServiceFilter=cn.bridgeli.demo.filter.DubboServiceFilter
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;最后在服务提供者配置文件中添加配置使拦截器生效：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;dubbo:provider filter=&amp;#34;dubboServiceFilter&amp;#34;/&amp;gt;  
+或者  
+&amp;lt;dubbo:service filter=&amp;#34;dubboServiceFilter&amp;#34;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样即可实现。不过需要说明的是，因为我们项目用的 dubbo 版本是：2.5.3，所以包名和配置名还都是：com.alibaba.dubbo，而最新的版本阿里已经捐献给 apache，所以都变成了：org.apache.dubbo。最后的最后想说的是，具体大家可以参考 dubbo 的官方文档，个人认为 dubbo 的官方文档写的是极好的，各种通俗易懂。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Dubbo服务telnet调试法</title>
+      <link>http://localhost:1313/posts/2016-11-27-dubbo%E6%9C%8D%E5%8A%A1telnet%E8%B0%83%E8%AF%95%E6%B3%95/</link>
+      <pubDate>Sun, 27 Nov 2016 13:12:26 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-11-27-dubbo%E6%9C%8D%E5%8A%A1telnet%E8%B0%83%E8%AF%95%E6%B3%95/</guid>
+      <description>&lt;p&gt;公司的RPC的服务使用的是阿里巴巴的dubbo，老夫之前曾经写过一篇如何在测试环境&lt;a href=&#34;https://www.bridgeli.cn/archives/306&#34; title=&#34;Dubbo远程debug方法&#34;&gt;远程调试dubbo服务&lt;/a&gt;，详情请参考这篇，但一直对如何调试线上dubbo服务不得法，不得已每次都需要写一个web服务调一下看数据，前一段时间经新来的一个同事提示可以使用Telnet调试，网上搜了一下资料，发现真的很爽，以下是学习笔记。&lt;br&gt;
+需要说明的是：Dubbo2.0.5以上版本服务提供端口支持telnet命令，不过应该没有公司使用2.0.5以下版本吧。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;进入调试模式&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+telnet localhost 20880
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;即：telnet + ip + 端口，这个不用解释，使用dubbo的肯定都知道&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;ls&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;使用上一个命令之后，敲一下回车，就进入dubbo的telnet调试服务了，然后就可以使用ls命令了，这个命令有几个用法：&lt;/p&gt;
+&lt;p&gt;①. 显示服务列表&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+ls
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;②. 显示服务详细信息列表&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+ls -l
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;③. 显示服务的方法列表&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+ls XxxService
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;④. 显示服务的方法详细信息列表&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+ls -l XxxService
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;ps&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这个命令主要是看连接信息，也有如下几个用法：&lt;/p&gt;
+&lt;p&gt;①. 显示服务端口列表&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+ps
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;②. 显示服务地址列表&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+ps -l
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;③. 显示端口上的连接信息&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+ps 20880
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;④, 显示端口上的连接详细信息&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+ps -l 20880
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;cd&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这个缺省服务，主要有以下两个用法：&lt;/p&gt;
+&lt;p&gt;①. 改变缺省服务，当设置了缺省服务，凡是需要输入服务名作为参数的命令，都可以省略服务参数&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+cd XxxService
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;②. 取消缺省服务&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+cd /
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;pwd&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;显示当前缺省服务&lt;/p&gt;
+&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;trace&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这个命令顾名思义：跟踪，具体有以下用法：&lt;/p&gt;
+&lt;p&gt;①. 跟踪1次服务任意方法的调用情况&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+trace XxxService
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;②. 跟踪10次服务任意方法的调用情况&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Dubbo远程debug方法</title>
+      <link>http://localhost:1313/posts/2016-08-14-dubbo%E8%BF%9C%E7%A8%8Bdebug%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Sun, 14 Aug 2016 21:28:15 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-08-14-dubbo%E8%BF%9C%E7%A8%8Bdebug%E6%96%B9%E6%B3%95/</guid>
+      <description>&lt;p&gt;公司项目的rpc服务基于阿里巴巴的dubbo架构，开发dubbo项目的时候测试只能跑junit test，但实际工作中由于很多时候junit test写的不全，出了问题只能再加日志分析原因（典型的没事找事型），这次和公司移动端的推送联调IM服务，发现他们已经把老夫之前听说的远程debug用在了实际工作中，刚好趁此机会实验了一把，以下是笔记，以待自己和需要的朋友参考。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;dubbo服务的设置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;我们自己观察dubbo的start.sh和start.bat这两个脚本会发现有如下两端代码&lt;/p&gt;
+&lt;p&gt;①. start.sh&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+JAVA_DEBUG_OPTS=&amp;#34;&amp;#34;  
+if [ &amp;#34;$1&amp;#34; = &amp;#34;debug&amp;#34; ]; then  
+JAVA_DEBUG_OPTS=&amp;#34; -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n &amp;#34;  
+fi
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;②. start.bat&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+if &amp;#34;&amp;#34;%1&amp;#34;&amp;#34; == &amp;#34;&amp;#34;debug&amp;#34;&amp;#34; goto debug  
+if &amp;#34;&amp;#34;%1&amp;#34;&amp;#34; == &amp;#34;&amp;#34;jmx&amp;#34;&amp;#34; goto jmx
+
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -classpath ..\conf;%LIB_JARS% com.alibaba.dubbo.container.Main  
+goto end
+
+:debug  
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -classpath ..\conf;%LIB_JARS% com.alibaba.dubbo.container.Main  
+goto end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;也就是说，脚本已经支持远程debug，只需要的在启动的时候传入一个参数 debug 即可，其余的几乎不用做任何修改&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;eclipse的设置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;当我们把远程的服务以支持debug的模式启动之后，就需要把本地的项目也起来了，否则怎么debug呢，本地的设置其实非常简单，一张图搞定&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/08/remote_debug-300x168.png&#34; alt=&#34;remote_debug-300x168&#34; width=&#34;300&#34; height=&#34;168&#34; class=&#34;alignnone size-full wp-image-307&#34; /&gt; 
+&lt;p&gt;看了这张图，我相信不用我多说了，远程远程debug如此简单&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>maven打包dubbo接口之最佳实践</title>
+      <link>http://localhost:1313/posts/2015-12-20-maven%E6%89%93%E5%8C%85%E4%B9%8Bdubbo%E6%8E%A5%E5%8F%A3%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</link>
+      <pubDate>Sun, 20 Dec 2015 13:56:50 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-12-20-maven%E6%89%93%E5%8C%85%E4%B9%8Bdubbo%E6%8E%A5%E5%8F%A3%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</guid>
+      <description>&lt;p&gt;之前刚开始学习dubbo的时候，曾写过一个入门的&lt;a href=&#34;https://www.bridgeli.cn/archives/196&#34; title=&#34;Dubbo和zookeeper入门实例&#34;&gt;小例子&lt;/a&gt;，当时生产者也是用tomcat去跑的，其实dubbo只需要提供service层接口就好了，并不需要和http相关的东西，所以其实并不需要用tomcat去跑，我们完全打成其他的包直接去跑，这样dubbo接口也不会tomcat性能的限制，而打包可以说是maven最擅长的事情之一，今天就记录一下我们公司的实际项目中使用maven-assembly-plugin打包的方法。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;首先在pom文件中，添加maven-assembly-plugin插件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;plugin&amp;gt;  
+&amp;lt;artifactId&amp;gt;maven-assembly-plugin&amp;lt;/artifactId&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;descriptor&amp;gt;src/main/assembly/assembly.xml&amp;lt;/descriptor&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;executions&amp;gt;  
+&amp;lt;execution&amp;gt;  
+&amp;lt;id&amp;gt;make-assembly&amp;lt;/id&amp;gt;  
+&amp;lt;phase&amp;gt;package&amp;lt;/phase&amp;gt;  
+&amp;lt;goals&amp;gt;  
+&amp;lt;goal&amp;gt;single &amp;lt;/goal&amp;gt;  
+&amp;lt;/goals&amp;gt;  
+&amp;lt;/execution&amp;gt;  
+&amp;lt;/executions&amp;gt;  
+&amp;lt;/plugin&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在该插件的第四行我们指定了一个assembly.xml文件，下面我们就看看assembly.xml的内容&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;assembly.xml文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;assembly&amp;gt;  
+&amp;lt;id&amp;gt;assembly&amp;lt;/id&amp;gt;  
+&amp;lt;formats&amp;gt;  
+&amp;lt;format&amp;gt;tar.gz&amp;lt;/format&amp;gt;  
+&amp;lt;/formats&amp;gt;  
+&amp;lt;includeBaseDirectory&amp;gt;true&amp;lt;/includeBaseDirectory&amp;gt;  
+&amp;lt;fileSets&amp;gt;  
+&amp;lt;fileSet&amp;gt;  
+&amp;lt;outputDirectory&amp;gt;/&amp;lt;/outputDirectory&amp;gt;  
+&amp;lt;includes&amp;gt;  
+&amp;lt;include&amp;gt;README.txt&amp;lt;/include&amp;gt;  
+&amp;lt;/includes&amp;gt;  
+&amp;lt;/fileSet&amp;gt;  
+&amp;lt;fileSet&amp;gt;  
+&amp;lt;directory&amp;gt;src/main/scripts&amp;lt;/directory&amp;gt;  
+&amp;lt;outputDirectory&amp;gt;/bin&amp;lt;/outputDirectory&amp;gt;  
+&amp;lt;/fileSet&amp;gt;  
+&amp;lt;/fileSets&amp;gt;  
+&amp;lt;dependencySets&amp;gt;  
+&amp;lt;dependencySet&amp;gt;  
+&amp;lt;useProjectArtifact&amp;gt;true&amp;lt;/useProjectArtifact&amp;gt;  
+&amp;lt;outputDirectory&amp;gt;lib&amp;lt;/outputDirectory&amp;gt;  
+&amp;lt;/dependencySet&amp;gt;  
+&amp;lt;/dependencySets&amp;gt;  
+&amp;lt;/assembly&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;该文件的第四行中的tar.gz指的就是打包的文件格式，对于Linux用户，对这个格式一定非常熟悉，当然大家也可以指定为zip格式，另外在该文件的第十五行，指定了一个scripts文件夹，那么这里面放的又是什么呢？我们知道打包之后的系统我们要跑起来才能用，那么这里面放的就是对我们的系统操作的一些脚本，打包之后，我们的系统都是一些jar文件，放在了倒数第四行指定的lib文件中，而这些脚本则放在了和lib同级的bin文件中，下面就让我们一一看看scripts中几个文件的内容&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;scripts文件夹&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;①. start.bat&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+@echo off &amp;amp; setlocal enabledelayedexpansion
+
+set LIB_JARS=&amp;#34;&amp;#34;  
+cd ..lib  
+for %%i in (*) do set LIB_JARS=!LIB_JARS!;..lib%%i  
+cd ..bin
+
+if &amp;#34;&amp;#34;%1&amp;#34;&amp;#34; == &amp;#34;&amp;#34;debug&amp;#34;&amp;#34; goto debug  
+if &amp;#34;&amp;#34;%1&amp;#34;&amp;#34; == &amp;#34;&amp;#34;jmx&amp;#34;&amp;#34; goto jmx
+
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main  
+goto end
+
+:debug  
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main  
+goto end
+
+:jmx  
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main
+
+:end  
+pause
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;②. start.sh&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Dubbo和zookeeper入门实例</title>
+      <link>http://localhost:1313/posts/2015-07-26-dubbo%E5%92%8Czookeeper%E5%85%A5%E9%97%A8%E5%AE%9E%E4%BE%8B/</link>
+      <pubDate>Sun, 26 Jul 2015 14:05:52 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-07-26-dubbo%E5%92%8Czookeeper%E5%85%A5%E9%97%A8%E5%AE%9E%E4%BE%8B/</guid>
+      <description>&lt;p&gt;公司项目里用到了dubbo，感觉挺好玩，以前没有玩过，自己抽时间就小小研究了一下，今天记录一下自己的学习成果。&lt;br&gt;
+关于Dubbo和zookeeper是干嘛的，网上一搜一大堆所以就不多做介绍了，想了解的可以自己搜搜看，今天就只记录怎么跑一个最基本的Dubbo和zookeeper小示例程序是怎么跑起来的，当然虽然是一个demo，但和真实环境也是无差的哦。&lt;/p&gt;
+&lt;p&gt;一. 安装zookeeper&lt;/p&gt;
+&lt;p&gt;要想使用Dubbo，必须给Dubbo一个注册中心，当然这个注册中心不一定必须是zookeeper，也可以是redis等，但用zookeeper是一个相对比较好的方式，咱们暂且就这么办。&lt;br&gt;
+关于zookeeper的安装，老夫窃以为这篇文章写得非常棒，就不多赘述了，大家可以直接参考：http://blog.csdn.net/wxwzy738/article/details/16330253，看了这篇文章，大家立马就会就明白怎么一回事了，看过自知。&lt;/p&gt;
+&lt;p&gt;二. Dubbo实现&lt;/p&gt;
+&lt;p&gt;Dubbo的实现肯定是要靠自己写代码啦，我的代码使用maven编译的，引入的jar文件如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;依赖的jar文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;junit&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;junit&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;4.12&amp;lt;/version&amp;gt;  
+&amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;com.alibaba&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;dubbo&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;2.5.3&amp;lt;/version&amp;gt;  
+&amp;lt;exclusions&amp;gt;  
+&amp;lt;exclusion&amp;gt;  
+&amp;lt;artifactId&amp;gt;spring&amp;lt;/artifactId&amp;gt;  
+&amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;  
+&amp;lt;/exclusion&amp;gt;  
+&amp;lt;/exclusions&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;org.slf4j&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;slf4j-log4j12&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;1.7.7&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;com.101tec&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;zkclient&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;0.5&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;spring-test&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;4.1.7.RELEASE&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;  
+&amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;spring-context&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;4.1.7.RELEASE&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其中junit和spring-test大家肯定看出来是干嘛的了，为了跑测试，Dubbo分为生产者和消费者，接下来我们先看看生产者是怎么实现的&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;生产者的实现&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;①. 配置文件applicationProvider.xml&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;  
+&amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34;  
+xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;  
+xmlns:dubbo=&amp;#34;http://code.alibabatech.com/schema/dubbo&amp;#34;  
+xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34;  
+xsi:schemaLocation=&amp;#34;  
+http://www.springframework.org/schema/beans  
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+http://www.springframework.org/schema/context  
+http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+http://code.alibabatech.com/schema/dubbo  
+http://code.alibabatech.com/schema/dubbo/dubbo.xsd&amp;#34;&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; Auto Scan &amp;amp;#8211;&amp;gt;  
+&amp;lt;context:component-scan base-package=&amp;#34;cn.bridgeli.provider&amp;#34; /&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; Application name &amp;amp;#8211;&amp;gt;  
+&amp;lt;dubbo:application name=&amp;#34;hello-world-app&amp;#34; /&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; registry address, used for service to register itself &amp;amp;#8211;&amp;gt;  
+&amp;lt;dubbo:registry address=&amp;#34;zookeeper://127.0.0.1:2181&amp;#34; /&amp;gt;
+
+&amp;lt;!&amp;amp;#8211; expose this service through dubbo protocol, through port 20880 &amp;amp;#8211;&amp;gt;  
+&amp;lt;!&amp;amp;#8211;  
+&amp;lt;dubbo:protocol name=&amp;#34;dubbo&amp;#34; port=&amp;#34;20880&amp;#34; /&amp;gt;  
+&amp;lt;dubbo:protocol name=&amp;#34;dubbo&amp;#34; port=&amp;#34;9090&amp;#34; server=&amp;#34;netty&amp;#34;  
+client=&amp;#34;netty&amp;#34; codec=&amp;#34;dubbo&amp;#34; serialization=&amp;#34;hessian2&amp;#34; charset=&amp;#34;UTF-8&amp;#34;  
+threadpool=&amp;#34;fixed&amp;#34; threads=&amp;#34;100&amp;#34; queues=&amp;#34;0&amp;#34; iothreads=&amp;#34;9&amp;#34; buffer=&amp;#34;8192&amp;#34;  
+accepts=&amp;#34;1000&amp;#34; payload=&amp;#34;8388608&amp;#34; /&amp;gt;  
+&amp;amp;#8211;&amp;gt;  
+&amp;lt;!&amp;amp;#8211; Service interface Concurrent Control &amp;amp;#8211;&amp;gt;  
+&amp;lt;!&amp;amp;#8211; &amp;lt;dubbo:service interface=&amp;#34;cn.bridgeli.provider.service.ProviderService&amp;#34; ref=&amp;#34;providerService&amp;#34;/&amp;gt; &amp;amp;#8211;&amp;gt;  
+&amp;lt;!&amp;amp;#8211; 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类 &amp;amp;#8211;&amp;gt;  
+&amp;lt;dubbo:annotation package=&amp;#34;cn.bridgeli.provider.service&amp;#34; /&amp;gt;  
+&amp;lt;!&amp;amp;#8211; Default Protocol &amp;amp;#8211;&amp;gt;  
+&amp;lt;!&amp;amp;#8211;  
+&amp;lt;dubbo:protocol server=&amp;#34;netty&amp;#34; /&amp;gt;  
+&amp;amp;#8211;&amp;gt;  
+&amp;lt;/beans&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注释很详细，不解释，就是dubbo和spring的集成&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

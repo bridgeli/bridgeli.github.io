@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>集群 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E9%9B%86%E7%BE%A4/</link>
+    <description>Recent content in 集群 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 16 Sep 2016 21:47:04 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E9%9B%86%E7%BE%A4/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Redis 3.0入门二之集群搭建和使用</title>
+      <link>http://localhost:1313/posts/2016-09-16-redis-3-0%E5%85%A5%E9%97%A8%E4%BA%8C%E4%B9%8B%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E5%92%8C%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Fri, 16 Sep 2016 21:47:04 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-09-16-redis-3-0%E5%85%A5%E9%97%A8%E4%BA%8C%E4%B9%8B%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E5%92%8C%E4%BD%BF%E7%94%A8/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/archives/309&#34; title=&#34;Redis 3.0入门一之主从搭建&#34;&gt;上一篇文章&lt;/a&gt;讲了redis的主从搭建，主从一般只能解决我们读写分离的问题，可以增加我们的系统的负载能力，但是并不能解决单点问题，大家应该知道在互联网公司各个服务肯定不能出现单点问题，所以这一节就记录一下如果让我们的系统更加高可用。&lt;/p&gt;
+&lt;p&gt;一、集群搭建&lt;/p&gt;
+&lt;p&gt;需要先说明的是，集群搭建需要至少6个节点：3主3从(因为没有那么多机器，所以就在一台上搞了)&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建文件夹redis-cluster，然后在其下面分别创建6个文件夹，存放6个实例&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;mkdir -p /usr/local/redis-cluster  
+mkdir 7001;mkdir 7002;mkdir 7003;mkdir 7004;mkdir 7005;mkdir 7006
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;把之前redis.conf配置文件分别copy到700*下，修改各个实例的配置文件的内容，如下：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+①. daemonize yes  
+②. port 700*（一台机器端口号肯定不能相同，就和文件夹一样吧）  
+③. bind ip（和当前机器的ip地址绑定）  
+④. dir /usr/local/redis-cluster/700*/（文件存储位置应该不一样吧，原因都知道）  
+⑤. cluster-enabled yes  
+⑥. cluster-config-flie nodes-700\*.conf（700\*就和端口一样吧）  
+⑦. cluster-node-timeout 5000  
+⑧. appendonly yes
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;安装ruby&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+yum install ruby  
+yum install rubygems  
+gem install redis
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;启动各个实例&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+/usr/local/redis/bin/redis-server /usr/local/redis-cluster/700*/redis.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;创建集群&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+cd /usr/local/redis-3.0.0-rc2/src  
+./redis-trib.rb create &amp;amp;#8211;replicas 1 ip:7001 ip:7002 ip:7003 ip:7004 ip:7005 ip:7006
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后看输出日志，会有一步需要输入yes，然后集群就创建完成了&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Redis 3.0入门一之主从搭建</title>
+      <link>http://localhost:1313/posts/2016-08-28-redis-3-0%E5%85%A5%E9%97%A8%E4%B8%80%E4%B9%8B%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Sun, 28 Aug 2016 21:40:02 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-08-28-redis-3-0%E5%85%A5%E9%97%A8%E4%B8%80%E4%B9%8B%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA/</guid>
+      <description>&lt;p&gt;周末没事看北京尚学堂之前的公开课视频，发现了白贺翔老师有一节课讲redis 3.0的视频教程，还不错，以下是学习笔记。&lt;/p&gt;
+&lt;p&gt;一、单机版搭建&lt;/p&gt;
+&lt;p&gt;首先是下载地址：http://redis.io/download，假设我们下载是redis-3.0.0-rc2.tar.gz&lt;br&gt;
+安装步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;把我们下载好的redis-3.0.0-rc2.tar.gz放到Linux的/usr/local文件夹下&lt;/li&gt;
+&lt;li&gt;解压tar -xzvf redis-3.0.0-rc2.tar.gz -C /usr/local/&lt;/li&gt;
+&lt;li&gt;进入到redis-3.0.0-rc2目录下，进项make&lt;/li&gt;
+&lt;li&gt;进入到src下进行安装make install，验证（ll查看发现src下的目录，有redis-server、redis-cli即可）&lt;/li&gt;
+&lt;li&gt;建立两个文件夹存放redis命令和配置文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+mkdir -p /usr/local/redis/etc  
+mkdir -p /usr/local/redis/bin
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;把redis-3.0.0-rc2下的redis.conf移动到/usr/local/redis/etc下&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+mv redis.conf /usr/local/redis/etc
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;7&#34;&gt;
+&lt;li&gt;把redis-3.0.0-rc2/src里的mkreleasehdr.sh、redis-benchmark、redis-check-aof、redis-check-dump、redis-cli、redis-server文件移动到bin下，命令&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+mv mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-dump redis-cli redis-server /usr/local/redis/bin
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;8&#34;&gt;
+&lt;li&gt;启动并指定配置文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+/usr/local/redis/bin/redis-server /usr/local/redis/etc/redis.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;9&#34;&gt;
+&lt;li&gt;退出改为后台启动&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;退出就不说了，改为后台启动，编辑 /usr/local/redis/etc/redis.conf找到&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+daemonize no
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;改为&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+daemonize yes
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;10&#34;&gt;
+&lt;li&gt;修改持久化文件存放的位置，修改&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+dir ./
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;为&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+dir /usr/local/redis/data/
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;11&#34;&gt;
+&lt;li&gt;redis客户端的使用&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+/usr/local/redis/binredis-cli -h host -p port
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;12&#34;&gt;
+&lt;li&gt;设置密码&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;通过刚才的操作应该可以发现redis默认是没有密码的，这样很不安全，设置密码的方法是编辑/usr/local/redis/etc/redis.conf找到requirepass 这一行，设置&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+requirepass bridgeli
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样通过客户端进入的时候加一个参数 -a 跟上你的密码就好了&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>全文索引服务solr入门四之solr集群搭建与应用</title>
+      <link>http://localhost:1313/posts/2016-07-10-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E5%9B%9B%E4%B9%8Bsolr%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%BA%94%E7%94%A8/</link>
+      <pubDate>Sun, 10 Jul 2016 14:12:42 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-07-10-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E5%9B%9B%E4%B9%8Bsolr%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%BA%94%E7%94%A8/</guid>
+      <description>&lt;p&gt;经过前面几篇文章的努力，我们的solr服务终于跑起来了，可以对外提供服务了，虽然有一点小瑕疵（对中文支持不是很好，但可以通过IK分词来解决，示例可以看老夫之前的这篇&lt;a href=&#34;https://www.bridgeli.cn/archives/109&#34; title=&#34;全文检索工具-Lucene（solr）入门&#34;&gt;文章&lt;/a&gt;），但还是存在一个致命的问题：单点！对于现代互联网公司，这个一个不可忍受的缺点，所以本节我们就来解决这个问题，在搭建集群之前，我们先看看要搭建的集群的目标：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/goal.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/goal-300x203.png&#34; alt=&#34;goal&#34; width=&#34;300&#34; height=&#34;203&#34; class=&#34;alignnone size-medium wp-image-302&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;从这张图上，我们可以清晰看到我们需要三台zookeeper服务器和四台solr服务器，一共七台服务器（实际上老夫去哪找那么多集群，所以使用伪分布式的方式搭建集群，即在同一台服务器上创建多个实例模拟集群），确定了目标之后，我们就开始搭建我们的集群。&lt;/p&gt;
+&lt;p&gt;四. zookeeper集群搭建&lt;/p&gt;
+&lt;p&gt;Zookeeper有一个选举机制，选举谁是leader谁是follower。成为主节点，需要得到半数以上的投票。尽可能为奇数节点。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建三个zookeeper实例&lt;/li&gt;
+&lt;li&gt;在zookeeper1、2、3文件夹下分别创建一个data目录。在data目录下创建一个myid的文件。文件的内容zookeeper1下就是1，zookeeper2下就是2，zookeeper3下就是3。&lt;/li&gt;
+&lt;li&gt;需要修改zookeeper的配置文件。把Zookeeper1confzoo_sample.cfg改名为zoo.cfg（示例有误，配置文件中的dataDir路径需要使用“/”而不是“”）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/config.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/config-300x157.png&#34; alt=&#34;config&#34; width=&#34;300&#34; height=&#34;157&#34; class=&#34;alignnone size-medium wp-image-296&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;启动zookeeper。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/start.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/start-300x169.png&#34; alt=&#34;start&#34; width=&#34;300&#34; height=&#34;169&#34; class=&#34;alignnone size-medium wp-image-299&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;启动成功之后：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/startsucess.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/startsucess-300x193.png&#34; alt=&#34;startsucess&#34; width=&#34;300&#34; height=&#34;193&#34; class=&#34;alignnone size-medium wp-image-300&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;启动zookeeper的客户端，测试zookeeper是否好用。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/client.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/client-300x193.png&#34; alt=&#34;client&#34; width=&#34;300&#34; height=&#34;193&#34; class=&#34;alignnone size-medium wp-image-290&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;五. Solr实例搭建&lt;/p&gt;
+&lt;p&gt;需要4个solr实例来完成。&lt;br&gt;
+第一步：创建4个tomcat实例&lt;br&gt;
+第二步：搭建4个solr的单机版环境（该系列的前几篇就写这个了）。&lt;/p&gt;
+&lt;p&gt;从复制过来的单机版：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;修改tomcat的端口号。&lt;/li&gt;
+&lt;li&gt;修改solrhome的位置。修改web.xml&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;六. 集群搭建&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;搭建步骤&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;①. 让zookeeper集群集中管理配置文件。把配置文件上传到zookeeper。&lt;br&gt;
+把solrhome/collection1/conf文件夹的内容上传到zookeeper集群。&lt;br&gt;
+把：D:tempSolrCloudsolrhome1collection1conf上传。&lt;br&gt;
+命令：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+java -classpath D:tempSolrCloudtomcat1webappssolrWEB-INFlib/* org.apache.solr.cloud.ZkCLI -zkhost 127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183 -cmd upconfig -confdir D:tempSolrCloudsolrhome1collection1conf -confname myconf
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;需要保证执行命令之前，zookeeper集群是启动状态。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;查看zookeeper下的配置文件。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/cloud.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/cloud-300x193.png&#34; alt=&#34;cloud&#34; width=&#34;300&#34; height=&#34;193&#34; class=&#34;alignnone size-medium wp-image-291&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;修改每个solrhome下的solr.xml文件。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/cloudconfig.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/07/cloudconfig-300x145.png&#34; alt=&#34;cloudconfig&#34; width=&#34;300&#34; height=&#34;145&#34; class=&#34;alignnone size-medium wp-image-292&#34; /&gt;&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

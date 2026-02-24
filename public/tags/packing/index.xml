@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Packing on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/packing/</link>
+    <description>Recent content in Packing on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 20 Dec 2015 13:56:50 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/packing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>maven打包dubbo接口之最佳实践</title>
+      <link>http://localhost:1313/posts/2015-12-20-maven%E6%89%93%E5%8C%85%E4%B9%8Bdubbo%E6%8E%A5%E5%8F%A3%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</link>
+      <pubDate>Sun, 20 Dec 2015 13:56:50 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-12-20-maven%E6%89%93%E5%8C%85%E4%B9%8Bdubbo%E6%8E%A5%E5%8F%A3%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</guid>
+      <description>&lt;p&gt;之前刚开始学习dubbo的时候，曾写过一个入门的&lt;a href=&#34;https://www.bridgeli.cn/archives/196&#34; title=&#34;Dubbo和zookeeper入门实例&#34;&gt;小例子&lt;/a&gt;，当时生产者也是用tomcat去跑的，其实dubbo只需要提供service层接口就好了，并不需要和http相关的东西，所以其实并不需要用tomcat去跑，我们完全打成其他的包直接去跑，这样dubbo接口也不会tomcat性能的限制，而打包可以说是maven最擅长的事情之一，今天就记录一下我们公司的实际项目中使用maven-assembly-plugin打包的方法。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;首先在pom文件中，添加maven-assembly-plugin插件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;plugin&amp;gt;  
+&amp;lt;artifactId&amp;gt;maven-assembly-plugin&amp;lt;/artifactId&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;descriptor&amp;gt;src/main/assembly/assembly.xml&amp;lt;/descriptor&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;executions&amp;gt;  
+&amp;lt;execution&amp;gt;  
+&amp;lt;id&amp;gt;make-assembly&amp;lt;/id&amp;gt;  
+&amp;lt;phase&amp;gt;package&amp;lt;/phase&amp;gt;  
+&amp;lt;goals&amp;gt;  
+&amp;lt;goal&amp;gt;single &amp;lt;/goal&amp;gt;  
+&amp;lt;/goals&amp;gt;  
+&amp;lt;/execution&amp;gt;  
+&amp;lt;/executions&amp;gt;  
+&amp;lt;/plugin&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在该插件的第四行我们指定了一个assembly.xml文件，下面我们就看看assembly.xml的内容&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;assembly.xml文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;assembly&amp;gt;  
+&amp;lt;id&amp;gt;assembly&amp;lt;/id&amp;gt;  
+&amp;lt;formats&amp;gt;  
+&amp;lt;format&amp;gt;tar.gz&amp;lt;/format&amp;gt;  
+&amp;lt;/formats&amp;gt;  
+&amp;lt;includeBaseDirectory&amp;gt;true&amp;lt;/includeBaseDirectory&amp;gt;  
+&amp;lt;fileSets&amp;gt;  
+&amp;lt;fileSet&amp;gt;  
+&amp;lt;outputDirectory&amp;gt;/&amp;lt;/outputDirectory&amp;gt;  
+&amp;lt;includes&amp;gt;  
+&amp;lt;include&amp;gt;README.txt&amp;lt;/include&amp;gt;  
+&amp;lt;/includes&amp;gt;  
+&amp;lt;/fileSet&amp;gt;  
+&amp;lt;fileSet&amp;gt;  
+&amp;lt;directory&amp;gt;src/main/scripts&amp;lt;/directory&amp;gt;  
+&amp;lt;outputDirectory&amp;gt;/bin&amp;lt;/outputDirectory&amp;gt;  
+&amp;lt;/fileSet&amp;gt;  
+&amp;lt;/fileSets&amp;gt;  
+&amp;lt;dependencySets&amp;gt;  
+&amp;lt;dependencySet&amp;gt;  
+&amp;lt;useProjectArtifact&amp;gt;true&amp;lt;/useProjectArtifact&amp;gt;  
+&amp;lt;outputDirectory&amp;gt;lib&amp;lt;/outputDirectory&amp;gt;  
+&amp;lt;/dependencySet&amp;gt;  
+&amp;lt;/dependencySets&amp;gt;  
+&amp;lt;/assembly&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;该文件的第四行中的tar.gz指的就是打包的文件格式，对于Linux用户，对这个格式一定非常熟悉，当然大家也可以指定为zip格式，另外在该文件的第十五行，指定了一个scripts文件夹，那么这里面放的又是什么呢？我们知道打包之后的系统我们要跑起来才能用，那么这里面放的就是对我们的系统操作的一些脚本，打包之后，我们的系统都是一些jar文件，放在了倒数第四行指定的lib文件中，而这些脚本则放在了和lib同级的bin文件中，下面就让我们一一看看scripts中几个文件的内容&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;scripts文件夹&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;①. start.bat&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+@echo off &amp;amp; setlocal enabledelayedexpansion
+
+set LIB_JARS=&amp;#34;&amp;#34;  
+cd ..lib  
+for %%i in (*) do set LIB_JARS=!LIB_JARS!;..lib%%i  
+cd ..bin
+
+if &amp;#34;&amp;#34;%1&amp;#34;&amp;#34; == &amp;#34;&amp;#34;debug&amp;#34;&amp;#34; goto debug  
+if &amp;#34;&amp;#34;%1&amp;#34;&amp;#34; == &amp;#34;&amp;#34;jmx&amp;#34;&amp;#34; goto jmx
+
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main  
+goto end
+
+:debug  
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main  
+goto end
+
+:jmx  
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main
+
+:end  
+pause
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;②. start.sh&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>同步 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E5%90%8C%E6%AD%A5/</link>
+    <description>Recent content in 同步 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 12 May 2018 13:33:53 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%90%8C%E6%AD%A5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java Thread 同步</title>
+      <link>http://localhost:1313/posts/2018-05-12-java-thread-%E5%90%8C%E6%AD%A5/</link>
+      <pubDate>Sat, 12 May 2018 13:33:53 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2018-05-12-java-thread-%E5%90%8C%E6%AD%A5/</guid>
+      <description>&lt;p&gt;之前遇到一个问题，就是如何让线程同步，由于自己多线程的东西实在不懂，所以不知道怎么办，但感觉应该是一个很简单的东西，所以就从网上搜一下资料，原来如此简单，直接调用 join 方法就好了。写篇博客记录一下 join 的使用方法。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;作用&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Thread类中的join方法的主要作用就是同步，它可以使得线程之间的并行执行变为串行执行。具体看代码：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo;
+
+public class ThreadTest {
+
+public static void main(String[] args) throws InterruptedException {  
+ThreadJoinTest t1 = new ThreadJoinTest(&amp;#34;bridgeli&amp;#34;);  
+ThreadJoinTest t2 = new ThreadJoinTest(&amp;#34;liqiao&amp;#34;);  
+t1.start();  
+/**  
+* join的意思是使得放弃当前线程的执行，并返回对应的线程，例如下面代码的意思就是：  
+* 程序在main线程中调用t1线程的join方法，则main线程放弃cpu控制权，并返回t1线程继续执行直到线程t1执行完毕  
+* 所以结果是t1线程执行完后，才到主线程执行，相当于在main线程中同步t1线程，t1执行完了，main线程才有执行的机会  
+*  
+* join方法可以传递参数，join(10000)表示main线程会等待t1线程10毫秒，10毫秒过去后，  
+* main线程和t1线程之间执行顺序由串行执行变为普通的并行执行  
+*/  
+t1.join(10000);  
+t2.start();  
+}
+
+}
+
+package cn.bridgeli.demo;
+
+public class ThreadJoinTest extends Thread {  
+public ThreadJoinTest(String name) {  
+super(name);  
+}
+
+@Override  
+public void run() {  
+for (int i = 0; i &amp;lt; 100; i++) {  
+System.out.println(this.getName() + &amp;#34;:&amp;#34; + i);  
+try {  
+Thread.sleep(1000);  
+} catch (InterruptedException e) {  
+e.printStackTrace();  
+}  
+}  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上面注释也大概说明了 join 方法的作用：在 主线程 中调用了 t1 线程的 join() 方法时，表示只有当 t1 线程执行完毕时，主线程 才能继续执行，也就是开始执行 t2。注意，join 方法其实也可以传递一个参数给它的，表示：如果 主线程 在 t1 执行 1000 毫秒之后，继续执行，也就是开启 t2 线程。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head>
+	<meta name="generator" content="Hugo 0.156.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>分享技术带来的喜悦</title>
+<meta name="keywords" content="博客, 技术, Java">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Dubbo远程debug方法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>公司项目的rpc服务基于阿里巴巴的dubbo架构，开发dubbo项目的时候测试只能跑junit test，但实际工作中由于很多时候junit test写的不全，出了问题只能再加日志分析原因（典型的没事找事型），这次和公司移动端的推送联调IM服务，发现他们已经把老夫之前听说的远程debug用在了实际工作中，刚好趁此机会实验了一把，以下是笔记，以待自己和需要的朋友参考。
+dubbo服务的设置 我们自己观察dubbo的start.sh和start.bat这两个脚本会发现有如下两端代码
+①. start.sh
+JAVA_DEBUG_OPTS=&#34;&#34; if [ &#34;$1&#34; = &#34;debug&#34; ]; then JAVA_DEBUG_OPTS=&#34; -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n &#34; fi ②. start.bat
+if &#34;&#34;%1&#34;&#34; == &#34;&#34;debug&#34;&#34; goto debug if &#34;&#34;%1&#34;&#34; == &#34;&#34;jmx&#34;&#34; goto jmx java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -classpath ..\conf;%LIB_JARS% com.alibaba.dubbo.container.Main goto end :debug java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -classpath ..\conf;%LIB_JARS% com.alibaba.dubbo.container.Main goto end 也就是说，脚本已经支持远程debug，只需要的在启动的时候传入一个参数 debug 即可，其余的几乎不用做任何修改
+eclipse的设置 当我们把远程的服务以支持debug的模式启动之后，就需要把本地的项目也起来了，否则怎么debug呢，本地的设置其实非常简单，一张图搞定
+看了这张图，我相信不用我多说了，远程远程debug如此简单
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-08-14 21:28:15 +0000 +0000'>August 14, 2016</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>65 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Dubbo远程debug方法" href="http://localhost:1313/posts/2016-08-14-dubbo%E8%BF%9C%E7%A8%8Bdebug%E6%96%B9%E6%B3%95/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">多线程应用之批量数据处理
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>我们都知道多线程是为了加快数据处理的，但至于怎么用，因为在工作中，我一直很少用，所以对多线程不是很了解。之前处理一个功能时，由于没有经验，导致速度很慢，前一段时间经老大提示，可以用多线程解决，突然发现原来多线程可以这么用可以来处理这一类问题，今天记录一下，作为笔记也作为一个给读者的参考，好了先说一下问题：公司的业务的业务不仅分模块而且是分库分表的，这样就导致一个问题，当我们要查询一个数据时，不能连表查询，不能只通过一个接口获得数据，最容易想到的常规做法就是：
+public List&lt;Data&gt; queryDatas() { List&lt;Data&gt; datas = queryDataFromDB(); if(null != datas &amp;&amp; datas.size() &gt; 0) { for(Data data : datas) { Object object = getObjectFromDb(data.getId()); data.setAttr1(object.getAttr); } } return datas; } 这么做，虽然可以满足业务需求，但效率实在是太低了，尤其是列表数据越大时，如果不只一个属性要这么做时，速度是会慢到要死人的。所以经老大提示参考同事的实现就采用了如下方法：
+private static final ExecutorService executor = Executors.newFixedThreadPool(20); public List&lt;Data&gt; queryDatas() { List&lt;Data&gt; datas = queryDataFromDB(); if(null != datas &amp;&amp; datas.size() &gt; 0) { batchSetAttr(datas); } return datas; } private boolean batchSetAttr(final List&lt;Data&gt; datas) { final CompletionService&lt;Data&gt; completionService = new ExecutorCompletionService&lt;&gt;(executor); for (final Data data : datas) { completionService.submit(new Callable&lt;Data&gt;() { @Override public Data call() throws Exception { Object object = getObjectFromDb(data.getId()); data.setAttr1(object.getAttr); return data; } }); } try { for (int i = 0, size = datas.size(); i &lt; size; i&#43;&#43;) { Future&lt;Data&gt; future = completionService.take(); Data d = future.get(); } } catch (InterruptedException e) { logger.error(&#34;InterruptedException&#34;, e); return false; } catch (ExecutionException e) { logger.error(&#34;ExecutionException&#34;, e); return false; } return true; } 利用多线程批量查询，返回时一一设置值，最终达到提高速度的目的。
+最后需要说明一点：线程池的大小，大家可以根据自己的实际情况来设置，并不是越大越好；
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-07-24 14:15:37 +0000 +0000'>July 24, 2016</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>148 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 多线程应用之批量数据处理" href="http://localhost:1313/posts/2016-07-24-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BA%94%E7%94%A8%E4%B9%8B%E6%89%B9%E9%87%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">全文索引服务solr入门四之solr集群搭建与应用
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>经过前面几篇文章的努力，我们的solr服务终于跑起来了，可以对外提供服务了，虽然有一点小瑕疵（对中文支持不是很好，但可以通过IK分词来解决，示例可以看老夫之前的这篇文章），但还是存在一个致命的问题：单点！对于现代互联网公司，这个一个不可忍受的缺点，所以本节我们就来解决这个问题，在搭建集群之前，我们先看看要搭建的集群的目标：
+从这张图上，我们可以清晰看到我们需要三台zookeeper服务器和四台solr服务器，一共七台服务器（实际上老夫去哪找那么多集群，所以使用伪分布式的方式搭建集群，即在同一台服务器上创建多个实例模拟集群），确定了目标之后，我们就开始搭建我们的集群。
+四. zookeeper集群搭建
+Zookeeper有一个选举机制，选举谁是leader谁是follower。成为主节点，需要得到半数以上的投票。尽可能为奇数节点。
+创建三个zookeeper实例 在zookeeper1、2、3文件夹下分别创建一个data目录。在data目录下创建一个myid的文件。文件的内容zookeeper1下就是1，zookeeper2下就是2，zookeeper3下就是3。 需要修改zookeeper的配置文件。把Zookeeper1confzoo_sample.cfg改名为zoo.cfg（示例有误，配置文件中的dataDir路径需要使用“/”而不是“”） 启动zookeeper。 启动成功之后：
+启动zookeeper的客户端，测试zookeeper是否好用。 五. Solr实例搭建
+需要4个solr实例来完成。
+第一步：创建4个tomcat实例
+第二步：搭建4个solr的单机版环境（该系列的前几篇就写这个了）。
+从复制过来的单机版：
+修改tomcat的端口号。 修改solrhome的位置。修改web.xml 六. 集群搭建
+搭建步骤 ①. 让zookeeper集群集中管理配置文件。把配置文件上传到zookeeper。
+把solrhome/collection1/conf文件夹的内容上传到zookeeper集群。
+把：D:tempSolrCloudsolrhome1collection1conf上传。
+命令：
+java -classpath D:tempSolrCloudtomcat1webappssolrWEB-INFlib/* org.apache.solr.cloud.ZkCLI -zkhost 127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183 -cmd upconfig -confdir D:tempSolrCloudsolrhome1collection1conf -confname myconf 需要保证执行命令之前，zookeeper集群是启动状态。
+查看zookeeper下的配置文件。 修改每个solrhome下的solr.xml文件。 ...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-07-10 14:12:42 +0000 +0000'>July 10, 2016</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>186 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 全文索引服务solr入门四之solr集群搭建与应用" href="http://localhost:1313/posts/2016-07-10-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E5%9B%9B%E4%B9%8Bsolr%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%BA%94%E7%94%A8/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">全文索引服务solr入门三之solrJ的应用
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>三. 使用solrJ和spring集成
+再上一篇和上上一篇文章中我们先搭建了一个solr服务器和学习了solr服务器后台的使用，这一次我们将直接进入实战：和spring集成，在继承之前我们先看看所需要的solr的jar文件都是那些（spring的那些大家就自己玩吧，我相信都知道的）
+所需的jar文件 直接上图片，就是图上的这些图片，当然大家可以自己找maven依赖（jar文件这个最简单了，没有的话一定会报classnotfoundException，加上就好了）
+spring的配置 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;beans xmlns=&#34;http://www.springframework.org/schema/beans&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xmlns:mvc=&#34;http://www.springframework.org/schema/mvc&#34; xmlns:context=&#34;http://www.springframework.org/schema/context&#34; xmlns:aop=&#34;http://www.springframework.org/schema/aop&#34; xmlns:tx=&#34;http://www.springframework.org/schema/tx&#34; xsi:schemaLocation=&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd &#34;&gt; &lt;!&amp;#8211; 配置扫描包 &amp;#8211;&gt; &lt;context:component-scan base-package=&#34;cn.bridgeli&#34;/&gt; &lt;!&amp;#8211; 配置注解驱动 &amp;#8211;&gt; &lt;mvc:annotation-driven/&gt; &lt;!&amp;#8211; jsp视图解析器 &amp;#8211;&gt; &lt;bean class=&#34;org.springframework.web.servlet.view.InternalResourceViewResolver&#34; &gt; &lt;!&amp;#8211; 前缀 &amp;#8211;&gt; &lt;property name=&#34;prefix&#34; value=&#34;/WEB-INF/jsp/&#34;&gt;&lt;/property&gt; &lt;!&amp;#8211; 后缀 &amp;#8211;&gt; &lt;property name=&#34;suffix&#34; value=&#34;.jsp&#34;&gt;&lt;/property&gt; &lt;/bean&gt; &lt;!&amp;#8211; 单机版solr &amp;#8211;&gt; &lt;bean class=&#34;org.apache.solr.client.solrj.impl.HttpSolrServer&#34;&gt; &lt;constructor-arg name=&#34;baseURL&#34; value=&#34;http://localhost:8080/solr/&#34;&gt;&lt;/constructor-arg&gt; &lt;/bean&gt; &lt;!&amp;#8211; 集群版SolrCloud &amp;#8211;&gt; &lt;!&amp;#8211; &lt;bean class=&#34;org.apache.solr.client.solrj.impl.CloudSolrServer&#34;&gt; &lt;constructor-arg name=&#34;zkHost&#34; value=&#34;127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183&#34;&gt;&lt;/constructor-arg&gt; &lt;property name=&#34;defaultCollection&#34; value=&#34;collection2&#34;&gt;&lt;/property&gt; &lt;/bean&gt; &amp;#8211;&gt; &lt;/beans&gt; 简单吧，大家只要注意到单机版就行了，因为我们这次只用到了单机版，下面就要看源码实现了
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-06-26 13:52:32 +0000 +0000'>June 26, 2016</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>585 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 全文索引服务solr入门三之solrJ的应用" href="http://localhost:1313/posts/2016-06-26-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E4%B8%89%E4%B9%8Bsolrj%E7%9A%84%E5%BA%94%E7%94%A8/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">全文索引服务solr入门二之认识管理后台
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>二. 认识solr管理后台
+上一篇文章中我们搭建起来的其实就是一个solr管理后台，这节课我们就是来简单认识他，具体的操作当然由大家自己试验了。下面我们先直接选择左侧的默认collection1你会看到下面出来很多东西，其中有几个比较重要：Analyzer、Documents、Query，下面我们认识第一个：Analyzer。
+认识Analyzer 查看当前索引库中的字段列表，及分词效果。
+①. 域、字段列表：所有的域都是定义在schema.xml配置文件中。在solr中域必须是先定义后使用。
+如果想修改域的定义及自定义域需要修改schema.xml。
+②. 查看域的分词效果。
+可以直接在Field Value中贴一段文字，然后点击按钮Analyzer Values，查看效果。
+需要说明的是：默认对英文支持尚可，中文支持很差。实际生产用zk中文分词
+Documents 索引库的维护功能。可以对索引库进行增删改操作。
+①. 添加文档
+I. 在solr中一条记录就是一个文档。
+II. 文档可以使用json数据格式描述：key就是域名（字段名），value：值。
+III. 在solr中每个文档必须有一个id域。类似于关系型数据库中表的主键。必须有且不能重复。
+IV. 域必须先定义后使用。必须在schema.xml中定义。
+②. 更新文档
+添加一个新的文档如果id存在会想把id对应的文档删除，然后再添加以新的。先删除后添加。
+③. 删除文档
+I. 根据id删除
+&lt;delete&gt; &lt;id&gt;a001&lt;/id&gt; &lt;/delete&gt; &lt;commit/&gt; II. 根据查询删除
+删除所有文档：
+&lt;delete&gt; &lt;query&gt;\*:\*&lt;/query&gt; &lt;/delete&gt; &lt;commit/&gt; 删除指定id的文档：
+&lt;delete&gt; &lt;query&gt;id:change.me&lt;/query&gt; &lt;/delete&gt; &lt;commit/&gt; Query 查询索引库
+q:查询条件
+fq：过滤条件，查询语句和查询的语法完全相同。可以设置多个过滤条件
+sort：排序条件
+start rows：分页条件。start起始记录，rows每页显示的记录数。
+fl：返回结果中域的列表
+df：默认搜索域
+hl：高亮显示
+hl.fl：高亮显示的域
+hl.simple.pre：高亮前缀
+hl.simple.post：高亮后缀
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-06-11 14:28:53 +0000 +0000'>June 11, 2016</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>63 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 全文索引服务solr入门二之认识管理后台" href="http://localhost:1313/posts/2016-06-11-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E4%BA%8C%E4%B9%8B%E8%AE%A4%E8%AF%86%E7%AE%A1%E7%90%86%E5%90%8E%E5%8F%B0/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">全文索引服务solr入门一之单机版服务器搭建
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>一直对全文索引很感兴趣，但由于工作上一直没用到，所以就没有上心去看，有一次闲着无聊，偶然发现传智播客的公开课上有一节讲这个的，听了一下还不错，于是整理成笔记，供老夫和其他朋友需要的时候参考。
+老夫相信看这篇文章的人对solr一定有所了解，不了解的请用Google百度一下，所以虽然是一个系列，但这里老夫只会讲怎么用，争取让看了这个系列文章的人能里面先跑起来，好了，下面直接切入主题。
+一. solr的安装与配置
+solr的运行环境 ① . 需要安装jdk，要求jdk的版本为1.7.0以上版本。
+② . Tomcat要求7以上版本。
+③ . 操作系统：linux、windows都可以。
+Solr和tomcat的集成 ① . 安装jdk、安装tomcat
+② . 把solr-4.10.4.zip包解压。
+③ . 把dist目录下的solr-4.10.3.war文件放到tomcat下webapp目录下。改名为solr.war。改名不是必须的，为了方便访问。
+④ . 解压war包。启动tomcat自动解压。
+⑤ . 把solr.war删除。删除war包时要关闭tomcat。
+⑥ . 把D:tempsolr-4.10.3examplelibext目录下的所有的jar包添加到solr工程中。D:tempapache-tomcat-7.0.53webappssolrWEB-INFlib
+⑦ . 创建一个solrhome（solr所有配置文件存放的目录）。
+把sorl文件夹复制到其他路径下，改名为solrhome，改名的目的是为了便于理解。
+⑧. 告诉sorl服务器solrhome的位置。
+修改solr工程的web.xml文件。
+D:tempsolrhomecollection1：索引库存放的位置。
+⑨ . 启动tomcat。
+访问：http://localhost:8080/solr，如果看到下面这个界面，那么就是成功了
+至此一个单机版的solr服务器就搭建起来了，比较简单，接下来的第二篇会老夫会介绍这个服务器搭建起来以后怎么玩
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-05-29 14:24:39 +0000 +0000'>May 29, 2016</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>46 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 全文索引服务solr入门一之单机版服务器搭建" href="http://localhost:1313/posts/2016-05-29-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95%E6%9C%8D%E5%8A%A1solr%E5%85%A5%E9%97%A8%E4%B8%80%E4%B9%8B%E5%8D%95%E6%9C%BA%E7%89%88%E7%89%88%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">DFA算法应用之敏感词过滤
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>公司在做一个社区应用，由于我朝特色，众所周知社区应用有一个很重要的就是要进行敏感词的过滤，这块由一个同事负责，听他说，有一个算法叫DFA，可以做这个，个人比较感兴趣，就到网上查了一些资料，有一篇文章写的特别好，老夫的这篇文章就是把其核心的部分（就是怎么应用，老夫一直有一个观点，理论弱于实践，理论懂得再多不会用一点用没有，所以老夫认为应用是核心）摘出来，留作笔记，如果有想了解其原理的，请点击下方的参考资料，好了，既然是应用那么就直接上代码了：
+package cn.bridgeli.dfa; import java.util.HashSet; import java.util.Iterator; import java.util.Map; import java.util.Set; public class SensitivewordFilter { @SuppressWarnings(&#34;rawtypes&#34;) private Map sensitiveWordMap = null; public static int minMatchTYpe = 1; // 最小匹配规则 public static int maxMatchType = 2; // 最大匹配规则 /** * 初始化敏感词库 */ public SensitivewordFilter() { sensitiveWordMap = new SensitiveWordInit().initKeyWord(); } /** * 判断文字是否包含敏感字符 * * @param txt * 文字 * @param matchType * 匹配规则 1：最小匹配规则，2：最大匹配规则 * @return 若包含返回true，否则返回false */ public boolean isContaintSensitiveWord(String txt, int matchType) { boolean flag = false; for (int i = 0; i &lt; txt.length(); i&#43;&#43;) { int matchFlag = this.CheckSensitiveWord(txt, i, matchType); // 判断是否包含敏感字符 if (matchFlag &gt; 0) { flag = true; } } return flag; } /** * 获取文字中的敏感词 * * @param txt * 文字 * @param matchType * 匹配规则&amp;nbsp;1：最小匹配规则，2：最大匹配规则 * @return */ public Set&lt;String&gt; getSensitiveWord(String txt, int matchType) { Set&lt;String&gt; sensitiveWordList = new HashSet&lt;String&gt;(); for (int i = 0; i &lt; txt.length(); i&#43;&#43;) { int length = CheckSensitiveWord(txt, i, matchType); if (length &gt; 0) { sensitiveWordList.add(txt.substring(i, i &#43; length)); i = i &#43; length &amp;#8211; 1; // 减1的原因，是因为for会自增 } } return sensitiveWordList; } /** * 替换敏感字字符 * * @param txt * @param matchType * @param replaceChar \* 替换字符，默认\* */ public String replaceSensitiveWord(String txt, int matchType, String replaceChar) { String resultTxt = txt; Set&lt;String&gt; set = getSensitiveWord(txt, matchType); // 获取所有的敏感词 Iterator&lt;String&gt; iterator = set.iterator(); String word = null; String replaceString = null; while (iterator.hasNext()) { word = iterator.next(); replaceString = getReplaceChars(replaceChar, word.length()); resultTxt = resultTxt.replaceAll(word, replaceString); } return resultTxt; } /** * 获取替换字符串 * * @param replaceChar * @param length * @return */ private String getReplaceChars(String replaceChar, int length) { String resultReplace = replaceChar; for (int i = 1; i &lt; length; i&#43;&#43;) { resultReplace &#43;= replaceChar; } return resultReplace; } /** * 检查文字中是否包含敏感字符，检查规则如下：&lt;br&gt; * * @param txt * @param beginIndex * @param matchType * @return，如果存在，则返回敏感词字符的长度，不存在返回0 */ @SuppressWarnings({ &#34;rawtypes&#34; }) public int CheckSensitiveWord(String txt, int beginIndex, int matchType) { boolean flag = false; // 敏感词结束标识位：用于敏感词只有1位的情况 int matchFlag = 0; // 匹配标识数默认为0 char word = 0; Map nowMap = sensitiveWordMap; for (int i = beginIndex; i &lt; txt.length(); i&#43;&#43;) { word = txt.charAt(i); nowMap = (Map) nowMap.get(word); // 获取指定key if (nowMap != null) { // 存在，则判断是否为最后一个 matchFlag&#43;&#43;; // 找到相应key，匹配标识&#43;1 if (&#34;1&#34;.equals(nowMap.get(&#34;isEnd&#34;))) { // 如果为最后一个匹配规则,结束循环，返回匹配标识数 flag = true; // 结束标志位为true if (SensitivewordFilter.minMatchTYpe == matchType) { // 最小规则，直接返回,最大规则还需继续查找 break; } } } else { // 不存在，直接返回 break; } } if (matchFlag &lt; 2 || !flag) { // 长度必须大于等于1，为词 matchFlag = 0; } return matchFlag; } public static void main(String[] args) { SensitivewordFilter filter = new SensitivewordFilter(); System.out.println(&#34;敏感词的数量：&#34; &#43; filter.sensitiveWordMap.size()); String string = &#34;太多的伤感情怀也许只局限于饲养基地 荧幕中的情节，主人公尝试着去用某种方式渐渐的很潇洒地释自杀指南怀那些自己经历的伤感。&#34; &#43; &#34;然后法轮功 我们的扮演的角色就是跟随着主人公的喜红客联盟 怒哀乐而过于牵强的把自己的情感也附加于银幕情节中，然后感动就流泪，&#34; &#43; &#34;难过就躺在某一个人的怀里尽情的阐述心扉或者手机卡复制器一个人一杯红酒一部电影在夜三级片 深人静的晚上，关上电话静静的发呆着。&#34;; Set&lt;String&gt; set = filter.getSensitiveWord(string, 1); System.out.println(&#34;语句中包含敏感词的个数为：&#34; &#43; set.size() &#43; &#34;。包含：&#34; &#43; set); } } 这个主要是应用，DFA的核心是下面：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-05-02 12:38:56 +0000 +0000'>May 2, 2016</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>710 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to DFA算法应用之敏感词过滤" href="http://localhost:1313/posts/2016-05-02-dfa%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8%E4%B9%8B%E6%95%8F%E6%84%9F%E8%AF%8D%E8%BF%87%E6%BB%A4/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">记一次线上操作bug
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>身为程序猿，可以说天天都会遇到bug，今天没为什么记下这次bug呢？说来惭愧，因为这次bug是由于自己不仔细没有仔细检查没有测试就对线上数据下手造成的，一方面是记下这个bug的由来，修复方法和犯下的失误的地方，另一方面也是留下记录警示自己操作线上数据一定要小心再小心，还有就是不要对自己过于自信，测试很重要。
+先说一下bug的缘由，19号晚上我们上线了一个新功能，有一个功能模块是另外一个同事负责的，所以对其实现不是很了解，但数据导入有老夫负责，所以数据导入的时候，有一个结束时间没有考虑清楚，只有日期没有时间（产品经理和另一位同事当时也没有给我说），所以数据库里面结束时间变成了默认的“00:00:00”，本来修起来应该很简单，读出来update一下时间就好了，但由于是部门间的协作，比较麻烦，就考虑用SQL解决，所以就写出了如下的SQL：
+CREATE TABLE t_goods_bak AS SELECT REPLACE(a.endtime,&amp;#8217;00:00:00&amp;#8242;,&amp;#8217;23:59:59&amp;#8242;) end_time,a.* FROM t_goods a; ALTER TABLE \`commercialization\`.\`t_goods_bak\` CHANGE \`id\` \`id\` INT(11) DEFAULT 0 NOT NULL FIRST, CHANGE \`end_time\` \`end_time\` DATETIME CHARSET utf8 COLLATE utf8_general_ci NOT NULL AFTER \`endtime\`, CHANGE \`price\` \`price\` DECIMAL(10,2) NOT NULL COMMENT &amp;#8216;商品单价&amp;#8217; AFTER \`end_time\`; ALTER TABLE \`commercialization\`.\`t_goods_bak\` DROP COLUMN \`endtime\`; ALTER TABLE \`commercialization\`.\`t_goods_bak\` CHANGE \`end_time\` \`endtime\` VARCHAR(19) CHARSET utf8 COLLATE utf8_general_ci DEFAULT &amp;#8221; NOT NULL COMMENT &amp;#8216;商品失效时间&amp;#8217;; DROP TABLE \`t_goods_bak\`; RENAME TABLE \`commercialization\`.\`t_goods_bak\` TO \`commercialization\`.\`t_goods\`; 整体思想就是新建一张表，在新建这张表的时候，把数据修对，修对的数据放在了新添加的end_time字段，然后把这张新表t_goods_bak修改成和原来的表一致，最后把原表删除，再把这张表改一下名字，就达到了替换以前表的目的，所以就OK，看到这里也许有同学已经发现问题了：先别OK，你这新表没主键啊！！！
+对，老夫当时就没有多想，以为就此OK了，所以就出现bug了，因为我没有仔细看SQL语句（这些SQL除了，第一句之外都是自动生成的），新表根本没主键，这还不是问题的关键，仔细看第二句SQL，id字段默认是0，所以所有插入的数据，默认值都是0，因为没有自增，这就是最为关键的两个问题。所以综上所述，关于修这个bug，老夫至少忘了如下几件事：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-04-24 14:44:25 +0000 +0000'>April 24, 2016</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>98 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 记一次线上操作bug" href="http://localhost:1313/posts/2016-04-24-%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BA%BF%E4%B8%8A%E6%93%8D%E4%BD%9Cbug/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Spring和websocket整合应用示例（下）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在上篇中，我们已经实现了websocket，但还有一个核心的业务实现类没有实现，这里我们就实现这个业务核心类，因为老夫参与的这个系统使用websocket发送消息，所以其实现就是如何发送消息了。
+NewsListenerImpl的实现 package cn.bridgeli.websocket; import com.google.gson.Gson; import com.google.gson.GsonBuilder; import cn.bridgeli.DateUtil; import cn.bridgeli.enumeration.PlatNewsCategoryType; import cn.bridgeli.model.PlatNewsVo; import cn.bridgeli.model.SearchCondition; import cn.bridgeli.quartz.impl.TimingJob; import cn.bridgeli.service.PlatNewsService; import org.apache.commons.lang.StringUtils; import org.json.simple.JSONArray; import org.json.simple.JSONObject; import org.quartz.*; import org.quartz.impl.StdSchedulerFactory; import org.slf4j.Logger; import org.slf4j.LoggerFactory; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.stereotype.Component; import org.springframework.web.socket.TextMessage; import java.io.IOException; import java.util.Date; import java.util.List; import java.util.concurrent.ExecutorService; import java.util.concurrent.Executors; /** * @Description : 站内消息监听器实现 * @Date : 16-3-7 */ @Component public class NewsListenerImpl implements NewsListener{ private static final Logger logger = LoggerFactory.getLogger(NewsListenerImpl.class); Gson gson = new GsonBuilder().setDateFormat(&#34;yyyy-MM-dd HH:mm:ss&#34;).create(); //线程池 private ExecutorService executorService = Executors.newCachedThreadPool(); //任务调度 private SchedulerFactory sf = new StdSchedulerFactory(); @Autowired private PlatNewsService platNewsService; @Override public void afterPersist(PlatNewsVo platNewsVo) { logger.info(&#34;监听到有新消息添加。。。&#34;); logger.info(&#34;新消息为:&#34;&#43;gson.toJson(platNewsVo)); //启动线程 if(null != platNewsVo &amp;&amp; !StringUtils.isBlank(platNewsVo.getCurrentoperatoremail())){ //如果是定时消息 if(platNewsVo.getNewsType() == PlatNewsCategoryType.TIMING_TIME.getCategoryId()){ startTimingTask(platNewsVo); //定时推送 }else{ //立即推送 executorService.execute(new AfterConnectionEstablishedTask(platNewsVo.getCurrentoperatoremail())); } } } @Override public void afterConnectionEstablished(String email) { logger.info(&#34;建立websocket连接后推送新消息。。。&#34;); if(!StringUtils.isBlank(email)){ executorService.execute(new AfterConnectionEstablishedTask(email)); } } /** * @Description ： 如果新添加了定时消息，启动定时消息任务 * @param platNewsVo */ private void startTimingTask(PlatNewsVo platNewsVo){ logger.info(&#34;开始定时推送消息任务。。。&#34;); Date timingTime = platNewsVo.getTimingTime(); if(null == timingTime){ logger.info(&#34;定时消息时间为null。&#34;); return; } logger.info(&#34;定时推送任务时间为：&#34;&#43;DateUtil.date2String(timingTime)); JobDetail jobDetail= JobBuilder.newJob(TimingJob.class) .withIdentity(platNewsVo.getCurrentoperatoremail()&#43;&#34;定时消息&#34;&#43;platNewsVo.getId(), &#34;站内消息&#34;) .build(); //传递参数 jobDetail.getJobDataMap().put(&#34;platNewsService&#34;,platNewsService); jobDetail.getJobDataMap().put(&#34;userEmail&#34;,platNewsVo.getCurrentoperatoremail()); Trigger trigger= TriggerBuilder .newTrigger() .withIdentity(&#34;定时消息触发&#34;&#43;platNewsVo.getId(), &#34;站内消息&#34;) .startAt(timingTime) .withSchedule(SimpleScheduleBuilder.simpleSchedule() .withIntervalInSeconds(0) //时间间隔 .withRepeatCount(0) //重复次数 ) .build(); //启动定时任务 try { Scheduler sched = sf.getScheduler(); sched.scheduleJob(jobDetail,trigger); if(!sched.isShutdown()){ sched.start(); } } catch (SchedulerException e) { logger.info(e.toString()); } logger.info(&#34;完成开启定时推送消息任务。。。&#34;); } /** * @Description : 建立websocket链接后的推送线程 */ class AfterConnectionEstablishedTask implements Runnable{ String email ; public AfterConnectionEstablishedTask(String email){ this.email = email; } @Override public void run() { logger.info(&#34;开始推送消息给用户:&#34;&#43;email&#43;&#34;。。。&#34;); if(!StringUtils.isBlank(email)){ SearchCondition searchCondition = new SearchCondition(); searchCondition.setOperatorEmail(email); JSONArray jsonArray = new JSONArray(); for(PlatNewsCategoryType type : PlatNewsCategoryType.values()){ searchCondition.setTypeId(type.getCategoryId()); int count = platNewsService.countPlatNewsByExample(searchCondition); JSONObject object = new JSONObject(); object.put(&#34;name&#34;,type.name()); object.put(&#34;description&#34;,type.getDescription()); object.put(&#34;count&#34;,count); jsonArray.add(object); } if(null != jsonArray &amp;&amp; jsonArray.size()&gt;0){ UserSocketVo userSocketVo = WSSessionLocalCache.get(email); TextMessage reMessage = new TextMessage(gson.toJson(jsonArray)); try { if(null != userSocketVo){ //推送消息 userSocketVo.getWebSocketSession().sendMessage(reMessage); //更新推送时间 userSocketVo.setLastSendTime(DateUtil.getNowDate()); logger.info(&#34;完成推送新消息给用户:&#34;&#43;userSocketVo.getUserEmail()&#43;&#34;。。。&#34;); } } catch (IOException e) { logger.error(e.toString()); logger.info(&#34;站内消息推送失败。。。&#34;&#43;e.toString()); } } } logger.info(&#34;结束推送消息给&#34;&#43;email&#43;&#34;。。。&#34;); } } } 这个类就是websocket的核心业务的实现，其具体肯定和业务相关，由于业务的不同，实现肯定不同，因为老夫参与的系统是发送消息，所以里面最核心的一句就是：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-04-04 14:14:24 +0000 +0000'>April 4, 2016</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>304 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Spring和websocket整合应用示例（下）" href="http://localhost:1313/posts/2016-04-04-spring%E5%92%8Cwebsocket%E6%95%B4%E5%90%88%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B%E4%B8%8B/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Spring和websocket整合应用示例（上）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>嗯，这次真的仅仅是一个入门教程，因为老夫表示自己也不会。近期老夫参与开发公司的一个CRM系统，系统中有很多消息的推送，由一个同事负责，其用到了websocket技术，老夫比较感兴趣，删繁就简，整理了一个教程，留作自己笔记，因很多原理老夫也是不甚了了，以备将来用到了有资料可查。
+maven依赖 &lt;dependency&gt; &lt;groupId&gt;javax.servlet&lt;/groupId&gt; &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt; &lt;version&gt;3.1.0&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt; &lt;artifactId&gt;jackson-core&lt;/artifactId&gt; &lt;version&gt;2.3.0&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt; &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt; &lt;version&gt;2.3.0&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework&lt;/groupId&gt; &lt;artifactId&gt;spring-websocket&lt;/artifactId&gt; &lt;version&gt;4.0.1.RELEASE&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework&lt;/groupId&gt; &lt;artifactId&gt;spring-messaging&lt;/artifactId&gt; &lt;version&gt;4.0.1.RELEASE&lt;/version&gt; &lt;/dependency&gt; spring-servlet的配置 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;beans xmlns=&#34;http://www.springframework.org/schema/beans&#34; xmlns:context=&#34;http://www.springframework.org/schema/context&#34; xmlns:mvc=&#34;http://www.springframework.org/schema/mvc&#34; xmlns:tx=&#34;http://www.springframework.org/schema/tx&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xmlns:websocket=&#34;http://www.springframework.org/schema/websocket&#34; xsi:schemaLocation=&#34; http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd&#34;&gt; &amp;#8230;&amp;#8230; &lt;!&amp;#8211; websocket &amp;#8211;&gt; &lt;bean id=&#34;websocket&#34; class=&#34;cn.bridgeli.websocket.WebsocketEndPoint&#34;/&gt; &lt;websocket:handlers&gt; &lt;websocket:mapping path=&#34;/websocket&#34; handler=&#34;websocket&#34;/&gt; &lt;websocket:handshake-interceptors&gt; &lt;bean class=&#34;cn.bridgeli.websocket.HandshakeInterceptor&#34;/&gt; &lt;/websocket:handshake-interceptors&gt; &lt;/websocket:handlers&gt; &lt;/beans&gt; 其中，path对应的路径就是前段通过ws协议调的接口路径
+HandshakeInterceptor的实现 package cn.bridgeli.websocket; import cn.bridgeli.utils.UserManager; import cn.bridgeli.util.DateUtil; import cn.bridgeli.sharesession.UserInfo; import org.apache.commons.lang.StringUtils; import org.slf4j.Logger; import org.slf4j.LoggerFactory; import org.springframework.http.server.ServerHttpRequest; import org.springframework.http.server.ServerHttpResponse; import org.springframework.web.context.request.RequestContextHolder; import org.springframework.web.context.request.ServletRequestAttributes; import org.springframework.web.socket.WebSocketHandler; import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor; import java.util.Date; import java.util.Map; /** * @Description :创建握手（handshake）接口 * @Date : 16-3-3 */ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor{ private static final Logger logger = LoggerFactory.getLogger(HandshakeInterceptor.class); @Override public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map&lt;String, Object&gt; attributes) throws Exception { logger.info(&#34;建立握手前&amp;#8230;&#34;); ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes(); UserInfo currUser = UserManager.getSessionUser(attrs.getRequest()); UserSocketVo userSocketVo = new UserSocketVo(); String email= &#34;&#34;; if(null != currUser){ email = currUser.getEmail(); } if(StringUtils.isBlank(email)){ email = DateUtil.date2String(new Date()); } userSocketVo.setUserEmail(email); attributes.put(&#34;SESSION_USER&#34;, userSocketVo); return super.beforeHandshake(request, response, wsHandler, attributes); } @Override public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception ex) { logger.info(&#34;建立握手后&amp;#8230;&#34;); super.afterHandshake(request, response, wsHandler, ex); } } 因为老夫不是很懂，所以最大限度的保留原代码，这其实就是从单点登录中取出当前登录用户，转成UserSocketVo对象，放到Map中。所以接下来我们看看UserSocketVo对象的定义
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-04-04 14:05:19 +0000 +0000'>April 4, 2016</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>464 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Spring和websocket整合应用示例（上）" href="http://localhost:1313/posts/2016-04-04-spring%E5%92%8Cwebsocket%E6%95%B4%E5%90%88%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B%E4%B8%8A/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/page/10/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="http://localhost:1313/page/12/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

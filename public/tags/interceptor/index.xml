@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Interceptor on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/interceptor/</link>
+    <description>Recent content in Interceptor on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 08 Mar 2015 15:03:43 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/interceptor/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SpringMVC中Interceptor和自定义filter的典型应用</title>
+      <link>http://localhost:1313/posts/2015-03-08-springmvc%E4%B8%ADinterceptor%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89filter%E7%9A%84%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8/</link>
+      <pubDate>Sun, 08 Mar 2015 15:03:43 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-03-08-springmvc%E4%B8%ADinterceptor%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89filter%E7%9A%84%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8/</guid>
+      <description>&lt;p&gt;今天写写老夫最擅长的Java web，在Java web中Interceptor和filter应用十分广泛，今天就写一个在我们的项目中的一个最基本的应用，过滤或者拦截未登录用户访问某些资源。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;SpringMVC中Interceptor&lt;br&gt;
+SpringMVC 中的Interceptor 拦截器是相当重要和相当有用的，它的主要作用是拦截用户的请求并进行相应的处理。比如通过它来进行权限验证，或者是来判断用户是否登陆等等。今天就写一个Interceptor在开发中的典型应用：某一系统某些方法肯定是需要用户登陆才能访问的，而另外一些肯定不需要用户登陆就能访问（这样的例子很多，老夫就不举例说明了），那么我们怎么做，才能做到呢？这个时候Interceptor就派上用场了，下面是一个小例子，供参考：&lt;br&gt;
+spring-servlet.xml核心代码如下：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;  
+&amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34;  
+xmlns:mvc=&amp;#34;http://www.springframework.org/schema/mvc&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;  
+xmlns:p=&amp;#34;http://www.springframework.org/schema/p&amp;#34; xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34;  
+xsi:schemaLocation=&amp;#34;http://www.springframework.org/schema/beans  
+http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+http://www.springframework.org/schema/context  
+http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+http://www.springframework.org/schema/mvc  
+http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd&amp;#34;&amp;gt;
+
+&amp;lt;mvc:interceptors&amp;gt;  
+&amp;lt;bean id=&amp;#34;permissionInterceptor&amp;#34; class=&amp;#34;cn.bridgeli.demo.interceptor.PermissionInterceptor&amp;#34;&amp;gt;&amp;lt;/bean&amp;gt;  
+&amp;lt;/mvc:interceptors&amp;gt;
+
+&amp;amp;#8230;&amp;amp;#8230;
+
+&amp;lt;/beans&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;对应的Interceptor的实现：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.demo.interceptor;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.ModelAndViewDefiningException;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.util.UrlPathHelper;
+
+import cn.bridgeli.demo.entity.User;
+
+public class PermissionInterceptor extends HandlerInterceptorAdapter {
+
+    private UrlPathHelper urlPathHelper = new UrlPathHelper();
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+                             Object handler) throws Exception {
+        User user = (User) request.getSession().getAttribute(&amp;#34;USER&amp;#34;);
+        String url = urlPathHelper.getLookupPathForRequest(request);
+        int flag = url.indexOf(&amp;#34;/admin/&amp;#34;);
+        if (user == null &amp;amp;&amp;amp; flag != -1) {
+            ModelAndView mav = new ModelAndView(&amp;#34;error/permissionerror&amp;#34;);
+            mav.addObject(&amp;#34;ERRORMSG&amp;#34;, &amp;#34;对不起，您没有登录，无法使用该功能！&amp;#34;);
+            throw new ModelAndViewDefiningException(mav);
+        }
+        return true;
+    }
+
+}  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;关于InterceptorAdapter的更多用法，大家可以参考http://haohaoxuexi.iteye.com/blog/1750680，老夫以为这篇文章说的相对比较详细易懂，除此之外，我们还可以通过自定义filter来实现；&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

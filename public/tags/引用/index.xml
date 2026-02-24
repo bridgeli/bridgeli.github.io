@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>引用 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E5%BC%95%E7%94%A8/</link>
+    <description>Recent content in 引用 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 28 Feb 2021 08:26:07 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%BC%95%E7%94%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java 的引用类型和使用场景</title>
+      <link>http://localhost:1313/posts/2021-02-28-java-%E7%9A%84%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</link>
+      <pubDate>Sun, 28 Feb 2021 08:26:07 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2021-02-28-java-%E7%9A%84%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</guid>
+      <description>&lt;p&gt;每种编程语言都有自己操作内存中元素的方式，例如在 C 和 C++ 里是通过指针，而在 Java 中则是通过“引用”。在 JDK.1.2 之后，Java 对引用的概念进行了扩充，将引用分为了：强引用（Strong Reference）、软引用（Soft Reference）、弱引用（Weak Reference）、虚引用（Phantom Reference）4 种，这 4 种引用的强度依次减弱，今天这篇文章就简单介绍一下这四种类型，并简单说一下他们的使用场景。&lt;/p&gt;
+&lt;p&gt;1， 强引用（Strong Reference）&lt;/p&gt;
+&lt;p&gt;强引用类型，是我们最常讲的一个类型，我们先看一个例子：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo.reference;
+
+/**  
+* @author BridgeLi  
+* @date 2021/2/26 10:02  
+*/  
+public class User {
+
+@Override  
+protected void finalize() throws Throwable {  
+super.finalize();  
+System.out.println(&amp;#34;finalize&amp;#34;);  
+}
+
+}
+
+package cn.bridgeli.demo.reference;
+
+import org.junit.Test;
+
+/**  
+* @author BridgeLi  
+* @date 2021/2/26 10:03  
+*/  
+public class StrongReferenceTest {
+
+@Test  
+public void testStrongReference() {  
+User user = new User();  
+user = null;  
+System.gc();  
+try {  
+Thread.sleep(1000);  
+} catch (InterruptedException e) {  
+e.printStackTrace();  
+}  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我们都知道当一个实例对象具有强引用时，垃圾回收器不会回收该对象，当内存不足时，宁愿 OOM，也就是抛出 OutOfMemeryError 异常也不会回收强引用的对象，因为 JVM 认为强引用的对象是用户正在使用的对象，它无法分辨出到底该回收哪个，强行回收有可能导致系统严重错误。但是当对象被赋值为 null 之后，会被回收，并且会执行对象的 finalize 函数，此时我们可以通过该函数拯救自己，但是有两点需要注意一个是只能拯救一次，当再次被垃圾回收的时候就不能拯救了，另一个就是有事没事千万不要重写次函数，本例只是为了说明问题重写了此函数，如果在工作中误重写了此函数，可能会导致垃圾不能回收，最终 OOM，另外有熟悉 GC 的同学没？猜一下我为什么要 sleep 一下？&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

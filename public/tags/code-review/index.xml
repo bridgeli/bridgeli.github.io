@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Code Review on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/code-review/</link>
+    <description>Recent content in Code Review on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 17 Oct 2015 09:03:35 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/code-review/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git服务器之Gerrit的搭建及第一次使用注意事项</title>
+      <link>http://localhost:1313/posts/2015-10-17-git%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B9%8Bgerrit%E7%9A%84%E6%90%AD%E5%BB%BA%E5%8F%8A%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</link>
+      <pubDate>Sat, 17 Oct 2015 09:03:35 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-10-17-git%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B9%8Bgerrit%E7%9A%84%E6%90%AD%E5%BB%BA%E5%8F%8A%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</guid>
+      <description>&lt;p&gt;公司的代码托管打算由SVN迁移到Git，刚好老大让老夫全权负责这个事(感谢老大信任)，老夫根据自己使用Git的经验，选择了Gerrit作为服务器，下面介绍一下老夫搭建Gerrit服务器的过程及第一次使用时需要注意的事项，如果以前没有用过Git可以参考老夫之前写的&lt;a href=&#34;https://www.bridgeli.cn/archives/153&#34; title=&#34;世界最大同性交友网站(GitHub)入门使用秘籍&#34;&gt;这篇文章&lt;/a&gt;和&lt;a href=&#34;https://www.bridgeli.cn/archives/200&#34; title=&#34;Git开发最佳实践&#34;&gt;这篇文章&lt;/a&gt;。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;环境准备&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;①. Linux，Gerrit需要Linux环境，至于是哪个发行版本就不重要了，ubuntu还是centos随意；&lt;br&gt;
+②. JDK，这个怎么安装就不说了，Java程序猿都会，就是不会网上一搜一堆，不做赘述；&lt;br&gt;
+③. MySQL，其实这个非必须，Gerrit自带的有H2数据库，但没法老夫就是喜欢MySQL；&lt;br&gt;
+④. nginx，作为认证和反向代理服务器；&lt;br&gt;
+⑤. Maven, 在安装的过程中会下载一些jar文件；&lt;br&gt;
+⑥. Git，这个忘了是不是必须的了，但还是装上吧，反正也不多，大家可以自己试一下需不需要（欢迎留言指出）；&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;数据准备&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;①. 自己去Gerrit的官网：http://gerrit-releases.storage.googleapis.com/index.html，下载一个合适的版本，就是一个war包，这也就是我们为什么需要先装JDK的原因，需要说明的是Gerrit的1.X版本是Python写的，2.X改成了Java，变成了一个war包；&lt;br&gt;
+②. 为Gerrit创建一个数据库，库名您随意，最好有意义，例如就叫reviewdb&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;开始安装&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;开始安装之前，有人建议专门为Gerrit创建一个用户用户运行Gerrit，并且禁止登陆，这里从简，如果你非要这么做可以这么做：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+adduser gerrit2  
+passwd &amp;amp;#8211;delete gerrit2
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后以gerrit2运行安装，老夫就从简了，直接敲一下命令：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+java -jar gerrit-xxx.war init -d review
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;gerrit-xxx.war就是你之前下载的war包，review是一个路径，就是安装到这下面，你可以随意定义，敲完这个命令，就进入一下交互(你的可能不太一样)，在里面我加了一些注释：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+Gerrit Code Review xxx  
+选项中大写字母为默认选项,如使用默认选项回车即可
+
+Create &amp;amp;#8216;/home/review&amp;amp;#8217; [Y/n]? 
+
+Git Repositories  
+gerrit用于存储git仓库的目录,相对于根目录review #就是之前-d后面的路径
+
+Location of Git repositories [git]: 
+
+SQL Database
+
+Database server type [h2]: mysql #数据库选mysql  
+Server hostname [localhost]:  
+Server port [(mysql default)]:  
+Database name [reviewdb]:  
+Database username [root]:  
+root&amp;amp;#8217;s password :  
+confirm password : 
+
+User Authentication  
+使用HTTP认证,OPENID需要服务器连接互联网,还可以使用LDAP认证服务
+
+Authentication method [OPENID/?]: http #这里建议选http  
+Get username from custom HTTP header [y/N]?  
+SSO logout URL : 
+
+Email Delivery  
+gerrit发送邮件设置,可以使用本地或远程SMTP服务器,  
+只要在smtp服务器上有帐号即可。
+
+SMTP server hostname [localhost]: #这里我并没有选择邮件发送服务器和其他的配置，不知道为什么也可以发邮件  
+SMTP server port [(default)]: #事实上发邮件是必须的，有知道为什么，可以告知，谢谢  
+SMTP encryption [NONE/?]:  
+SMTP username [root]:  
+root@localhost.localdomain&amp;amp;#8217;s password :  
+confirm password : 
+
+Container Process  
+使用root用户运行gerrit
+
+Run as [root]:  
+Java runtime [/usr/lib/jvm/java-7-openjdk-amd64/jre]:  
+Copy gerrit-2.8.1.war to /home/review/bin/gerrit-xxx.war [Y/n]?  
+Copying gerrit-2.8.1.war to /home/review/bin/gerrit-xxx.war
+
+SSH Daemon  
+gerrit自带的ssh服务,与服务器自身的ssh服务无关,监听默认端口即可  
+注意:如要使用低于1024的特权端口,需authbind授权,否则ssh会绑定端口失败  
+Listen on address [*]:  
+Listen on port [29418]: 
+
+Gerrit Code Review is not shipped with Bouncy Castle Crypto v144  
+If available, Gerrit can take advantage of features  
+in the library, but will also function without it.  
+Download and install it now [Y/n]?  
+Downloading http://www.bouncycastle.org/download/bcprov-jdk16-144.jar &amp;amp;#8230; OK  
+Checksum bcprov-jdk16-144.jar OK  
+Generating SSH host key &amp;amp;#8230; rsa&amp;amp;#8230; dsa&amp;amp;#8230; done
+
+HTTP Daemon  
+这里使用nginx反向代理gerrit,所以只在loop接口监听即可。  
+如果使用域名访问gerrit,最好将规范URL设置为域名形式,发送校验邮件时会使用到
+
+Behind reverse proxy [y/N]? y  
+Proxy uses SSL (https://) [y/N]?  
+Subdirectory on proxy server [/]:  
+Listen on address [*]: 127.0.0.1  
+Listen on port [8081]:  
+Canonical URL [http://127.0.0.1/]:
+
+Plugins  
+选装插件
+
+Install plugin download-commands version v2.8.1 [y/N]?  
+Install plugin reviewnotes version v2.8.1 [y/N]?  
+Install plugin replication version v2.8.1 [y/N]?  
+Install plugin commit-message-length-validator version v2.8.1 [y/N]? 
+
+Initialized /home/review  
+Executing /home/review/bin/gerrit.sh start  
+Starting Gerrit Code Review:  
+因为为ssh服务选在了低于1024的端口,且没有authbind端口授权,所以会出现如下错误,高于1024端口不会。  
+FAILED  
+error: cannot start Gerrit: exit status 1  
+Waiting for server on 127.0.0.1:80 &amp;amp;#8230; OK  
+服务器上没有X,所以使用浏览器打开连接失败  
+Opening http://127.0.0.1/#/admin/projects/ &amp;amp;#8230;FAILED  
+Open Gerrit with a JavaScript capable browser:  
+http://127.0.0.1/#/admin/projects/
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;到了这里只能说好了一半，如果你直接通过域名访问，会报一个认证失败的错误，错误就不贴了，大家自己看看就知道了&lt;br&gt;
+需要说明的是，以上这些配置，也可以通过修改：review/etc/gerrit.config 进行修改，修改之后重启就好了&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Android on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/categories/android/</link>
+    <description>Recent content in Android on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 01 Mar 2015 14:26:01 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android之BroadcastReceiver初步</title>
+      <link>http://localhost:1313/posts/2015-03-01-android%E4%B9%8Bbroadcastreceiver%E5%88%9D%E6%AD%A5/</link>
+      <pubDate>Sun, 01 Mar 2015 14:26:01 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-03-01-android%E4%B9%8Bbroadcastreceiver%E5%88%9D%E6%AD%A5/</guid>
+      <description>&lt;p&gt;今天接着写自己学习Android开发的笔记，这次记录一下BroadcastReceiver，看这个名字我们就知道他是干嘛的了，广播接收器吗，那么他有什么用呢？老夫以为用途还是比较大的，例如用户玩游戏的时候，我们必须在监听到手机来电事件、短信事件之后，暂停游戏保存游戏当时的数据，等用户接完电话、处理完短信之后再接着玩游戏。&lt;br&gt;
+之前我曾经说过，Android的四大组件都需要注册，方能使用，那么broadcast作为四大组件之一，也肯定需要注册，不同于其他组件的是broadcast有两种注册方法：&lt;br&gt;
+1，在AndroidManifest.xml中进行注册；&lt;br&gt;
+2.在代码中进行注册&lt;br&gt;
+既然有这两种注册方式，那么他们肯定会有区别，他们的区别又是什么呢？&lt;br&gt;
+在AndroidManifest.xml中进行注册，属于全局性的，也就是说无论你这个应用是否在运行，只要有某一他监听的广播被发出，那么他都会被监听到，这个的典型应用就是手机的黑名单功能，无论这个应用是否在运行，应该都可以监听用户手机的来电，进行过滤；而在代码中进行注册呢？肯定就不是全局的了，只有你这个应用启动的时候，他才会监听他所监听的事件，这个的典型应用就是，用于更新应用的UI，在activity启动的时候注册BroadcastReceiver，在activity不可见之后取消注册，因为activity不可见的时候更新UI，除了浪费CPU浪费电之外没有任何意义，好，下面我们就看看这两种方法的实现。&lt;/p&gt;
+&lt;p&gt;1，在AndroidManifest.xml中进行注册&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.demo;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+public class MainActivity extends Activity implements OnClickListener {
+
+    private Button send = null;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        send = (Button) findViewById(R.id.send);
+        send.setText(&amp;#34;Send Broadcast&amp;#34;);
+        send.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.start:
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_EDIT);
+                sendBroadcast(intent);
+                break;
+
+            default:
+                break;
+        }
+    }
+}  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;对应的布局文件其实很简单&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Android之Service</title>
+      <link>http://localhost:1313/posts/2015-02-08-android%E4%B9%8Bservice/</link>
+      <pubDate>Sun, 08 Feb 2015 15:13:08 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-02-08-android%E4%B9%8Bservice/</guid>
+      <description>&lt;p&gt;今天记录一下老夫对Service的理解，先看一下Service的概念，即Service是什么不是什么，那Service是什么呢？&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Service是Android的四大组件之一，可以长时间在后台运行；&lt;/li&gt;
+&lt;li&gt;Service不提供界面交互，即Service不像activity一样，有一个界面做展示；&lt;/li&gt;
+&lt;li&gt;即便用户跳转至另一个应用后，Service仍旧在后台运行；&lt;/li&gt;
+&lt;li&gt;任意应用组件都可以绑定一个服务，甚至可以用来完成进程间通讯的任务；&lt;/li&gt;
+&lt;li&gt;可以使用Service更新ContentProvider，发送Intent以及启动系统的通知等等；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;那Service不是什么呢？&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Service不是一个单独的进程；&lt;/li&gt;
+&lt;li&gt;Service不是一个线程！！！（即Service运行于主线程中，根据Service的概念，这个应该有很多人怀疑，持怀疑态度的可以打一下线程号，比较简单，老夫就不多做赘述了）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;看完Service是什么和不是什么之后，我们来看看什么时候需要用Service呢？Service一般是在后台做一些费力费时的任务（老夫窃以为和西游记中的沙僧差不多，默默无闻，任劳任怨），例如：下载文件、播放音乐、文件I/O等。&lt;/p&gt;
+&lt;p&gt;既然在这些时候需要用Service，那么我们怎么启动一个Service呢？启动一个Service用两种方式，分别是startService()和bindService()，那么他们之间又有什么区别和应用于什么场合呢？&lt;/p&gt;
+&lt;p&gt;首先来看startService()，一旦某个组件start一个Service后，Service开始独立运行，不在与原来的组件产生任何关系，如果想要停止Service，必须手动停止，所以其适用于开启下载、播放音乐之类的；&lt;/p&gt;
+&lt;p&gt;下面我们再看看bindService()，某个组件bind一个Service后，Service为组件提供一个接口，近似于客户端，会进行交互，当所有bind的组件都结束后，Service会自动停止，有很多系统服务都被系统封装了，例如传感器、定位等。&lt;/p&gt;
+&lt;p&gt;看了一大堆理论之后，我们来看看怎么启动一个service：&lt;/p&gt;
+&lt;p&gt;一、startService()，代码如下：&lt;/p&gt;
+&lt;p&gt;MainActivity用来启动一个Service，&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.demo;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+public class MainActivity extends Activity implements OnClickListener {
+
+    private Button start = null;
+    private Button stop = null;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        start = (Button) findViewById(R.id.start);
+        start.setText(&amp;#34;Start Service&amp;#34;);
+        start.setOnClickListener(this);
+
+        stop = (Button) findViewById(R.id.stop);
+        stop.setText(&amp;#34;Stop Service&amp;#34;);
+        stop.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.start:
+                Intent startService = new Intent();
+                startService.setClass(MainActivity.this, MainService.class);
+                startService(startService);
+                break;
+
+            case R.id.stop:
+                Intent stopService = new Intent();
+                stopService.setClass(MainActivity.this, MainService.class);
+                stopService(stopService);
+
+                break;
+
+            default:
+                break;
+        }
+    }
+} 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;对应的布局文件activity_main：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Android之Activity之间的参数传递</title>
+      <link>http://localhost:1313/posts/2015-02-01-android%E4%B9%8Bactivity%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92/</link>
+      <pubDate>Sun, 01 Feb 2015 15:04:36 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-02-01-android%E4%B9%8Bactivity%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92/</guid>
+      <description>&lt;p&gt;前面写了很多activity的东西，什么生命周期之类、常用控件以及这些控件怎么布局之类的，今天从另外一个角度在看activity：一个应用其实就是不同activity的切换，然后展示一些数据给用户，但是不同的activity之前肯定有着联系，那么他们之间怎么联系呢？说白了就是他们之间的参数是如何传递的呢？在讲不同的activity之间相互传参之前，我们先看这样两个问题：①：我们有时候需要从一个activity跳转到另一个activity，并且同时把参数带过去，然后一般就没有第一个activity啥事了，这个很常见所以就不举例子了，我们暂且称这一种为：普通的参数传递；②：有些时候呢，却不是这样，我们需要在第一个activity中打开第二个activity，在第二个activity中选取一个内容后，把我们选取的参数带回第一个activity，然后在第一个activity中处理带回来的参数，例如：我们在上传头像时，我们在第一个activity中，打开第二个activity，然后在第二个activity中，选取图片、裁剪图片，然后把处理好之后的图片带回到第一个activity，我们暂且称这种叫：关心结果的参数传递。&lt;br&gt;
+在明白有这两种需求之后，我们发现不同的activity之间参数传递其实很简单，不同的activity之间传递参数是依靠一个对象：android.content.Intent，只要有这个对象就可以满足我们在不同的activity之间传递参数的需求了。下面就让我们结合这两种情况，看看不同activity之间参数如何传递。&lt;/p&gt;
+&lt;p&gt;一、普通的参数传递&lt;br&gt;
+废话不多说，先看例子：&lt;/p&gt;
+&lt;p&gt;主activity的代码如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.demo;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+
+    private EditText factorOne = null;
+    private TextView symbol = null;
+    private EditText factorTwo = null;
+    private Button calc = null;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        factorOne = (EditText) findViewById(R.id.factorOne);
+        symbol = (TextView) findViewById(R.id.symbol);
+        symbol.setText(&amp;#34;乘以&amp;#34;);
+        factorTwo = (EditText) findViewById(R.id.factorTwo);
+
+        calc = (Button) findViewById(R.id.calc);
+        calc.setText(&amp;#34;计算&amp;#34;);
+        calc.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                String firstNum = factorOne.getText().toString();
+                String secondNum = factorTwo.getText().toString();
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, ResultActivity.class);
+                intent.putExtra(&amp;#34;firstNum&amp;#34;, firstNum);
+                intent.putExtra(&amp;#34;secondNum&amp;#34;, secondNum);
+                startActivity(intent);
+            }
+        });
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其对应的布局文件：activity_main.xml&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Activity之常见控件（二）</title>
+      <link>http://localhost:1313/posts/2015-01-26-activity%E4%B9%8B%E5%B8%B8%E8%A7%81%E6%8E%A7%E4%BB%B6%E4%BA%8C/</link>
+      <pubDate>Sun, 25 Jan 2015 16:13:01 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-01-26-activity%E4%B9%8B%E5%B8%B8%E8%A7%81%E6%8E%A7%E4%BB%B6%E4%BA%8C/</guid>
+      <description>&lt;p&gt;上一篇文章中，记录一些在activity常见的控件，今天再记录也是很常见的控件，但其用法相对来说，要更复杂一些，直接来例子：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;ListView&lt;br&gt;
+ListView一看名字就知道了，用于在activity中展示一个list，例如我们要查询出所有的用户并在activity中展示出来，那么此时ListView就派上用场了；首先看Activity的代码：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.demo;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import android.app.ListActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+public class MainActivity extends ListActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        List&amp;lt;Map&amp;lt;String, String&amp;gt;&amp;gt; list = new ArrayList&amp;lt;Map&amp;lt;String,String&amp;gt;&amp;gt;();
+        Map&amp;lt;String, String&amp;gt; map1 = new HashMap&amp;lt;String, String&amp;gt;();
+        Map&amp;lt;String, String&amp;gt; map2 = new HashMap&amp;lt;String, String&amp;gt;();
+        Map&amp;lt;String, String&amp;gt; map3 = new HashMap&amp;lt;String, String&amp;gt;();
+
+        map1.put(&amp;#34;username&amp;#34;, &amp;#34;test1&amp;#34;);
+        map1.put(&amp;#34;user_ip&amp;#34;, &amp;#34;192.168.0.1&amp;#34;);
+        map2.put(&amp;#34;username&amp;#34;, &amp;#34;test2&amp;#34;);
+        map2.put(&amp;#34;user_ip&amp;#34;, &amp;#34;192.168.0.2&amp;#34;);
+        map3.put(&amp;#34;username&amp;#34;, &amp;#34;test3&amp;#34;);
+        map3.put(&amp;#34;user_ip&amp;#34;, &amp;#34;192.168.0.3&amp;#34;);
+
+        list.add(map1);
+        list.add(map2);
+        list.add(map3);
+
+        SimpleAdapter listAdapter = new SimpleAdapter(this, list, R.layout.item, new String[]{&amp;#34;username&amp;#34;, &amp;#34;user_ip&amp;#34;}, new int[]{R.id.username, R.id.user_ip});
+
+        setListAdapter(listAdapter);
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        System.out.println(&amp;#34;position === &amp;#34; + position);
+        System.out.println(&amp;#34;id === &amp;#34; + id);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这里面用到了两个布局文件，一个是主布局文件activity_main.xml，比较简单，代码如下：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Activity之常见布局初步</title>
+      <link>http://localhost:1313/posts/2015-01-18-activity%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%B8%83%E5%B1%80%E5%88%9D%E6%AD%A5/</link>
+      <pubDate>Sun, 18 Jan 2015 14:53:40 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-01-18-activity%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%B8%83%E5%B1%80%E5%88%9D%E6%AD%A5/</guid>
+      <description>&lt;p&gt;前一篇博客记录了在activity中有哪些控件可供我们使用，既然牵涉到控件，那么肯定会牵涉到控件的布局，也就是在activity中怎么摆放这些东西，我们先看看activity的布局方式有哪些：LinearLayout线性布局、TableLayout表格布局、RelativeLayout相对布局、AbsoluteLayout绝对布局、FrameLayout帧布局等五种，各有各的用途和用法，其中老夫认为最常用的是前三种，最最常用的应该就是前两种了，今天我们就介绍一下前三种的用法。&lt;/p&gt;
+&lt;p&gt;首先看第一个也是非常常见的也是非常简单的LinearLayout线性布局方式，布局文件为：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;LinearLayout xmlns:android=&amp;#34;http://schemas.android.com/apk/res/android&amp;#34;  
+xmlns:tools=&amp;#34;http://schemas.android.com/tools&amp;#34;  
+android:layout_width=&amp;#34;match_parent&amp;#34;  
+android:layout_height=&amp;#34;match_parent&amp;#34;  
+android:orientation=&amp;#34;vertical&amp;#34; &amp;gt;
+
+&amp;lt;!&amp;amp;#8211;  
+android:id 为控件指定相应的ID  
+android:text 指定控件中显示的文字，需要注意的是：这里最好使用strings.xml  
+android:gravity 指定控件中内容的基本位置，比如居中、靠左等  
+android:textSize 指定控件中字体的大小  
+android:background 指定控件的背景色，使用RGB命名法  
+android:width 指定控件的宽度  
+android:height 指定控件的高度  
+android:layout_width 和父控件的关系，例如是匹配内容还是在水平方向上填满父控件  
+android:layout_height 和父控件的关系，例如是匹配内容还是在垂直方向上填满父控件  
+android:padding* 指定控件的内边距，也就是说控件中内容  
+android:singleLine= 布尔值，如果为真，则控件中的内容将在一行中显示  
+&amp;amp;#8211;&amp;gt;
+
+&amp;lt;TextView  
+android:id=&amp;#34;@+id/firstTextView&amp;#34;  
+android:text=&amp;#34;第一行&amp;#34;  
+android:gravity=&amp;#34;center_vertical&amp;#34;  
+android:textSize=&amp;#34;20pt&amp;#34;  
+android:background=&amp;#34;#ff0000&amp;#34;  
+android:layout_width=&amp;#34;wrap_content&amp;#34;  
+android:layout_height=&amp;#34;wrap_content&amp;#34;  
+android:paddingLeft=&amp;#34;10dip&amp;#34;  
+android:paddingTop=&amp;#34;20dip&amp;#34;  
+android:paddingRight=&amp;#34;30dip&amp;#34;  
+android:paddingBottom=&amp;#34;40dip&amp;#34;  
+android:singleLine=&amp;#34;false&amp;#34;  
+/&amp;gt;  
+&amp;lt;TextView  
+android:id=&amp;#34;@+id/secondTextView&amp;#34;  
+android:text=&amp;#34;第二行&amp;#34;  
+android:gravity=&amp;#34;center_vertical&amp;#34;  
+android:textSize=&amp;#34;30pt&amp;#34;  
+android:background=&amp;#34;#00ff00&amp;#34;  
+android:layout_width=&amp;#34;wrap_content&amp;#34;  
+android:layout_height=&amp;#34;wrap_content&amp;#34;  
+/&amp;gt;  
+&amp;lt;/LinearLayout&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其中LinearLayout表示采用线性布局方式，第五行：android:orientation=”vertical”表示是在水平方向还是在垂直方向上线性布局，注释中为该元素设置样式的各种含义。&lt;br&gt;
+需要说明的是，LinearLayout是可以嵌套的，下面给出一个例子：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;LinearLayout xmlns:android=&amp;#34;http://schemas.android.com/apk/res/android&amp;#34;  
+xmlns:tools=&amp;#34;http://schemas.android.com/tools&amp;#34;  
+android:layout_width=&amp;#34;match_parent&amp;#34;  
+android:layout_height=&amp;#34;match_parent&amp;#34;  
+android:orientation=&amp;#34;vertical&amp;#34; &amp;gt;
+
+&amp;lt;LinearLayout  
+android:layout_width=&amp;#34;match_parent&amp;#34;  
+android:layout_height=&amp;#34;match_parent&amp;#34;  
+android:orientation=&amp;#34;vertical&amp;#34;  
+android:layout_weight=&amp;#34;1&amp;#34; &amp;gt;
+
+&amp;lt;TextView  
+android:id=&amp;#34;@+id/firstTextView&amp;#34;  
+android:text=&amp;#34;第一行&amp;#34;  
+android:gravity=&amp;#34;center_vertical&amp;#34;  
+android:textSize=&amp;#34;20pt&amp;#34;  
+android:background=&amp;#34;#ff0000&amp;#34;  
+android:layout_width=&amp;#34;wrap_content&amp;#34;  
+android:layout_height=&amp;#34;wrap_content&amp;#34;  
+android:paddingLeft=&amp;#34;10dip&amp;#34;  
+android:paddingTop=&amp;#34;20dip&amp;#34;  
+android:paddingRight=&amp;#34;30dip&amp;#34;  
+android:paddingBottom=&amp;#34;40dip&amp;#34;  
+android:singleLine=&amp;#34;false&amp;#34;  
+/&amp;gt;  
+&amp;lt;TextView  
+android:id=&amp;#34;@+id/secondTextView&amp;#34;  
+android:text=&amp;#34;第二行&amp;#34;  
+android:gravity=&amp;#34;center_vertical&amp;#34;  
+android:textSize=&amp;#34;30pt&amp;#34;  
+android:background=&amp;#34;#00ff00&amp;#34;  
+android:layout_width=&amp;#34;wrap_content&amp;#34;  
+android:layout_height=&amp;#34;wrap_content&amp;#34;  
+/&amp;gt;  
+&amp;lt;/LinearLayout&amp;gt;
+
+&amp;lt;LinearLayout  
+android:layout_width=&amp;#34;match_parent&amp;#34;  
+android:layout_height=&amp;#34;match_parent&amp;#34;  
+android:orientation=&amp;#34;vertical&amp;#34;  
+android:layout_weight=&amp;#34;1&amp;#34; &amp;gt;
+
+&amp;lt;TextView  
+android:id=&amp;#34;@+id/firstTextView&amp;#34;  
+android:text=&amp;#34;第一行&amp;#34;  
+android:gravity=&amp;#34;center_vertical&amp;#34;  
+android:textSize=&amp;#34;20pt&amp;#34;  
+android:background=&amp;#34;#ff0000&amp;#34;  
+android:layout_width=&amp;#34;wrap_content&amp;#34;  
+android:layout_height=&amp;#34;wrap_content&amp;#34;  
+android:paddingLeft=&amp;#34;10dip&amp;#34;  
+android:paddingTop=&amp;#34;20dip&amp;#34;  
+android:paddingRight=&amp;#34;30dip&amp;#34;  
+android:paddingBottom=&amp;#34;40dip&amp;#34;  
+android:singleLine=&amp;#34;false&amp;#34;  
+/&amp;gt;  
+&amp;lt;TextView  
+android:id=&amp;#34;@+id/secondTextView&amp;#34;  
+android:text=&amp;#34;第二行&amp;#34;  
+android:gravity=&amp;#34;center_vertical&amp;#34;  
+android:textSize=&amp;#34;30pt&amp;#34;  
+android:background=&amp;#34;#00ff00&amp;#34;  
+android:layout_width=&amp;#34;wrap_content&amp;#34;  
+android:layout_height=&amp;#34;wrap_content&amp;#34;  
+/&amp;gt;  
+&amp;lt;/LinearLayout&amp;gt;  
+&amp;lt;/LinearLayout&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;关于嵌套需要说明的是，1. 最外层的android:orientation=”vertical”表示内部所有的LinearLayout的布局方式，当然每一个LinearLayout的android:orientation=”vertical”表明自己内部每一个元素的布局方式；2. 每一个LinearLayout的android:layout_weight=”1″表示该LinearLayout的权重，即该LinearLayout在所有空间中所占的比例。最后需要说明的是，这个我是把第一个文件直接拷过去的，所以ID有重复，大家记得改一下&lt;br&gt;
+下面我们看第二种布局方式：TableLayout表格布局，其中我个人感觉这种布局方式用的应该不是很多，下面我们看看其布局文件：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Android之常见控件</title>
+      <link>http://localhost:1313/posts/2015-01-11-android%E4%B9%8B%E5%B8%B8%E8%A7%81%E7%A9%BA%E9%97%B4/</link>
+      <pubDate>Sun, 11 Jan 2015 14:41:30 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-01-11-android%E4%B9%8B%E5%B8%B8%E8%A7%81%E7%A9%BA%E9%97%B4/</guid>
+      <description>&lt;p&gt;在我们开发Android的时候，有各种各样常见的控件供我们使用，今天就记录一下这些常见的控件有哪些，其实他们的用法大多一样，希望能举一反三，&lt;br&gt;
+第一个常见的控件恐怕就是EditText、TextView、Button，使用的例子如下：&lt;br&gt;
+activity_main.xml布局文件：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;LinearLayout xmlns:android=&amp;#34;http://schemas.android.com/apk/res/android&amp;#34;
+              xmlns:tools=&amp;#34;http://schemas.android.com/tools&amp;#34;
+              android:layout_width=&amp;#34;match_parent&amp;#34;
+        android:layout_height=&amp;#34;match_parent&amp;#34;
+        android:orientation=&amp;#34;vertical&amp;#34; &amp;gt;
+
+&amp;lt;EditText
+android:id=&amp;#34;@+id/factorOne&amp;#34;
+android:layout_width=&amp;#34;fill_parent&amp;#34;
+        android:layout_height=&amp;#34;wrap_content&amp;#34;
+        /&amp;gt;
+
+&amp;lt;TextView
+android:id=&amp;#34;@+id/symbol&amp;#34;
+android:layout_width=&amp;#34;wrap_content&amp;#34;
+        android:layout_height=&amp;#34;wrap_content&amp;#34;
+        /&amp;gt;
+&amp;lt;EditText
+android:id=&amp;#34;@+id/factorTwo&amp;#34;
+android:layout_width=&amp;#34;fill_parent&amp;#34;
+        android:layout_height=&amp;#34;wrap_content&amp;#34;
+        /&amp;gt;
+&amp;lt;Button
+android:id=&amp;#34;@+id/calc&amp;#34;
+android:layout_width=&amp;#34;fill_parent&amp;#34;
+        android:layout_height=&amp;#34;wrap_content&amp;#34; /&amp;gt;
+        &amp;lt;/LinearLayout&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;对应的activity：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.demo;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+
+    private EditText factorOne = null;
+    private TextView symbol = null;
+    private EditText factorTwo = null;
+    private Button calc = null;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        factorOne = (EditText) findViewById(R.id.factorOne);
+        symbol = (TextView) findViewById(R.id.symbol);
+        factorTwo = (EditText) findViewById(R.id.factorTwo);
+        calc = (Button) findViewById(R.id.calc);
+
+        symbol.setText(R.string.symbol);
+        calc.setText(R.string.calc);
+
+        calc.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                String firstNum = factorOne.getText().toString();
+                String secondNum = factorTwo.getText().toString();
+
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, ResultActivity.class);
+                intent.putExtra(&amp;#34;firstNum&amp;#34;, firstNum);
+                intent.putExtra(&amp;#34;secondNum&amp;#34;, secondNum);
+                startActivity(intent);
+            }
+        });
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;result.xml布局文件就比较简单了，只有一个TextView&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Activity之生命周期</title>
+      <link>http://localhost:1313/posts/2015-01-04-activity%E4%B9%8B%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</link>
+      <pubDate>Sun, 04 Jan 2015 15:08:13 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-01-04-activity%E4%B9%8B%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</guid>
+      <description>&lt;p&gt;这几天没事，自学了一下Android的开发，今天记录一下activity的生命周期，在写之前，我们先看一下，Google官方的文档，窃以为这个说的已经比较清楚明白了：&lt;br&gt;
+&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/01/activity_lifecycle.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/01/activity_lifecycle-232x300.png&#34; alt=&#34;activity_lifecycle&#34; width=&#34;232&#34; height=&#34;300&#34; class=&#34;alignnone size-medium wp-image-133&#34; /&gt;&lt;/a&gt;&lt;br&gt;
+从这张图，我们清楚无误的看到，activity的生命周期方法执行顺序为：onCreate()–&amp;gt;onStart()–&amp;gt;onResume()–&amp;gt;onPause()–&amp;gt;onStop()–&amp;gt;onRestart()–&amp;gt;ondestory()&lt;br&gt;
+但是口说无凭，我们从一个例子中说明问题：&lt;br&gt;
+第一个activity：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.lifecycle;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+public class MainActivity extends Activity {
+
+    private Button button = null;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        button = (Button) findViewById(R.id.button);
+        ButtonListener buttonListener = new ButtonListener();
+        button.setOnClickListener(buttonListener);
+
+        System.out.println(&amp;#34;First activity onCreate&amp;#34;);
+    }
+
+    class ButtonListener implements OnClickListener{
+
+        @Override
+        public void onClick(View arg0) {
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, SecondActivity.class);
+            startActivity(intent);
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println(&amp;#34;First activity onDestroy&amp;#34;);
+    }
+
+    @Override
+    protected void onPause() {
+        System.out.println(&amp;#34;First activity onPause&amp;#34;);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println(&amp;#34;First activity onResume&amp;#34;);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println(&amp;#34;First activity onStart&amp;#34;);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println(&amp;#34;First activity onStop&amp;#34;);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        System.out.println(&amp;#34;First activity onRestart&amp;#34;);
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;第二个activity：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

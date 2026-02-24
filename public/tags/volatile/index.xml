@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Volatile on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/volatile/</link>
+    <description>Recent content in Volatile on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 05 Jul 2020 02:30:15 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/volatile/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于 CPU 乱序执行的证明</title>
+      <link>http://localhost:1313/posts/2020-07-05-%E5%85%B3%E4%BA%8E-cpu-%E4%B9%B1%E5%BA%8F%E6%89%A7%E8%A1%8C%E7%9A%84%E8%AF%81%E6%98%8E/</link>
+      <pubDate>Sun, 05 Jul 2020 02:30:15 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2020-07-05-%E5%85%B3%E4%BA%8E-cpu-%E4%B9%B1%E5%BA%8F%E6%89%A7%E8%A1%8C%E7%9A%84%E8%AF%81%E6%98%8E/</guid>
+      <description>&lt;p&gt;在学习 volatile 关键字的时候，我们都知道他有两个作用：1. 内存可见性；2. 禁止指令重排序。但是我们一般都是说，那么怎么证明呢？请看下面这段代码：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo;
+
+/**  
+* @author BridgeLi  
+* @date 2020/7/4 10:27  
+*/  
+public class Disorder {
+
+private static int x = 0;  
+private static int y = 0;  
+private static volatile int a = 0;  
+private static volatile int b = 0;
+
+public static void main(String[] args) throws InterruptedException {  
+int i = 0;  
+for (; ; ) {  
+i++;  
+x = 0;  
+y = 0;  
+a = 0;  
+b = 0;  
+Thread one = new Thread(new Runnable() {  
+@Override  
+public void run() {  
+a = 1;  
+x = b;  
+}  
+}, &amp;#34;one&amp;#34;);
+
+Thread two = new Thread(new Runnable() {  
+@Override  
+public void run() {  
+b = 1;  
+y = a;  
+}  
+}, &amp;#34;two&amp;#34;);
+
+one.start();  
+two.start();  
+one.join();  
+two.join();
+
+if (0 == x &amp;amp;&amp;amp; 0 == y) {  
+System.out.println(&amp;#34;第 &amp;#34; + i + &amp;#34; 次（&amp;#34; + x + &amp;#34;, &amp;#34; + y + &amp;#34;)&amp;#34;);  
+break;  
+}  
+}  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果仔细分析这段代码，我们就会发现，如果 CPU 没有乱序执行，那么无论任何时候 x 和 y 都不可能同时为零，但是事实上，这段代码是有可能出现 x 和 y 同时为零的，具体大家可以自己测试，需要说明的时候，什么时候指令重排了，要看运气，可能很快出现，也可能要等一会。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

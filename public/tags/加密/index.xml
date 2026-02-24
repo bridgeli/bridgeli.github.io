@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>加密 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E5%8A%A0%E5%AF%86/</link>
+    <description>Recent content in 加密 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 18 Dec 2016 12:04:43 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%8A%A0%E5%AF%86/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Blowfish加密算法Java版简单实现</title>
+      <link>http://localhost:1313/posts/2016-12-18-blowfish%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95java%E7%89%88%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/</link>
+      <pubDate>Sun, 18 Dec 2016 12:04:43 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-12-18-blowfish%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95java%E7%89%88%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/</guid>
+      <description>&lt;p&gt;前几天网上突然出现流言：某东发生数据泄露12G，最终某东在一篇声明中没有否认，还算是勉强承认了吧，这件事对于一般人有什么影响、应该怎么做已经有一堆人说了，所以就不凑热闹了，咱来点对程序猿来说实际点的，说一个个人认为目前比较安全的加密算法：Blowfish。&lt;br&gt;
+上代码之前，先说几点Blowfish加密算法的特点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;对称加密，即加密的密钥和解密的密钥是相同的；&lt;/li&gt;
+&lt;li&gt;每次加密之后的结果是不同的（这也是老夫比较欣赏的一点）；&lt;/li&gt;
+&lt;li&gt;可逆的，和老夫之前的文章介绍的md5等摘要算法不一样，他是可逆的；&lt;/li&gt;
+&lt;li&gt;速度快，加密和解密的过程基本上由ADD和XOR指令运算组成；&lt;/li&gt;
+&lt;li&gt;免费，任何人都可以免费使用不需要缴纳版权费；&lt;/li&gt;
+&lt;li&gt;BlowFish 每次只能加密和解密8字节数据；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;接下来就是最重要的部分，Blowfish加密算法的实现：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.encrypt;
+
+public enum BlowfishManager {
+
+BRIDGELI_CN(&amp;#34;bridgeli_cn!@#$abc123_&amp;#34;);
+
+private BlowfishManager(String secret) {  
+this.blowfish = new Blowfish(secret);  
+}
+
+private Blowfish blowfish;
+
+public Blowfish getBlowfish() {  
+return blowfish;  
+}
+
+/**  
+* 解密  
+* @param sCipherText  
+* @return  
+*/  
+public String decryptString(String sCipherText){  
+return this.getBlowfish().decryptString(sCipherText);  
+}
+
+/**  
+* 加密  
+* @param sPlainText  
+* @return  
+*/  
+public String encryptString(String sPlainText){  
+return this.getBlowfish().encryptString(sPlainText);  
+}
+
+public static void main(String[] args) {  
+String encryptString = BlowfishManager.BRIDGELI_CN.encryptString(10 + &amp;#34;&amp;#34;);  
+System.out.println(encryptString);  
+String decryptString = BlowfishManager.BRIDGELI_CN.decryptString(encryptString);  
+System.out.println(decryptString);  
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这是对外的接口，使用起来非常简单，对用户很友好，下面是算法的具体实现：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

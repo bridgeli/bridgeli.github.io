@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Autowired on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/autowired/</link>
+    <description>Recent content in Autowired on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 29 Jul 2018 06:44:53 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/autowired/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>JVM 群关于 Autowired 的讨论</title>
+      <link>http://localhost:1313/posts/2018-07-29-jvm-%E7%BE%A4%E5%85%B3%E4%BA%8E-autowired-%E7%9A%84%E8%AE%A8%E8%AE%BA/</link>
+      <pubDate>Sun, 29 Jul 2018 06:44:53 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2018-07-29-jvm-%E7%BE%A4%E5%85%B3%E4%BA%8E-autowired-%E7%9A%84%E8%AE%A8%E8%AE%BA/</guid>
+      <description>&lt;p&gt;前一段时间 JVM 群有人遇到了一个 stackoverflow 的问题，引发了一个关于 Autowired 的讨论，由于我做的项目可能比较小，并没有遇到过，但感觉这也许就是一个坑，记录下来&lt;br&gt;
+，如果谁有遇到这个问题，说不定就有帮助。&lt;/p&gt;
+&lt;p&gt;下面我会贴出来群里面的讨论，如果不想看，直接看我的得出的结论，所以 TL;DR 版：&lt;/p&gt;
+&lt;p&gt;spring 中依赖注入有两个注解：Autowired 和 Resource。Resource 的注入的时候是 byName，而 Autowired 注入的时候是 byType，所以平时并没有很大的区别，但 Autowired 和 getBean(Object.class) 会导致栈很深，有可能会导致 stackoverflow，所以如果遇到这个栈很深，不使用 Autowired 会缓解一下，也就是根据我的理解，在项目中能用 Resource 还是用 Resource 比较好。&lt;/p&gt;
+&lt;p&gt;原版群里的详细讨论如下图（至于深层次的原因，大家可以根据源码自己跟进看一下）：&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource1-768x1451.png&#34; alt=&#34;&#34; width=&#34;768&#34; height=&#34;1451&#34; class=&#34;alignnone size-medium wp-image-551&#34; /&gt; 
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource2-768x1451.png&#34; alt=&#34;&#34; width=&#34;768&#34; height=&#34;1451&#34; class=&#34;alignnone size-medium wp-image-552&#34; /&gt; 
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource3-768x1451.png&#34; alt=&#34;&#34; width=&#34;768&#34; height=&#34;1451&#34; class=&#34;alignnone size-medium wp-image-553&#34; /&gt; 
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource4-768x1451.png&#34; alt=&#34;&#34; width=&#34;768&#34; height=&#34;1451&#34; class=&#34;alignnone size-medium wp-image-554&#34; /&gt; 
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource5-768x1451.png&#34; alt=&#34;&#34; width=&#34;768&#34; height=&#34;1451&#34; class=&#34;alignnone size-medium wp-image-555&#34; /&gt; 
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource6-768x1451.png&#34; alt=&#34;&#34; width=&#34;768&#34; height=&#34;1451&#34; class=&#34;alignnone size-medium wp-image-556&#34; /&gt; 
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource7-768x1451.png&#34; alt=&#34;&#34; width=&#34;768&#34; height=&#34;1451&#34; class=&#34;alignnone size-medium wp-image-557&#34; /&gt; 
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource8-768x1451.png&#34; alt=&#34;&#34; width=&#34;768&#34; height=&#34;1451&#34; class=&#34;alignnone size-medium wp-image-558&#34; /&gt; 
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource9-768x1451.png&#34; alt=&#34;&#34; width=&#34;768&#34; height=&#34;1451&#34; class=&#34;alignnone size-medium wp-image-559&#34; /&gt; 
+&lt;p&gt;里面 深圳-随缘-颉 贴出的一张图：&lt;/p&gt;
+&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2018/07/spring_papulateBean-768x445.jpeg&#34; alt=&#34;&#34; width=&#34;768&#34; height=&#34;445&#34; class=&#34;alignnone size-medium wp-image-561&#34; /&gt; 
+&lt;p&gt;感谢这一群小伙伴，如果有信息泄漏，很抱歉。&lt;/p&gt;
+&lt;p&gt;另外曾经有朋友因为 JVM 的存在，就认为 Java 没有内存泄漏的问题，这是对 Java 有多大的误解啊。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>策略 on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/%E7%AD%96%E7%95%A5/</link>
+    <description>Recent content in 策略 on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 30 Nov 2014 14:14:44 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E7%AD%96%E7%95%A5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>设计模式之策略模式</title>
+      <link>http://localhost:1313/posts/2014-11-30-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Sun, 30 Nov 2014 14:14:44 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2014-11-30-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</guid>
+      <description>&lt;p&gt;今天我们来讨论策略模式，策略模式是一个比较难理解的模式，尤其是和工厂模式相结合时，当时看程杰的《大化设计模式》时，第二个讲的就是这个，那是一个迷迷糊糊啊，其实仔细分析策略模式并没有那么难，在我们学策略模式之前，先搞明白什么是策略呢？策略是：在某一件事上，在一定的情况下，所采取的行动。当然这个“在一定的情况下”一定是某一种情况，也即是可数的。当情况很多的时候，也许我们要用很多烦人if-else去处理，所以策略模式就是解决这类问题的，其一个典型应用就是在电商平台中：不同的用户有不同的等级享有不同的折扣，我想有些人第一想到的处理方式就是：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.demo;
+
+public class Strategy {
+    public double discount(String grade, double total) {
+        if (&amp;#34;A&amp;#34;.equals(grade)) {
+            return total * 0.6;
+        } else if (&amp;#34;B&amp;#34;.equals(grade)) {
+            return total * 0.7;
+        } else if (&amp;#34;C&amp;#34;.equals(grade)) {
+            return total * 0.8;
+        } else if (&amp;#34;D&amp;#34;.equals(grade)) {
+            return total * 0.9;
+        } else {
+            return total;
+        }
+    }
+}  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我相信这么处理只要看过上篇文章的人都会想到，不满足：开闭原则！当我们新增一个策略时，肯定要该这段代码，增加一个if，当我们的策略发生变化时，例如不仅打折而且在过节时发送促销邮件之类的，那么里面的策略也要改，显然这是一个大问题，那么出现这个问题的根源就是不满足：迪米特原则。&lt;br&gt;
+ps：就算不用if-else，用switch-case也有同样的问题。那么用策略模式怎么处理呢？&lt;br&gt;
+需要我们首先定义一个策略模式的接口：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.demo.service;
+
+public interface UserGradeStrategyService {
+    public double discount();
+} 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;下面是具体的策略的实现&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.demo.service;
+
+public class UserGradeAStrategyService implements UserGradeStrategyService {
+
+    @Override
+    public double discount() {
+        return 0.6;
+    }
+
+}
+
+package cn.bridgeli.demo.service;
+
+public class UserGradeBStrategyService implements UserGradeStrategyService {
+
+    @Override
+    public double discount() {
+        return 0.7;
+    }
+
+}
+
+package cn.bridgeli.demo.service;
+
+public class UserGradeCStrategyService implements UserGradeStrategyService {
+
+    @Override
+    public double discount() {
+        return 0.8;
+    }
+
+}
+
+package cn.bridgeli.demo.service;
+
+public class UserGradeDStrategyService implements UserGradeStrategyService {
+
+    @Override
+    public double discount() {
+        return 0.9;
+    }
+
+}
+
+package cn.bridgeli.demo.service;
+
+public class UserGradeEStrategyService implements UserGradeStrategyService {
+
+    @Override
+    public double discount() {
+        return 1.0;
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;有一个策略的容器，这个容器知道都有哪些策略，它里面包含所有的策略：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Maven on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/categories/maven/</link>
+    <description>Recent content in Maven on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 15 Dec 2019 05:41:18 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/maven/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MAVEN 中 JDK 版本的两个小问题</title>
+      <link>http://localhost:1313/posts/2019-12-15-maven-%E4%B8%AD-jdk-%E7%89%88%E6%9C%AC%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Sun, 15 Dec 2019 05:41:18 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2019-12-15-maven-%E4%B8%AD-jdk-%E7%89%88%E6%9C%AC%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98/</guid>
+      <description>&lt;p&gt;公司项目目前用的 JDK 版本还是 1.7，前一段时间同事想把本地的开发环境生成 1.8 想玩玩，结果发现两个小问题，特此记录一下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;jar deploy 到 nexus，生成 javadoc 的时候报的有个错，一些注释不认识：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+错误: 未知标记: date  
+* @date:2019/8/27 18:40
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个很简单，maven plugin 修改一下就好：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;plugin&amp;gt;  
+&amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;maven-javadoc-plugin&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;2.10.1&amp;lt;/version&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;aggregate&amp;gt;true&amp;lt;/aggregate&amp;gt;  
+&amp;lt;additionalJOptions&amp;gt;  
+&amp;lt;additionalJOption&amp;gt;-Xdoclint:none&amp;lt;/additionalJOption&amp;gt;  
+&amp;lt;/additionalJOptions&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;executions&amp;gt;  
+&amp;lt;execution&amp;gt;  
+&amp;lt;id&amp;gt;attach-javadocs&amp;lt;/id&amp;gt;  
+&amp;lt;goals&amp;gt;  
+&amp;lt;goal&amp;gt;jar&amp;lt;/goal&amp;gt;  
+&amp;lt;/goals&amp;gt;  
+&amp;lt;/execution&amp;gt;  
+&amp;lt;/executions&amp;gt;  
+&amp;lt;/plugin&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其实就是添加了：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;additionalJOptions&amp;gt;  
+&amp;lt;additionalJOption&amp;gt;-Xdoclint:none&amp;lt;/additionalJOption&amp;gt;  
+&amp;lt;/additionalJOptions&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;不过要注意的是，如果要是再改回 1.7，这个还要去掉，不然同样报错，这个至于原因为什么，也没深究，知道的可以留下评论&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;javac: 无效的目标发行版: 1.8&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;同时安装好了 1.8，java -version 也显示是 1.8，但是就是用 maven 编译的时候报这玩意，在网上看了一堆人说了一个方法：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;properties&amp;gt;  
+&amp;lt;maven.compiler.source&amp;gt;1.8&amp;lt;/maven.compiler.source&amp;gt;  
+&amp;lt;maven.compiler.target&amp;gt;1.8&amp;lt;/maven.compiler.target&amp;gt;  
+&amp;lt;maven.compiler.compilerVersion&amp;gt;1.8&amp;lt;/maven.compiler.compilerVersion&amp;gt;  
+&amp;lt;project.build.sourceEncoding&amp;gt;UTF-8&amp;lt;/project.build.sourceEncoding&amp;gt;  
+&amp;lt;/properties&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;还有什么修改 path 路径的等等，其实都并没有什么卵用，因为 javac 已经是 1.8 编译了，又不是还是 1.7，所以这些人连问题出在哪都不知道，真是天下文章一大抄，你抄我来我抄他，但是你们也测试一些行不行啊，行了咱们再抄行不？其实这个问题也简单，在 mvn 文件中有这么一个注释：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Maven私服之Nexus入门图文教程</title>
+      <link>http://localhost:1313/posts/2016-01-31-maven%E7%A7%81%E6%9C%8D%E4%B9%8Bnexus%E5%9B%BE%E6%96%87%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</link>
+      <pubDate>Sun, 31 Jan 2016 14:03:25 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-01-31-maven%E7%A7%81%E6%9C%8D%E4%B9%8Bnexus%E5%9B%BE%E6%96%87%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</guid>
+      <description>&lt;p&gt;老夫相信看到这篇文章的人一定已经知道maven和nexus分别是什么东西了，所以就不多做介绍了，下面直接从下载安装开始讲。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;下载安装&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;大家可以直接从这个链接&lt;a href=&#34;http://www.sonatype.org/nexus/go/&#34; target=&#34;_blank&#34; title=&#34;nexus下载地址&#34;&gt;&lt;a href=&#34;http://www.sonatype.org/nexus/go/&#34;&gt;http://www.sonatype.org/nexus/go/&lt;/a&gt;&lt;/a&gt;下载系统，下载完成之后解压到系统的任何文件夹下就可以了，老夫下载是：nexus-2.8.1-01，然后可就是安装了。&lt;br&gt;
+解压一路进到nexus-2.8.1-01/bin/jsw。然后选择适合自己的系统的文件夹进去，老夫的电脑是win32，所以进去之后是这个样子&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/1.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/1-300x87.png&#34; alt=&#34;1&#34; width=&#34;300&#34; height=&#34;87&#34; class=&#34;alignnone size-medium wp-image-242&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;然后用管理员身份先运行install-nexus.bat安装服务，然后运行console-nexus.bat，等起来之后直接在浏览器中输入：http://localhost:8081/nexus，我们看到下图就是成功了，忘了是不是需要安装服务：wrapper了，大家试一试就知道了。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/2.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/2-300x65.png&#34; alt=&#34;2&#34; width=&#34;300&#34; height=&#34;65&#34; class=&#34;alignnone size-medium wp-image-243&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;配置nexus&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;要管理Nexus，你首先需要以管理员身份登陆，点击界面右上角的login，输入默认的登录名和密码：admin/admin123，登陆成功后，你会看到左边的导航栏增加了很多内容，变成了下面这个样子&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/3.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/3-300x92.png&#34; alt=&#34;3&#34; width=&#34;300&#34; height=&#34;92&#34; class=&#34;alignnone size-medium wp-image-244&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这里，可以管理仓库，配置Nexus系统，管理任务，管理用户，角色，权限，查看系统的RSS源，管理及查看系统日志，等等。你会看到Nexus的功能十分丰富和强大，本文，老夫只介绍一些最基本的管理和操作。&lt;/p&gt;
+&lt;p&gt;因为是老夫习惯于让大伙看了这篇文章就知道怎么做，所以这里多内容咱就不说了，直接上配置，点击左边Administration菜单下面的Repositories，找到右边仓库列表中的三个仓库Apache Snapshots，Codehaus Snapshots和Maven Central，然后再没有仓库的configuration下把Download Remote Indexes修改为true。如下图：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/4.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/4-300x99.png&#34; alt=&#34;4&#34; width=&#34;300&#34; height=&#34;99&#34; class=&#34;alignnone size-medium wp-image-245&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;然后在Apache Snapshots，Codehaus Snapshots和Maven Central这三个仓库上分别右键，选择Repari Index，这样Nexus就会去下载远程的索引文件。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/5.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2016/01/5-300x113.png&#34; alt=&#34;5&#34; width=&#34;300&#34; height=&#34;113&#34; class=&#34;alignnone size-medium wp-image-246&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这样设置以后, Nexus会自动从远程中央仓库下载索引文件, 为了检验索引文件自动下载是否生效,可以切换到Browse Index看看是否生成了这些索引文件。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;添加一个代理仓库&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;加入我们想要代理Sonatype的公共仓库，其地址为：http://repository.sonatype.org/content/groups/public/。步骤如下，在Repositories面板的上方，点击Add，然后选择Proxy Repository，在下方的配置部分，我们填写如下的信息：Repository ID – sonatype；Repository Name – Sonatype Repository；Remote Storage Location – &lt;a href=&#34;http://repository.sonatype.org/content/groups/public/&#34;&gt;http://repository.sonatype.org/content/groups/public/&lt;/a&gt;。其余的保持默认值，需要注意的是Repository Policy，我们不要代理snapshot构件，至于原因老夫相信读者应该已经很清楚了，然后点击Save。因为比较简单就不上图了。&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;管理宿主仓库&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Nexus预定义了3个本地仓库，分别为Releases，Snapshots，和3rd Party。这三个仓库都有各自明确的目的。Releases用于部署我们自己的release构件，Snapshots用于部署我们自己的snapshot构件，而3rd Party用于部署第三方构件，有些构件如Oracle的JDBC驱动，我们不能从公共仓库下载到，我们就需要将其部署到自己的仓库中。&lt;br&gt;
+当然你也可以创建自己的本地仓库，步骤和创建代理仓库类似，点击Repository面板上方的Add按钮，然后选择Hosted Repository，然后在下方的配置面板中输入id和name，注意这里我们不再需要填写远程仓库地址，Repository Type则为不可修改的hosted，而关于Repository Policy，你可以根据自己的需要选择Release或者Snapshot。&lt;/p&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;管理Maven仓库组&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Nexus 中仓库组的概念是Maven没有的，在Maven看来，不管你是hosted也好，proxy也好，或者group也好，对我都是一样的，我只管根据 groupId，artifactId，version等信息向你要构件。为了方便Maven的配置，Nexus能够将多个仓库，hosted或者 proxy合并成一个group，这样，Maven只需要依赖于一个group，便能使用所有该group包含的仓库的内容。&lt;br&gt;
+最新neuxs默认自带了一个名为“Public Repositories”组，点击该组可以对他保护的仓库进行调整，把刚才建立的仓库Sonatype Repository加入其中，这样就不需要再在maven中明确指定仓库的地址了。同时创建一个Group ID为public-snapshots、Group Name为Public Snapshots Repositories的组，把Apache Snapshots、Codehaus Snapshots、Snapshots和Sonatype Repository也加入其中。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>maven打包dubbo接口之最佳实践</title>
+      <link>http://localhost:1313/posts/2015-12-20-maven%E6%89%93%E5%8C%85%E4%B9%8Bdubbo%E6%8E%A5%E5%8F%A3%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</link>
+      <pubDate>Sun, 20 Dec 2015 13:56:50 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-12-20-maven%E6%89%93%E5%8C%85%E4%B9%8Bdubbo%E6%8E%A5%E5%8F%A3%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</guid>
+      <description>&lt;p&gt;之前刚开始学习dubbo的时候，曾写过一个入门的&lt;a href=&#34;https://www.bridgeli.cn/archives/196&#34; title=&#34;Dubbo和zookeeper入门实例&#34;&gt;小例子&lt;/a&gt;，当时生产者也是用tomcat去跑的，其实dubbo只需要提供service层接口就好了，并不需要和http相关的东西，所以其实并不需要用tomcat去跑，我们完全打成其他的包直接去跑，这样dubbo接口也不会tomcat性能的限制，而打包可以说是maven最擅长的事情之一，今天就记录一下我们公司的实际项目中使用maven-assembly-plugin打包的方法。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;首先在pom文件中，添加maven-assembly-plugin插件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;plugin&amp;gt;  
+&amp;lt;artifactId&amp;gt;maven-assembly-plugin&amp;lt;/artifactId&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;descriptor&amp;gt;src/main/assembly/assembly.xml&amp;lt;/descriptor&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;executions&amp;gt;  
+&amp;lt;execution&amp;gt;  
+&amp;lt;id&amp;gt;make-assembly&amp;lt;/id&amp;gt;  
+&amp;lt;phase&amp;gt;package&amp;lt;/phase&amp;gt;  
+&amp;lt;goals&amp;gt;  
+&amp;lt;goal&amp;gt;single &amp;lt;/goal&amp;gt;  
+&amp;lt;/goals&amp;gt;  
+&amp;lt;/execution&amp;gt;  
+&amp;lt;/executions&amp;gt;  
+&amp;lt;/plugin&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在该插件的第四行我们指定了一个assembly.xml文件，下面我们就看看assembly.xml的内容&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;assembly.xml文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;assembly&amp;gt;  
+&amp;lt;id&amp;gt;assembly&amp;lt;/id&amp;gt;  
+&amp;lt;formats&amp;gt;  
+&amp;lt;format&amp;gt;tar.gz&amp;lt;/format&amp;gt;  
+&amp;lt;/formats&amp;gt;  
+&amp;lt;includeBaseDirectory&amp;gt;true&amp;lt;/includeBaseDirectory&amp;gt;  
+&amp;lt;fileSets&amp;gt;  
+&amp;lt;fileSet&amp;gt;  
+&amp;lt;outputDirectory&amp;gt;/&amp;lt;/outputDirectory&amp;gt;  
+&amp;lt;includes&amp;gt;  
+&amp;lt;include&amp;gt;README.txt&amp;lt;/include&amp;gt;  
+&amp;lt;/includes&amp;gt;  
+&amp;lt;/fileSet&amp;gt;  
+&amp;lt;fileSet&amp;gt;  
+&amp;lt;directory&amp;gt;src/main/scripts&amp;lt;/directory&amp;gt;  
+&amp;lt;outputDirectory&amp;gt;/bin&amp;lt;/outputDirectory&amp;gt;  
+&amp;lt;/fileSet&amp;gt;  
+&amp;lt;/fileSets&amp;gt;  
+&amp;lt;dependencySets&amp;gt;  
+&amp;lt;dependencySet&amp;gt;  
+&amp;lt;useProjectArtifact&amp;gt;true&amp;lt;/useProjectArtifact&amp;gt;  
+&amp;lt;outputDirectory&amp;gt;lib&amp;lt;/outputDirectory&amp;gt;  
+&amp;lt;/dependencySet&amp;gt;  
+&amp;lt;/dependencySets&amp;gt;  
+&amp;lt;/assembly&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;该文件的第四行中的tar.gz指的就是打包的文件格式，对于Linux用户，对这个格式一定非常熟悉，当然大家也可以指定为zip格式，另外在该文件的第十五行，指定了一个scripts文件夹，那么这里面放的又是什么呢？我们知道打包之后的系统我们要跑起来才能用，那么这里面放的就是对我们的系统操作的一些脚本，打包之后，我们的系统都是一些jar文件，放在了倒数第四行指定的lib文件中，而这些脚本则放在了和lib同级的bin文件中，下面就让我们一一看看scripts中几个文件的内容&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;scripts文件夹&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;①. start.bat&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+@echo off &amp;amp; setlocal enabledelayedexpansion
+
+set LIB_JARS=&amp;#34;&amp;#34;  
+cd ..lib  
+for %%i in (*) do set LIB_JARS=!LIB_JARS!;..lib%%i  
+cd ..bin
+
+if &amp;#34;&amp;#34;%1&amp;#34;&amp;#34; == &amp;#34;&amp;#34;debug&amp;#34;&amp;#34; goto debug  
+if &amp;#34;&amp;#34;%1&amp;#34;&amp;#34; == &amp;#34;&amp;#34;jmx&amp;#34;&amp;#34; goto jmx
+
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main  
+goto end
+
+:debug  
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main  
+goto end
+
+:jmx  
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -classpath ..conf;%LIB_JARS% com.alibaba.dubbo.container.Main
+
+:end  
+pause
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;②. start.sh&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Maven项目如何生成测试报告</title>
+      <link>http://localhost:1313/posts/2015-04-12-maven%E9%A1%B9%E7%9B%AE%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/</link>
+      <pubDate>Sun, 12 Apr 2015 14:22:02 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-04-12-maven%E9%A1%B9%E7%9B%AE%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/</guid>
+      <description>&lt;p&gt;刚工作的时候，当时公司对代码质量要求比较高，每一个人的代码都要写junit，而且要生成测试报告，项目经理要看行覆盖率和分支覆盖率，记得当时的项目是用ant编译的，生成测试报告那个复杂啊，不会写，现在用了maven，发现这在maven下根本不是事，只需要在pom.xml中配置一个插件即可，废话不多说，直接上代码：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;build&amp;gt;
+    &amp;lt;finalName&amp;gt;Demo&amp;lt;/finalName&amp;gt;
+
+    &amp;lt;plugins&amp;gt;
+        &amp;lt;plugin&amp;gt;
+            &amp;lt;groupId&amp;gt;org.codehaus.mojo&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;cobertura-maven-plugin&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;2.5.2&amp;lt;/version&amp;gt;
+            &amp;lt;configuration&amp;gt;
+                &amp;lt;encoding&amp;gt;UTF-8&amp;lt;/encoding&amp;gt;
+                &amp;lt;formats&amp;gt;
+                    &amp;lt;format&amp;gt;html&amp;lt;/format&amp;gt;
+                    &amp;lt;format&amp;gt;xml&amp;lt;/format&amp;gt;
+                &amp;lt;/formats&amp;gt;
+            &amp;lt;/configuration&amp;gt;
+        &amp;lt;/plugin&amp;gt;
+    &amp;lt;/plugins&amp;gt;
+
+&amp;lt;/build&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后打开cmd切到pom.xml所在文件夹，运行命令：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;mvn cobertura:cobertura  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;即可，然后我们打开{project}targetsitecoberuraindex.html就可以看到测试报告了，这个测试报告里面不仅有行覆盖率还有分支覆盖率，例如：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/04/QQ20150412205334.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/04/QQ20150412205334-300x69.png&#34; alt=&#34;20150412205334&#34; width=&#34;300&#34; height=&#34;69&#34; class=&#34;alignnone size-medium wp-image-161&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;相信不用我解释，看这篇文章的人一定能看懂是什么意思。&lt;br&gt;
+下面是一些cobertura插件的常用命令&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;mvn cobertura:help 查看cobertura插件的帮助  
+mvn cobertura:clean 清空cobertura插件运行结果  
+mvn cobertura:check 运行cobertura的检查任务  
+mvn cobertura:cobertura 运行cobertura的检查任务并生成报表，报表生成在target/site/cobertura目录下  
+cobertura:dump-datafile Cobertura Datafile Dump Mojo  
+mvn cobertura:instrument Instrument the compiled classes  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;至于有什么效果，请大家自己写一个例子，跑一下就可以了。&lt;/p&gt;
+&lt;p&gt;最后多说一点，关于maven的插件其实非常多，用法也相对都比较简单，网上的资料也比较多，今天这篇文章算是抛砖引玉，所以推荐大家今后尽量用maven编译项目&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>怎么在maven项目中引用本地Java类库</title>
+      <link>http://localhost:1313/posts/2014-10-14-%E6%80%8E%E4%B9%88%E5%9C%A8maven%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%BC%95%E7%94%A8%E6%9C%AC%E5%9C%B0jar/</link>
+      <pubDate>Tue, 14 Oct 2014 10:16:26 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2014-10-14-%E6%80%8E%E4%B9%88%E5%9C%A8maven%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%BC%95%E7%94%A8%E6%9C%AC%E5%9C%B0jar/</guid>
+      <description>&lt;p&gt;去年实习的时候听说过maven，听说功能特别强大，后来就抽时间自学了一下，尤其感叹于其自动引入jar包的功能，真是太棒了，终于某种程度上把程序猿从classnotfoundexception中解脱出来了，也一定程度上解决了jar包冲突以及版本的问题，但在这几天玩微信开发的时候遇到了一个问题：&lt;br&gt;
+我的微信后台是托管到SAE上的，但SAE官方处于安全考虑，把XStream中sun.misc.Unsafe类禁用掉了，这就导致了一个问题XStream不能用了，CSDN知名博主刘峰老师发现了这个问题，于是柳峰老师修改了一下这个类库，其实很简单也即在XStream官方网站http://xstream.codehaus.org/上找到了xstream-1.3.1.jar对应的源码，导入到Eclipse，然后借助Eclipse强大的搜索功能，很快找到了使用sun.misc.Unsafe的类，我尝试将这些类删除或者修改它们的实现，避免使用sun.misc.Unsafe类，最终得到了一个新的jar包，将其命名为xstream-1.3.1-sae-liufeng.jar，用它替换以前项目中使用的xstream-1.3.1.jar，最终项目再次顺利地运行在SAE上，这个方法虽简单粗暴，但确实有效，但是也给我带来了一个问题，我的项目是maven搭建的，那么我怎么把这个jar引入到我的项目中呢？&lt;br&gt;
+经过查询资料原来我们可以把本地的jar文件安装到本地repository中，这就完美解决这个问题了，那么怎么把本地的jar文件安装到本地repository中呢？强大的maven当然给我们提供了这个方法：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;mvn install:install-file -Dfile=xstream-1.3.1-sae-liufeng.jar -DgroupId=cn.bridgeli -DartifactId=xstream-bridgeli -Dversion=1.3.1 -Dpackaging=jar -DgeneratePom=true  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;相信这条命令不用我解释了，看这篇文章的人一定可以自己看懂的。需要说明的是：执行完这条命令，我们本地的jar就被安装到本地库了文件夹的结构是：cnbridgelixstream-bridgeli1.3.1，即DgroupId + DartifactId + Dversion，文件的名字是：xstream-bridgeli-1.3.1.jar，即：DartifactId + Dversion + . + Dpackaging，然后只需要在我们的项目中引用就可以了，引用的代码：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;  
+  &amp;lt;groupId&amp;gt;cn.bridgeli&amp;lt;/groupId&amp;gt;  
+  &amp;lt;artifactId&amp;gt;xstream-bridgeli&amp;lt;/artifactId&amp;gt;  
+  &amp;lt;version&amp;gt;1.3.1&amp;lt;/version&amp;gt;  
+&amp;lt;/dependency&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其中groupId、artifactId、version分别于刚才的命令相对应。&lt;/p&gt;
+&lt;p&gt;参考：http://blog.csdn.net/youhaodeyi/article/details/1729116&lt;br&gt;
+注：我为什么没有采取方法参考资料中的方法二，原因有三：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;这个jar并没有加入到本地库中，不利于我们对自己资料的管理&lt;/li&gt;
+&lt;li&gt;scope被设置成system并不被maven官方所推荐&lt;/li&gt;
+&lt;li&gt;据有网友说scope被设置成system，那么这个类库并不会被打到war中，这个我没有测试&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    <item>
+      <title>Maven Missing artifact解决之道</title>
+      <link>http://localhost:1313/posts/2014-09-03-maven-missing-artifact%E8%A7%A3%E5%86%B3%E4%B9%8B%E9%81%93/</link>
+      <pubDate>Wed, 03 Sep 2014 13:22:21 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2014-09-03-maven-missing-artifact%E8%A7%A3%E5%86%B3%E4%B9%8B%E9%81%93/</guid>
+      <description>&lt;p&gt;前几天没事用maven重构自己的微信公众平台开发的代码，当下载一个Jar包时，遇到一个问题：Missing artifact net.sf.json-lib:json-lib:jar:2.2.3，去仓库看，这个Jar包确实没下载下来，因为自己的maven是半路里出家的（自己完全在网上找的一些乱七八糟的资源自学的），所以不知道咋回事，于是就去网上找解决的办法，也许是没找对地方，死活就是解决不了（为避免误导大家，就不列举这些方法了），问同事怎么办，一同事说应该是你下载的时候的网断了之类的导致资源下载了一半，然后网再连上，就不接着下载了，感觉似乎挺有道理，删了还是不行，那是不是网站被和谐了，采用VPN结果还是不行，最后仔细观察，终于发现了一下端倪：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2014/09/maven.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; class=&#34;alignnone size-medium wp-image-47&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2014/09/maven-300x65.png&#34; alt=&#34;maven&#34; width=&#34;300&#34; height=&#34;65&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;也就是说&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;dependency&amp;gt;
+  &amp;lt;groupId&amp;gt;net.sf.json-lib&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;json-lib&amp;lt;/artifactId&amp;gt;
+  &amp;lt;version&amp;gt;2.2.3&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;对应多个Jar，maven不知道下载那个Jar，所以就报错了，正确的解决方法是加一个标签：&lt;classifier&gt;，即变成：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;dependency&amp;gt;
+  &amp;lt;groupId&amp;gt;net.sf.json-lib&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;json-lib&amp;lt;/artifactId&amp;gt;
+  &amp;lt;version&amp;gt;2.2.3&amp;lt;/version&amp;gt;
+  &amp;lt;classifier&amp;gt;jdk13&amp;lt;/classifier&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;就没问题了。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

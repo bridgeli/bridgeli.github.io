@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Life Cycle on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/life-cycle/</link>
+    <description>Recent content in Life Cycle on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 04 Jan 2015 15:08:13 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/life-cycle/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Activity之生命周期</title>
+      <link>http://localhost:1313/posts/2015-01-04-activity%E4%B9%8B%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</link>
+      <pubDate>Sun, 04 Jan 2015 15:08:13 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2015-01-04-activity%E4%B9%8B%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</guid>
+      <description>&lt;p&gt;这几天没事，自学了一下Android的开发，今天记录一下activity的生命周期，在写之前，我们先看一下，Google官方的文档，窃以为这个说的已经比较清楚明白了：&lt;br&gt;
+&lt;a href=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/01/activity_lifecycle.png&#34;&gt;&lt;img loading=&#34;lazy&#34; decoding=&#34;async&#34; src=&#34;https://www.bridgeli.cn/wp-content/uploads/2015/01/activity_lifecycle-232x300.png&#34; alt=&#34;activity_lifecycle&#34; width=&#34;232&#34; height=&#34;300&#34; class=&#34;alignnone size-medium wp-image-133&#34; /&gt;&lt;/a&gt;&lt;br&gt;
+从这张图，我们清楚无误的看到，activity的生命周期方法执行顺序为：onCreate()–&amp;gt;onStart()–&amp;gt;onResume()–&amp;gt;onPause()–&amp;gt;onStop()–&amp;gt;onRestart()–&amp;gt;ondestory()&lt;br&gt;
+但是口说无凭，我们从一个例子中说明问题：&lt;br&gt;
+第一个activity：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;package cn.bridgeli.lifecycle;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+public class MainActivity extends Activity {
+
+    private Button button = null;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        button = (Button) findViewById(R.id.button);
+        ButtonListener buttonListener = new ButtonListener();
+        button.setOnClickListener(buttonListener);
+
+        System.out.println(&amp;#34;First activity onCreate&amp;#34;);
+    }
+
+    class ButtonListener implements OnClickListener{
+
+        @Override
+        public void onClick(View arg0) {
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, SecondActivity.class);
+            startActivity(intent);
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println(&amp;#34;First activity onDestroy&amp;#34;);
+    }
+
+    @Override
+    protected void onPause() {
+        System.out.println(&amp;#34;First activity onPause&amp;#34;);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println(&amp;#34;First activity onResume&amp;#34;);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println(&amp;#34;First activity onStart&amp;#34;);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println(&amp;#34;First activity onStop&amp;#34;);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        System.out.println(&amp;#34;First activity onRestart&amp;#34;);
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;第二个activity：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

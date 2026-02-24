@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Redis on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/categories/redis/</link>
+    <description>Recent content in Redis on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 30 May 2021 13:09:57 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/redis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>位图在 12306 中的应用</title>
+      <link>http://localhost:1313/posts/2021-05-30-%E4%BD%8D%E5%9B%BE%E5%9C%A8-12306-%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/</link>
+      <pubDate>Sun, 30 May 2021 13:09:57 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2021-05-30-%E4%BD%8D%E5%9B%BE%E5%9C%A8-12306-%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/</guid>
+      <description>&lt;p&gt;记得 12306 刚上线的时候，就在想 12306 是如何卖票，一趟车从北京到上海，中间经过了 N 个站，大家可以买其中的任意两站，而因为卖出了一个一张票，从北京到上海很多站的车票都会变动，当时就感觉这个算法太复杂了，一般人还真写不出来，由此虽然很多人都在吐槽 12306，但是我却一直任务 12306 特别牛，很多人吐槽的大学生水平肯定是做不出来的，前一段时间，听马士兵教育的周志磊老师讲课，提出 redis 中的位图解决，设计的很巧妙，突然感觉豁然开朗，如果你也有这个问题，不妨参考一下。至于什么是位图，就不多说了，如果不知道，可以简单搜索。&lt;/p&gt;
+&lt;p&gt;首先说问题，我们假设一趟车是从 A 站到 B 站，中间有 C、D、E、F、G 站，这趟车有 1、2、3、5、6 个座位，任何一个人从可以买任意一趟车的任一个座，当然被别人买过了就不行，我们都坐过车，所以规则就不多说了，直接上算法。&lt;/p&gt;
+&lt;p&gt;我们设置一个 key，例如 keyA 就代表，这趟车在 A 站的情况，所以默认情况下 keyA = 000000；同理其他站也是这个情况。假设此时有一个人甲买了从 A 站到 E 站的票 2 号靠，也就是 A、C、D 三站他是在 2 号座位上的，E 站就下车了，座位空出来了，所以此时 keyA、keyC、keyD 应该是 010000，其余还都是 000000，于此同时又来了一个人乙，他要买从 C 站到 F 站的票，那么他可以买哪些票呢？很明显除了 2 都可以买（被甲从 A 站到 E 站占了），我们怎么得到的这个结果呢？我们可以让 keyC、keyD、keyE，也就是乙要做的这三站的 key，按位做或运算，我们就可以得出结果：010000，第二位是 1，就代表座上有人我们不能买，其余的都可以买，假设他买了 4 号票，那么此时 keyA 是 010000，keyC、keyD 是 010100，keyE 是 000100，keyF、keyG、keyB 以为是 000000，所以假设此时来了一个人丙要买从 D 站到 B 站的票，我们只需要 keyD、keyE、keyF、keyG 按位或即可，得出的结果是 010100，也就是只有 2 号位（被甲在 D 到 E 的时候占了）和 4 号位（被乙从 D 站到 E 站的时候占了）不能买，其余的座位是可以随便买的，然后把相应的座位从出发站到终到站前面的一站标记成 1 即可，这样我们可以发现，我们只需要一个按位或运算，即可实现动态管理这趟车的车票，非常简单。而且位图八位才一个字节，一趟车一个车厢 118 座，按 16 个车厢算才 1888 位，236 个字节，占用内存非常少。而且 redis 原生支持位图或运算，速度也非常快。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Redis GeoHash 的一个小示例</title>
+      <link>http://localhost:1313/posts/2019-05-19-redis-geohash-%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%A4%BA%E4%BE%8B/</link>
+      <pubDate>Sun, 19 May 2019 09:38:46 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2019-05-19-redis-geohash-%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%A4%BA%E4%BE%8B/</guid>
+      <description>&lt;p&gt;上周产品经理提了一个类似于 LBS 的应用，第一时间想到了忘记了之前什么时候看 Redis 的 API，发现 Redis 自 3.2 版本之后，新增了一类关于地理位置相关的 API，于是拿来测试一下，发现特别好用，写一个小例子作为笔记。&lt;/p&gt;
+&lt;p&gt;首先需要说明的是，由于我们公司的 JDK 的版本是 1.7，所以我采用的 spring-data-redis 的版本是：1.8.20.RELEASE，最新二点几的版本已经不支持 JDK 1.7，而一点几和二点几的版本的 API 有略微的差异（下面会说明，还有一点点我的小感悟），废话不多说，直接看例子：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+@Override  
+public Long geoAdd(String key, List&amp;lt;Entity&amp;gt; entities) {  
+redisTemplate.delete(key);  
+GeoOperations geoOperations = redisTemplate.opsForGeo();  
+Map&amp;lt;String, Point&amp;gt; map = new HashMap&amp;lt;&amp;gt;();  
+Point point = null;  
+for (Entity entity : entities) {  
+point = new Point(entity.getLongitude(), entity.getLatitude());  
+map.put(gson.toJson(entity), point);  
+}
+
+Long add = geoOperations.geoAdd(key, map);
+
+return add;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参数就两个很简单，一个是 key，一个是数据集，我们将在这个集合中找出符合条件的数据，需要说明的是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;第一行我先调用了一个 delete 方法，是将上次放进去的数据删除，因为这个命令是 add，也就是新增，但是 redis 并没有提供直接删除这个 key 的命令（有一个 remove 的方法，但是需要传入删除哪些数据，也就是不能只给一个 key，把这个 key 对应的数据都删除，个人感觉不太好用），当然你也可以在计算后取得相应的数据之后删除，个人感觉都一样，不要忘记清理数据就行，另一个方法就是设置过期时间，也都行；&lt;/li&gt;
+&lt;li&gt;为什么要清理数据？因为这个 add，不同的情况，放进去的数据应该不同的，如果 entities 已经发生变更，而一直 add，那么数据将会乱掉，所以先把之前的数据删掉再说；&lt;/li&gt;
+&lt;li&gt;我个人采用的是把数据放到了 Map 中，其中 key 是对象序列化之后的 json 串，目的是为了下面找到对应的数据之后，直接反序列化成对象进行返回，当然也可以采用其他的方案，还有就是 add 还有一些其他的 API，这个大家可以自己看文档，选择合适的就行;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;数据放进去之后就是计算了，我们的需求就是算一个人旁边几公里内有多少符合条件的数据，代码如下：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Redis实现分布式锁</title>
+      <link>http://localhost:1313/posts/2017-01-15-redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</link>
+      <pubDate>Sun, 15 Jan 2017 12:05:06 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2017-01-15-redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</guid>
+      <description>&lt;p&gt;大家都知道Redis是NoSQL的一种，目前在互联网公司中在作为缓存广泛的使用者，其实利用Redis的setnx还可以快速实现一个分布式锁，公司的业务就需要使用分布式锁保证数据的唯一性，经检索在网上发现已经有活雷锋分享了一套，本着不在重新发明轮子的想法，测试了一下好像没有问题，几乎不用对原代码进行修改，就能使用，下面就分享在这里，供需要的朋友参考。原文里面还有对实现的原理进行解释，所以本文就不再赘述，详情请通过参考资料进行访问。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+package cn.bridgeli.distributedlock;
+
+import java.util.UUID;  
+import java.util.concurrent.CountDownLatch;  
+import java.util.concurrent.ExecutorService;  
+import java.util.concurrent.Executors;  
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.slf4j.Logger;  
+import org.slf4j.LoggerFactory;
+
+import redis.clients.jedis.Jedis;  
+import redis.clients.jedis.JedisPool;  
+import redis.clients.jedis.JedisPoolConfig;  
+import redis.clients.jedis.Transaction;
+
+public class RedisDistributedLock {
+
+private static final Logger LOG = LoggerFactory.getLogger(RedisDistributedLock.class);
+
+private static final String redisHost = &amp;#34;127.0.0.1&amp;#34;;
+
+private static final int port = 6381;
+
+private static JedisPoolConfig config;
+
+private static JedisPool pool;
+
+private static ExecutorService service;
+
+private static int ThLeng = 10;
+
+private static CountDownLatch latch;
+
+private static AtomicInteger Countor = new AtomicInteger(0);
+
+private static int count = 0;
+
+private static String LockName = &amp;#34;mylock_test10&amp;#34;;
+
+static {  
+// 利用Redis连接池，保证多个线程利用多个连接，充分模拟并发性  
+config = new JedisPoolConfig();  
+config.setMaxIdle(10);  
+config.setMaxWaitMillis(1000);  
+config.setMaxTotal(30);  
+pool = new JedisPool(config, redisHost, port);  
+// 利用ExecutorService 管理线程  
+service = Executors.newFixedThreadPool(ThLeng);  
+// CountDownLatch保证主线程在全部线程结束之后退出  
+latch = new CountDownLatch(ThLeng);  
+}
+
+/**  
+* 获取锁 tips：生成一个UUID，作为Key的标识，不断轮询lockName，直到set成功，表示成功获取锁。  
+* 其他的线程在set此lockName时被阻塞直到超时。  
+*  
+* @param pool  
+* @param lockName  
+* @param timeouts  
+* @return 锁标志  
+*/  
+public static String getLock(JedisPool pool, String lockName, long timeouts) {  
+Jedis client = pool.getResource();  
+try {  
+String value = UUID.randomUUID().toString();  
+long timeWait = System.currentTimeMillis() + timeouts * 1000;  
+while (System.currentTimeMillis() &amp;lt; timeWait) {  
+if (client.setnx(lockName, value) == 1) {  
+// 防止key卡死，一直不释放锁，所以1800s过期  
+client.expire(lockName, 1800);  
+LOG.info(&amp;#34;lock geted&amp;#34;);  
+return value;  
+}  
+try {  
+Thread.sleep(1000);  
+} catch (InterruptedException e) {  
+e.printStackTrace();  
+}  
+}  
+LOG.info(&amp;#34;get lock timeouts&amp;#34;);  
+} finally {  
+// pool.returnBrokenResource(client);  
+pool.returnResource(client);  
+}  
+return null;  
+}
+
+/**  
+* 释放锁 tips：对lockName做watch，开启一个事务，删除以LockName为key的锁，删除后，此锁对于其他线程为可争抢的。  
+*  
+* @param pool  
+* @param lockName  
+* @param value  
+*/  
+public static void relaseLock(JedisPool pool, String lockName, String value) {  
+Jedis client = pool.getResource();  
+try {  
+while (true) {  
+client.watch(lockName);  
+if (client.get(lockName).equals(value)) {  
+Transaction tx = client.multi();  
+tx.del(lockName);  
+tx.exec();  
+return;  
+}  
+client.unwatch();  
+}  
+} finally {  
+// pool.returnBrokenResource(client);  
+pool.returnResource(client);  
+}  
+}
+
+public static void main(String args[]) {  
+for (int i = 0; i &amp;lt; ThLeng; i++) {  
+String tName = &amp;#34;thread-&amp;#34; + i;  
+Thread t = new Thread(new SubAddThread(pool, tName));  
+LOG.info(tName + &amp;#34;inited&amp;amp;#8230;&amp;#34;);  
+service.submit(t);  
+}  
+service.shutdown();  
+try {  
+latch.await();  
+} catch (InterruptedException e) {  
+e.printStackTrace();  
+}  
+LOG.info(Countor.get() + &amp;#34;&amp;#34;);  
+LOG.info(count + &amp;#34;&amp;#34;);  
+}
+
+public static class SubAddThread implements Runnable {
+
+private String name;
+
+private JedisPool pool;
+
+public SubAddThread(JedisPool pool, String uname) {  
+this.pool = pool;  
+this.name = uname;  
+}
+
+@Override  
+public void run() {  
+for (int i = 0; i &amp;lt; 100; i++) {  
+LOG.info(name + &amp;#34; starting&amp;amp;#8230;&amp;#34;);  
+String valuse = getLock(pool, LockName, 50);  
+LOG.info(name + &amp;#34; get Lock &amp;#34; + valuse);  
+count++;  
+relaseLock(pool, LockName, valuse);  
+Countor.incrementAndGet();  
+LOG.info(name + &amp;#34; &amp;#34; + count);  
+}  
+latch.countDown();  
+LOG.info(name + &amp;#34; complated&amp;#34;);  
+}
+
+}  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参考资料：http://www.jianshu.com/p/c1f5d26cb1c9&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Redis 3.0入门二之集群搭建和使用</title>
+      <link>http://localhost:1313/posts/2016-09-16-redis-3-0%E5%85%A5%E9%97%A8%E4%BA%8C%E4%B9%8B%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E5%92%8C%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Fri, 16 Sep 2016 21:47:04 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-09-16-redis-3-0%E5%85%A5%E9%97%A8%E4%BA%8C%E4%B9%8B%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E5%92%8C%E4%BD%BF%E7%94%A8/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://www.bridgeli.cn/archives/309&#34; title=&#34;Redis 3.0入门一之主从搭建&#34;&gt;上一篇文章&lt;/a&gt;讲了redis的主从搭建，主从一般只能解决我们读写分离的问题，可以增加我们的系统的负载能力，但是并不能解决单点问题，大家应该知道在互联网公司各个服务肯定不能出现单点问题，所以这一节就记录一下如果让我们的系统更加高可用。&lt;/p&gt;
+&lt;p&gt;一、集群搭建&lt;/p&gt;
+&lt;p&gt;需要先说明的是，集群搭建需要至少6个节点：3主3从(因为没有那么多机器，所以就在一台上搞了)&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建文件夹redis-cluster，然后在其下面分别创建6个文件夹，存放6个实例&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;mkdir -p /usr/local/redis-cluster  
+mkdir 7001;mkdir 7002;mkdir 7003;mkdir 7004;mkdir 7005;mkdir 7006
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;把之前redis.conf配置文件分别copy到700*下，修改各个实例的配置文件的内容，如下：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+①. daemonize yes  
+②. port 700*（一台机器端口号肯定不能相同，就和文件夹一样吧）  
+③. bind ip（和当前机器的ip地址绑定）  
+④. dir /usr/local/redis-cluster/700*/（文件存储位置应该不一样吧，原因都知道）  
+⑤. cluster-enabled yes  
+⑥. cluster-config-flie nodes-700\*.conf（700\*就和端口一样吧）  
+⑦. cluster-node-timeout 5000  
+⑧. appendonly yes
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;安装ruby&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+yum install ruby  
+yum install rubygems  
+gem install redis
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;启动各个实例&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+/usr/local/redis/bin/redis-server /usr/local/redis-cluster/700*/redis.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;创建集群&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+cd /usr/local/redis-3.0.0-rc2/src  
+./redis-trib.rb create &amp;amp;#8211;replicas 1 ip:7001 ip:7002 ip:7003 ip:7004 ip:7005 ip:7006
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后看输出日志，会有一步需要输入yes，然后集群就创建完成了&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Redis 3.0入门一之主从搭建</title>
+      <link>http://localhost:1313/posts/2016-08-28-redis-3-0%E5%85%A5%E9%97%A8%E4%B8%80%E4%B9%8B%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Sun, 28 Aug 2016 21:40:02 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2016-08-28-redis-3-0%E5%85%A5%E9%97%A8%E4%B8%80%E4%B9%8B%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA/</guid>
+      <description>&lt;p&gt;周末没事看北京尚学堂之前的公开课视频，发现了白贺翔老师有一节课讲redis 3.0的视频教程，还不错，以下是学习笔记。&lt;/p&gt;
+&lt;p&gt;一、单机版搭建&lt;/p&gt;
+&lt;p&gt;首先是下载地址：http://redis.io/download，假设我们下载是redis-3.0.0-rc2.tar.gz&lt;br&gt;
+安装步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;把我们下载好的redis-3.0.0-rc2.tar.gz放到Linux的/usr/local文件夹下&lt;/li&gt;
+&lt;li&gt;解压tar -xzvf redis-3.0.0-rc2.tar.gz -C /usr/local/&lt;/li&gt;
+&lt;li&gt;进入到redis-3.0.0-rc2目录下，进项make&lt;/li&gt;
+&lt;li&gt;进入到src下进行安装make install，验证（ll查看发现src下的目录，有redis-server、redis-cli即可）&lt;/li&gt;
+&lt;li&gt;建立两个文件夹存放redis命令和配置文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+mkdir -p /usr/local/redis/etc  
+mkdir -p /usr/local/redis/bin
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;把redis-3.0.0-rc2下的redis.conf移动到/usr/local/redis/etc下&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+mv redis.conf /usr/local/redis/etc
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;7&#34;&gt;
+&lt;li&gt;把redis-3.0.0-rc2/src里的mkreleasehdr.sh、redis-benchmark、redis-check-aof、redis-check-dump、redis-cli、redis-server文件移动到bin下，命令&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+mv mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-dump redis-cli redis-server /usr/local/redis/bin
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;8&#34;&gt;
+&lt;li&gt;启动并指定配置文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+/usr/local/redis/bin/redis-server /usr/local/redis/etc/redis.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;9&#34;&gt;
+&lt;li&gt;退出改为后台启动&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;退出就不说了，改为后台启动，编辑 /usr/local/redis/etc/redis.conf找到&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+daemonize no
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;改为&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+daemonize yes
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;10&#34;&gt;
+&lt;li&gt;修改持久化文件存放的位置，修改&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+dir ./
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;为&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+dir /usr/local/redis/data/
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;11&#34;&gt;
+&lt;li&gt;redis客户端的使用&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+/usr/local/redis/binredis-cli -h host -p port
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;12&#34;&gt;
+&lt;li&gt;设置密码&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;通过刚才的操作应该可以发现redis默认是没有密码的，这样很不安全，设置密码的方法是编辑/usr/local/redis/etc/redis.conf找到requirepass 这一行，设置&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+requirepass bridgeli
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样通过客户端进入的时候加一个参数 -a 跟上你的密码就好了&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Java | 分享技术带来的喜悦</title>
+<meta name="keywords" content="">
+<meta name="description" content="技术分享博客">
+<meta name="author" content="Bridge Li">
+<link rel="canonical" href="http://localhost:1313/categories/java/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/java/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/categories/java/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="分享技术带来的喜悦 (Alt + H)">分享技术带来的喜悦</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/categories/">Categories</a></div>
+  <h1>
+    Java
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Java Thread 同步
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>之前遇到一个问题，就是如何让线程同步，由于自己多线程的东西实在不懂，所以不知道怎么办，但感觉应该是一个很简单的东西，所以就从网上搜一下资料，原来如此简单，直接调用 join 方法就好了。写篇博客记录一下 join 的使用方法。
+作用 Thread类中的join方法的主要作用就是同步，它可以使得线程之间的并行执行变为串行执行。具体看代码：
+package cn.bridgeli.demo; public class ThreadTest { public static void main(String[] args) throws InterruptedException { ThreadJoinTest t1 = new ThreadJoinTest(&#34;bridgeli&#34;); ThreadJoinTest t2 = new ThreadJoinTest(&#34;liqiao&#34;); t1.start(); /** * join的意思是使得放弃当前线程的执行，并返回对应的线程，例如下面代码的意思就是： * 程序在main线程中调用t1线程的join方法，则main线程放弃cpu控制权，并返回t1线程继续执行直到线程t1执行完毕 * 所以结果是t1线程执行完后，才到主线程执行，相当于在main线程中同步t1线程，t1执行完了，main线程才有执行的机会 * * join方法可以传递参数，join(10000)表示main线程会等待t1线程10毫秒，10毫秒过去后， * main线程和t1线程之间执行顺序由串行执行变为普通的并行执行 */ t1.join(10000); t2.start(); } } package cn.bridgeli.demo; public class ThreadJoinTest extends Thread { public ThreadJoinTest(String name) { super(name); } @Override public void run() { for (int i = 0; i &lt; 100; i&#43;&#43;) { System.out.println(this.getName() &#43; &#34;:&#34; &#43; i); try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); } } } } 上面注释也大概说明了 join 方法的作用：在 主线程 中调用了 t1 线程的 join() 方法时，表示只有当 t1 线程执行完毕时，主线程 才能继续执行，也就是开始执行 t2。注意，join 方法其实也可以传递一个参数给它的，表示：如果 主线程 在 t1 执行 1000 毫秒之后，继续执行，也就是开启 t2 线程。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-05-12 13:33:53 +0000 +0000'>May 12, 2018</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>446 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to Java Thread 同步" href="http://localhost:1313/posts/2018-05-12-java-thread-%E5%90%8C%E6%AD%A5/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">介绍一个 Mybatis 插件：mybatis-generator-plugin
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在实际开发中，我们都是先建表，然后根据表生成对应的 Java 类，现在很流行的 ORMapping 框架是: Mybatis，所以我们需要生成 entity、mapper 和 xml，我们都知道有一个插件是：mybatis-generator，使用它就可以很方便的生成这些结构化的重复性基础性的代码，但是他有一个问题，生成的查询没有分页，所以很烦。然后我搜索了一些资料，重新封装了一下，重新命名为：mybatis-generator-plugin，具体源码放在了 GitHub 上：
+https://github.com/bridgeli/mybatis-generator-plugin 大家可以 clone 下来，deploy 到自己公司的私服，或者 install 到本地使用。具体就是在 pom 文件中。具体用法
+在 pom 文件中添加如下内容： &lt;properties&gt; &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt; &lt;/properties&gt; &lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.mybatis.generator&lt;/groupId&gt; &lt;artifactId&gt;mybatis-generator-maven-plugin&lt;/artifactId&gt; &lt;version&gt;1.3.5&lt;/version&gt; &lt;dependencies&gt; &lt;dependency&gt; &lt;groupId&gt;cn.bridgeli&lt;/groupId&gt; &lt;artifactId&gt;mybatis-generator-plugin&lt;/artifactId&gt; &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt; &lt;/dependency&gt; &lt;/dependencies&gt; &lt;configuration&gt; &lt;verbose&gt;true&lt;/verbose&gt; &lt;overwrite&gt;true&lt;/overwrite&gt; &lt;configurationFile&gt;src/main/resources/generatorConfig.xml&lt;/configurationFile&gt; &lt;/configuration&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt; 其中：configurationFile 配置 generatorConfig.xml 文件的位置，我们生成的对应的文件，都是根据这个文件来的。所以第二步就是：
+在对应的文件下添加该文件，它的模板如下： &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;!DOCTYPE generatorConfiguration PUBLIC &#34;-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN&#34; &#34;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&#34;&gt; &lt;generatorConfiguration&gt; &lt;!&amp;#8211; 请替换本地jar路径 此文件不要上传 &amp;#8211;&gt; &lt;classPathEntry location=&#34;/Users/bridgeli/.m2/repository/mysql/mysql-connector-java/5.1.33/mysql-connector-java-5.1.33.jar&#34; /&gt; &lt;!&amp;#8211; mvn mybatis-generator:generate &amp;#8211;&gt; &lt;context id=&#34;oneHour&#34; targetRuntime=&#34;cn.bridgeli.plugin.IntrospectedTableMyBatis3ImplExt&#34;&gt; &lt;property name=&#34;suppressAllComments&#34; value=&#34;true&#34; /&gt; &lt;property name=&#34;useActualColumnNames&#34; value=&#34;false&#34; /&gt; &lt;!&amp;#8211; 格式化java代码 &amp;#8211;&gt; &lt;property name=&#34;javaFormatter&#34; value=&#34;org.mybatis.generator.api.dom.DefaultJavaFormatter&#34; /&gt; &lt;!&amp;#8211; 格式化XML代码 &amp;#8211;&gt; &lt;property name=&#34;xmlFormatter&#34; value=&#34;org.mybatis.generator.api.dom.DefaultXmlFormatter&#34; /&gt; &lt;!&amp;#8211; 配置插件 &amp;#8211;&gt; &lt;plugin type=&#34;cn.bridgeli.mybatis.MySQLLimitPlugin&#34;&gt;&lt;/plugin&gt; &lt;commentGenerator&gt; &lt;!&amp;#8211; 是否去除自动生成的注释 true：是 ： false:否 &amp;#8211;&gt; &lt;property name=&#34;suppressAllComments&#34; value=&#34;true&#34; /&gt; &lt;/commentGenerator&gt; &lt;!&amp;#8211;数据库连接的信息：驱动类、连接地址、用户名、密码 &amp;#8211;&gt; &lt;jdbcConnection driverClass=&#34;com.mysql.jdbc.Driver&#34; connectionURL=&#34;jdbc:mysql://ip:port/databasename&#34; userId=&#34;username&#34; password=&#34;password&#34;&gt; &lt;/jdbcConnection&gt; &lt;javaTypeResolver&gt; &lt;property name=&#34;forceBigDecimals&#34; value=&#34;false&#34; /&gt; &lt;/javaTypeResolver&gt; &lt;!&amp;#8211; 配置model生成位置 &amp;#8211;&gt; &lt;javaModelGenerator targetPackage=&#34;cn.bridgeli.entity&#34; targetProject=&#34;src/main/java&#34;&gt; &lt;property name=&#34;enableSubPackages&#34; value=&#34;true&#34; /&gt; &lt;property name=&#34;trimStrings&#34; value=&#34;true&#34; /&gt; &lt;/javaModelGenerator&gt; &lt;!&amp;#8211; 配置sqlmap生成位置 &amp;#8211;&gt; &lt;sqlMapGenerator targetPackage=&#34;cn/bridgeli/mapper&#34; targetProject=&#34;src/main/resources&#34;&gt; &lt;property name=&#34;enableSubPackages&#34; value=&#34;true&#34; /&gt; &lt;/sqlMapGenerator&gt; &lt;!&amp;#8211; 配置mapper接口生成位置 &amp;#8211;&gt; &lt;javaClientGenerator type=&#34;XMLMAPPER&#34; targetPackage=&#34;cn.bridgeli.mapper&#34; targetProject=&#34;src/main/java&#34;&gt; &lt;property name=&#34;enableSubPackages&#34; value=&#34;true&#34; /&gt; &lt;/javaClientGenerator&gt; &lt;!&amp;#8211; 配置表信息 &amp;#8211;&gt; &lt;table tableName=&#34;table_name&#34; enableCountByExample=&#34;true&#34; domainObjectName=&#34;DomainObjectName&#34; enableDeleteByExample=&#34;false&#34; enableSelectByExample=&#34;true&#34; enableUpdateByExample=&#34;true&#34;&gt; &lt;generatedKey column=&#34;ID&#34; sqlStatement=&#34;MySQL&#34; identity=&#34;true&#34; /&gt; &lt;/table&gt; &lt;/context&gt; &lt;/generatorConfiguration&gt; 这里面需要说明就是：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-04-29 09:37:55 +0000 +0000'>April 29, 2018</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>260 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 介绍一个 Mybatis 插件：mybatis-generator-plugin" href="http://localhost:1313/posts/2018-04-29-%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%AA-mybatis-%E6%8F%92%E4%BB%B6mybatis-generator-plugin/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">介绍一个强大易用的日期和时间库：Joda-Time
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在 Java 中处理日期和时间是很常见的需求，基础的工具类就是我们熟悉的 Date 和 Calendar,之前我也曾经写过一篇文章利用这两个类，怎么处理时间，然而这些工具类的 api 使用并不是很方便和强大，于是就诞生了Joda-Time 这个专门处理日期时间的库。而且 Joda-Time 很优秀，用了他之后再也停不下来，其在 Java 8 出现前的很长时间内成为 Java 中日期时间处理的事实标准，用来弥补 JDK 的不足。项目中要想使用 Joda-Time 很简单，只需要引入依赖：
+&lt;dependency&gt; &lt;groupId&gt;joda-time&lt;/groupId&gt; &lt;artifactId&gt;joda-time&lt;/artifactId&gt; &lt;version&gt;2.9.9&lt;/version&gt; &lt;/dependency&gt; 下面说一些常用的例子，供平时参考
+创建任意时间对象 DateTime dateTime=new DateTime(2018, 03, 31, 16, 57,55); 创建当前时间对象 DateTime dateTime=new DateTime(); 格式化时间输出 DateTime dateTime = new DateTime(); System.out.println(dateTime.toString(&#34;yyyy-MM-dd HH:mm:ss&#34;)); 解析文本格式时间 DateTimeFormatter format = DateTimeFormat.forPattern(&#34;yyyy-MM-dd HH:mm:ss&#34;); DateTime dateTime = DateTime.parse(&#34;2018-03-31 17:01:45&#34;, format); 在当前日期上加上 90 天并输出结果 DateTime dateTime = new DateTime(); System.out.println(dateTime.plusDays(90).toString(&#34;yyyy-MM-dd HH:mm:ss&#34;); 获取今天的开始时间 DateTime nowTime = new DateTime(); DateTime startOfDay = nowTime.withTimeAtStartOfDay(); 获取今天的结束时间 DateTime nowTime = new DateTime(); DateTime endOfDay = nowTime.millisOfDay().withMaximumValue(); 计算两个日期的相隔天数 DateTime nowTime = new DateTime(); DateTime futureTime = new DateTime(2019, 10, 1, 0, 0, 0); Int days = Days.daysBetween(nowTime, futureTime).getDays(); 本月的第一天和最后一天 DateTime dateTime = new DateTime(); DateTime firstDateTimeOfMonth = dateTime.dayOfMonth().withMinimumValue().withTimeAtStartOfDay(); DateTime lastDateTimeOfMonth = dateTime.dayOfMonth().withMaximumValue().withTimeAtStartOfDay(); 上个月的第一天和最后一天 DateTime dateTime = new DateTime(); DateTime startDate = dateTime.plusMonths(-1).dayOfMonth().withMinimumValue().withTimeAtStartOfDay(); DateTime endDate = dateTime.plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue(); 在每天的6:30处理一些东西 DateTime dt=new DateTime().withHourOfDay(6).withMinuteOfHour(30).withSecondOfMinute(0); 在每月的7号的6:30处理一些东西 DateTime dt=new DateTime().withDayOfMonth(7).withHourOfDay(6).withMinuteOfHour(30).withSecondOfMinute(0); 在每年的8月的7号的6:30处理一些东西 DateTime dt=new DateTime().withMonthOfYear(8).withDayOfMonth(7).withHourOfDay(6).withMinuteOfHour(30).withSecondOfMinute(0); 获取年终 月、日、时、分、秒、毫秒 DateTime dt = new DateTime(); //获取当前时间的年 int year = dt.getYear(); //获取当前时间的月 int month = dt.getMonthOfYear(); //获取当前时间是一年中的第几天 int dayOfYear = dt.getDayOfYear(); //获取一个月中的天 int day = dt.getDayOfMonth(); //获取一周中的周几 int week = dt.getDayOfWeek(); //一天中的第几小时(取整) int hour = dt.getHourOfDay(); //获取星期年 int weekOfyear = dt.getWeekyear(); //当前时间的秒中的毫秒 int ms = dt.getMillisOfSecond(); //获取当前时间的秒 int second = dt.getSecondOfDay(); //获取当前时间的毫秒 long millis = dt.getMillis(); 判断时间跨度是否包含当前时间,某个时间 Interval interval = new Interval(new DateTime(2018, 1, 1, 0, 0, 0), new DateTime(2018, 3, 30, 0, 0, 0)); System.out.println(interval.containsNow()); boolean contained = interval.contains(new DateTime(&#34;2012-03-01&#34;)); 与JDK互转换 //通过jdk时间对象构造 Date date = new Date(); DateTime dateTime = new DateTime(date); Calendar calendar = Calendar.getInstance(); dateTime = new DateTime(calendar); // Joda-time 各种操作&amp;#8230;.. dateTime = dateTime.plusDays(1) // 增加天 .plusYears(1)// 增加年 .plusMonths(1)// 增加月 .plusWeeks(1)// 增加星期 .minusMillis(1)// 减分钟 .minusHours(1)// 减小时 .minusSeconds(1);// 减秒数 // 计算完转换成jdk 对象 Date date2 = dateTime.toDate(); Calendar calendar2 = dateTime.toCalendar(Locale.CHINA); 解析 CST 格式的时间字符串 DateTimeFormatter format = DateTimeFormat.forPattern(&#34;EEE MMM dd HH:mm:ss zzz yyyy&#34;); DateTime dateTime = DateTime.parse(&#34;Fri Mar 30 00:00:00 CST 2018&#34;, format); 当然作为一个强大的 时间日期 处理工具类，他还有更多更强大的 API，可以参看：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-03-31 11:28:34 +0000 +0000'>March 31, 2018</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>310 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 介绍一个强大易用的日期和时间库：Joda-Time" href="http://localhost:1313/posts/2018-03-31-%E7%BB%8D%E4%B8%80%E4%B8%AA%E5%BC%BA%E5%A4%A7%E6%98%93%E7%94%A8%E7%9A%84%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E5%BA%93joda-time/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">记一次使用 lombok 小小的成长感悟
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>公司项目里面用了 lombok，感觉这个东西真是个好东西，然后公司也用的简单，所以也没仔细看文档就开始想当然的用了，然后就悲剧了，今天就记录一下这件事，写一下经验教训，具体怎么用，大家可以看最后的参考。
+lombok 有一个很好用的注解：@Data，当时以为这个注解就是相当于：@Getter和@Setter，所以有一次要重写 equals 和 hashcode 方法，然后就让 IDE 自动生成了，当时也没仔细看生成的是什么样子，然后就发现了 bug，仔细一看生成的 equals 方法原来是这样的：
+package cn.bridgeli.demo; import lombok.Data; import java.util.Objects; /** * Created by bridgeli on 2018/2/25. */ @Data public class LomBokTest { private Integer id; private String username; @Override public boolean equals(Object o) { if (this == o) { return true; } if (o == null || getClass() != o.getClass()) { return false; } if (!super.equals(o)) { return false; } LomBokTest that = (LomBokTest) o; return Objects.equals(id, that.id); } @Override public int hashCode() { return Objects.hash(super.hashCode(), id); } } 当时还以为是 idea 的 bug，因为是 idea 自动生成的，之前用 eclipse 自动生成从没问题，eclipse 自动生成的是这样的：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-02-25 11:34:01 +0000 +0000'>February 25, 2018</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>346 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 记一次使用 lombok 小小的成长感悟" href="http://localhost:1313/posts/2018-02-25-%E8%AE%B0%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8-lombok-%E5%B0%8F%E5%B0%8F%E7%9A%84%E6%88%90%E9%95%BF%E6%84%9F%E6%82%9F/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">NullPointerException in Java with no StackTrace
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>这周一个项目遇到一个问题，同事查看日志发现抛出：NullPointerException，却没有堆栈信息，然后同事感觉很奇怪，因为打日志的方法，打印的确实是：e，而不是很多人不明所以的打印的：e.getMessage()。然后我看了一下想起来我看过某本书上说过的，JIT 优化。当某个异常抛出很多次之后，由于 Java 虚拟机 JIT 优化，会省略堆栈信息。往上面翻日志肯定可以会找到报错的地方，当然会出现报错的信息太多，比较难翻。写这篇文章的本来想找找那本书，参考一下的，结果忘了是那本书了，一时没找到，不过这个问题虽然不是非常常见，但是网上还是有很多说明的，所以就简单说说 JVM 有一个参数：OmitStackTraceInFastThrow 来控制是否开启此优化。关于此参数的简单说明：
+JVM参数-XX:-OmitStackTraceInFastThrow参数可以关掉JVM对堆栈信息的优化。如果设置了这个参数，那么异常堆栈就能完整输出了。
+“在服务器中的VM编译器现在提供准确的所有的“冷”内置异常堆栈回溯功能。为了性能考虑，当这些异常被抛出很多次时，这个方法会被重新编译，此后编译器将使用一种更快的抛出异常的方式，即抛出预先分配好的不带堆栈信息的异常。要完全关闭掉这种预分配的异常，就需要使用-XX:-OmitStackTraceInFastThrow参数。”
+相关stackoverflow讨论：https://stackoverflow.com/questions/2411487/nullpointerexception-in-java-with-no-stacktrace
+笨神小程序 JVMPocket 对此参数的解释截图：
+另，看到网上有部分人建议关闭此参数，个人是建议的：
+由于Java 在虚拟机中运行，天生是比 c 要慢的，为了优化此问题，那些 JVM 大神们搞出了 JIT 优化，对性能有了大幅提升。 异常信息使我们应该特别关注了，当出现了异常应该尽快发现问题解决问题，而不是这个异常发生很多次了但是一直不知道。 打详细堆栈信息是很影响性能的，如果这个异常出现很多次了，没必要每次都打出来异常，看一个地方就知道了，而不是让他一直打，影响性能。 那有人说了当遇到此问题时，堆栈信息看不到，日志又比较难翻怎么办？我们好像也不能动态的添加 JVM 的启动参数，所以保险起见还是关闭此参数。个人认为：这个异常这么常出现，而且是 JIT 的优化导致看不到堆栈信息了，可以找一台机器重启一下就好了，没必要因小失大，我们从笨神的小程序也可以看到 JVM 默认是开启此参数的，开启肯定是有其道理的。
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-01-07 10:39:30 +0000 +0000'>January 7, 2018</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>33 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to NullPointerException in Java with no StackTrace" href="http://localhost:1313/posts/2018-01-07-nullpointerexception-in-java-with-no-stacktrace/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">是的，我也开启了全站HTTPS
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>现在的趋势都在全站HTTPS，据说在Google内部有一个时间表，会把所有未开启HTTPS的网站标注为不安全（目前仅仅会把带密码框的输入页标注为不安全），所以一直想玩玩，去年的时候就看到新浪timyang的博客开启了全站HTTPS，并写了一篇文章如何开启，当时就想玩玩，但感觉还是稍有麻烦，而且当时的博客服务器用的Apache，对Apache配置不熟，想着是自己的小博客就没动，前几天突然看到coolshell网也开启了全站HTTPS，发现现在配置变得很简单了，而且我的博客服务器也由Apache换成了Nginx，所以就玩了玩，确实很方便。
+首先声明，无论是timyang还是左耳朵耗子，使用的都是Let’s Encrypt，他是一个公益组织，表示感谢，网址：https://letsencrypt.org/
+下面写一下开启的方法：
+首先，打开 https://certbot.eff.org 网页。 在那个机器上图标下面，你需要选择一下你用的 Web 接入软件 和你的 操作系统。比如，我选的，nginx 和 CentOS 6。 然后就会跳转到一个安装教程网页。你就照着做一遍就好了。 例如我选的这个调到安装教程页，出现的命令是：
+wget https://dl.eff.org/certbot-auto chmod a&#43;x certbot-auto 然后，运行如下命令：
+./path/to/certbot-auto &amp;#8211;nginx certbot-auto 会自动检查到你的 nginx.conf 下的配置，把你所有的虚拟站点都列出来，然后让你选择需要开启 https 的站点。你就简单的输入列表编号（用空格分开），因为我的就一个所以直接回车就好了（里面有一些需要你填写的东西，连我这英文巨差的人都可以看懂，相信大家都能看的懂），然后，certbot-auto 就帮你下载证书并更新 nginx.conf 了。
+但在这个过程中需要注意的一点：记得开启你的 443 端口，我博客用的阿里云，当时没开启直接报错了，开启之后重新执行一下这个命令就好了。
+你打开你的 nginx.conf 文件 ，你可以发现你的文件中的 server 配置中可能被做了如下的修改：
+listen 443 ssl; # managed by Certbot ssl_certificate /etc/letsencrypt/live/www.bridgeli.cn/fullchain.pem; # managed by Certbot ssl_certificate_key /etc/letsencrypt/live/www.bridgeli.cn/privkey.pem; # managed by Certbot include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot 和
+if ($scheme != &#34;https&#34;) { return 301 https://$host$request_uri; } # managed by Certbot 另外开启HTTPS之后都建议开启HTTP/2性能更好，但这要求你的Nginx版本要大于 1.9.5 ，开启的方法也无比简单，只需要在 nginx.conf 的 listen 443 ssl; 后面加上 http2 就好了。如下所示：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2017-09-03 11:25:18 +0000 +0000'>September 3, 2017</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>218 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 是的，我也开启了全站HTTPS" href="http://localhost:1313/posts/2017-09-03-%E6%98%AF%E7%9A%84%E6%88%91%E4%B9%9F%E5%BC%80%E5%90%AF%E4%BA%86%E5%85%A8%E7%AB%99https/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">秒杀系统架构优化思路[转载]
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>看过很多写秒杀的文章，感觉还是58沈剑老师的这篇写的最好最接地气，博客第一百篇文章本想自己写一篇的，最后想想还是转载沈剑老师的这篇好了，因为看完这篇真的很受启发。
+原文出处微信公众号：架构师之路，微信号：road5858，链接地址：http://mp.weixin.qq.com/s/5aMN9SqaWa57rYGgtdAF_A
+以下是原文：
+本文曾在“架构师之路”上发布过，近期支援Qcon-AS大会，在微信群里分享了该话题，故对原文进行重新整理与发布。
+一、秒杀业务为什么难做
+1）im系统，例如qq或者微博，每个人都读自己的数据（好友列表、群列表、个人信息）；
+2）微博系统，每个人读你关注的人的数据，一个人读多个人的数据；
+3）秒杀系统，库存只有一份，所有人会在集中的时间读和写这些数据，多个人读一个数据。
+例如：小米手机每周二的秒杀，可能手机只有1万部，但瞬时进入的流量可能是几百几千万。
+又例如：12306抢票，票是有限的，库存一份，瞬时流量非常多，都读相同的库存。读写冲突，锁非常严重，这是秒杀业务难的地方。那我们怎么优化秒杀业务的架构呢？
+二、优化方向
+优化方向有两个（今天就讲这两个点）：
+（1）将请求尽量拦截在系统上游（不要让锁冲突落到数据库上去）。传统秒杀系统之所以挂，请求都压倒了后端数据层，数据读写锁冲突严重，并发高响应慢，几乎所有请求都超时，流量虽大，下单成功的有效流量甚小。以12306为例，一趟火车其实只有2000张票，200w个人来买，基本没有人能买成功，请求有效率为0。
+（2）充分利用缓存，秒杀买票，这是一个典型的读多些少的应用场景，大部分请求是车次查询，票查询，下单和支付才是写请求。一趟火车其实只有2000张票，200w个人来买，最多2000个人下单成功，其他人都是查询库存，写比例只有0.1%，读比例占99.9%，非常适合使用缓存来优化。好，后续讲讲怎么个“将请求尽量拦截在系统上游”法，以及怎么个“缓存”法，讲讲细节。
+三、常见秒杀架构
+常见的站点架构基本是这样的（绝对不画忽悠类的架构图）
+（1）浏览器端，最上层，会执行到一些JS代码
+（2）站点层，这一层会访问后端数据，拼html页面返回给浏览器
+（3）服务层，向上游屏蔽底层数据细节，提供数据访问
+（4）数据层，最终的库存是存在这里的，mysql是一个典型（当然还有会缓存）
+这个图虽然简单，但能形象的说明大流量高并发的秒杀业务架构，大家要记得这一张图。
+后面细细解析各个层级怎么优化。
+四、各层次优化细节
+第一层，客户端怎么优化（浏览器层，APP层）
+问大家一个问题，大家都玩过微信的摇一摇抢红包对吧，每次摇一摇，就会往后端发送请求么？回顾我们下单抢票的场景，点击了“查询”按钮之后，系统那个卡呀，进度条涨的慢呀，作为用户，我会不自觉的再去点击“查询”，对么？继续点，继续点，点点点。。。有用么？平白无故的增加了系统负载，一个用户点5次，80%的请求是这么多出来的，怎么整？
+（a）产品层面，用户点击“查询”或者“购票”后，按钮置灰，禁止用户重复提交请求；
+（b）JS层面，限制用户在x秒之内只能提交一次请求；
+APP层面，可以做类似的事情，虽然你疯狂的在摇微信，其实x秒才向后端发起一次请求。这就是所谓的“将请求尽量拦截在系统上游”，越上游越好，浏览器层，APP层就给拦住，这样就能挡住80%&#43;的请求，这种办法只能拦住普通用户（但99%的用户是普通用户）对于群内的高端程序员是拦不住的。firebug一抓包，http长啥样都知道，js是万万拦不住程序员写for循环，调用http接口的，这部分请求怎么处理？
+第二层，站点层面的请求拦截
+怎么拦截？怎么防止程序员写for循环调用，有去重依据么？ip？cookie-id？…想复杂了，这类业务都需要登录，用uid即可。在站点层面，对uid进行请求计数和去重，甚至不需要统一存储计数，直接站点层内存存储（这样计数会不准，但最简单）。一个uid，5秒只准透过1个请求，这样又能拦住99%的for循环请求。
+5s只透过一个请求，其余的请求怎么办？缓存，页面缓存，同一个uid，限制访问频度，做页面缓存，x秒内到达站点层的请求，均返回同一页面。同一个item的查询，例如车次，做页面缓存，x秒内到达站点层的请求，均返回同一页面。如此限流，既能保证用户有良好的用户体验（没有返回404）又能保证系统的健壮性（利用页面缓存，把请求拦截在站点层了）。
+页面缓存不一定要保证所有站点返回一致的页面，直接放在每个站点的内存也是可以的。优点是简单，坏处是http请求落到不同的站点，返回的车票数据可能不一样，这是站点层的请求拦截与缓存优化。
+好，这个方式拦住了写for循环发http请求的程序员，有些高端程序员（黑客）控制了10w个肉鸡，手里有10w个uid，同时发请求（先不考虑实名制的问题，小米抢手机不需要实名制），这下怎么办，站点层按照uid限流拦不住了。
+第三层 服务层来拦截（反正就是不要让请求落到数据库上去）
+服务层怎么拦截？大哥，我是服务层，我清楚的知道小米只有1万部手机，我清楚的知道一列火车只有2000张车票，我透10w个请求去数据库有什么意义呢？没错，请求队列！
+对于写请求，做请求队列，每次只透有限的写请求去数据层（下订单，支付这样的写业务）
+1w部手机，只透1w个下单请求去db
+3k张火车票，只透3k个下单请求去db
+如果均成功再放下一批，如果库存不够则队列里的写请求全部返回“已售完”。
+对于读请求，怎么优化？cache抗，不管是memcached还是redis，单机抗个每秒10w应该都是没什么问题的。如此限流，只有非常少的写请求，和非常少的读缓存mis的请求会透到数据层去，又有99.9%的请求被拦住了。
+当然，还有业务规则上的一些优化。回想12306所做的，分时分段售票，原来统一10点卖票，现在8点，8点半，9点，…每隔半个小时放出一批：将流量摊匀。
+其次，数据粒度的优化：你去购票，对于余票查询这个业务，票剩了58张，还是26张，你真的关注么，其实我们只关心有票和无票？流量大的时候，做一个粗粒度的“有票”“无票”缓存即可。
+第三，一些业务逻辑的异步：例如下单业务与 支付业务的分离。这些优化都是结合 业务 来的，我之前分享过一个观点“一切脱离业务的架构设计都是耍流氓”架构的优化也要针对业务。
+好了，最后是数据库层
+浏览器拦截了80%，站点层拦截了99.9%并做了页面缓存，服务层又做了写请求队列与数据缓存，每次透到数据库层的请求都是可控的。db基本就没什么压力了，闲庭信步，单机也能扛得住，还是那句话，库存是有限的，小米的产能有限，透这么多请求来数据库没有意义。
+全部透到数据库，100w个下单，0个成功，请求有效率0%。透3k个到数据，全部成功，请求有效率100%。
+五、总结
+上文应该描述的非常清楚了，没什么总结了，对于秒杀系统，再次重复下我个人经验的两个架构优化思路：
+（1）尽量将请求拦截在系统上游（越上游越好）；
+（2）读多写少的常用多使用缓存（缓存抗读压力）；
+浏览器和APP：做限速
+站点层：按照uid做限速，做页面缓存
+服务层：按照业务做写请求队列控制流量，做数据缓存
+数据层：闲庭信步
+并且：结合业务做优化
+六、Q&amp;A
+问题1、按你的架构，其实压力最大的反而是站点层，假设真实有效的请求数有1000万，不太可能限制请求连接数吧，那么这部分的压力怎么处理？
+答：每秒钟的并发可能没有1kw，假设有1kw，解决方案2个：
+（1）站点层是可以通过加机器扩容的，最不济1k台机器来呗。
+（2）如果机器不够，抛弃请求，抛弃50%（50%直接返回稍后再试），原则是要保护系统，不能让所有用户都失败。
+问题2、“控制了10w个肉鸡，手里有10w个uid，同时发请求” 这个问题怎么解决哈？
+答：上面说了，服务层写请求队列控制
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2017-08-08 13:15:19 +0000 +0000'>August 8, 2017</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>95 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 秒杀系统架构优化思路[转载]" href="http://localhost:1313/posts/2017-08-08-%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF%E8%BD%AC%E8%BD%BD/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">巧用CAS解决数据一致性问题[转载]
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>这周不太忙的时候看了58到家沈剑老师的一系列的文章，感觉沈剑老师的文章做到了深入浅出，浅显易懂，看完收获很大，有些文章完美的解决了我一直一来的疑惑，所以转载到自己博客，希望对大家也有所帮助。
+原文出处微信公众号：架构师之路，微信号：road5858，链接地址：http://mp.weixin.qq.com/s/_XlzbmBSj_i-S2PkE5tI_w
+以下是原文：
+缘起：在高并发的分布式环境下，对于数据的查询与修改容易引发一致性问题，本文将分享一种非常简单但有效的优化方法。
+一、业务场景
+业务场景为，购买商品的过程要对余额进行查询与修改，大致的业务流程如下：
+（1）从数据库查询用户现有余额 SELECT money FROM t_yue WHERE uid=$uid，不妨设查询出来的$old_money=100元
+（2）业务层实施业务逻辑，比如购买一个80元的商品，并且打九折
+if($old_money&gt; 80*0.9) $new_money=$old_money-80*0.9=28
+（3）将数据库中的余额进行修改 UPDAtE t_yue SET money=$new_money WHERE uid=$uid
+在并发量低的情况下，这个流程没有任何问题，原有金额100元，购买了80元的九折商品（72元），剩余28元。
+二、潜在的问题
+在分布式环境中，如果并发量很大，这种“查询&#43;修改”的业务很容易出现数据不一致。极限情况下，可能出现这样的异常流程：
+（1）业务1和业务2同时查询余额，是100元
+（2）业务1和业务2进行逻辑计算，算出各自业务的余额，假设业务1算出的余额是28元，业务2算出的余额是38元
+（3）业务1对数据库中的余额先进行修改，设置成28元。
+业务2对数据库中的余额后进行修改，设置成38元。
+此时异常出现了，原有金额100元，业务1扣除了72元，业务2扣除了62元，最后剩余38元。
+三、问题原因
+高并发环境下，对同一个数据的并发读（两边都读出余额是100）与并发写（一个写回28，一个写回38）导致的数据一致性问题。
+四、原因分析
+业务1的写回：原有金额100，这是一个初始状态，写回金额28，理论上只有在原有金额为100的时候才允许写回成功，这一步没问题。
+业务2的写回：的原有金额100，这是一个初始状态，写回金额38，理论上只有在原有金额为100的时候才允许写回成功，可实际上，这个时候数据库中的金额已经变为28了，这一步的写操作不应该成功。
+五、简易解决方案
+在set写回的时候，加上初始状态的条件compare，只有初始状态不变时，才允许set写回成功，这正是大家常说的“Compare And Set”（CAS），是一种常见的降低读写锁冲突，保证数据一致性的方法。
+六、业务的升级
+业务线使用CAS解决高并发时数据一致性问题，只需要在进行set操作时，compare一下初始值，如果初始值变换，不允许set成功。
+对于上文中的业务场景，只需要将“UPDAtEt_yue SET money=$new_money WHERE uid=$uid”升级为
+“UPDAtE t_yue SETmoney=$new_money WHERE uid=$uid AND money=$old_money”即可。
+并发操作发生时：
+业务1执行 =&gt; UPDAtE t_yue SET money=28 WHERE uid=$uid AND money=100
+业务2执行 =&gt; UPDAtE t_yue SET money=38 WHERE uid=$uid AND money=100
+【这两个操作同时进行时，只能有一个执行成功】。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2017-07-22 05:07:07 +0000 +0000'>July 22, 2017</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>89 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 巧用CAS解决数据一致性问题[转载]" href="http://localhost:1313/posts/2017-07-22-%E5%B7%A7%E7%94%A8cas%E8%A7%A3%E5%86%B3%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98%E8%BD%AC%E8%BD%BD/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">程序猿的自我修养之开发规范
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>有感于公司代码比较乱，完全没有规范，而我则受益于实习的时候的老大zeak的严格要求，看到这种情况表示有点难以接受，所以和老大讨论后，基于阿里的规范经过删减写了这么一个标准，今天发出来，不仅供自己时时对照，也供大家参考，最后感谢一下阿里出这份标准。
+一、 编程规约
+（一）命令风格
+整体要求，见名知义，英文为主，类名一般是名称或者形容词，方法名为动词
+具体要求：
+代码中的命名均不能以下划线或美元符号开始，也不能以下划线或美元符号结束。除非特殊情况最好不要用美元符号（大家猜猜为啥？） 类名使用 UpperCamelCase 风格，必须遵从驼峰形式，但以下情形例外:BO / DTO / VO 方法名、参数名、成员变量、局部变量都统一使用 lowerCamelCase 风格，必须遵从 驼峰形式 常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚，不要嫌名字长 抽象类命名使用 Abstract 或 Base 开头;异常类命名使用 Exception 结尾;测试类 命名以它要测试的类的名称开始，以 Test 结尾，枚举类名建议带上 Enum 后缀，枚举成员名称需要全大写，单词间用下划线隔开 中括号是数组类型的一部分，数组定义如下:String[] args POJO 类中布尔类型的变量，都不要加 is 包名统一使用小写，点分隔符之间有且仅有一个自然语义的英语单词。包名统一使用 单数形式，但是类名如果有复数含义，类名可以使用复数形式 杜绝完全不规范的缩写，避免望文不知义 如果使用到了设计模式，建议在类名中体现出具体模式 接口类中的方法和属性不要加任何修饰符号(public 也不要加)，并加上有效的 Javadoc 注释。尽量不要在接口里定义变量，如果一定要定义变量，肯定是 与接口方法相关，并且是整个应用的基础常量 各层命名规约: 获取单个对象的方法用get或者find做前缀 获取多个对象的方法用list或者query做前缀。 获取统计值的方法用count做前缀。 插入的方法用save(推荐)或insert做前缀。 删除的方法用remove(推荐)或delete做前缀。 修改的方法用update做前缀。 (二) 常量定义
+不允许任何魔法值直接出现在代码中 long 或者 Long 初始赋值时，必须使用大写的 L，不能是小写的 l 如果变量值仅在一个范围内变化，且带有名称之外的延伸属性，定义为枚举类 常量类大写，各个单词之前下划线分开 (三) 代码格式
+大括号的使用约定: 左大括号前不换行。 左大括号后换行。 右大括号前换行。 右大括号后还有else等代码则不换行;表示终止的右大括号后必须换行。 左小括号和字符之间不出现空格;同样，右小括号和字符之间也不出现空格 if/for/while/switch/do 等保留字与括号之间都必须加空格 任何二目、三目运算符的左右两边都需要加一个空格 缩进采用 4 个空格，禁止使用 tab 字符（根据今年stackoverflow公布数据，空格党的平均工资略高于tab党，大家猜猜为啥？） 单行字符数限制不超过 120 个，超出需要换行，换行时遵循如下原则: 第二行相对第一行缩进 4 个空格，从第三行开始，不再继续缩进。 运算符与下文一起换行。 方法调用的点符号与下文一起换行。 在多个参数超长，在逗号后换行。 在括号前不要换行。 方法参数在定义和传入时，多个参数逗号后边必须加空格 没有必要增加若干空格来使某一行的字符与上一行对应位置的字符对齐 方法体内的执行语句组、变量的定义语句组、不同的业务逻辑之间或者不同的语义之间插入一个空行。相同业务逻辑和语义之间不需要插入空行，没有必要插入多个空行进行隔开 IDE的text file encoding设置为UTF-8; IDE中文件的换行符使用Unix格式， 不要使用 windows 格式。 关于代码格式的设置，eclipse用户可以参考我的GitHub：eclipse设置，按照这个设置，当你保存的时候eclipse会自动帮你formatter你改动过的代码。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2017-07-09 12:14:44 +0000 +0000'>July 9, 2017</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>286 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to 程序猿的自我修养之开发规范" href="http://localhost:1313/posts/2017-07-09-%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E4%B9%8B%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">ThreadLocal类之简单应用示例
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在日常开发的系统中，日期处理是非常非常用的一个功能，处理的日期的时候就需要用到SimpleDateFormat对象，但是我们都知道SimpleDateFormat本身不是线程安全的（如果不知道的请看源码），所以就需要频繁创建SimpleDateFormat这个对象。但是我们知道创建这个对象本身不仅是很费时的，而且创建的这些对象存活期很短，导致内存中大量这样的对象需要被GC，所以我们自然而然的想到使用ThreadLocal来给每个线程缓存一个SimpleDateFormat实例，提高性能。下面是一个具体的实现的小例子，其实不仅针对SimpleDateFormat对象，对于数据库连接等等都可以这么使用。
+package cn.bridgeli.demo; import java.text.DateFormat; import java.text.SimpleDateFormat; import java.util.HashMap; import java.util.Map; public class DateFormatFactory { private static final Map&lt;DatePatternEnum, ThreadLocal&lt;DateFormat&gt;&gt; pattern2ThreadLocal; static { DatePatternEnum[] patterns = DatePatternEnum.values(); int len = patterns.length; pattern2ThreadLocal = new HashMap&lt;DatePatternEnum, ThreadLocal&lt;DateFormat&gt;&gt;(len); for (int i = 0; i &lt; len; i&#43;&#43;) { DatePatternEnum datePatternEnum = patterns[i]; final String pattern = datePatternEnum.pattern; pattern2ThreadLocal.put(datePatternEnum, new ThreadLocal&lt;DateFormat&gt;() { @Override protected DateFormat initialValue() { return new SimpleDateFormat(pattern); } }); } } // 获取DateFormat public static DateFormat getDateFormat(DatePatternEnum patternEnum) { ThreadLocal&lt;DateFormat&gt; threadDateFormat = pattern2ThreadLocal.get(patternEnum); // 不需要判断threadDateFormat是否为空 return threadDateFormat.get(); } } 对应的时间枚举类（如果还有其他格式的时间需要处理，可以直接在这个类里面添加即可）：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2017-06-18 12:50:29 +0000 +0000'>June 18, 2017</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>114 words</span>&nbsp;·&nbsp;<span>Bridge Li</span></footer>
+  <a class="entry-link" aria-label="post link to ThreadLocal类之简单应用示例" href="http://localhost:1313/posts/2017-06-18-threadlocal%E7%B1%BB%E4%B9%8B%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/categories/java/page/5/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="http://localhost:1313/categories/java/page/7/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">分享技术带来的喜悦</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

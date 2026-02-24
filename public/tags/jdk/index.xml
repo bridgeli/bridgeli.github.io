@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>JDK on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/jdk/</link>
+    <description>Recent content in JDK on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 25 Dec 2025 02:24:23 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/jdk/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>本地开发不同项目使用不同版本 JDK 的解决方案</title>
+      <link>http://localhost:1313/posts/2025-12-25-%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E4%B8%8D%E5%90%8C%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC-jdk-%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</link>
+      <pubDate>Thu, 25 Dec 2025 02:24:23 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2025-12-25-%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E4%B8%8D%E5%90%8C%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC-jdk-%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</guid>
+      <description>&lt;p&gt;一般我们在公司工作中，很少有人就负责一个项目，而负责不同的项目，由于各种原因使用的 JDK 版本可能并不相同，如果存在不兼容的情况，那么本地 mvn clean compile 的时候就会报错，这个时候就需要我们去修改我们设置的环境变量，如果多个项目同时开发，那么就需要时不时切来切去，特别烦人，其实这个问题 maven 早就替大家考虑过了，我们只需要：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;修改 maven 的 toolchains.xml 文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;
+
+&amp;lt;!&amp;amp;#8211;  
+Licensed to the Apache Software Foundation (ASF) under one  
+or more contributor license agreements. See the NOTICE file  
+distributed with this work for additional information  
+regarding copyright ownership. The ASF licenses this file  
+to you under the Apache License, Version 2.0 (the  
+&amp;#34;License&amp;#34;); you may not use this file except in compliance  
+with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,  
+software distributed under the License is distributed on an  
+&amp;#34;AS IS&amp;#34; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY  
+KIND, either express or implied. See the License for the  
+specific language governing permissions and limitations  
+under the License.  
+&amp;amp;#8211;&amp;gt;
+
+&amp;lt;!&amp;amp;#8211;  
+| This is the toolchains file for Maven. It can be specified at two levels:  
+|  
+| 1. User Level. This toolchains.xml file provides configuration for a single user,  
+| and is normally provided in ${user.home}/.m2/toolchains.xml.  
+|  
+| NOTE: This location can be overridden with the CLI option:  
+|  
+| -t /path/to/user/toolchains.xml  
+|  
+| 2. Global Level. This toolchains.xml file provides configuration for all Maven  
+| users on a machine (assuming they&amp;amp;#8217;re all using the same Maven  
+| installation). It&amp;amp;#8217;s normally provided in  
+| ${maven.conf}/toolchains.xml.  
+|  
+| NOTE: This location can be overridden with the CLI option:  
+|  
+| -gt /path/to/global/toolchains.xml  
+|  
+| The sections in this sample file are intended to give you a running start at  
+| getting the most out of your Maven installation.  
+|&amp;amp;#8211;&amp;gt;  
+&amp;lt;toolchains xmlns=&amp;#34;http://maven.apache.org/TOOLCHAINS/1.1.0&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;  
+xsi:schemaLocation=&amp;#34;http://maven.apache.org/TOOLCHAINS/1.1.0 http://maven.apache.org/xsd/toolchains-1.1.0.xsd&amp;#34;&amp;gt;
+
+&amp;lt;!&amp;amp;#8211;  
+| With toolchains you can refer to installations on your system. This  
+| way you don&amp;amp;#8217;t have to hardcode paths in your pom.xml.  
+|  
+| Every toolchain consist of 3 elements:  
+| * type: the type of tool. An often used value is &amp;amp;#8216;jdk&amp;amp;#8217;. Toolchains-aware  
+| plugins should document which type you must use.  
+|  
+| * provides: A list of key/value-pairs.  
+| Based on the toolchain-configuration in the pom.xml Maven will search for  
+| matching &amp;lt;provides/&amp;gt; configuration. You can decide for yourself which key-value  
+| pairs to use. Often used keys are &amp;amp;#8216;version&amp;amp;#8217;, &amp;amp;#8216;vendor&amp;amp;#8217; and &amp;amp;#8216;arch&amp;amp;#8217;. By default  
+| the version has a special meaning. If you configured in the pom.xml &amp;amp;#8216;1.5&amp;amp;#8217;  
+| Maven will search for 1.5 and above.  
+|  
+| * configuration: Additional configuration for this tool.  
+| Look for documentation of the toolchains-aware plugin which configuration elements  
+| can be used.  
+|  
+| See also https://maven.apache.org/guides/mini/guide-using-toolchains.html  
+|  
+| General example
+
+&amp;lt;toolchain&amp;gt;  
+&amp;lt;type/&amp;gt;  
+&amp;lt;provides&amp;gt;  
+&amp;lt;version&amp;gt;1.0&amp;lt;/version&amp;gt;  
+&amp;lt;/provides&amp;gt;  
+&amp;lt;configuration/&amp;gt;  
+&amp;lt;/toolchain&amp;gt;
+
+| JDK examples
+
+&amp;lt;toolchain&amp;gt;  
+&amp;lt;type&amp;gt;jdk&amp;lt;/type&amp;gt;  
+&amp;lt;provides&amp;gt;  
+&amp;lt;version&amp;gt;1.5&amp;lt;/version&amp;gt;  
+&amp;lt;vendor&amp;gt;sun&amp;lt;/vendor&amp;gt;  
+&amp;lt;/provides&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;jdkHome&amp;gt;/path/to/jdk/1.5&amp;lt;/jdkHome&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;/toolchain&amp;gt;  
+&amp;lt;toolchain&amp;gt;  
+&amp;lt;type&amp;gt;jdk&amp;lt;/type&amp;gt;  
+&amp;lt;provides&amp;gt;  
+&amp;lt;version&amp;gt;1.6&amp;lt;/version&amp;gt;  
+&amp;lt;vendor&amp;gt;sun&amp;lt;/vendor&amp;gt;  
+&amp;lt;/provides&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;jdkHome&amp;gt;/path/to/jdk/1.6&amp;lt;/jdkHome&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;/toolchain&amp;gt;
+
+&amp;amp;#8211;&amp;gt;
+
+&amp;lt;toolchain&amp;gt;  
+&amp;lt;type&amp;gt;jdk&amp;lt;/type&amp;gt;  
+&amp;lt;provides&amp;gt;  
+&amp;lt;version&amp;gt;17&amp;lt;/version&amp;gt;  
+&amp;lt;/provides&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;jdkHome&amp;gt;D:\J2EE\Java\jdk-17&amp;lt;/jdkHome&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;/toolchain&amp;gt;  
+&amp;lt;toolchain&amp;gt;  
+&amp;lt;type&amp;gt;jdk&amp;lt;/type&amp;gt;  
+&amp;lt;provides&amp;gt;  
+&amp;lt;version&amp;gt;8&amp;lt;/version&amp;gt;  
+&amp;lt;/provides&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;jdkHome&amp;gt;D:\J2EE\Java\jdk1.8.0_311&amp;lt;/jdkHome&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;/toolchain&amp;gt;
+
+&amp;lt;/toolchains&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;修改项目的 pom.xml 文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+&amp;lt;profiles&amp;gt;  
+&amp;lt;profile&amp;gt;  
+&amp;lt;id&amp;gt;dev&amp;lt;/id&amp;gt;  
+&amp;lt;activation&amp;gt;  
+&amp;lt;activeByDefault&amp;gt;false&amp;lt;/activeByDefault&amp;gt;  
+&amp;lt;/activation&amp;gt;  
+&amp;lt;build&amp;gt;  
+&amp;lt;plugins&amp;gt;  
+&amp;lt;plugin&amp;gt;  
+&amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;  
+&amp;lt;artifactId&amp;gt;maven-toolchains-plugin&amp;lt;/artifactId&amp;gt;  
+&amp;lt;version&amp;gt;3.1.0&amp;lt;/version&amp;gt;  
+&amp;lt;executions&amp;gt;  
+&amp;lt;execution&amp;gt;  
+&amp;lt;goals&amp;gt;  
+&amp;lt;goal&amp;gt;toolchain&amp;lt;/goal&amp;gt;  
+&amp;lt;/goals&amp;gt;  
+&amp;lt;/execution&amp;gt;  
+&amp;lt;/executions&amp;gt;  
+&amp;lt;configuration&amp;gt;  
+&amp;lt;toolchains&amp;gt;  
+&amp;lt;jdk&amp;gt;  
+&amp;lt;version&amp;gt;8&amp;lt;/version&amp;gt;  
+&amp;lt;/jdk&amp;gt;  
+&amp;lt;/toolchains&amp;gt;  
+&amp;lt;/configuration&amp;gt;  
+&amp;lt;/plugin&amp;gt;  
+&amp;lt;/plugins&amp;gt;  
+&amp;lt;/build&amp;gt;  
+&amp;lt;/profile&amp;gt;  
+&amp;lt;/profiles&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;修改完我们在编译的时候只需要运行：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+mvn clean compile -Pdev
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;即可，这样编译就会自动用 jdk8 也不是系统环境变量配置的，当然还有更简单的，我们可以修改 pom.xml 中的配置，只需要把：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

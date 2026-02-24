@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Transaction on 分享技术带来的喜悦</title>
+    <link>http://localhost:1313/tags/transaction/</link>
+    <description>Recent content in Transaction on 分享技术带来的喜悦</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 09 Apr 2017 12:28:35 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/transaction/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>事务并发处理</title>
+      <link>http://localhost:1313/posts/2017-04-09-%E4%BA%8B%E5%8A%A1%E5%B9%B6%E5%8F%91%E5%A4%84%E7%90%86/</link>
+      <pubDate>Sun, 09 Apr 2017 12:28:35 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2017-04-09-%E4%BA%8B%E5%8A%A1%E5%B9%B6%E5%8F%91%E5%A4%84%E7%90%86/</guid>
+      <description>&lt;p&gt;前几天和同事讨论，老夫自以为对事务有了一定的了解，但当讨论的时候发现还是有些说不明白，所以周末的时间，又看了一遍带我入门北京尚学堂马士兵老师关于事务的讲解，这次做一下笔记，以供以后忘了的时候查询方便。这里默认读者对事务的ACID都有了了解，直接说事务并发时可能出现的问题和数据库的事务隔离级别&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;事务并发时可能出现的问题&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;说这个问题记得大学课堂上有一个很经典的例子就是：银行的存取款，这里也用这个例子说明（因为不知道wp博客怎么搞表格和怎么支持MD，所以就搞几张图片吧）&lt;/p&gt;
+&lt;p&gt;①. 第一类丢失更新(Lost Update)&lt;/p&gt;
+&lt;img decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/first_lost_update.png&#34; alt=&#34;第一类丢失更新&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;②. dirty read脏读(读到了另一个事务在处理中还未提交的数据)&lt;/p&gt;
+&lt;img decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/dirty_read.png&#34; alt=&#34;脏读&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;③. non-repeatable read 不可重复读&lt;/p&gt;
+&lt;img decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/non_repeatable_read.png&#34; alt=&#34;不可重复读&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;④. second lost update problem 第二类丢失更新(不可重复读的特殊情况)&lt;/p&gt;
+&lt;img decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/second_lost_update.png&#34; alt=&#34;第二类丢失更新&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;⑤. phantom read 幻读&lt;/p&gt;
+&lt;img decoding=&#34;async&#34; src=&#34;http://om2v5fbz2.bkt.clouddn.com/phantom_read.png&#34; alt=&#34;幻读&#34; class=&#34;alignnone size-medium wp-image-340&#34; /&gt; 
+&lt;p&gt;看到这里可能会有读者对不可重复读和幻读有所迷惑，这两者有什么区别吗？不都是受另一个事务的影响，导致前后结果不一致吗？其实仔细看区别还是很明显的：幻读是关于数据库的delete和insert导致前后的数据不一致，而其他的情况都是数据的更新导致前后的数据不一致&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;数据库的事务隔离机制&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;其中在文档java.sql.Connection中有详细的说明，除了none（没有事务）之外，还有：1:read-uncommitted 2:read-committed 4:repeatable read 8:serializable（数字代表对应值）四种。&lt;br&gt;
+为什么取值要使用 1 2 4 8 而不是 1 2 3 4&lt;br&gt;
+1=0000 2=0010 4=0100 8=1000(位移计算效率高)&lt;/p&gt;
+&lt;p&gt;需要说明的是：&lt;/p&gt;
+&lt;p&gt;只要数据库支持事务，就不可能出现第一类丢失更新&lt;br&gt;
+read-uncommitted(允许读取未提交的数据) 会出现dirty read, phantom-read, non-repeatable read 问题&lt;br&gt;
+read-commited(读取已提交的数据 项目中一般都使用这个)不会出现dirty read，因为只有另一个事务提交才会读出来结果，但仍然会出现 non-repeatable read 和 phantom-read；使用read-commited机制可用悲观锁 乐观锁来解决non-repeatable read 和 phantom-read问题&lt;br&gt;
+repeatable read(事务执行中其他事务无法执行修改或插入操作 较安全)但仍然会出现phantom-read&lt;br&gt;
+serializable解决一切问题(顺序执行事务 不并发，实际中很少用)&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
