@@ -48,6 +48,11 @@ draft = false
   name = '归档'
   url = '/archives/'
   weight = 3
+[[menu.main]]
+  identifier = 'privacy-policy'
+  name = '隐私政策'
+  url = '/privacy-policy/'
+  weight = 4
 
 # 允许 HTML 渲染
 [markup]
