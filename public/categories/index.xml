@@ -6,8 +6,15 @@
     <description>Recent content in Categories on 分享技术带来的喜悦</description>
     <generator>Hugo -- 0.156.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 02 Feb 2026 06:10:09 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 24 Feb 2026 07:47:09 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>其他</title>
+      <link>http://localhost:1313/categories/%E5%85%B6%E4%BB%96/</link>
+      <pubDate>Tue, 24 Feb 2026 07:47:09 +0000</pubDate>
+      <guid>http://localhost:1313/categories/%E5%85%B6%E4%BB%96/</guid>
+      <description></description>
+    </item>
     <item>
       <title>MySQL</title>
       <link>http://localhost:1313/categories/mysql/</link>
@@ -20,13 +27,6 @@
       <link>http://localhost:1313/categories/java/</link>
       <pubDate>Thu, 25 Dec 2025 02:24:23 +0000</pubDate>
       <guid>http://localhost:1313/categories/java/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>其他</title>
-      <link>http://localhost:1313/categories/%E5%85%B6%E4%BB%96/</link>
-      <pubDate>Sun, 26 Mar 2023 07:55:43 +0000</pubDate>
-      <guid>http://localhost:1313/categories/%E5%85%B6%E4%BB%96/</guid>
       <description></description>
     </item>
     <item>

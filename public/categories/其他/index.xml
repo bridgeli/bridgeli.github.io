@@ -6,8 +6,15 @@
     <description>Recent content in 其他 on 分享技术带来的喜悦</description>
     <generator>Hugo -- 0.156.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 26 Mar 2023 07:55:43 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 24 Feb 2026 07:47:09 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/%E5%85%B6%E4%BB%96/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>博客搬家说明</title>
+      <link>http://localhost:1313/posts/2026-02-24-blog-migtate-explain/</link>
+      <pubDate>Tue, 24 Feb 2026 07:47:09 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2026-02-24-blog-migtate-explain/</guid>
+      <description>&lt;p&gt;之前的博客是在阿里云买的服务器，平均每天将近八毛钱，自从大模型问世之后，写博客的欲望聊胜于无，所以经常很久不更新了，但是感觉每天都付这钱太亏了，所以马年上班第一天把博客迁移到了 GitHub pages，因为迁移的比较随便，所以 1. 博客里面嵌入的代码都乱掉了，不过还好现在有大模型了，也不需要拷贝代码了，所以也懒得整理了，2 就是之前有些博客带图，图还在，但需要一一替换，也懒得弄了，所以图片资源也没有了，3. 就是评论都丢失了，其实之前也没几个评论，也都没啥价值，就没迁移，后续看看还加不加评论框吧，之前一直自建博客，一方面是懒，不想动，另一方面是比较喜欢 inove 这个主题，特此说明。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>网站变成全局灰色</title>
       <link>http://localhost:1313/posts/2023-03-26-%E7%BD%91%E7%AB%99%E5%8F%98%E6%88%90%E5%85%A8%E5%B1%80%E7%81%B0%E8%89%B2/</link>

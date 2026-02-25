@@ -2,28 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/categories/</loc>
+    <lastmod>2026-02-24T07:47:09+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2026-02-24T07:47:09+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/%E5%85%B6%E4%BB%96/</loc>
+    <lastmod>2026-02-24T07:47:09+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/%E5%85%B6%E4%BB%96/</loc>
+    <lastmod>2026-02-24T07:47:09+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2026-02-24T01:29:54+00:00</lastmod>
+    <lastmod>2026-02-24T07:47:09+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/2026-02-24-blog-migtate-explain/</loc>
+    <lastmod>2026-02-24T07:47:09+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2026-02-24T07:47:09+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/privacy-policy/</loc>
     <lastmod>2026-02-24T01:29:54+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
-    <lastmod>2026-02-02T06:10:09+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/categories/mysql/</loc>
-    <lastmod>2026-02-02T06:10:09+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
     <lastmod>2026-02-02T06:10:09+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/2026-02-02-%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%93%8D%E5%BA%94%E6%85%A2%E7%9A%84%E6%8E%92%E6%9F%A5/</loc>
     <lastmod>2026-02-02T06:10:09+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/%E5%93%8D%E5%BA%94%E6%85%A2/</loc>
-    <lastmod>2026-02-02T06:10:09+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/</loc>
     <lastmod>2026-02-02T06:10:09+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/%E8%AF%B7%E6%B1%82%E8%B6%85%E6%97%B6/</loc>
@@ -150,9 +159,6 @@
     <lastmod>2024-04-21T05:46:06+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/html/</loc>
-    <lastmod>2023-03-26T07:55:43+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/%E5%85%B6%E4%BB%96/</loc>
     <lastmod>2023-03-26T07:55:43+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/%E7%81%B0%E8%89%B2/</loc>
