@@ -6,7 +6,7 @@
 
 ## 🌐 在线访问
 
-请访问我的博客主页：[https://bridgeli.github.io](https://bridgeli.github.io)
+请访问我的博客主页：[https://bridgeli.cn](https://bridgeli.cn)
 
 ## 🛠️ 技术栈
 
@@ -34,7 +34,7 @@
 ## 📝 撰写新文章
 
    ```bash
-   hugo new content posts/my-new-post.md
+   hugo new posts/my-new-post.md
    ```
 
 ## 📄 许可证
