@@ -15,7 +15,6 @@ tags:
 1. 先看自己手写的 md5 // 今后大家不要这么写了，太傻了
 
 ```
-
 package cn.bridgeli.demo;
 
 import org.slf4j.Logger;  
@@ -72,7 +71,6 @@ return result;
 先引入依赖
 
 ```
-
 <dependency>  
 <artifactId>commons-codec</artifactId>  
 <groupId>commons-codec</groupId>  
@@ -84,7 +82,6 @@ return result;
 具体实现
 
 ```
-
 package cn.bridgeli.demo;
 
 import org.apache.commons.codec.binary.Base64;  

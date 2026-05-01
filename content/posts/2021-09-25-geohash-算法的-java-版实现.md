@@ -14,7 +14,6 @@ tags:
 之前曾经做过一个类 LBS 的小需求，当时是用 redis 做的，就是[这篇文章][1]，其实 GeoHash 算法，我们也可以自己实现，具体如下：
 
 ```
-
 package cn.bridgeli.demo;
 
 import java.util.ArrayList;  
@@ -32,9 +31,9 @@ private static int numbits = 5 * 5; //经纬度单独编码长度
 private static double minLat;  
 private static double minLng;
 
-private final static char[] digits = {&#8216;0&#8217;, &#8216;1&#8217;, &#8216;2&#8217;, &#8216;3&#8217;, &#8216;4&#8217;, &#8216;5&#8217;, &#8216;6&#8217;, &#8216;7&#8217;, &#8216;8&#8217;,  
-&#8216;9&#8217;, &#8216;b&#8217;, &#8216;c&#8217;, &#8216;d&#8217;, &#8216;e&#8217;, &#8216;f&#8217;, &#8216;g&#8217;, &#8216;h&#8217;, &#8216;j&#8217;, &#8216;k&#8217;, &#8216;m&#8217;, &#8216;n&#8217;, &#8216;p&#8217;,  
-&#8216;q&#8217;, &#8216;r&#8217;, &#8216;s&#8217;, &#8216;t&#8217;, &#8216;u&#8217;, &#8216;v&#8217;, &#8216;w&#8217;, &#8216;x&#8217;, &#8216;y&#8217;, &#8216;z&#8217;};
+private final static char[] digits = {'0', '1', '2', '3', '4', '5', '6', '7', '8',  
+'9', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p',  
+'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
 //定义编码映射关系  
 final static HashMap<Character, Integer> lookup = new HashMap<Character, Integer>();
@@ -56,8 +55,8 @@ BitSet latbits = getBits(lat, -90, 90);
 BitSet lonbits = getBits(lon, -180, 180);  
 StringBuilder buffer = new StringBuilder();  
 for (int i = 0; i < numbits; i++) {  
-buffer.append((lonbits.get(i)) ? &#8216;1&#8217; : &#8216;0&#8217;);  
-buffer.append((latbits.get(i)) ? &#8216;1&#8217; : &#8216;0&#8217;);  
+buffer.append((lonbits.get(i)) ? '1' : '0');  
+buffer.append((latbits.get(i)) ? '1' : '0');  
 }  
 String code = base32(Long.parseLong(buffer.toString(), 2));  
 //Log.i("okunu", "encode lat = " + lat + " lng = " + lon + " code = " + code);  
@@ -68,9 +67,9 @@ public ArrayList<String> getAroundGeoHash(double lat, double lon) {
 //Log.i("okunu", "getArroundGeoHash lat = " + lat + " lng = " + lon);  
 ArrayList<String> list = new ArrayList<>();  
 double uplat = lat + minLat;  
-double downLat = lat &#8211; minLat;
+double downLat = lat - minLat;
 
-double leftlng = lon &#8211; minLng;  
+double leftlng = lon - minLng;  
 double rightLng = lon + minLng;
 
 String leftUp = encode(uplat, leftlng);  
@@ -128,22 +127,22 @@ if (!negative) {
 i = -i;  
 }  
 while (i <= -32) {  
-buf[charPos&#8211;] = digits[(int) (-(i % 32))];  
+buf[charPos-] = digits[(int) (-(i % 32))];  
 i /= 32;  
 }  
 buf[charPos] = digits[(int) (-i)];  
 if (negative) {  
-buf[&#8211;charPos] = &#8216;-&#8216;;  
+buf[-charPos] = '-';  
 }  
-return new String(buf, charPos, (65 &#8211; charPos));  
+return new String(buf, charPos, (65 - charPos));  
 }
 
 private void setMinLatLng() {  
-minLat = MAXLAT &#8211; MINLAT;  
+minLat = MAXLAT - MINLAT;  
 for (int i = 0; i < numbits; i++) {  
 minLat /= 2.0;  
 }  
-minLng = MAXLNG &#8211; MINLNG;  
+minLng = MAXLNG - MINLNG;  
 for (int i = 0; i < numbits; i++) {  
 minLng /= 2.0;  
 }  
@@ -179,7 +178,7 @@ int j = 0;
 for (int i = 0; i < numbits * 2; i += 2) {  
 boolean isSet = false;  
 if (i < buffer.length()) {  
-isSet = buffer.charAt(i) == &#8216;1&#8217;;  
+isSet = buffer.charAt(i) == '1';  
 }  
 lonset.set(j++, isSet);  
 }
@@ -189,7 +188,7 @@ j = 0;
 for (int i = 1; i < numbits * 2; i += 2) {  
 boolean isSet = false;  
 if (i < buffer.length()) {  
-isSet = buffer.charAt(i) == &#8216;1&#8217;;  
+isSet = buffer.charAt(i) == '1';  
 }  
 latset.set(j++, isSet);  
 }

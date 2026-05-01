@@ -4,8 +4,6 @@ author: Bridge Li
 type: post
 date: 2014-11-02T14:43:20+00:00
 
-duoshuo_thread_id:
-  - 1.1604454626757E+18
 categories:
   - Java
 tags:

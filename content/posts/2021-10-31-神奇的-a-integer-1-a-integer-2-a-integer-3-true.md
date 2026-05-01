@@ -14,7 +14,6 @@ tags:
 前一段时间看了一篇文章 (a == (Integer) 1 && a == (Integer) 2 && a == (Integer) 3) 是否可以为 true，当时第一反应怎么可能，谁知道再往下看，作者竟然给出来如下代码，一运行神奇的事出现了，真的为 true，代码如下：
 
 ```
-
 package cn.bridgeli.demo;
 
 import java.lang.reflect.Field;
@@ -50,7 +49,6 @@ System.out.println(false);
 很多人可能感觉这还不简单，自动装箱呗，对象类型的 1，还有啥？其实这行代码经过编译之后，调用的是 Integer 的 valueOf 方法，实现如下：
 
 ```
-
 public static Integer valueOf(int i) {  
 if (i >= IntegerCache.low && i <= IntegerCache.high)  
 return IntegerCache.cache[i + (-IntegerCache.low)];  

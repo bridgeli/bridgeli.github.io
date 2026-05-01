@@ -33,9 +33,9 @@ Enabled GC log rotation, requires -Xloggc.
 
 -XX:NumberOfGCLogFiles  
 Set the number of files to use when rotating logs, must be >= 1.  
-The rotated log files will use the following naming scheme, <filename>.0, <filename>.1, &#8230;, <filename>.n-1.  
+The rotated log files will use the following naming scheme, <filename>.0, <filename>.1, ..., <filename>.n-1.  
 设置滚动日志文件的个数，必须大于1  
-日志文件命名策略是，<filename>.0, <filename>.1, &#8230;, <filename>.n-1，其中n是该参数的值
+日志文件命名策略是，<filename>.0, <filename>.1, ..., <filename>.n-1，其中n是该参数的值
 
 -XX:GCLogFileSize  
 The size of the log file at which point the log will be rotated, must be >= 8K.  
@@ -51,16 +51,16 @@ The size of the log file at which point the log will be rotated, must be >= 8K.
 
 UseGCLogFileRotation ：
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2017/12/UseGCLogFileRotation-542x1024.jpg" alt="" width="542" height="1024" class="alignnone size-medium wp-image-503" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2017/12/UseGCLogFileRotation-542x1024.jpg) 
 
 NumberOfGCLogFiles ：
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2017/12/NumberOfGCLogFiles-542x1024.jpg" alt="" width="542" height="1024" class="alignnone size-medium wp-image-502" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2017/12/NumberOfGCLogFiles-542x1024.jpg) 
 
 GCLogFileSize ：
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2017/12/GCLogFileSize-542x1024.jpg" alt="" width="542" height="1024" class="alignnone size-medium wp-image-501" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2017/12/GCLogFileSize-542x1024.jpg) 
 
 分享记录：
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2017/12/UseGCLogFileRotation_NumberOfGCLogFiles_GCLogFileSize-768x4916.png" alt="" width="768" height="4096" class="alignnone size-medium wp-image-504" />
+![](https://www.bridgeli.cn/wp-content/uploads/2017/12/UseGCLogFileRotation_NumberOfGCLogFiles_GCLogFileSize-768x4916.png)

@@ -16,7 +16,6 @@ tags:
 1. 引入依赖
 
 ```
-
 <dependency>  
 <groupId>com.github.xiaoymin</groupId>  
 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>  
@@ -28,7 +27,6 @@ tags:
 从中我们可以看到 artifactId 做了全新的修改，这个需要注意。另外 Spring Boot 3 只支持 OpenAPI3 规范。Knife4j提供的 starter 已经引用 springdoc-openapi 的 jar，大家需注意避免 jar 包冲突，引入之后，其余的配置，开发者即可完全参考 springdoc-openapi 的项目说明，Knife4j 只提供了增强部分，如果要启用 Knife4j 的增强功能，可以在配置文件中进行开启，其实个人测试就算完全不配置，此时也已经可以通过 http://ip:port/doc.html 查看文档：
 
 ```
-
 knife4j:  
 enable: true  
 basic:  
@@ -37,7 +35,6 @@ username: BridgeLi
 password: BridgeLi  
 springdoc:  
 default-flat-param-object: true
-
 ```
 
 最后，使用 OpenAPI3 的规范注解，注释各个 Spring 的 Rest 接口。
@@ -45,7 +42,6 @@ default-flat-param-object: true
 接口层：
 
 ```
-
 import io.swagger.v3.oas.annotations.Operation;  
 import io.swagger.v3.oas.annotations.tags.Tag;  
 import lombok.extern.slf4j.Slf4j;  
@@ -83,7 +79,6 @@ return Result.success(getDataTable(ajlcs));
 实体类：
 
 ```
-
 import io.swagger.v3.oas.annotations.media.Schema;  
 import lombok.Data;
 

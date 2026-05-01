@@ -15,15 +15,15 @@ tags:
 
 1. \*\*添加证书到信任库\*\*：获取正确的证书，并将其添加到 Java 的信任库中。可以使用 \`keytool\` 工具来完成此操作。具体步骤如下：
 
-&#8211; 首先，使用以下命令导出证书：  
+-- 首先，使用以下命令导出证书：  
 ```  
 keytool -printcert -rfc -sslserver <hostname> -port <port>  
 ```  
 其中 ```<hostname>``` 和 ```<port>``` 是你要访问的 HTTPS 接口的主机名和端口号。
 
-&#8211; 然后将证书导出到一个文件中。
+-- 然后将证书导出到一个文件中。
 
-&#8211; 最后，使用以下命令将证书添加到 Java 的信任库中：  
+-- 最后，使用以下命令将证书添加到 Java 的信任库中：  
 ```  
 keytool -importcert -file <certificate-file> -keystore <path-to-truststore> -alias <alias>  
 ```  

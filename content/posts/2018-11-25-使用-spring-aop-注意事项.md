@@ -19,7 +19,6 @@ tags:
 测试用例如下，pom 文件：
 
 ```
-
 <dependency>  
 <groupId>org.slf4j</groupId>  
 <artifactId>slf4j-log4j12</artifactId>  
@@ -47,7 +46,6 @@ tags:
 配置文件就比较简单了：
 
 ```
-
 <?xml version="1.0" encoding="UTF-8"?>  
 <beans xmlns="http://www.springframework.org/schema/beans"  
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
@@ -70,7 +68,6 @@ http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 切面类：
 
 ```
-
 package cn.bridgeli.demo.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;  
@@ -107,7 +104,6 @@ System.out.println("method around end");
 测试类：
 
 ```
-
 package cn.bridgeli.demo.service;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;  

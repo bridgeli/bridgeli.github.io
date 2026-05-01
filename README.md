@@ -20,12 +20,12 @@
 如果您想在本地预览或开发此博客，请确保已安装 [Hugo](https://gohugo.io/getting-started/installing/) 和 [Git](https://git-scm.com/)。
 
 1. **克隆仓库**
-   ```bash
+   ```
    git clone --recurse-submodules https://github.com/bridgeli/bridgeli.github.io.git
    cd bridgeli.github.io
    ```
 2. **启动本地服务器**
-   ```bash
+   ```
    hugo server -D
    ```
 3. **预览**
@@ -33,7 +33,7 @@
 
 ## 📝 撰写新文章
 
-   ```bash
+   ```
    hugo new posts/my-new-post.md
    ```
 

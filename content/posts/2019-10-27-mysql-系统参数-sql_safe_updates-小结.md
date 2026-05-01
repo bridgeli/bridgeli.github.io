@@ -16,19 +16,17 @@ tags:
 1. 查看 sql_safe_updates 的值和修改
 
 ```
+show variables like 'sql_safe_updates'; -- 会话  
+show global variables like 'sql_safe_updates'; -- 全局
 
-show variables like &#8216;sql_safe_updates&#8217;; &#8212; 会话  
-show global variables like &#8216;sql_safe_updates&#8217;; &#8212; 全局
-
-set sql_safe_updates=1; &#8212; 会话  
-set global sql_safe_updates=1; &#8212; 全局
+set sql_safe_updates=1; -- 会话  
+set global sql_safe_updates=1; -- 全局
 
 ```
 
 2. 具体的测试比较简单，就不一张张的贴图了，直接写结论了，大家可以自己测试一下就好了
 
 ```
-
 操作 Delete Update
 
 NO WHERE No No

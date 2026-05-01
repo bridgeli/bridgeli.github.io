@@ -4,8 +4,6 @@ author: Bridge Li
 type: post
 date: 2016-04-04T14:05:19+00:00
 
-duoshuo_thread_id:
-  - 6.2697018663601E+18
 categories:
   - Java
 tags:
@@ -16,7 +14,6 @@ tags:
 1. maven依赖
 
 ```
-
 <dependency>  
 <groupId>javax.servlet</groupId>  
 <artifactId>javax.servlet-api</artifactId>  
@@ -48,7 +45,6 @@ tags:
 2. spring-servlet的配置
 
 ```
-
 <?xml version="1.0" encoding="UTF-8"?>  
 <beans xmlns="http://www.springframework.org/schema/beans"  
 xmlns:context="http://www.springframework.org/schema/context"  
@@ -67,9 +63,9 @@ http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
 http://www.springframework.org/schema/websocket  
 http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
-&#8230;&#8230;
+......
 
-<!&#8211; websocket &#8211;>  
+<!-- websocket -->  
 <bean id="websocket" class="cn.bridgeli.websocket.WebsocketEndPoint"/>  
 <websocket:handlers>  
 <websocket:mapping path="/websocket" handler="websocket"/>  
@@ -86,7 +82,6 @@ http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 3. HandshakeInterceptor的实现
 
 ```
-
 package cn.bridgeli.websocket;
 
 import cn.bridgeli.utils.UserManager;  
@@ -117,7 +112,7 @@ private static final Logger logger = LoggerFactory.getLogger(HandshakeIntercepto
 public boolean beforeHandshake(ServerHttpRequest request,  
 ServerHttpResponse response, WebSocketHandler wsHandler,  
 Map<String, Object> attributes) throws Exception {  
-logger.info("建立握手前&#8230;");  
+logger.info("建立握手前...");  
 ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();  
 UserInfo currUser = UserManager.getSessionUser(attrs.getRequest());  
 UserSocketVo userSocketVo = new UserSocketVo();  
@@ -139,7 +134,7 @@ return super.beforeHandshake(request, response, wsHandler, attributes);
 public void afterHandshake(ServerHttpRequest request,  
 ServerHttpResponse response, WebSocketHandler wsHandler,  
 Exception ex) {  
-logger.info("建立握手后&#8230;");  
+logger.info("建立握手后...");  
 super.afterHandshake(request, response, wsHandler, ex);  
 }  
 }
@@ -151,7 +146,6 @@ super.afterHandshake(request, response, wsHandler, ex);
 4. UserSocketVo的定义
 
 ```
-
 package cn.bridgeli.websocket;
 
 import org.springframework.web.socket.WebSocketSession;
@@ -182,7 +176,6 @@ private WebSocketSession webSocketSession; //用户对应的wsSession 默认仅�
 5. WebsocketEndPoint的实现
 
 ```
-
 package cn.bridgeli.websocket;
 
 import org.slf4j.Logger;  
@@ -228,7 +221,7 @@ WSSessionLocalCache.remove(userSocketVo.getUserEmail());
 WSSessionLocalCache.put(userSocketVo.getUserEmail(), userSocketVo);  
 newsListener.afterConnectionEstablished(userSocketVo.getUserEmail());  
 }  
-logger.info("socket成功建立连接&#8230;");  
+logger.info("socket成功建立连接...");  
 super.afterConnectionEstablished(session);  
 }
 
@@ -238,7 +231,7 @@ UserSocketVo userSocketVo = (UserSocketVo)session.getAttributes().get("SESSION_U
 if(null != userSocketVo){  
 WSSessionLocalCache.remove(userSocketVo.getUserEmail());  
 }  
-logger.info("socket成功关闭连接&#8230;");  
+logger.info("socket成功关闭连接...");  
 super.afterConnectionClosed(session, status);  
 }  
 }
@@ -248,7 +241,6 @@ super.afterConnectionClosed(session, status);
 6. WSSessionLocalCache的实现
 
 ```
-
 package cn.bridgeli.websocket;
 
 import java.io.Serializable;  

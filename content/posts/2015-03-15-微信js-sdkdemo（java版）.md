@@ -4,8 +4,6 @@ author: Bridge Li
 type: post
 date: 2015-03-15T14:17:09+00:00
 
-duoshuo_thread_id:
-  - 1.1604454626757E+18
 categories:
   - 微信
 tags:
@@ -16,12 +14,12 @@ tags:
 前几天在公司开发一个功能：微信分享，要求是分享的不是用户当前看到的这个页面，大家知道这在以前其实很简单的，但去年的最后一天，微信大力打击诱导分享、关注之后，以前的分享就不能用了，好在后来微信开放了JS SDK接口，可以满足这个需求，由于网上的例子写的都很简单，而且大多都是php，今天老夫就记录一下自己用Java如何实现的这个功能，窃以为比网上的很多Demo更具有实用性，大家在使用中如果有什么疑问，欢迎留言交流。废话到此为止，下面看看如何实现，当然了首先肯定要参考微信的文档：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html，其实这个文档上面说的已经比较详细了，但是距离真正使用当然还是有一定的距离的，在说老夫的代码之前，再多说一句，想调用微信的JS SDK，请确保你有一个经过微信认证的服务号，否则你是调用不了的，好，下面就看代码了：
 
 ```  
-$(&#8216;.share&#8217;).tap(function(){
-    var urlCurrery = window.location.href.split(&#8216;#&#8217;)[0];
+$('.share').tap(function(){
+    var urlCurrery = window.location.href.split('#')[0];
     $.ajax({
             type : "post",
-            url : &#8216;share.do&#8217;,
-    data : {&#8216;urlCurrery&#8217;:urlCurrery},
+            url : 'share.do',
+    data : {'urlCurrery':urlCurrery},
     success : function(data) {
         var dataObj = eval(data)[0];
         var url =dataObj.url;
@@ -37,34 +35,34 @@ $(&#8216;.share&#8217;).tap(function(){
                 nonceStr: nonce_str,
                 signature: signature,
                 jsApiList: [  
-&#8216;checkJsApi&#8217;,  
-&#8216;onMenuShareTimeline&#8217;,  
-&#8216;onMenuShareAppMessage&#8217;  
+'checkJsApi',  
+'onMenuShareTimeline',  
+'onMenuShareAppMessage'  
 ]  
 });
 
         wx.ready(function () {
             wx.onMenuShareAppMessage({
-                    title: &#8216;分享测试&#8217;,
-            desc: &#8216;分享测试&#8217;,
-            link: &#8216;https://bridgeli.cn&#8217;,  
-            imgUrl: &#8221;,
+                    title: '分享测试',
+            desc: '分享测试',
+            link: 'https://bridgeli.cn',  
+            imgUrl: ",
 
             success: function (res) {
-                alert(&#8216;已分享&#8217;);
+                alert('已分享');
             }  
 });
             wx.onMenuShareTimeline({
-                    title: &#8216;分享测试&#8217;,
-            link: &#8216;https://bridgeli.cn&#8217;,  
-            imgUrl: &#8221;,
+                    title: '分享测试',
+            link: 'https://bridgeli.cn',  
+            imgUrl: ",
 
             success: function (res) {
-                alert(&#8216;已分享&#8217;);
+                alert('已分享');
             }  
 });
-            alert(&#8216;已注册获取“发送给朋友”状态事件&#8217;);
-            alert(&#8216;已注册获取“分享到朋友圈”状态事件&#8217;);
+            alert('已注册获取“发送给朋友”状态事件');
+            alert('已注册获取“分享到朋友圈”状态事件');
         });
     }  
 });

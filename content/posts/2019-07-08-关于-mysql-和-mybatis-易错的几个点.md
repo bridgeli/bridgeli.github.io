@@ -18,7 +18,6 @@ tags:
 代码大概就是：
 
 ```
-
 SELECT * FROM t ORDER BY "id DESC";
 
 ```
@@ -30,7 +29,6 @@ SELECT * FROM t ORDER BY "id DESC";
 代码如下：
 
 ```
-
 /**  
 * 开始页码  
 */  
@@ -56,7 +54,6 @@ limit #{pageSize}
 3. UPDATE
 
 ```
-
 UPDATE t SET username = "BridgeLi" AND passwd = "BridgeLi" WHERE id = 1;
 
 ```
@@ -64,7 +61,6 @@ UPDATE t SET username = "BridgeLi" AND passwd = "BridgeLi" WHERE id = 1;
 这个 SQL 有问题吗？会报错吗？这个问题有时候真不太看得出来，其实也很明显，SET 后面的各个列应该是 “,” 相连，而这个用的是 AND，有时候脑子一抽，还真有可能写错。但是会报错吗？这个问题还真不好答复，因为这个 SQL 这么写，相当于：
 
 ```
-
 UPDATE t SET username = ("BridgeLi" AND passwd = "BridgeLi") WHERE id = 1;
 
 ```
@@ -73,10 +69,10 @@ UPDATE t SET username = ("BridgeLi" AND passwd = "BridgeLi") WHERE id = 1;
 
 说完了，这三个报错，说一下为什么会出现这些问题，其实 3 很简单，就是脑子一抽写错了，这个没啥说的；1 和 2 也其实是一个问题，就是对 mybatis 不熟啊，简单说一下。
 
-1. 对于 #{variable} 的变量，mybatis 会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号：&#8221;variable&#8221;；  
+1. 对于 #{variable} 的变量，mybatis 会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号："variable"；  
 2. 对于 ${variable} 的变量，mybatis 会将其视作直接变量，即在变量替换成功后，不会再给其加上引号：variable
 
-所以在 order by ${name} 中，传入的直接是 name ，不带双引号，因为 order by 不是 = 赋值，如果直接 order by #{name}，结果是 order by &#8220;name&#8221;，自然就不行了
+所以在 order by ${name} 中，传入的直接是 name ，不带双引号，因为 order by 不是 = 赋值，如果直接 order by #{name}，结果是 order by "name"，自然就不行了
 
 总结，#{variable} 传入字符串，可以在日志查看到传入的参数，需要赋值后使用，可以有效防止 SQL 注入，${variable} 是直接传入变量，在日志查看不到传入的变量，直接在 SQL 中执行，无法防止 SQL 注入，所以，尽量用 #{variable} 格式，但如果不是类似 = 赋值后再使用的 SQL，需要使用 ${variable}。另外网上还说有内需要注意 # 与 $ 的区别，没有太在意过，一般都是和 大于小于 混用的时候，偶尔会写他，不写也不会报错，大家可以自己测试一下。
 

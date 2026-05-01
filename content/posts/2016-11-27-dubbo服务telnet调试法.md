@@ -18,7 +18,6 @@ tags:
 1. 进入调试模式
 
 ```
-
 telnet localhost 20880
 
 ```
@@ -32,7 +31,6 @@ telnet localhost 20880
 ①. 显示服务列表
 
 ```
-
 ls
 
 ```
@@ -40,7 +38,6 @@ ls
 ②. 显示服务详细信息列表
 
 ```
-
 ls -l
 
 ```
@@ -48,7 +45,6 @@ ls -l
 ③. 显示服务的方法列表
 
 ```
-
 ls XxxService
 
 ```
@@ -56,7 +52,6 @@ ls XxxService
 ④. 显示服务的方法详细信息列表
 
 ```
-
 ls -l XxxService
 
 ```
@@ -68,7 +63,6 @@ ls -l XxxService
 ①. 显示服务端口列表
 
 ```
-
 ps
 
 ```
@@ -76,7 +70,6 @@ ps
 ②. 显示服务地址列表
 
 ```
-
 ps -l
 
 ```
@@ -84,7 +77,6 @@ ps -l
 ③. 显示端口上的连接信息
 
 ```
-
 ps 20880
 
 ```
@@ -92,7 +84,6 @@ ps 20880
 ④, 显示端口上的连接详细信息
 
 ```
-
 ps -l 20880
 
 ```
@@ -104,7 +95,6 @@ ps -l 20880
 ①. 改变缺省服务，当设置了缺省服务，凡是需要输入服务名作为参数的命令，都可以省略服务参数
 
 ```
-
 cd XxxService
 
 ```
@@ -112,7 +102,6 @@ cd XxxService
 ②. 取消缺省服务
 
 ```
-
 cd /
 
 ```
@@ -128,7 +117,6 @@ cd /
 ①. 跟踪1次服务任意方法的调用情况
 
 ```
-
 trace XxxService
 
 ```
@@ -136,13 +124,11 @@ trace XxxService
 ②. 跟踪10次服务任意方法的调用情况
 
 ```
-
 trace XxxService 10
 
 ```
 
 ③. 跟踪1次服务方法的调用情况
-
 ```
 
 trace XxxService xxxMethod
@@ -152,7 +138,6 @@ trace XxxService xxxMethod
 ④. 跟踪1次服务方法的调用情况
 
 ```
-
 trace XxxService xxxMethod 10
 
 ```
@@ -164,7 +149,6 @@ trace XxxService xxxMethod 10
 ①. 统计1次服务任意方法的调用情况
 
 ```
-
 count XxxService
 
 ```
@@ -172,7 +156,6 @@ count XxxService
 ②. 统计10次服务任意方法的调用情况
 
 ```
-
 count XxxService 10
 
 ```
@@ -180,7 +163,6 @@ count XxxService 10
 ③. 统计1次服务方法的调用情况
 
 ```
-
 count XxxService xxxMethod
 
 ```
@@ -188,7 +170,6 @@ count XxxService xxxMethod
 ④. 统计10次服务方法的调用情况 
 
 ```
-
 count XxxService xxxMethod 10
 
 ```
@@ -200,7 +181,6 @@ count XxxService xxxMethod 10
 ①. 调用服务的方法。
 
 ```
-
 invoke XxxService.xxxMethod({"prop": "value"})
 
 ```
@@ -208,7 +188,6 @@ invoke XxxService.xxxMethod({"prop": "value"})
 ②. 调用服务的方法(自动查找包含此方法的服务)
 
 ```
-
 invoke xxxMethod({"prop": "value"})
 
 ```
@@ -219,7 +198,6 @@ invoke xxxMethod({"prop": "value"})
 ②. 如果是基本类型，例如int，则应该直接：
 
 ```
-
 invoke xxxMethod(1)
 
 ```
@@ -231,7 +209,6 @@ invoke xxxMethod(1)
 ①. 显示汇总状态，该状态将汇总所有资源的状态，当全部OK时则显示OK，只要有一个ERROR则显示ERROR，只要有一个WARN则显示WARN。
 
 ```
-
 status
 
 ```
@@ -239,7 +216,6 @@ status
 ②. 显示状态列表
 
 ```
-
 status -l
 
 ```
@@ -251,7 +227,6 @@ status -l
 ①. 修改dubbo logger的日志级别
 
 ```
-
 log debug 
 
 ```
@@ -259,7 +234,6 @@ log debug
 ②. 查看file logger的最后100字符的日志
 
 ```
-
 log 100
 
 ```
@@ -271,7 +245,6 @@ log 100
 ①. 显示telnet命帮助信息
 
 ```
-
 help
 
 ```
@@ -279,7 +252,6 @@ help
 ②. 显示xxx命令的详细帮助信息。
 
 ```
-
 help xxx
 
 ```
@@ -291,14 +263,13 @@ help xxx
 ①. 清除屏幕上的内容。
 
 ```
-
 clear
 
 ```
 
-②. 清除屏幕上的指定行数的内容  
-```
+②. 清除屏幕上的指定行数的内容 
 
+```
 clear 100
 
 ```

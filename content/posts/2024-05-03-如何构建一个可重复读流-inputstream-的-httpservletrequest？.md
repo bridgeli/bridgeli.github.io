@@ -16,7 +16,6 @@ tags:
 解决方法：使用自定义类来缓存 stream 即可 RequestWrapper 类：缓存字节数据
 
 ```
-
 package cn.bridgeli.filter;
 
 import cn.bridgeli.utils.http.HttpHelper;
@@ -121,7 +120,6 @@ return sb.toString();
 然后，可以在 Servlet 或 Filter 中使用 RepeatableFilter 替换原始的 HttpServletRequest。
 
 ```
-
 package cn.bridgeli.filter;
 
 import cn.bridgeli.filter.RepeatedlyRequestWrapper;

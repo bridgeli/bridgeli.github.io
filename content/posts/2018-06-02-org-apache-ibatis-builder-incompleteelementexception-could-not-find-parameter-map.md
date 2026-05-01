@@ -14,7 +14,6 @@ tags:
 上周和同事一块开发一个功能模块，在开发中拉下来同事代码，在测试的时候，突然跑不通了，报错信息如下：
 
 ```
-
 org.apache.ibatis.builder.IncompleteElementException: Could not find parameter map java.util.Map
 
 at org.apache.ibatis.builder.MapperBuilderAssistant.getStatementParameterMap(MapperBuilderAssistant.java:320)  
@@ -61,14 +60,13 @@ Caused by: java.lang.IllegalArgumentException: Parameter Maps collection does no
 at org.apache.ibatis.session.Configuration$StrictMap.get(Configuration.java:853)  
 at org.apache.ibatis.session.Configuration.getParameterMap(Configuration.java:625)  
 at org.apache.ibatis.builder.MapperBuilderAssistant.getStatementParameterMap(MapperBuilderAssistant.java:318)  
-&#8230; 39 more
+... 39 more
 
 ```
 
 看报错信息，也就是自己跑一个 junit test，测试批量插入，突然他就不行了，再看看自己写的批量插入没问题啊，我也没用 map，感觉好奇怪，就网上搜了一下这个问题，原来确实有问题，也确实在这个配置文件中，提示的错误也对，就是提示的位置不对。mybatis 中只要有任何一个地方报错，都无法通过。最后搜了一下发现是刚刚来下来的代码，同事新增了一个方法上将 parameterType 写成了 parameterMap 了
 
 ```
-
 <select id="getByMap" parameterMap="java.util.Map" resultMap="baseResultMap">
 
 ```

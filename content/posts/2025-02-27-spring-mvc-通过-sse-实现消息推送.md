@@ -15,7 +15,6 @@ tags:
 1. 编写 SSE 服务，来进行创建链接和发送消息
 
 ```
-
 package cn.bridgeli.demo;
 
 import lombok.Getter;  
@@ -104,7 +103,6 @@ emitters.remove(userId);
 2. 编写对应的 Controller 给前端提供接口：
 
 ```
-
 package cn.bridgeli.demo;
 
 import cn.bridgeli.BaseAuthController;  
@@ -137,7 +135,6 @@ return sseService.stream(getLoginUsr().getUsrId());
 3. 消息推送具体实现：
 
 ```
-
 package cn.bridgeli.demo;
 
 import cn.bridgeli.common.SseService;  

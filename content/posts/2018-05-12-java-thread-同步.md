@@ -20,7 +20,6 @@ tags:
 Thread类中的join方法的主要作用就是同步，它可以使得线程之间的并行执行变为串行执行。具体看代码：
 
 ```
-
 package cn.bridgeli.demo;
 
 public class ThreadTest {
@@ -74,7 +73,6 @@ e.printStackTrace();
 3. join 方法实现原理
 
 ```
-
 /**  
 * Waits for this thread to die.  
 *  
@@ -130,12 +128,12 @@ wait(0);
 }  
 } else {  
 while (isAlive()) {  
-long delay = millis &#8211; now;  
+long delay = millis - now;  
 if (delay <= 0) {  
 break;  
 }  
 wait(delay);  
-now = System.currentTimeMillis() &#8211; base;  
+now = System.currentTimeMillis() - base;  
 }  
 }  
 }

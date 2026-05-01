@@ -16,7 +16,6 @@ tags:
 去年五月份的时候曾经写过一篇：[Spring加Mybatis实现MySQL数据库主从读写分离][1]，实现的原理是配置了多套数据源，相应的sqlsessionfactory，transactionmanager和事务代理各配置了一套，如果从库或数据库有多个的时候，需要配置的信息会越来越多，远远不够优雅，在我们编程界有一个规范：约定优于配置。所以就用Sping的aop实现了一个简单的数据库分离方案，具体实现代码放在了Github上，地址如下：
 
 ```
-
 https://github.com/bridgeli/practical-util/tree/master/src/main/java/cn/bridgeli/datasource
 
 ```
@@ -24,7 +23,6 @@ https://github.com/bridgeli/practical-util/tree/master/src/main/java/cn/bridgeli
 读者如果想使用再简单的方法就是把这个代码download下来，放到自己的项目里面，当然更优雅的方式是：打成jar包，放到项目里面了，具体打jar的方法，老夫就不在这里多说了，相信看这篇文章的读者肯定都会了。当然仅仅有这份代码，他们是不会自动生效的，既然是使用Spring的Aop实现数据库读写分离，所以肯定会有牵涉到Aop的配置了，所以在spring-mybatis.xml中有如下配置：
 
 ```
-
 <?xml version="1.0" encoding="UTF-8"?>  
 <beans xmlns="http://www.springframework.org/schema/beans"  
 xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"  
@@ -36,7 +34,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-<!&#8211; 配置写数据源 &#8211;>  
+<!-- 配置写数据源 -->  
 <bean id="masterDataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">  
 <property name="driverClassName" value="${bridgeli.jdbc.driver}" />  
 <property name="url" value="${bridgeli.jdbc.url}" />  
@@ -58,7 +56,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 <property name="filters" value="stat" />  
 </bean>
 
-<!&#8211; 配置读数据源 &#8211;>  
+<!-- 配置读数据源 -->  
 <bean id="parentSlaveDataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">  
 <property name="driverClassName" value="${bridgeli.jdbc.driver}" />  
 <property name="validationQuery" value="${bridgeli.jdbc.validationQuery}" />  
@@ -109,19 +107,19 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 <aop:aspectj-autoproxy/>
 
-<!&#8211; mybaits 数据工厂 &#8211;>  
+<!-- mybaits 数据工厂 -->  
 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
 <property name="dataSource" ref="dataSource" />  
 </bean>
 
-<!&#8211; 自动扫描所有注解的路径 &#8211;>  
+<!-- 自动扫描所有注解的路径 -->  
 <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
 <property name="basePackage" value="cn.bridgeli.mapper" />  
-<!&#8211; <property name="sqlSessionFactory" ref="sqlSessionFactory" /> &#8211;>  
+<!-- <property name="sqlSessionFactory" ref="sqlSessionFactory" /> -->  
 <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
 </bean>
 
-<!&#8211; 数据库切面 &#8211;>  
+<!-- 数据库切面 -->  
 <bean id="masterSlaveAspect" class="cn.bridgeli.datasource.MasterSlaveAspect">  
 <property name="prefixMasters">  
 <list>  

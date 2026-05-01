@@ -21,27 +21,27 @@ spring 中依赖注入有两个注解：Autowired 和 Resource。Resource 的注
 
 原版群里的详细讨论如下图（至于深层次的原因，大家可以根据源码自己跟进看一下）：
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource1-768x1451.png" alt="" width="768" height="1451" class="alignnone size-medium wp-image-551" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource1-768x1451.png) 
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource2-768x1451.png" alt="" width="768" height="1451" class="alignnone size-medium wp-image-552" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource2-768x1451.png) 
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource3-768x1451.png" alt="" width="768" height="1451" class="alignnone size-medium wp-image-553" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource3-768x1451.png) 
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource4-768x1451.png" alt="" width="768" height="1451" class="alignnone size-medium wp-image-554" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource4-768x1451.png) 
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource5-768x1451.png" alt="" width="768" height="1451" class="alignnone size-medium wp-image-555" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource5-768x1451.png) 
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource6-768x1451.png" alt="" width="768" height="1451" class="alignnone size-medium wp-image-556" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource6-768x1451.png) 
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource7-768x1451.png" alt="" width="768" height="1451" class="alignnone size-medium wp-image-557" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource7-768x1451.png) 
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource8-768x1451.png" alt="" width="768" height="1451" class="alignnone size-medium wp-image-558" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource8-768x1451.png) 
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource9-768x1451.png" alt="" width="768" height="1451" class="alignnone size-medium wp-image-559" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource9-768x1451.png) 
 
 里面 深圳-随缘-颉 贴出的一张图：
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2018/07/spring_papulateBean-768x445.jpeg" alt="" width="768" height="445" class="alignnone size-medium wp-image-561" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/spring_papulateBean-768x445.jpeg) 
 
 感谢这一群小伙伴，如果有信息泄漏，很抱歉。
 

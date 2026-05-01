@@ -4,8 +4,6 @@ author: Bridge Li
 type: post
 date: 2015-02-08T15:13:08+00:00
 
-duoshuo_thread_id:
-  - 1.1604454626757E+18
 categories:
   - Android
 tags:

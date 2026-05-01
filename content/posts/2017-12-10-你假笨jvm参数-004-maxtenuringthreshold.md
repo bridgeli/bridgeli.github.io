@@ -27,8 +27,8 @@ Parallel Scavenge中默认值为15，CMS中默认值为6，G1中默认值为15
 
 小程序截图：
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2017/12/MaxTenuringThreshold_JVMPocket-290x1024.png" alt="" width="290" height="1024" class="alignnone size-medium wp-image-469" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2017/12/MaxTenuringThreshold_JVMPocket-290x1024.png) 
 
 分享记录：
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2017/12/MaxTenuringThreshold-298x1024.png" alt="" width="298" height="1024" class="alignnone size-medium wp-image-468" />
+![](https://www.bridgeli.cn/wp-content/uploads/2017/12/MaxTenuringThreshold-298x1024.png)

@@ -27,10 +27,10 @@ JDK 1.6 起，当冲突次数超过 100 次会自动 rehash，即便如此，若
 
 小程序截图：
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2017/11/JVMPocket_StringTableSize-576x1024.jpg" alt="" width="576" height="1024" class="alignnone size-medium wp-image-424" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2017/11/JVMPocket_StringTableSize-576x1024.jpg) 
 
 分享记录：
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2017/11/StringTableSize-260x1024.png" alt="" width="260" height="1024" class="alignnone size-medium wp-image-425" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2017/11/StringTableSize-260x1024.png) 
 
 感谢你假笨

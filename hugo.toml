@@ -1,5 +1,5 @@
 baseURL = 'https://bridgeli.cn/'
-languageCode = 'zh-cn'
+languageCode = 'zh'
 title = "分享技术带来的喜悦"
 theme = 'PaperMod'
 draft = false
@@ -15,11 +15,14 @@ draft = false
   keywords = ['博客', '技术', 'Java']
   defaultTheme = 'auto'
   disableThemeToggle = false
-  ShowShareButtons = true
+  ShowPostNavLinks = true
+  ShowShareButtons = false
   ShowReadingTime = true
   ShowBreadCrumbs = true
   ShowCodeCopyButtons = true
-  ShowWordCount = true
+  ShowWordCount = false
+  ShowToc = true
+  TocOpen = true
 
 [params.homeInfoParams]
   Title = '欢迎来到我的博客'
@@ -68,3 +71,15 @@ draft = false
 [taxonomies]
   category = 'categories'
   tag = 'tags'
+
+# RSS 输出全量内容
+[outputs]
+  home = ['HTML', 'RSS']
+  section = ['HTML', 'RSS']
+  taxonomy = ['HTML', 'RSS']
+  term = ['HTML', 'RSS']
+
+[outputFormats]
+  [outputFormats.RSS]
+    mediatype = 'application/rss+xml'
+    baseName = 'index'

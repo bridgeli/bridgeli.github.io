@@ -24,12 +24,11 @@ tags:
 接下来就是最重要的部分，Blowfish加密算法的实现：
 
 ```
-
 package cn.bridgeli.encrypt;
 
 public enum BlowfishManager {
 
-BRIDGELI_CN("bridgeli_cn!@#$abc123_");
+BRIDGELI_CN("YOUR_SECRET_KEY");
 
 private BlowfishManager(String secret) {  
 this.blowfish = new Blowfish(secret);  
@@ -72,7 +71,6 @@ System.out.println(decryptString);
 这是对外的接口，使用起来非常简单，对用户很友好，下面是算法的具体实现：
 
 ```
-
 package cn.bridgeli.encrypt;
 
 import java.security.MessageDigest;  
@@ -614,7 +612,7 @@ buf[nPos++] = (byte) (cActChar >> 8 & 0xff);
 buf[nPos++] = (byte) (cActChar & 0xff);  
 }
 
-byte bPadVal = (byte) (buf.length &#8211; (nStrLen << 1));  
+byte bPadVal = (byte) (buf.length - (nStrLen << 1));  
 while (nPos < buf.length) {  
 buf[nPos++] = bPadVal;  
 }  
@@ -645,7 +643,7 @@ if (nNumOfBytes < nLen) {
 return null;  
 }  
 m_bfish.decrypt(buf);  
-int nPadByte = buf[buf.length &#8211; 1] & 0xff;  
+int nPadByte = buf[buf.length - 1] & 0xff;  
 if (nPadByte > 8 || nPadByte < 0) {  
 nPadByte = 0;  
 }  
@@ -708,11 +706,11 @@ return sbuf.toString();
 private static int binHexToBytes(String sBinHex, byte data[], int nSrcPos, int nDstPos,  
 int nNumOfBytes) {  
 int nStrLen = sBinHex.length();  
-int nAvailBytes = nStrLen &#8211; nSrcPos >> 1;  
+int nAvailBytes = nStrLen - nSrcPos >> 1;  
 if (nAvailBytes < nNumOfBytes) {  
 nNumOfBytes = nAvailBytes;  
 }  
-int nOutputCapacity = data.length &#8211; nDstPos;  
+int nOutputCapacity = data.length - nDstPos;  
 if (nNumOfBytes > nOutputCapacity) {  
 nNumOfBytes = nOutputCapacity;  
 }  
@@ -723,12 +721,12 @@ boolean blConvertOK = true;
 for (int nJ = 0; nJ < 2; nJ++) {  
 bActByte <<= 4;  
 char cActChar = sBinHex.charAt(nSrcPos++);  
-if (cActChar >= &#8216;a&#8217; && cActChar <= &#8216;f&#8217;) {  
-bActByte |= (byte) (cActChar &#8211; 97) + 10;  
+if (cActChar >= 'a' && cActChar <= 'f') {  
+bActByte |= (byte) (cActChar - 97) + 10;  
 continue;  
 }  
-if (cActChar >= &#8216;0&#8217; && cActChar <= &#8216;9&#8217;) {  
-bActByte |= (byte) (cActChar &#8211; 48);  
+if (cActChar >= '0' && cActChar <= '9') {  
+bActByte |= (byte) (cActChar - 48);  
 } else {  
 blConvertOK = false;  
 }  
@@ -745,7 +743,7 @@ return nResult;
 
 private static String byteArrayToUNCString(byte data[], int nStartPos, int nNumOfBytes) {  
 nNumOfBytes &= -2;  
-int nAvailCapacity = data.length &#8211; nStartPos;  
+int nAvailCapacity = data.length - nStartPos;  
 if (nAvailCapacity < nNumOfBytes) {  
 nNumOfBytes = nAvailCapacity;  
 }  
@@ -762,7 +760,7 @@ return sbuf.toString();
 
 private BlowfishCBC m_bfish;  
 private static Random m_rndGen = new Random();  
-static final char HEXTAB[] = { &#8216;0&#8217;, &#8216;1&#8217;, &#8216;2&#8217;, &#8216;3&#8217;, &#8216;4&#8217;, &#8216;5&#8217;, &#8216;6&#8217;, &#8216;7&#8217;, &#8216;8&#8217;, &#8216;9&#8217;, &#8216;a&#8217;, &#8216;b&#8217;, &#8216;c&#8217;, &#8216;d&#8217;, &#8216;e&#8217;, &#8216;f&#8217; };
+static final char HEXTAB[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
 }
 

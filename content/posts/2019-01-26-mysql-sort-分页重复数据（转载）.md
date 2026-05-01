@@ -23,7 +23,6 @@ tags:
 在 MySQL 5.6 的版本上，优化器在遇到 order by limit 语句的时候，做了一个优化，即使用了 priority queue。参考伪代码：
 
 ```
-
 while (get_next_sortkey())  
 {  
 if (using priority queue)  
@@ -33,16 +32,16 @@ else
 if (no free space in sort_keys buffers)  
 {  
 sort sort_keys buffer;  
-dump sorted sequence to &#8216;tempfile&#8217;;  
-dump BUFFPEK describing sequence location into &#8216;buffpek_pointers&#8217;;  
+dump sorted sequence to 'tempfile';  
+dump BUFFPEK describing sequence location into 'buffpek_pointers';  
 }  
-put sort key into &#8216;sort_keys&#8217;;  
+put sort key into 'sort_keys';  
 }  
 }  
 if (sort_keys has some elements && dumped at least once)  
 sort-dump-dump as above;  
 else  
-don&#8217;t sort, leave sort_keys array to be sorted by caller
+don't sort, leave sort_keys array to be sorted by caller
 
 ```
 

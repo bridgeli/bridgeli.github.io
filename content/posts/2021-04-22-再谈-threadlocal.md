@@ -14,7 +14,6 @@ tags:
 我们首先看一个例子：
 
 ```
-
 package cn.bridgeli.demo;
 
 /**  
@@ -32,7 +31,6 @@ String name = "Denny";
 然后我们有一个操作：
 
 ```
-
 package cn.bridgeli.demo;
 
 import org.junit.Test;
@@ -71,7 +69,6 @@ e.printStackTrace();
 这个时候我们就知道一定会有线程安全问题，所以我们怎么解决这个问题呢？就是 ThreadLocal，请看下面：
 
 ```
-
 package cn.bridgeli.demo.reference;
 
 import org.junit.Test;
@@ -110,7 +107,6 @@ e.printStackTrace();
 这个时候我们发现，一个线程里面放入的对象，我们在另一个线程拿不到，就这样解决了线程安全问题，那么这个又是如何做到的呢？我们通过源码分析，我们首先看 set 方法：
 
 ```
-
 public void set(T value) {  
 Thread t = Thread.currentThread();  
 ThreadLocalMap map = getMap(t);  
@@ -125,7 +121,6 @@ createMap(t, value);
 第一步先获取 当前线程，第二步获取当前线程的一个属性：threadLocals，类型是 ThreadLocalMap，这一步也就是说，在不同的线程里面，获取到的 t 对象肯定不是同一个，那么我们的 map 对象当然也就不是同一个了，所以下一步 set 的时候，不同的线程，也就 set 到了不同的对象里面去了，那么我们 get 的时候：
 
 ```
-
 public T get() {  
 Thread t = Thread.currentThread();  
 ThreadLocalMap map = getMap(t);  
@@ -155,7 +150,6 @@ return setInitialValue();
 我们通过源码可以看到，我们初始化线程的时候有一行代码：
 
 ```
-
 ThreadLocal.ThreadLocalMap threadLocals = null; 
 
 ```
@@ -163,7 +157,6 @@ ThreadLocal.ThreadLocalMap threadLocals = null;
 也就是说 ThreadLocalMap 的初始值是 null，所以我们 set 的时候，getMap(t) 得到的一定是 null，代码进入到 else 取执行：createMap(t, value)，这个方法很简单就一行实现：
 
 ```
-
 t.threadLocals = new ThreadLocalMap(this, firstValue);
 
 ```
@@ -171,10 +164,9 @@ t.threadLocals = new ThreadLocalMap(this, firstValue);
 也就是 new 了一个 ThreadLocalMap 对象，赋值给了当前线程的 threadLocals 属性，所以我们要看 ThreadLocalMap 的构造方法：
 
 ```
-
 ThreadLocalMap(ThreadLocal<?> firstKey, Object firstValue) {  
 table = new Entry[INITIAL_CAPACITY];  
-int i = firstKey.threadLocalHashCode & (INITIAL_CAPACITY &#8211; 1);  
+int i = firstKey.threadLocalHashCode & (INITIAL_CAPACITY - 1);  
 table[i] = new Entry(firstKey, firstValue);  
 size = 1;  
 setThreshold(INITIAL_CAPACITY);  
@@ -185,7 +177,6 @@ setThreshold(INITIAL_CAPACITY);
 也很简单 new 了一个 Entry 对象，这个我们都很熟了，和 HashMap 很类似，那么他和 HashMap 的 Entry 是不是一样的呢？我们接着看一下：
 
 ```
-
 static class Entry extends WeakReference<ThreadLocal<?>> {  
 /*\* The value associated with this ThreadLocal. \*/  
 Object value;
@@ -203,7 +194,6 @@ value = v;
 看完上面这段话，有人发现，哎，不对啊，你不说我还用的好好的，你一说，把我说糊涂了，糊涂在哪呢？就在 WeakReference 这，WeakReference 是弱引用没错的，k 也确实是 ThreadLocal 对象，按照弱引用的特点，一 GC 不管三七二十一就把这个 key 回收了，在我们的系统中 GC 是随时都有可能发生的，而且不是受我们控制的，那么我们怎么取出的我们放进去的对象的呢？GC 之后不应该取不到了吗？其实这个问题，还是有些人没想清楚，我们再回过头来看一下我们最开始定义 ThreadLocal 的时候的代码：
 
 ```
-
 private static ThreadLocal<User> threadLocal = new ThreadLocal<>();
 
 ```
@@ -214,7 +204,7 @@ private static ThreadLocal<User> threadLocal = new ThreadLocal<>();
 
 看到这，又有同学有疑问了，那么 value 为啥，不也定义成 WeakReference 类型呢？那么不就 k 和 value 都没有内存泄漏问题了？其实原因也很简单，我们的 k 定义成 WeakReference 类型，不怕被回收，是因为有我们自己定义的 threadLocal 属性，这个强引用在，那么 value 呢？他没有啊，所以如果 value 也是 WeakReference 类型，那么一遇到 GC 完蛋了，我们放入的对象没了，所以 value 不能定义成 WeakReference 类型，那么既然如此，我们又该如何避免 value 的内存泄漏问题呢？答案很简单，使用完 ThreadLocal 之后，记得调用一下 remove 方法即可，具体就不再多说了。最后上一张 ThreadLocal 的内存结构图：
 
-<img loading="lazy" decoding="async" src="http://www.bridgeli.cn/wp-content/uploads/2021/04/threadlocal-300x172.png" alt="" width="300" height="172" class="alignnone size-medium wp-image-704" />
+![](http://www.bridgeli.cn/wp-content/uploads/2021/04/threadlocal-300x172.png)
 
  [1]: http://www.bridgeli.cn/archives/366
  [2]: http://www.bridgeli.cn/archives/367

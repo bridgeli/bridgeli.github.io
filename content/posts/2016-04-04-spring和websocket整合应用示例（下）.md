@@ -4,8 +4,6 @@ author: Bridge Li
 type: post
 date: 2016-04-04T14:14:24+00:00
 
-duoshuo_thread_id:
-  - 6.2697042124902E+18
 categories:
   - Java
 tags:
@@ -16,7 +14,6 @@ tags:
 7. NewsListenerImpl的实现
 
 ```
-
 package cn.bridgeli.websocket;
 
 import com.google.gson.Gson;  
@@ -191,7 +188,6 @@ logger.info("结束推送消息给"+email+"。。。");
 这个类就是websocket的核心业务的实现，其具体肯定和业务相关，由于业务的不同，实现肯定不同，因为老夫参与的系统是发送消息，所以里面最核心的一句就是：
 
 ```
-
 userSocketVo.getWebSocketSession().sendMessage(reMessage);
 
 ```

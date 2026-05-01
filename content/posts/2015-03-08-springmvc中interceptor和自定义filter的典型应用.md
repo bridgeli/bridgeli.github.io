@@ -4,8 +4,6 @@ author: Bridge Li
 type: post
 date: 2015-03-08T15:03:43+00:00
 
-duoshuo_thread_id:
-  - 1.1604454626757E+18
 categories:
   - Java
 tags:
@@ -36,7 +34,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 <bean id="permissionInterceptor" class="cn.bridgeli.demo.interceptor.PermissionInterceptor"></bean>  
 </mvc:interceptors>
 
-&#8230;&#8230;
+......
 
 </beans>  
 ```

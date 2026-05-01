@@ -4,8 +4,6 @@ author: Bridge Li
 type: post
 date: 2015-12-20T13:56:50+00:00
 
-duoshuo_thread_id:
-  - 6.2303646531138E+18
 categories:
   - Maven
 tags:
@@ -19,7 +17,6 @@ tags:
 1. 首先在pom文件中，添加maven-assembly-plugin插件
 
 ```
-
 <plugin>  
 <artifactId>maven-assembly-plugin</artifactId>  
 <configuration>  
@@ -43,7 +40,6 @@ tags:
 2. assembly.xml文件
 
 ```
-
 <assembly>  
 <id>assembly</id>  
 <formats>  
@@ -79,7 +75,6 @@ tags:
 ①. start.bat
 
 ```
-
 @echo off & setlocal enabledelayedexpansion
 
 set LIB_JARS=""  
@@ -108,7 +103,6 @@ pause
 ②. start.sh
 
 ```
-
 #!/bin/bash  
 cd \`dirname $0\`  
 BIN_DIR=\`pwd\`  
@@ -119,10 +113,10 @@ CONF_DIR=$DEPLOY_DIR/conf
 USER=www  
 GROUP=www
 
-#SERVER_NAME=\`sed &#8216;/dubbo.application.name/!d;s/.*=//&#8217; conf/dubbo.properties | tr -d &#8216;r&#8217;\`  
-#SERVER_PROTOCOL=\`sed &#8216;/dubbo.protocol.name/!d;s/.*=//&#8217; conf/dubbo.properties | tr -d &#8216;r&#8217;\`  
-#SERVER_PORT=\`sed &#8216;/dubbo.protocol.port/!d;s/.*=//&#8217; conf/dubbo.properties | tr -d &#8216;r&#8217;\`  
-#LOGS_FILE=\`sed &#8216;/dubbo.log4j.file/!d;s/.*=//&#8217; conf/dubbo.properties | tr -d &#8216;r&#8217;\`  
+#SERVER_NAME=\`sed '/dubbo.application.name/!d;s/.*=//' conf/dubbo.properties | tr -d 'r'\`  
+#SERVER_PROTOCOL=\`sed '/dubbo.protocol.name/!d;s/.*=//' conf/dubbo.properties | tr -d 'r'\`  
+#SERVER_PORT=\`sed '/dubbo.protocol.port/!d;s/.*=//' conf/dubbo.properties | tr -d 'r'\`  
+#LOGS_FILE=\`sed '/dubbo.log4j.file/!d;s/.*=//' conf/dubbo.properties | tr -d 'r'\`  
 SERVER_NAME=""  
 SERVER_PROTOCOL=""  
 SERVER_PORT=""  
@@ -132,7 +126,7 @@ if [ -z "$SERVER_NAME" ]; then
 SERVER_NAME=\`hostname\`  
 fi
 
-PIDS=\`ps -f | grep java | grep "$CONF_DIR" |awk &#8216;{print $2}&#8217;\`  
+PIDS=\`ps -f | grep java | grep "$CONF_DIR" |awk '{print $2}'\`  
 if [ -n "$PIDS" ]; then  
 echo "ERROR: The $SERVER_NAME already started!"  
 echo "PID: $PIDS"  
@@ -156,7 +150,7 @@ fi
 STDOUT_FILE=$LOGS_DIR/\`basename $DEPLOY_DIR\`.log
 
 LIB_DIR=$DEPLOY_DIR/lib  
-LIB_JARS=\`ls $LIB_DIR|grep .jar|awk &#8216;{print "&#8217;$LIB_DIR&#8217;/"$0}&#8217;|tr "n" ":"\`
+LIB_JARS=\`ls $LIB_DIR|grep .jar|awk '{print "'$LIB_DIR'/"$0}'|tr "n" ":"\`
 
 JAVA_OPTS=" -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true "  
 JAVA_DEBUG_OPTS=""  
@@ -175,7 +169,7 @@ else
 JAVA_MEM_OPTS=" -server -Xms2g -Xmx2g -XX:PermSize=128m -XX:SurvivorRatio=2 -XX:+UseParallelGC "  
 fi
 
-echo -e "Starting the $SERVER_NAME &#8230;c"  
+echo -e "Starting the $SERVER_NAME ...c"  
 nohup java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS -classpath $CONF_DIR:$LIB_JARS com.alibaba.dubbo.container.Main > $STDOUT_FILE 2>&1 &
 
 COUNT=0  
@@ -189,7 +183,7 @@ else
 COUNT=\`netstat -an | grep $SERVER_PORT | wc -l\`  
 fi  
 else  
-COUNT=\`ps -f | grep java | grep "$DEPLOY_DIR" | awk &#8216;{print $2}&#8217; | wc -l\`  
+COUNT=\`ps -f | grep java | grep "$DEPLOY_DIR" | awk '{print $2}' | wc -l\`  
 fi  
 if [ $COUNT -gt 0 ]; then  
 break  
@@ -197,7 +191,7 @@ fi
 done
 
 echo "OK!"  
-PIDS=\`ps -f | grep java | grep "$DEPLOY_DIR" | awk &#8216;{print $2}&#8217;\`  
+PIDS=\`ps -f | grep java | grep "$DEPLOY_DIR" | awk '{print $2}'\`  
 echo "PID: $PIDS"  
 echo "STDOUT: $STDOUT_FILE"
 
@@ -206,7 +200,6 @@ echo "STDOUT: $STDOUT_FILE"
 ③. stop.sh
 
 ```
-
 #!/bin/bash  
 cd \`dirname $0\`  
 BIN_DIR=\`pwd\`  
@@ -214,13 +207,13 @@ cd ..
 DEPLOY_DIR=\`pwd\`  
 CONF_DIR=$DEPLOY_DIR/conf
 
-SERVER_NAME=\`sed &#8216;/dubbo.application.name/!d;s/.*=//&#8217; conf/dubbo.properties | tr -d &#8216;r&#8217;\`
+SERVER_NAME=\`sed '/dubbo.application.name/!d;s/.*=//' conf/dubbo.properties | tr -d 'r'\`
 
 if [ -z "$SERVER_NAME" ]; then  
 SERVER_NAME=\`hostname\`  
 fi
 
-PIDS=\`ps -f | grep java | grep "$CONF_DIR" |awk &#8216;{print $2}&#8217;\`  
+PIDS=\`ps -f | grep java | grep "$CONF_DIR" |awk '{print $2}'\`  
 if [ -z "$PIDS" ]; then  
 echo "ERROR: The $SERVER_NAME does not started!"  
 exit 1  
@@ -230,7 +223,7 @@ if [ "$1" != "skip" ]; then
 $BIN_DIR/dump.sh  
 fi
 
-echo -e "Stopping the $SERVER_NAME &#8230;c"  
+echo -e "Stopping the $SERVER_NAME ...c"  
 for PID in $PIDS ; do  
 kill $PID > /dev/null 2>&1  
 done
@@ -257,7 +250,6 @@ echo "PID: $PIDS"
 ④. restart.sh
 
 ```
-
 #!/bin/bash  
 cd \`dirname $0\`  
 ./stop.sh  
@@ -268,7 +260,6 @@ cd \`dirname $0\`
 ⑤. server.sh
 
 ```
-
 #!/bin/bash  
 cd \`dirname $0\`  
 if [ "$1" = "start" ]; then  
@@ -298,7 +289,6 @@ fi
 ⑥. dump.sh
 
 ```
-
 #!/bin/bash  
 cd \`dirname $0\`  
 BIN_DIR=\`pwd\`  
@@ -306,14 +296,14 @@ cd ..
 DEPLOY_DIR=\`pwd\`  
 CONF_DIR=$DEPLOY_DIR/conf
 
-SERVER_NAME=\`sed &#8216;/dubbo.application.name/!d;s/.*=//&#8217; conf/dubbo.properties | tr -d &#8216;r&#8217;\`  
-LOGS_FILE=\`sed &#8216;/dubbo.log4j.file/!d;s/.*=//&#8217; conf/dubbo.properties | tr -d &#8216;r&#8217;\`
+SERVER_NAME=\`sed '/dubbo.application.name/!d;s/.*=//' conf/dubbo.properties | tr -d 'r'\`  
+LOGS_FILE=\`sed '/dubbo.log4j.file/!d;s/.*=//' conf/dubbo.properties | tr -d 'r'\`
 
 if [ -z "$SERVER_NAME" ]; then  
 SERVER_NAME=\`hostname\`  
 fi
 
-PIDS=\`ps -f | grep java | grep "$CONF_DIR" |awk &#8216;{print $2}&#8217;\`  
+PIDS=\`ps -f | grep java | grep "$CONF_DIR" |awk '{print $2}'\`  
 if [ -z "$PIDS" ]; then  
 echo "ERROR: The $SERVER_NAME does not started!"  
 exit 1  
@@ -338,7 +328,7 @@ if [ ! -d $DATE_DIR ]; then
 mkdir $DATE_DIR  
 fi
 
-echo -e "Dumping the $SERVER_NAME &#8230;c"  
+echo -e "Dumping the $SERVER_NAME ...c"  
 for PID in $PIDS ; do  
 jstack $PID > $DATE_DIR/jstack-$PID.dump 2>&1  
 echo -e ".c"  

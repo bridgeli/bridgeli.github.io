@@ -22,7 +22,6 @@ tags:
 1. 注解如下：
 
 ```
-
 package cn.bridgeli.demo.annotation;
 
 import java.lang.annotation.ElementType;  
@@ -49,7 +48,6 @@ String desc() default "";
 2. 切面
 
 ```
-
 package cn.bridgeli.demo.annotation;
 
 import cn.bridgeli.utils.AuthorizeUtil;  
@@ -106,7 +104,7 @@ result = joinPoint.proceed();
 } catch (Throwable e) {  
 log.error("切面执行报错，参数：" + params, e);  
 }  
-long elapsed = System.currentTimeMillis() &#8211; startTime;
+long elapsed = System.currentTimeMillis() - startTime;
 
 log.info("[ " + methodFullPathName + " ] 方法执行结束，返回值为：" + (null == result ? "" : result.toString()) + "，用时：" + elapsed);
 
@@ -116,7 +114,7 @@ return result;
 
 ```
 
-然后只需要在想使用的地方 @MyLog 就可以了，当然也可以加上 @MyLog(desc = &#8220;这是方法描述&#8221;)，这样打出来的日志还会有方法是做什么的，别人看日志的时候能够一目了然。
+然后只需要在想使用的地方 @MyLog 就可以了，当然也可以加上 @MyLog(desc = "这是方法描述")，这样打出来的日志还会有方法是做什么的，别人看日志的时候能够一目了然。
 
 需要说明的是，我在写这个切面的时候遇到的一个小问题，在网上看 AOP 的注解，很多人在举例子的时候都是不关注 @Around 的返回值，所以方法的返回值都写的 void，因为我对 AOP 也不是很熟，所以当时同样写了一个 void，结果写好一测试，返回拦截也正常，日志也打印了，被拦截的方法执行也挺正常，但是就是没有了返回值，当时还很奇怪，然后随便试了下返回值改成 Object，竟然对了，所以这是一个小坑，也是很多人没有说明的一点，大家可以注意下，其实这个问题也很容易想到，@Around 是环绕拦截，在执行完被拦截的方法之后，会继续执行切面方法，如果切面方法没有返回值，那么自然而然就没有返回值了，同理 @After 拦截个人猜测也应该有同样的问题，大家可以测试下。
 

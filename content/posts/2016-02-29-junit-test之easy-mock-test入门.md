@@ -4,8 +4,6 @@ author: Bridge Li
 type: post
 date: 2016-02-29T14:37:48+00:00
 
-duoshuo_thread_id:
-  - 6.2567222569075E+18
 categories:
   - Java
 tags:
@@ -17,7 +15,6 @@ tags:
 首先开发service的和dao的会讨论商量出来一套接口，假设dao的接口如下：
 
 ```
-
 package cn.bridgeli.dao;
 
 import cn.bridgeli.model.User;
@@ -25,7 +22,7 @@ import cn.bridgeli.model.User;
 public interface UserDao {  
 public User getUserById(int id);  
 public User getUserByUsername(String username);  
-//&#8230;  
+//...  
 }
 
 ```
@@ -33,7 +30,6 @@ public User getUserByUsername(String username);
 dao模块的小朋友把它打成一个jar包，扔给service开发人员，然后我们亲爱的service开发人员就自己玩去了，最后我们的service开发人员完成了自己的任务，写下了如下的代码，当然这只是一个demo而已：
 
 ```
-
 package cn.bridgeli.service.impl;
 
 import cn.bridgeli.dao.UserDao;  
@@ -74,7 +70,6 @@ return userDao.getUserById(userId);
 但是我们的service怎么知道自己写的有没有问题呢？现在我们的service想对自己的模块进行测试，但dao开发人员还没开始，这肯定是没办法开始的，那么怎么办呢？很简单，只需要这么做就可以了：
 
 ```
-
 package cn.bridgeli.service;
 
 import org.easymock.EasyMock;  
@@ -101,7 +96,7 @@ User user = new User();
 user.setId(1);  
 user.setUserName("bridgeli");  
 user.setPassword("abc123_");  
-//&#8230;
+//...
 
 EasyMock.expect(userDao.getUserByUsername("bridgeli")).andReturn(user).times(1);  
 // userDao.getUserById(1);  
@@ -133,7 +128,6 @@ EasyMock.verify(userDao);
 这就要求我们引入EasyMock的类库，pom文件如下：
 
 ```
-
 <dependency>  
 <groupId>org.easymock</groupId>  
 <artifactId>easymock</artifactId>  
@@ -144,13 +138,12 @@ EasyMock.verify(userDao);
 
 现在我们直接跑这个test是可以直接跑的，需要说明的是：
 
-1. EasyMock.expect(userDao.getUserByUsername(&#8220;bridgeli&#8221;))  
+1. EasyMock.expect(userDao.getUserByUsername("bridgeli"))  
 .andReturn(user).times(1) 是指我们要调用dao中的getUserByUsername时，返回user对象。  
 2. times以为调用的次数，默认就是1，否则调几次就是写几。  
 3. 我们给service和传的参数是bridgeli，所以返回的user对象和我们定义的一样，测试通过，但如果我们传的参数是其他的肯定就不行了，那么如果我们不希望是固定参数呢？这时候我们可以这么做，把：
 
 ```
-
 EasyMock.expect(userDao.getUserByUsername("bridgeli")).andReturn(user).times(1)
 
 ```
@@ -158,7 +151,6 @@ EasyMock.expect(userDao.getUserByUsername("bridgeli")).andReturn(user).times(1)
 改成：
 
 ```
-
 EasyMock.expect(userDao.getUserByUsername(EasyMock.isA(String.class))).andReturn(user).times(1)
 
 ```
@@ -170,7 +162,6 @@ anyInt()，anyObject()，isNull()，same()，startsWith()等等
 4. 期待方法返回异常，可以这么做（面向异常编程）：
 
 ```
-
 EasyMock.expect(userDao.getUserByUsername("bridgeli")).andThrow(new RuntimeException()).times(1)
 
 ```

@@ -19,7 +19,6 @@ Java 使用 FFmpeg 处理视频文件示例
 首先说明，我是在 https://ffmpeg.zeranoe.com/builds/ 这个地方下载的软件，Windows 和 Mac 解压之后即可使用。具体代码如下：
 
 ```
-
 package cn.bridgeli.demo;
 
 import org.junit.Test;

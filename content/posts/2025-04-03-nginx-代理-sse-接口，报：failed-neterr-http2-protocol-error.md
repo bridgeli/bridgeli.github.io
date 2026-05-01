@@ -16,7 +16,6 @@ tags:
 只需要按如下配置即可解决：
 
 ```
-
 server {  
 listen 80;  
 server_name bridgeli.com;
@@ -27,19 +26,19 @@ error_log /var/log/nginx/bridgeli_error.log warn;
 location ^~ /admin-api/ {  
 proxy_pass http://192.168.124.34:8080/;
 
-\# 确保使用HTTP/1.1来支持SSE  
+# 确保使用HTTP/1.1来支持SSE  
 proxy_http_version 1.1;
 
-\# 关闭代理连接的“Connection”头，以避免潜在的问题  
-proxy_set_header Connection &#8221;;
+# 关闭代理连接的“Connection”头，以避免潜在的问题  
+proxy_set_header Connection ";
 
-\# 增加超时设置，确保长时间连接不会被关闭  
+# 增加超时设置，确保长时间连接不会被关闭  
 proxy_read_timeout 86400s;  
 proxy_send_timeout 86400s;
 
-\# 如果需要禁用HTTP/2（可选）  
-\# 注意：这个设置是在server块中，而不是location块中  
-\# listen 80 http2 off; 对于HTTP/2协议错误特别有用  
+# 如果需要禁用HTTP/2（可选）  
+# 注意：这个设置是在server块中，而不是location块中  
+# listen 80 http2 off; 对于HTTP/2协议错误特别有用  
 }
 
 location / {  

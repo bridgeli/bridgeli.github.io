@@ -4,8 +4,6 @@ author: Bridge Li
 type: post
 date: 2016-03-20T14:23:00+00:00
 
-duoshuo_thread_id:
-  - 6.2641401433141E+18
 categories:
   - Java
 tags:
@@ -17,7 +15,6 @@ tags:
 今天这篇文章比较简单，写一个老夫近期工作中遇到的一个问题，这个问题困扰了老夫几个月了，虽然借助强大的Google百度了好久，但一直没有彻底解决，一直感觉挺简单一问题，也挺常见的一问题（网上问这个问题的还挺多），怎么就没有一个靠谱点的解决方案呢，刚好上个周呢时间稍有空闲，于是仔细研究了一下，终于找到了问题的根源，然后同事一言点醒梦中人，豁然开朗，一举解决，所以记录一下，先说一下异常：MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效，详细的堆栈信息如下：
 
 ```
-
 严重: StandardWrapper.Throwable  
 org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from file [D:J2EEapache-tomcat-7.0.62webappscrm-v1.0WEB-INFclassesspring-kafka-consumer.xml]; nested exception is com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException: 3 字节的 UTF-8 序列的字节 2 无效。  
 at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:409)  
@@ -75,7 +72,7 @@ at com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl.parse(DocumentBui
 at org.springframework.beans.factory.xml.DefaultDocumentLoader.loadDocument(DefaultDocumentLoader.java:76)  
 at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadDocument(XmlBeanDefinitionReader.java:428)  
 at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:390)  
-&#8230; 35 more
+... 35 more
 
 三月 16, 2016 5:41:59 下午 org.apache.catalina.core.StandardWrapperValve invoke  
 严重: Allocate exception for servlet springServlet  
@@ -138,7 +135,7 @@ at java.lang.Thread.run(Thread.java:745)
 
 看完堆栈信息，我相信遇到这个问题的同学，已经知道咋回事了。说起来也很简单，就是tomcat跑一个web项目时，报这个异常，导致项目起不来。在仔细看之后，应该是编码问题导致的，对，就是编码的问题了，看报错的那个XML文件编译之后的情况如下：
 
-[<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2016/03/Exception-300x104.png" alt="Exception" width="300" height="104" class="alignnone size-medium wp-image-260" />][1]
+[![Exception](https://www.bridgeli.cn/wp-content/uploads/2016/03/Exception-300x104.png)][1]
 
 果然出现了乱码，虽然是注释以后的地方出现了乱码，但项目依然跑不起来了。用Google百度了一下，天下文章一大抄，你抄我来我抄他，归根到底主要有两种方法来解决这个问题（不是说没有人有靠谱点的解决方案吗？嗯，是没有，但还是有人遇到过，提出了各种解决方案）：  
 1. 修改tomcat的startup.bat的代码，说实话这种解决方式真不靠谱，因为这是配置文件乱码，和tomcat的关系能有多大，但老夫还是抱着希望还是要有的，万一解决了呢的态度，试了试，果不其然没有解决，所以就不贴代码了  
@@ -148,7 +145,6 @@ at java.lang.Thread.run(Thread.java:745)
 好了，下面给出老夫的彻底解决办法，其实很简单，老夫曾经的文章，对，就是[这篇文章][2]中，已经给出解决的办法了，只是老夫当时没在意，所以印象不深刻，很简单，这明显是build的时候出现了编码问题，设定一下build的时候的编码就成了吗，如果懒得看那篇文章，那好，老夫就在这里贴出来解决办法，其实很简单，就是在pom文件中，指定build的编码：
 
 ```
-
 <properties>  
 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
 </properties>

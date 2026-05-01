@@ -15,7 +15,6 @@ tags:
 前几天在项目中遇到一个小问题，有一个 Excel 文件放在 classpath 下，通过流下载下来，本地测试的时候一点问题都没，但是部署到测试环境却不行了，说文件已损坏，然后打不开，简单代码如下：
 
 ```
-
 @RequestMapping(value = "/export", method = RequestMethod.GET)  
 public void export(HttpServletResponse response) {
 
@@ -61,7 +60,6 @@ logger.error("文件下载出错", e);
 当时就感觉这代码很简单啊，没什么问题的，但是下载下来就是不对，想到是不是测试环境有什么问题，查了一下没什么特殊之处，最后发现 Git 上的代码中的文件并没有什么问题，但是打成 war 包解压之后这文件本身就已经损坏了，而且比对了一下两个文件，发现 war 包之中的文件变大了，搜了一下资料，才知道原来 maven 打包会对一些文件转码，这个过程中会损坏一些文件，所以打不开，网上的资料也挺多，最简单的就是增加一个 plugin，不让该文件转码，代码如下：
 
 ```
-
 <plugin>  
 <groupId>org.apache.maven.plugins</groupId>  
 <artifactId>maven-resources-plugin</artifactId>  
@@ -79,7 +77,6 @@ logger.error("文件下载出错", e);
 看着很像那么回事，而且很多人都是信誓旦旦的说没问题，但是我负责的系统有些问题，所以并没有生效，如果有遇到这个问题的同学可以测试一些，最后实在心烦，其实下载的就是一个小 Excel 文件而已，不要模板了，直接生成一个下载，代码如此简单：
 
 ```
-
 @RequestMapping(value = "/export", method = RequestMethod.GET)  
 public void export(HttpServletResponse response) {
 

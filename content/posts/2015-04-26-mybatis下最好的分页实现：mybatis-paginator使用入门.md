@@ -4,8 +4,6 @@ author: Bridge Li
 type: post
 date: 2015-04-26T15:10:02+00:00
 
-duoshuo_thread_id:
-  - 1.1604454626757E+18
 categories:
   - Java
 tags:
@@ -19,7 +17,6 @@ tags:
 1. 先引入maven依赖
 
 ```
-
 <dependency>  
 <groupId>com.github.miemiedev</groupId>  
 <artifactId>mybatis-paginator</artifactId>  
@@ -35,7 +32,6 @@ tags:
 ①. 新建一个mybatis.xml的配置文件，其内容如下：
 
 ```
-
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">  
 <configuration>  
@@ -60,8 +56,7 @@ value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect" />
 ②. 和spring集成，即在spring-mybatis.xml中引入该文件
 
 ```
-
-&#8230;&#8230;
+......
 
 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
 <property name="dataSource" ref="dataSource"></property>  
@@ -70,7 +65,7 @@ value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect" />
 <property name="mapperLocations" value="classpath:cn/bridgeli/demo/mapper/*.xml" />  
 </bean>
 
-&#8230;&#8230;
+......
 
 ```
 
@@ -79,7 +74,6 @@ value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect" />
 3. 分页工具类的封装
 
 ```
-
 package com.xmjr.mediastatis.util;
 
 import java.util.HashMap;  
@@ -152,7 +146,6 @@ return pageInfo;
 其使用倒是非常简单，我们只需要在service层中构造我们的分页对象：PageBounds即可，然后把这个对象作为一个参数传到dao层，也就是说dao层除了以前的参数，再新加一个参数pageBounds，其余的mapper.xml等等文件该怎么写就怎么写，和以前可以说一点差别都没有，然后把返回值在封装成一个pageInfo对象，那么pageInfo对象里面就封装了所有我们分页所需要的数据，大家根据具体情况就可以做前端的分页了。例如老夫的实现：
 
 ```
-
 List<Map<String, Object>> itemInfos = itemMapper.getItems(param, pageBounds);  
 Map<String, Object> pageInfo = PagingUtil.toPageInfo(itemInfos);  
 LOG.info("totalCount: " + pageInfo.get("totalCount"));

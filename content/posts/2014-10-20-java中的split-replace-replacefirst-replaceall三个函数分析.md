@@ -4,8 +4,6 @@ author: Bridge Li
 type: post
 date: 2014-10-20T02:34:49+00:00
 
-duoshuo_thread_id:
-  - 1.1604454626757E+18
 categories:
   - Java
 ---
@@ -22,7 +20,6 @@ replaceAll(regex, replacement)
 仔细看一下，你会发现split()、replaceFirst()、replaceAll()的参数都是Regular Expression，也就是正则表达式，只有replace()的参数是字符或者字符串，由于这些参数类型的差异，很有将得不到预期的结果，下面是一些测试代码的例子，大家可以自己测一下
 
 ```
-
 package cn.bridgeli.stringtest;
 import org.junit.Test;
 

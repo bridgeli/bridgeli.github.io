@@ -21,13 +21,12 @@ tags:
 
 直接上图片，就是图上的这些图片，当然大家可以自己找maven依赖（jar文件这个最简单了，没有的话一定会报classnotfoundException，加上就好了）
 
-[<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2016/06/solrJ1-300x217.png" alt="solrJ1" width="300" height="217" class="alignnone size-medium wp-image-285" />][3]  
-[<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2016/06/solrJ2-300x131.png" alt="solrJ2" width="300" height="131" class="alignnone size-medium wp-image-286" />][4]
+[![solrJ1](https://www.bridgeli.cn/wp-content/uploads/2016/06/solrJ1-300x217.png)][3]  
+[![solrJ2](https://www.bridgeli.cn/wp-content/uploads/2016/06/solrJ2-300x131.png)][4]
 
 2. spring的配置
 
 ```
-
 <?xml version="1.0" encoding="UTF-8"?>  
 <beans xmlns="http://www.springframework.org/schema/beans"  
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"  
@@ -43,28 +42,28 @@ http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop-3.1.xsd  
 http://www.springframework.org/schema/tx  
 http://www.springframework.org/schema/tx/spring-tx-3.1.xsd ">  
-<!&#8211; 配置扫描包 &#8211;>  
+<!-- 配置扫描包 -->  
 <context:component-scan base-package="cn.bridgeli"/>  
-<!&#8211; 配置注解驱动 &#8211;>  
+<!-- 配置注解驱动 -->  
 <mvc:annotation-driven/>  
-<!&#8211; jsp视图解析器 &#8211;>  
+<!-- jsp视图解析器 -->  
 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >  
-<!&#8211; 前缀 &#8211;>  
+<!-- 前缀 -->  
 <property name="prefix" value="/WEB-INF/jsp/"></property>  
-<!&#8211; 后缀 &#8211;>  
+<!-- 后缀 -->  
 <property name="suffix" value=".jsp"></property>  
 </bean>  
-<!&#8211; 单机版solr &#8211;>  
+<!-- 单机版solr -->  
 <bean class="org.apache.solr.client.solrj.impl.HttpSolrServer">  
 <constructor-arg name="baseURL" value="http://localhost:8080/solr/"></constructor-arg>  
 </bean>  
-<!&#8211; 集群版SolrCloud &#8211;>  
-<!&#8211;  
+<!-- 集群版SolrCloud -->  
+<!--  
 <bean class="org.apache.solr.client.solrj.impl.CloudSolrServer">  
 <constructor-arg name="zkHost" value="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183"></constructor-arg>  
 <property name="defaultCollection" value="collection2"></property>  
 </bean>  
-&#8211;>  
+-->  
 </beans>
 
 ```
@@ -76,7 +75,6 @@ http://www.springframework.org/schema/tx/spring-tx-3.1.xsd ">
 ①. controller
 
 ```
-
 package cn.bridgeli.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;  
@@ -115,7 +113,6 @@ return "product_list";
 ②. service
 
 ```
-
 package cn.bridgeli.service;
 
 import org.apache.solr.client.solrj.SolrQuery;  
@@ -194,7 +191,6 @@ return resultModel;
 ③. dao
 
 ```
-
 package cn.bridgeli.dao;
 
 import java.util.ArrayList;  
@@ -262,7 +258,6 @@ return resultModel;
 有两个分别是：
 
 ```
-
 package cn.bridgeli.model;
 
 public class ProductModel {  
@@ -304,18 +299,17 @@ private int curPage;
 4. 数据库文件
 
 ```
-
-CREATE TABLE \`products\` (  
-\`pid\` int(11) NOT NULL AUTO_INCREMENT COMMENT &#8216;商品编号&#8217;,  
-\`name\` varchar(255) DEFAULT NULL COMMENT &#8216;商品名称&#8217;,  
-\`catalog\` int(11) DEFAULT NULL COMMENT &#8216;商品分类ID&#8217;,  
-\`catalog_name\` varchar(50) DEFAULT NULL COMMENT &#8216;商品分类名称&#8217;,  
-\`price\` double DEFAULT NULL COMMENT &#8216;价格&#8217;,  
-\`number\` int(11) DEFAULT NULL COMMENT &#8216;数量&#8217;,  
-\`description\` longtext COMMENT &#8216;商品描述&#8217;,  
-\`picture\` varchar(255) DEFAULT NULL COMMENT &#8216;图片名称&#8217;,  
-\`release_time\` datetime DEFAULT NULL COMMENT &#8216;上架时间&#8217;,  
-PRIMARY KEY (\`pid\`)  
+CREATE TABLE `products` (  
+`pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '商品编号',  
+`name` varchar(255) DEFAULT NULL COMMENT '商品名称',  
+`catalog` int(11) DEFAULT NULL COMMENT '商品分类ID',  
+`catalog_name` varchar(50) DEFAULT NULL COMMENT '商品分类名称',  
+`price` double DEFAULT NULL COMMENT '价格',  
+`number` int(11) DEFAULT NULL COMMENT '数量',  
+`description` longtext COMMENT '商品描述',  
+`picture` varchar(255) DEFAULT NULL COMMENT '图片名称',  
+`release_time` datetime DEFAULT NULL COMMENT '上架时间',  
+PRIMARY KEY (`pid`)  
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 ```

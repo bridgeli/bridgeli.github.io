@@ -12,7 +12,6 @@ tags:
 前一段时间有一个需求，需要计数，理所当地的使用了 redis 的 incr 方法。代码大概如下：
 
 ```
-
 @Scheduled(cron = "0 0/10 \* \* * ?")  
 public void test() {
 
@@ -40,8 +39,7 @@ valueOperations.set(key, yellowInterval * 3);
 大概就是某个操作之后记一下数，加一或者减一，如果加到了某个值，就把它设置为某个值。我们这里先不考虑并发问题。结果在运行的时候遇到了一个问题，报错信息如下：
 
 ```
-
-2025-07-22 14:51:13,069 [threadPoolTaskScheduler-12] ERROR o.s.s.s.TaskUtils$LoggingErrorHandler 95 &#8211; Unexpected error occurred in scheduled task  
+2025-07-22 14:51:13,069 [threadPoolTaskScheduler-12] ERROR o.s.s.s.TaskUtils$LoggingErrorHandler 95 - Unexpected error occurred in scheduled task  
 org.springframework.data.redis.RedisSystemException: Error in execution  
 at org.springframework.data.redis.connection.lettuce.LettuceExceptionConverter.convert(LettuceExceptionConverter.java:52)  
 at org.springframework.data.redis.connection.lettuce.LettuceExceptionConverter.convert(LettuceExceptionConverter.java:50)  
@@ -98,18 +96,15 @@ at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
 at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)  
 at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)  
 at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)  
-&#8230; 1 common frames omitted
-
+... 1 common frames omitted
 ```
 
 然后用工具查看了一下 Redis 中存储的数据是 15L，那似乎就很明显了，当 incr 返回的数据大于 15 是，往 Redis 中存储了一个 Long 类型的 15，也就是 15L，当下一轮循环的时候对 15L 进行加一或者减一，就报了上面的错，我们都知道 incr 的 value 必须是数字类型，15L 被当成了字符串，所以会报错。  
 当我们知道是这个原因后其实就很简单了，最简单的一个方案就是：
 
 ```
-
 int yellowInterval = 5L;  
 ValueOperations<String, Integer> valueOperations = redisTemplate.opsForValue();
-
 ```
 
 也就是将 yellowInterval 定义为 int 类型，而不是 Long 类型，这样在 incr 操作的时候就不会报错了。另外还有一个方案就是修改 Redis 的序列号方式，存储 Long 类型的数字时，不能把它序列化成字符串，而是要处理成数字类型也可以。

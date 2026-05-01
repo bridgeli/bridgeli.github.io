@@ -4,8 +4,6 @@ author: Bridge Li
 type: post
 date: 2014-10-24T09:49:46+00:00
 
-duoshuo_thread_id:
-  - 1.1604454626757E+18
 categories:
   - Java
 ---
@@ -21,7 +19,7 @@ categories:
     </list>
 </property>  
 ```  
-因为WEB-INF是一个受保护的目录，客户端是访问不到的，只能通过服务器端访问，根据forward和redirect的区别，我们很容易看到是forward的方式返回的，针对第二个和第三个问题，其实也很简单，我们只需要让该controller返回String即可，然后在方法的最后 return &#8220;redirect:/game&#8221;;或者return &#8220;forward:/game&#8221;;即 redirect或者forward + “：” + “/” + controller的路径或者view的名字即可。
+因为WEB-INF是一个受保护的目录，客户端是访问不到的，只能通过服务器端访问，根据forward和redirect的区别，我们很容易看到是forward的方式返回的，针对第二个和第三个问题，其实也很简单，我们只需要让该controller返回String即可，然后在方法的最后 return "redirect:/game";或者return "forward:/game";即 redirect或者forward + “：” + “/” + controller的路径或者view的名字即可。
 
 2. 参数传递  
 因为公司的项目是用Spring mvc开发的，发现参数传递除了通过model，还可以通过 RedirectAttributes，据说参数的传递和跳转的URL后面带的值会有一定的关系，这个我没具体测试，感兴趣的可以自己测测。

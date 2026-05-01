@@ -4,8 +4,6 @@ author: Bridge Li
 type: post
 date: 2014-11-08T14:30:34+00:00
 
-duoshuo_thread_id:
-  - 1.1604454626757E+18
 categories:
   - SCM
 tags:
@@ -30,13 +28,13 @@ svnadmin create svnrepo
 
 我们首先找到  
 ```  
-\# password-db = passwd  
+# password-db = passwd  
 ```  
 这一行，把前面的注释去掉，也就是把#去掉，最好连空格一块去掉。这个是说明，如果访问我们的服务器，需要在另一个文件中，即passwd文件中配置，同时我们也可以找到这两行:
 
 ```  
-\# anon-access = read  
-\# auth-access = write  
+# anon-access = read  
+# auth-access = write  
 ```  
 也就是匿名访问的权限，匿名访问我们最多给他只读的权限，这个随你的便。
 
@@ -68,9 +66,9 @@ set TXN=%2
 
 rem check that logmessage contains at least 10 characters
 
-rem &#8230;..代表5个字符
+rem .....代表5个字符
 
-svnlook log "%REPOS%" -t "%TXN%" | findstr "&#8230;&#8230;&#8230;." > nul
+svnlook log "%REPOS%" -t "%TXN%" | findstr ".........." > nul
 
 if %errorlevel% gtr 0 goto err
 

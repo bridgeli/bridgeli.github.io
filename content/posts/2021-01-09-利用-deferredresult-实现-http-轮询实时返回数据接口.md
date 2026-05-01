@@ -32,7 +32,6 @@ tags:
 1. 消息返回实体类，大家可以根据实际情况，自己定义即可：
 
 ```
-
 package cn.bridgeli.deferredresulttest.entity;
 
 import lombok.Data;  
@@ -65,7 +64,6 @@ this.desc = desc;
 2. controller 接口：
 
 ```
-
 package cn.bridgeli.deferredresulttest.controller;
 
 import cn.bridgeli.deferredresulttest.entity.DeferredResultResponse;  
@@ -133,7 +131,6 @@ return "Done";
 3. service 实现：
 
 ```
-
 package cn.bridgeli.deferredresulttest.service;
 
 import cn.bridgeli.deferredresulttest.entity.DeferredResultResponse;  

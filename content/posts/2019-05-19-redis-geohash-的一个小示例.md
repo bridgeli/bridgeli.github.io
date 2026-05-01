@@ -18,7 +18,6 @@ tags:
 首先需要说明的是，由于我们公司的 JDK 的版本是 1.7，所以我采用的 spring-data-redis 的版本是：1.8.20.RELEASE，最新二点几的版本已经不支持 JDK 1.7，而一点几和二点几的版本的 API 有略微的差异（下面会说明，还有一点点我的小感悟），废话不多说，直接看例子：
 
 ```
-
 @Override  
 public Long geoAdd(String key, List<Entity> entities) {  
 redisTemplate.delete(key);  
@@ -47,7 +46,6 @@ return add;
 数据放进去之后就是计算了，我们的需求就是算一个人旁边几公里内有多少符合条件的数据，代码如下：
 
 ```
-
 @Override  
 public Page<Entity> geoRadius(String key, Double latitude, Double longitude, Integer distance, String sort, Integer pageNo, Integer pageSize) {  
 GeoOperations geoOperations = redisTemplate.opsForGeo();  
@@ -72,7 +70,7 @@ if (limit > size) {
 limit = size;  
 }
 
-list = list.subList((pageNo &#8211; 1) * pageSize, limit);  
+list = list.subList((pageNo - 1) * pageSize, limit);  
 entities = new ArrayList<>(pageSize);
 
 for (GeoResult<RedisGeoCommands.GeoLocation<String>> geoLocationGeoResult : list) {  
@@ -105,7 +103,7 @@ return page;
 3. 默认是正序，也就是由近到远，但是也支持由远到近  
 4. 如果仅仅是排序，也就是对所有的数据由远到近或者由近到远，那么距离就应该是无穷远，Integer.MAX_VALUE；  
 5. 有一个 geoRadiusCommandArgs.limit(); 方法，其实就是取 top N，应该挺常用的，但这次不适合我们的应用  
-6. list = list.subList((page &#8211; 1) * pageSize, limit); 的意思是说，只需要取 pageSize 个数据进行反序列化就好了，而上面那个判断，是为了防止最后一页下表越界；  
+6. list = list.subList((page -- 1) * pageSize, limit); 的意思是说，只需要取 pageSize 个数据进行反序列化就好了，而上面那个判断，是为了防止最后一页下表越界；  
 7. value = (double) Math.round(value * 10) / 10; 数据距离中心点的距离，四舍五入，根据需求就好；  
 8. 就是对应的数据反序列化以及组装返回了
 

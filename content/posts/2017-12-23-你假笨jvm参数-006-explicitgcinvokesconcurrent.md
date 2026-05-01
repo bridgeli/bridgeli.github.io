@@ -29,8 +29,8 @@ System.gc()是正常FULL GC，会STW
 
 小程序截图：
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2017/12/ExplicitGCInvokesConcurrent_JVMPocket-254x1024.png" alt="" width="254" height="1024" class="alignnone size-medium wp-image-497" /> 
+![](https://www.bridgeli.cn/wp-content/uploads/2017/12/ExplicitGCInvokesConcurrent_JVMPocket-254x1024.png) 
 
 分享记录：
 
-<img loading="lazy" decoding="async" src="https://www.bridgeli.cn/wp-content/uploads/2017/12/ExplicitGCInvokesConcurrent-233x1024.png" alt="" width="233" height="1024" class="alignnone size-medium wp-image-496" />
+![](https://www.bridgeli.cn/wp-content/uploads/2017/12/ExplicitGCInvokesConcurrent-233x1024.png)
