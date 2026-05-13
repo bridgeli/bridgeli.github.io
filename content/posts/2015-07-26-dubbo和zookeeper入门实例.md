@@ -29,46 +29,46 @@ Dubbo的实现肯定是要靠自己写代码啦，我的代码使用maven编译�
 
 ```
 <dependency>  
-<groupId>junit</groupId>  
-<artifactId>junit</artifactId>  
-<version>4.12</version>  
-<scope>test</scope>  
+  <groupId>junit</groupId>  
+  <artifactId>junit</artifactId>  
+  <version>4.12</version>  
+  <scope>test</scope>  
 </dependency>
 
 <dependency>  
-<groupId>com.alibaba</groupId>  
-<artifactId>dubbo</artifactId>  
-<version>2.5.3</version>  
-<exclusions>  
-<exclusion>  
-<artifactId>spring</artifactId>  
-<groupId>org.springframework</groupId>  
-</exclusion>  
-</exclusions>  
+  <groupId>com.alibaba</groupId>  
+  <artifactId>dubbo</artifactId>  
+  <version>2.5.3</version>  
+  <exclusions>  
+    <exclusion>  
+      <artifactId>spring</artifactId>  
+      <groupId>org.springframework</groupId>  
+    </exclusion>  
+  </exclusions>  
 </dependency>
 
 <dependency>  
-<groupId>org.slf4j</groupId>  
-<artifactId>slf4j-log4j12</artifactId>  
-<version>1.7.7</version>  
+  <groupId>org.slf4j</groupId>  
+  <artifactId>slf4j-log4j12</artifactId>  
+  <version>1.7.7</version>  
 </dependency>
 
 <dependency>  
-<groupId>com.101tec</groupId>  
-<artifactId>zkclient</artifactId>  
-<version>0.5</version>  
+  <groupId>com.101tec</groupId>  
+  <artifactId>zkclient</artifactId>  
+  <version>0.5</version>  
 </dependency>
 
 <dependency>  
-<groupId>org.springframework</groupId>  
-<artifactId>spring-test</artifactId>  
-<version>4.1.7.RELEASE</version>  
+  <groupId>org.springframework</groupId>  
+  <artifactId>spring-test</artifactId>  
+  <version>4.1.7.RELEASE</version>  
 </dependency>
 
 <dependency>  
-<groupId>org.springframework</groupId>  
-<artifactId>spring-context</artifactId>  
-<version>4.1.7.RELEASE</version>  
+  <groupId>org.springframework</groupId>  
+  <artifactId>spring-context</artifactId>  
+  <version>4.1.7.RELEASE</version>  
 </dependency>
 
 ```
@@ -93,31 +93,31 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd
 http://code.alibabatech.com/schema/dubbo  
 http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-<!-- Auto Scan -->  
-<context:component-scan base-package="cn.bridgeli.provider" />
+  <!-- Auto Scan -->  
+  <context:component-scan base-package="cn.bridgeli.provider" />
 
-<!-- Application name -->  
-<dubbo:application name="hello-world-app" />
+  <!-- Application name -->  
+  <dubbo:application name="hello-world-app" />
 
-<!-- registry address, used for service to register itself -->  
-<dubbo:registry address="zookeeper://127.0.0.1:2181" />
+  <!-- registry address, used for service to register itself -->  
+  <dubbo:registry address="zookeeper://127.0.0.1:2181" />
 
-<!-- expose this service through dubbo protocol, through port 20880 -->  
-<!--  
-<dubbo:protocol name="dubbo" port="20880" />  
-<dubbo:protocol name="dubbo" port="9090" server="netty"  
-client="netty" codec="dubbo" serialization="hessian2" charset="UTF-8"  
-threadpool="fixed" threads="100" queues="0" iothreads="9" buffer="8192"  
-accepts="1000" payload="8388608" />  
--->  
-<!-- Service interface Concurrent Control -->  
-<!-- <dubbo:service interface="cn.bridgeli.provider.service.ProviderService" ref="providerService"/> -->  
-<!-- 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类 -->  
-<dubbo:annotation package="cn.bridgeli.provider.service" />  
-<!-- Default Protocol -->  
-<!--  
-<dubbo:protocol server="netty" />  
--->  
+  <!-- expose this service through dubbo protocol, through port 20880 -->  
+  <!--  
+    <dubbo:protocol name="dubbo" port="20880" />    
+    <dubbo:protocol name="dubbo" port="9090" server="netty"  
+      client="netty" codec="dubbo" serialization="hessian2" charset="UTF-8"  
+      threadpool="fixed" threads="100" queues="0" iothreads="9" buffer="8192"   
+      accepts="1000" payload="8388608" />  
+  -->  
+  <!-- Service interface Concurrent Control -->  
+  <!-- <dubbo:service interface="cn.bridgeli.provider.service.ProviderService" ref="providerService"/> -->  
+  <!-- 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类 -->  
+  <dubbo:annotation package="cn.bridgeli.provider.service" />  
+  <!-- Default Protocol -->  
+  <!--  
+    <dubbo:protocol server="netty" />  
+  -->  
 </beans>
 
 ```
@@ -157,7 +157,7 @@ package cn.bridgeli.provider.service;
 
 public interface ProviderService {
 
-public String yield(String data);
+  public String yield(String data);
 
 }
 
@@ -175,20 +175,19 @@ import cn.bridgeli.provider.service.ProviderService;
 
 import com.alibaba.dubbo.config.annotation.Service;
 
-@Service  
-public class ProviderServiceImpl implements ProviderService {
+  @Service  
+  public class ProviderServiceImpl implements ProviderService {
 
-private static final Logger LOG = LoggerFactory.getLogger(ProviderServiceImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ProviderServiceImpl.class);
 
-@Override  
-public String yield(String data) {  
-try {  
-Thread.sleep(1000);  
-} catch (InterruptedException e) {  
-LOG.error("error", e);  
-}  
-return "Hello:" + data;  
-}  
+  @Override  
+  public String yield(String data) {  
+    try {  
+      Thread.sleep(1000);  
+    } catch (InterruptedException e) {  
+      LOG.error("error", e);  
+    }  
+    return "Hello:" + data;  
 }
 
 ```
@@ -213,19 +212,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = "classpath*:applicationProvider.xml")  
 public class ProviderServiceTest {
 
-private static final Logger LOG = LoggerFactory.getLogger(ProviderServiceTest.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ProviderServiceTest.class);
 
-@Test  
-public void testYield() {
+  @Test  
+  public void testYield() {
 
-LOG.info("Press any key to exit.");
+    LOG.info("Press any key to exit.");
 
-try {  
-System.in.read();  
-} catch (IOException e) {  
-LOG.error("error", e);  
-}  
-}  
+    try {  
+      System.in.read();  
+    } catch (IOException e) {  
+    LOG.error("error", e);  
+    }  
 }
 
 ```
@@ -250,19 +248,19 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd
 http://code.alibabatech.com/schema/dubbo  
 http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-<!-- Auto Scan -->  
-<context:component-scan base-package="cn.bridgeli.consumer" />
+  <!-- Auto Scan -->  
+  <context:component-scan base-package="cn.bridgeli.consumer" />
 
-<!-- consumer application name -->  
-<dubbo:application name="consumer-of-helloworld-app" />
+  <!-- consumer application name -->  
+  <dubbo:application name="consumer-of-helloworld-app" />
 
-<!-- registry address, used for consumer to discover services -->  
-<dubbo:registry address="zookeeper://127.0.0.1:2181" />  
-<dubbo:consumer timeout="5000"/>  
-<!-- which service to consume? -->  
-<!-- <dubbo:reference id="providerService" interface="cn.bridgeli.provider.service.ProviderService" /> -->  
-<!-- 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类 -->  
-<dubbo:annotation package="cn.bridgeli.consumer" />  
+  <!-- registry address, used for consumer to discover services -->  
+  <dubbo:registry address="zookeeper://127.0.0.1:2181" />  
+  <dubbo:consumer timeout="5000"/>  
+  <!-- which service to consume? -->  
+  <dubbo:reference id="providerService" interface="cn.bridgeli.provider.service.ProviderService" />  
+  <!-- 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类 -->  
+  <dubbo:annotation package="cn.bridgeli.consumer" />  
 </beans>
 
 ```
@@ -274,7 +272,7 @@ package cn.bridgeli.consumer.service;
 
 public interface ConsumerService {
 
-public String consume(String str);
+  public String consume(String str);
 
 }
 
@@ -295,16 +293,16 @@ import com.alibaba.dubbo.config.annotation.Reference;
 @Service  
 public class ConsumerServiceImpl implements ConsumerService {
 
-@Reference  
-private ProviderService providerService;
+  @Reference  
+  private ProviderService providerService;
 
-@Override  
-public String consume(String str) {
+  @Override  
+  public String consume(String str) {
 
-String hello = providerService.yield(str);  
-return hello;
+    String hello = providerService.yield(str);  
+    return hello;
 
-}
+  }
 
 }
 
@@ -314,9 +312,9 @@ return hello;
 
 ```
 <dependency>  
-<groupId>cn.bridgeli</groupId>  
-<artifactId>provider</artifactId>  
-<version>0.0.1-SNAPSHOT</version>  
+  <groupId>cn.bridgeli</groupId>  
+  <artifactId>provider</artifactId>  
+  <version>0.0.1-SNAPSHOT</version>  
 </dependency>
 
 ```
@@ -341,16 +339,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = "classpath*:applicationConsumer.xml")  
 public class ConsumerServiceTest {
 
-@Resource  
-private ConsumerService consumerService;
+  @Resource  
+  private ConsumerService consumerService;
 
-@Test  
-public void testConsume() {  
-String str = "bridge";  
-String consume = consumerService.consume(str);  
-String result = "Hello:" + str;  
-Assert.assertTrue(result.equals(consume));  
-}  
+  @Test  
+  public void testConsume() {  
+    String str = "bridge";  
+    String consume = consumerService.consume(str);  
+    String result = "Hello:" + str;  
+    Assert.assertTrue(result.equals(consume));  
+  }  
 }
 
 ```

@@ -31,55 +31,56 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 /**  
-* 构建可重复读取inputStream的request  
-*  
-* @author BridgeLi  
-*/  
+ * 构建可重复读取inputStream的request  
+ *  
+ * @author Bridge Li  
+ */  
 public class RepeatedlyRequestWrapper extends HttpServletRequestWrapper {  
-private final byte[] body;
+  private final byte[] body;
 
-public RepeatedlyRequestWrapper(HttpServletRequest request) {  
-super(request);  
-body = HttpHelper.getBodyString(request).getBytes(StandardCharsets.UTF_8);  
+  public RepeatedlyRequestWrapper(HttpServletRequest request) {  
+    super(request);  
+    body = HttpHelper.getBodyString(request).getBytes(StandardCharsets.UTF_8);  
+  }
+
+  @Override  
+  public BufferedReader getReader() throws IOException {  
+    return new BufferedReader(new InputStreamReader(getInputStream()));  
+  }
+
+  @Override  
+  public ServletInputStream getInputStream() throws IOException { 
+    final ByteArrayInputStream bais = new ByteArrayInputStream(body);  
+    return new ServletInputStream() {  
+      @Override  
+      public int read() throws IOException {  
+        return bais.read();  
+      }
+
+      @Override  
+      public int available() throws IOException {  
+        return body.length;  
+      }
+
+      @Override  
+      public boolean isFinished() {  
+        return false;  
+      }
+
+      @Override  
+      public boolean isReady() {  
+        return false;  
+      }
+
+      @Override  
+      public void setReadListener(ReadListener readListener) {
+
+      }  
+    };
+  }
 }
-
-@Override  
-public BufferedReader getReader() throws IOException {  
-return new BufferedReader(new InputStreamReader(getInputStream()));  
-}
-
-@Override  
-public ServletInputStream getInputStream() throws IOException {  
-final ByteArrayInputStream bais = new ByteArrayInputStream(body);  
-return new ServletInputStream() {  
-@Override  
-public int read() throws IOException {  
-return bais.read();  
-}
-
-@Override  
-public int available() throws IOException {  
-return body.length;  
-}
-
-@Override  
-public boolean isFinished() {  
-return false;  
-}
-
-@Override  
-public boolean isReady() {  
-return false;  
-}
-
-@Override  
-public void setReadListener(ReadListener readListener) {
-
-}  
-};  
-}  
-}
-
+```
+```
 package cn.bridgeli.utils.http;
 
 import org.slf4j.Logger;  
@@ -93,26 +94,25 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 /**  
-* 通用http工具封装  
-*  
-* @author BridgeLi  
-*/  
+ * 通用http工具封装  
+ *  
+ * @author BridgeLi  
+ */  
 public class HttpHelper {  
-private static final Logger LOGGER = LoggerFactory.getLogger(HttpHelper.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(HttpHelper.class);
 
-public static String getBodyString(ServletRequest request) {  
-StringBuilder sb = new StringBuilder();  
-try (InputStream inputStream = request.getInputStream()) {  
-BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));  
-String line = "";  
-while ((line = reader.readLine()) != null) {  
-sb.append(line);  
-}  
-} catch (IOException e) {  
-LOGGER.error("getBodyString出现问题！", e);  
-}  
-return sb.toString();  
-}  
+  public static String getBodyString(ServletRequest request) {  
+    StringBuilder sb = new StringBuilder();  
+    try {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));  
+      String line = "";  
+      while ((line = reader.readLine()) != null) {  
+        sb.append(line);  
+      }
+    } catch (IOException e) {  
+      LOGGER.error("getBodyString出现问题！", e);  
+    }
+    return sb.toString();  
 }
 
 ```
@@ -134,34 +134,33 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**  
-* Repeatable 过滤器  
-*  
-* @author BridgeLi  
-*/  
+ * Repeatable 过滤器  
+ *  
+ * @author BridgeLi  
+ */  
 public class RepeatableFilter implements Filter {  
-@Override  
-public void init(FilterConfig filterConfig) throws ServletException {
+  @Override  
+  public void init(FilterConfig filterConfig) throws ServletException {
 
-}
+  }
 
-@Override  
-public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)  
-throws IOException, ServletException {  
-ServletRequest requestWrapper = null;  
-if (request instanceof HttpServletRequest) {  
-requestWrapper = new RepeatedlyRequestWrapper((HttpServletRequest) request);  
-}  
-if (null == requestWrapper) {  
-chain.doFilter(request, response);  
-} else {  
-chain.doFilter(requestWrapper, response);  
-}  
-}
+  @Override  
+  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {  
+    ServletRequest requestWrapper = null;  
+    if (request instanceof HttpServletRequest) {  
+      requestWrapper = new RepeatedlyRequestWrapper((HttpServletRequest) request);  
+    }  
+    if (null == requestWrapper) {  
+      chain.doFilter(request, response);  
+    } else {  
+      chain.doFilter(requestWrapper, response);  
+    }
+  }
 
-@Override  
-public void destroy() {
+  @Override  
+  public void destroy() {
 
-}  
+  }
 }
 
 ```

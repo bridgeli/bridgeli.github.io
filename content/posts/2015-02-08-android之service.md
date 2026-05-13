@@ -91,25 +91,25 @@ public class MainActivity extends Activity implements OnClickListener {
 对应的布局文件activity_main：  
 ```  
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
-xmlns:tools="http://schemas.android.com/tools"  
-android:layout_width="match_parent"  
-android:layout_height="match_parent"  
-android:orientation="vertical"  
-android:paddingBottom="@dimen/activity_vertical_margin"  
-android:paddingLeft="@dimen/activity_horizontal_margin"  
-android:paddingRight="@dimen/activity_horizontal_margin"  
-android:paddingTop="@dimen/activity_vertical_margin"  
-tools:context="cn.bridgeli.demo.MainActivity" >
+    xmlns:tools="http://schemas.android.com/tools"  
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent"  
+    android:orientation="vertical"  
+    android:paddingBottom="@dimen/activity_vertical_margin"  
+    android:paddingLeft="@dimen/activity_horizontal_margin"  
+    android:paddingRight="@dimen/activity_horizontal_margin"  
+    android:paddingTop="@dimen/activity_vertical_margin"  
+    tools:context="cn.bridgeli.demo.MainActivity" >
 
-<Button  
-android:id="@+id/start"  
-android:layout_width="fill_parent"  
-android:layout_height="wrap_content"/>
+    <Button  
+        android:id="@+id/start"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"/>
 
-<Button  
-android:id="@+id/stop"  
-android:layout_width="fill_parent"  
-android:layout_height="wrap_content"/>
+    <Button  
+        android:id="@+id/stop"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>  
 ```
@@ -155,32 +155,32 @@ public class MainService extends Service {
 
 ```  
 <?xml version="1.0" encoding="utf-8"?>  
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"  
-package="cn.bridgeli.demo"  
-android:versionCode="1"  
-android:versionName="1.0" >
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"  
+        package="cn.bridgeli.demo"  
+        android:versionCode="1"  
+        android:versionName="1.0" >
 
-<uses-sdk  
-android:minSdkVersion="8"  
-android:targetSdkVersion="21" />
+    <uses-sdk  
+        android:minSdkVersion="8"  
+        android:targetSdkVersion="21" />
 
-<application  
-android:allowBackup="true"  
-android:icon="@drawable/ic_launcher"  
-android:label="@string/app_name"  
-android:theme="@style/AppTheme" >  
-<activity  
-android:name=".MainActivity"  
-android:label="@string/app_name" >  
-<intent-filter>  
-<action android:name="android.intent.action.MAIN" />
+    <application  
+        android:allowBackup="true"  
+        android:icon="@drawable/ic_launcher"  
+        android:label="@string/app_name"  
+        android:theme="@style/AppTheme" >  
+        <activity  
+            android:name=".MainActivity"  
+            android:label="@string/app_name" >  
+            <intent-filter>  
+                <action android:name="android.intent.action.MAIN" />
 
-<category android:name="android.intent.category.LAUNCHER" />  
-</intent-filter>  
-</activity>
+                <category android:name="android.intent.category.LAUNCHER" />  
+            </intent-filter>  
+        </activity>
 
-<service android:name=".MainService" ></service>  
-</application>
+        <service android:name=".MainService" ></service>  
+    </application>
 
 </manifest>  
 ```

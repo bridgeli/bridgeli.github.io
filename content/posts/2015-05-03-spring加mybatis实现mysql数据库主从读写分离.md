@@ -39,19 +39,19 @@ master.jdbc.password=xxx
 ```
 <?xml version="1.0" encoding="UTF-8"?>  
 <beans xmlns="http://www.springframework.org/schema/beans"  
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"  
-xsi:schemaLocation="  
-http://www.springframework.org/schema/beans  
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
-http://www.springframework.org/schema/context  
-http://www.springframework.org/schema/context/spring-context-3.0.xsd  
-">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"  
+  xsi:schemaLocation="  
+    http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+    http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+  ">
 
-<!-- Import properties file -->  
-<context:property-placeholder location="classpath:jdbc.properties" />
+  <!-- Import properties file -->  
+  <context:property-placeholder location="classpath:jdbc.properties" />
 
-<!-- Auto Scan -->  
-<context:component-scan base-package="cn.bridgeli.demo" />  
+  <!-- Auto Scan -->  
+  <context:component-scan base-package="cn.bridgeli.demo" />  
 </beans>
 
 ```
@@ -62,151 +62,149 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="  
-http://www.springframework.org/schema/beans  
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
-http://www.springframework.org/schema/tx  
-http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
-http://www.springframework.org/schema/aop  
-http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
-">
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xsi:schemaLocation="  
+    http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+    http://www.springframework.org/schema/tx  
+    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
+    http://www.springframework.org/schema/aop  
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
+  ">
 
-<bean id="slaveDataSourceImpl" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">  
-<property name="driverClass" value="${jdbc.driver}" />  
-<property name="jdbcUrl" value="${slave.jdbc.url}" />  
-<property name="username" value="${slave.jdbc.username}" />  
-<property name="password" value="${slave.jdbc.password}" />
+  <bean id="slaveDataSourceImpl" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">  
+    <property name="driverClass" value="${jdbc.driver}" />  
+    <property name="jdbcUrl" value="${slave.jdbc.url}" />  
+    <property name="username" value="${slave.jdbc.username}" />  
+    <property name="password" value="${slave.jdbc.password}" />
 
-<!-- 检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0 -->  
-<property name="idleConnectionTestPeriodInMinutes" value="10" />  
-<!-- 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 -->  
-<property name="idleMaxAgeInMinutes" value="10" />  
-<!-- 每个分区最大的连接数 -->  
-<property name="maxConnectionsPerPartition" value="20" />  
-<!-- 每个分区最小的连接数 -->  
-<property name="minConnectionsPerPartition" value="10" />  
-<!-- 分区数 ，默认值2，最小1，推荐3-4，视应用而定 -->  
-<property name="partitionCount" value="3" />  
-<!-- 每次去拿数据库连接的时候一次性要拿几个,默认值：2 -->  
-<property name="acquireIncrement" value="3" />  
-<!-- 缓存prepared statements的大小，默认值：0 -->  
-<property name="statementsCacheSize" value="50" />  
-<!-- 在做keep-alive的时候的SQL语句 -->  
-<property name="connectionTestStatement" value="select 1 from dual" />  
-<!-- 在每次到数据库取连接的时候执行的SQL语句，只执行一次 -->  
-<property name="initSQL" value="select 1 from dual" />  
-<property name="closeConnectionWatch" value="false" />  
-<property name="logStatementsEnabled" value="true" />  
-<property name="transactionRecoveryEnabled" value="true" />  
-</bean>
+    <!-- 检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0 -->  
+    <property name="idleConnectionTestPeriodInMinutes" value="10" />  
+    <!-- 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 -->  
+    <property name="idleMaxAgeInMinutes" value="10" />  
+    <!-- 每个分区最大的连接数 -->  
+    <property name="maxConnectionsPerPartition" value="20" />  
+    <!-- 每个分区最小的连接数 -->  
+    <property name="minConnectionsPerPartition" value="10" />  
+    <!-- 分区数 ，默认值2，最小1，推荐3-4，视应用而定 -->  
+    <property name="partitionCount" value="3" />  
+    <!-- 每次去拿数据库连接的时候一次性要拿几个,默认值：2 -->  
+    <property name="acquireIncrement" value="3" />  
+    <!-- 缓存prepared statements的大小，默认值：0 -->  
+    <property name="statementsCacheSize" value="50" />  
+    <!-- 在做keep-alive的时候的SQL语句 -->  
+    <property name="connectionTestStatement" value="select 1 from dual" />  
+    <!-- 在每次到数据库取连接的时候执行的SQL语句，只执行一次 -->  
+    <property name="initSQL" value="select 1 from dual" />  
+    <property name="closeConnectionWatch" value="false" />  
+    <property name="logStatementsEnabled" value="true" />  
+    <property name="transactionRecoveryEnabled" value="true" />   
+  </bean>
 
-<bean id="masterDataSourceImpl" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">  
-<property name="driverClass" value="${jdbc.driver}" />  
-<property name="jdbcUrl" value="${master.jdbc.url}" />  
-<property name="username" value="${master.jdbc.username}" />  
-<property name="password" value="${master.jdbc.password}" />
+  <bean id="masterDataSourceImpl" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">  
+    <property name="driverClass" value="${jdbc.driver}" />  
+    <property name="jdbcUrl" value="${master.jdbc.url}" />  
+    <property name="username" value="${master.jdbc.username}" />  
+    <property name="password" value="${master.jdbc.password}" />
 
-<!-- 检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0 -->  
-<property name="idleConnectionTestPeriodInMinutes" value="10" />  
-<!-- 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 -->  
-<property name="idleMaxAgeInMinutes" value="10" />  
-<!-- 每个分区最大的连接数 -->  
-<property name="maxConnectionsPerPartition" value="20" />  
-<!-- 每个分区最小的连接数 -->  
-<property name="minConnectionsPerPartition" value="10" />  
-<!-- 分区数 ，默认值2，最小1，推荐3-4，视应用而定 -->  
-<property name="partitionCount" value="3" />  
-<!-- 每次去拿数据库连接的时候一次性要拿几个,默认值：2 -->  
-<property name="acquireIncrement" value="3" />  
-<!-- 缓存prepared statements的大小，默认值：0 -->  
-<property name="statementsCacheSize" value="50" />  
-<!-- 在做keep-alive的时候的SQL语句 -->  
-<property name="connectionTestStatement" value="select 1 from dual" />  
-<!-- 在每次到数据库取连接的时候执行的SQL语句，只执行一次 -->  
-<property name="initSQL" value="select 1 from dual" />  
-<property name="closeConnectionWatch" value="false" />  
-<property name="logStatementsEnabled" value="true" />  
-<property name="transactionRecoveryEnabled" value="true" />  
-</bean>
+    <!-- 检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0 -->  
+    <property name="idleConnectionTestPeriodInMinutes" value="10" />  
+    <!-- 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 -->  
+    <property name="idleMaxAgeInMinutes" value="10" />  
+    <!-- 每个分区最大的连接数 -->  
+    <property name="maxConnectionsPerPartition" value="20" />  
+    <!-- 每个分区最小的连接数 -->  
+    <property name="minConnectionsPerPartition" value="10" />  
+    <!-- 分区数 ，默认值2，最小1，推荐3-4，视应用而定 -->  
+    <property name="partitionCount" value="3" />  
+    <!-- 每次去拿数据库连接的时候一次性要拿几个,默认值：2 -->  
+    <property name="acquireIncrement" value="3" />  
+    <!-- 缓存prepared statements的大小，默认值：0 -->  
+    <property name="statementsCacheSize" value="50" />  
+    <!-- 在做keep-alive的时候的SQL语句 -->  
+    <property name="connectionTestStatement" value="select 1 from dual" />  
+    <!-- 在每次到数据库取连接的时候执行的SQL语句，只执行一次 -->  
+    <property name="initSQL" value="select 1 from dual" />  
+    <property name="closeConnectionWatch" value="false" />  
+    <property name="logStatementsEnabled" value="true" />  
+    <property name="transactionRecoveryEnabled" value="true" />  
+  </bean>
 
-<!-- DataSource/Master -->  
-<bean id="masterDataSource"  
-class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">  
-<property name="targetDataSource" ref="masterDataSourceImpl" />  
-</bean>  
-<bean id="masterTransactionManager"  
-class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
-<property name="dataSource" ref="masterDataSource" />  
-</bean>  
-<bean id="masterTransactionTemplate"  
-class="org.springframework.transaction.support.TransactionTemplate">  
-<property name="transactionManager" ref="masterTransactionManager" />  
-</bean>
+  <!-- DataSource/Master -->  
+  <bean id="masterDataSource" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">  
+    <property name="targetDataSource" ref="masterDataSourceImpl" />  
+  </bean>  
+  <bean id="masterTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+    <property name="dataSource" ref="masterDataSource" />  
+  </bean>  
+  <bean id="masterTransactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">  
+    <property name="transactionManager" ref="masterTransactionManager" />  
+  </bean> 
 
-<!-- DataSource/Slave -->  
-<bean id="slaveDataSource"  
-class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">  
-<property name="targetDataSource" ref="slaveDataSourceImpl" />  
-</bean>  
-<bean id="slaveTransactionManager"  
-class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
-<property name="dataSource" ref="slaveDataSource" />  
-</bean>  
-<bean id="slaveTransactionTemplate"  
-class="org.springframework.transaction.support.TransactionTemplate">  
-<property name="transactionManager" ref="slaveTransactionManager" />  
-</bean>
+  <!-- DataSource/Slave -->  
+  <bean id="slaveDataSource" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">  
+    <property name="targetDataSource" ref="slaveDataSourceImpl" />  
+  </bean>  
+  <bean id="slaveTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+    <property name="dataSource" ref="slaveDataSource" />  
+  </bean>  
+  <bean id="slaveTransactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">  
+    <property name="transactionManager" ref="slaveTransactionManager" />  
+  </bean>
 
-<!-- Mybatis/Master -->  
-<bean id="masterSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
-<property name="dataSource" ref="masterDataSource"></property>  
-<property name="configLocation" value="classpath:mybatis.xml" />  
-<property name="typeAliasesPackage" value="cn.bridgeli.demo.entity" />  
-<property name="mapperLocations">  
-<list>  
-<value>classpath:cn/bridgeli/demo/mapper/master/*.xml</value>  
-</list>  
-</property>  
-</bean>
+  <!-- Mybatis/Master -->  
+  <bean id="masterSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+    <property name="dataSource" ref="masterDataSource"></property>  
+    <property name="configLocation" value="classpath:mybatis.xml" />  
+    <property name="typeAliasesPackage" value="cn.bridgeli.demo.entity" />  
+    <property name="mapperLocations">  
+      <list>  
+        <value>classpath:cn/bridgeli/demo/mapper/master/*.xml</value>  
+      </list>  
+    </property>  
+  </bean>
 
-<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
-<property name="basePackage" value="cn.bridgeli.demo.mapper.master" />  
-<property name="sqlSessionFactoryBeanName" value="masterSqlSessionFactory" />  
-</bean>
+  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+    <property name="basePackage" value="cn.bridgeli.demo.mapper.master" />  
+    <property name="sqlSessionFactoryBeanName" value="masterSqlSessionFactory" />  
+  </bean>
 
-<!-- Mybatis/Slave -->  
-<bean id="slaveSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
-<property name="dataSource" ref="slaveDataSource"></property>  
-<property name="configLocation" value="classpath:mybatis.xml" />  
-<property name="typeAliasesPackage" value="cn.bridgeli.demo.entity" />  
-<property name="mapperLocations">  
-<list>  
-<value>classpath:cn/bridgeli/demo/mapper/slave/*.xml</value>  
-</list>  
-</property>  
-</bean>
+  <!-- Mybatis/Slave -->  
+  <bean id="slaveSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+    <property name="dataSource" ref="slaveDataSource"></property>  
+    <property name="configLocation" value="classpath:mybatis.xml" />  
+    <property name="typeAliasesPackage" value="cn.bridgeli.demo.entity" />  
+    <property name="mapperLocations">  
+      <list>  
+        <value>classpath:cn/bridgeli/demo/mapper/slave/*.xml</value>  
+      </list>  
+    </property>  
+  </bean>
 
-<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
-<property name="basePackage" value="cn.bridgeli.demo.mapper.slave" />  
-<property name="sqlSessionFactoryBeanName" value="slaveSqlSessionFactory" />  
-</bean>
+  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+    <property name="basePackage" value="cn.bridgeli.demo.mapper.slave" />  
+    <property name="sqlSessionFactoryBeanName" value="slaveSqlSessionFactory" />  
+  </bean>
 
-<!-- Configuration transaction advice -->  
-<tx:advice id="txAdvice" transaction-manager="masterTransactionManager">  
-<tx:attributes>  
-<tx:method name="add*" propagation="REQUIRED" />  
-<tx:method name="update*" propagation="REQUIRED" />  
-<tx:method name="delete*" propagation="REQUIRED" />  
-<tx:method name="get*" read-only="true" propagation="SUPPORTS" />  
-<tx:method name="list*" read-only="true" propagation="SUPPORTS" />  
-</tx:attributes>  
-</tx:advice>  
-<!-- Configuration transaction aspect -->  
-<aop:config>  
-<aop:pointcut id="systemServicePointcut"  
-expression="execution(\* cn.bridgeli.demo.service.\*.*(..))" />  
-<aop:advisor advice-ref="txAdvice" pointcut-ref="systemServicePointcut" />  
-</aop:config>
+  <!-- Configuration transaction advice -->  
+  <tx:advice id="txAdvice" transaction-manager="masterTransactionManager">  
+    <tx:attributes>  
+      <tx:method name="add*" propagation="REQUIRED" />  
+      <tx:method name="update*" propagation="REQUIRED" />  
+      <tx:method name="delete*" propagation="REQUIRED" />  
+      <tx:method name="get*" read-only="true" propagation="SUPPORTS" />  
+      <tx:method name="list*" read-only="true" propagation="SUPPORTS" />  
+    </tx:attributes>  
+  </tx:advice>  
+  <!-- Configuration transaction aspect -->  
+  <aop:config>  
+    <aop:pointcut id="systemServicePointcut"  
+      expression="execution(* cn.bridgeli.demo.service.*.*(..))" />
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="systemServicePointcut" />  
+  </aop:config> 
 
 </beans>
 
@@ -219,20 +217,20 @@ expression="execution(\* cn.bridgeli.demo.service.\*.*(..))" />
 ```
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">  
-<configuration>  
-<settings>  
-<setting name="cacheEnabled" value="true" />  
-<setting name="lazyLoadingEnabled" value="true" />  
-</settings>
+  <configuration>  
+    <settings>  
+      <setting name="cacheEnabled" value="true" />  
+      <setting name="lazyLoadingEnabled" value="true" />  
+    </settings>
 
-<plugins>  
-<plugin  
-interceptor="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">  
-<property name="dialectClass"  
-value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect" />  
-<property name="asyncTotalCount" value="true" />  
-</plugin>  
-</plugins>
+    <plugins>  
+      <plugin  
+        interceptor="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">  
+        <property name="dialectClass"  
+          value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect" />  
+        <property name="asyncTotalCount" value="true" />  
+      </plugin>  
+    </plugins>
 
 </configuration>
 
@@ -244,21 +242,21 @@ value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect" />
 
 ```
 <dependency>  
-<groupId>com.jolbox</groupId>  
-<artifactId>bonecp</artifactId>  
-<version>0.8.0.RELEASE</version>  
+  <groupId>com.jolbox</groupId>  
+  <artifactId>bonecp</artifactId>  
+  <version>0.8.0.RELEASE</version>  
 </dependency>
 
 <dependency>  
-<groupId>com.jolbox</groupId>  
-<artifactId>bonecp-spring</artifactId>  
-<version>0.8.0.RELEASE</version>  
+  <groupId>com.jolbox</groupId>  
+  <artifactId>bonecp-spring</artifactId>  
+  <version>0.8.0.RELEASE</version>  
 </dependency>
 
 <dependency>  
-<groupId>org.mariadb.jdbc</groupId>  
-<artifactId>mariadb-java-client</artifactId>  
-<version>1.1.7</version>  
+  <groupId>org.mariadb.jdbc</groupId>  
+  <artifactId>mariadb-java-client</artifactId>  
+  <version>1.1.7</version>    
 </dependency>
 
 ```

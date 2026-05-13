@@ -43,18 +43,18 @@ Unable to commit files
 
 ```
 <plugin>  
-<groupId>org.apache.maven.plugins</groupId>  
-<artifactId>maven-gpg-plugin</artifactId>  
-<version>1.5</version>  
-<executions>  
-<execution>  
-<id>sign-artifacts</id>  
-<phase>verify</phase>  
-<goals>  
-<goal>sign</goal>  
-</goals>  
-</execution>  
-</executions>  
+  <groupId>org.apache.maven.plugins</groupId>  
+  <artifactId>maven-gpg-plugin</artifactId>  
+  <version>1.5</version>  
+  <executions>  
+    <execution>  
+      <id>sign-artifacts</id>  
+      <phase>verify</phase>  
+      <goals>  
+        <goal>sign</goal>  
+      </goals>  
+    </execution>  
+  </executions>  
 </plugin>
 
 ```
@@ -74,7 +74,7 @@ server-side error 被我遇到了，这是 https://issues.sonatype.org/ 啊，�
 
 ```
 <configuration>  
-<javadocExecutable>/Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/bin/javadoc</javadocExecutable>  
+    <javadocExecutable>/Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/bin/javadoc</javadocExecutable>  
 </configuration>
 
 ```

@@ -27,7 +27,7 @@ SELECT COUNT(*) FROM t1 LEFT JOIN t2 ON t1.c1 = t2.c1 WHERE t2.c1 IS NULL OR t2.
 
 ```
 select COUNT(*) from t1 where t1.c1 not in (  
-select t2.c1 from t2 where t2.c1 is not null AND t2.c1 != "  
+  select t2.c1 from t2 where t2.c1 is not null AND t2.c1 != "  
 );
 
 ```
@@ -36,11 +36,11 @@ select t2.c1 from t2 where t2.c1 is not null AND t2.c1 != "
 
 ```
 foreach c1 in t2:  
-if t1.c1 != c1:  
-continue  
-else:  
-return false  
-return true
+  if t1.c1 != c1:  
+    continue;  
+  else:  
+    return false;  
+return true;
 
 ```
 

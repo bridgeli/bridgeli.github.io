@@ -27,14 +27,14 @@ protected T initialValue() { }
 
 ```
 public T get() {  
-Thread t = Thread.currentThread();  
-ThreadLocalMap map = getMap(t);  
-if (map != null) {  
-ThreadLocalMap.Entry e = map.getEntry(this);  
-if (e != null)  
-return (T)e.value;  
-}  
-return setInitialValue();  
+  Thread t = Thread.currentThread();  
+  ThreadLocalMap map = getMap(t);  
+  if (map != null) {  
+    ThreadLocalMap.Entry e = map.getEntry(this);  
+    if (e != null)  
+      return (T)e.value;  
+  }  
+  return setInitialValue();  
 }
 
 ```
@@ -43,7 +43,7 @@ return setInitialValue();
 
 ```
 ThreadLocalMap getMap(Thread t) {  
-return t.threadLocals;  
+  return t.threadLocals;  
 }
 
 ```
@@ -61,21 +61,21 @@ ThreadLocal.ThreadLocalMap threadLocals = null;
 static class ThreadLocalMap {
 
 /**  
-* The entries in this hash map extend WeakReference, using  
-* its main ref field as the key (which is always a  
-* ThreadLocal object). Note that null keys (i.e. entry.get()  
-* == null) mean that the key is no longer referenced, so the  
-* entry can be expunged from table. Such entries are referred to  
-* as "stale entries" in the code that follows.  
-*/  
+ * The entries in this hash map extend WeakReference, using  
+ * its main ref field as the key (which is always a  
+ * ThreadLocal object). Note that null keys (i.e. entry.get()  
+ * == null) mean that the key is no longer referenced, so the  
+ * entry can be expunged from table. Such entries are referred to  
+ * as "stale entries" in the code that follows.  
+ */  
 static class Entry extends WeakReference<ThreadLocal> {  
-/*\* The value associated with this ThreadLocal. \*/  
-Object value;
+  /** The value associated with this ThreadLocal. */
+  Object value;
 
-Entry(ThreadLocal k, Object v) {  
-super(k);  
-value = v;  
-}  
+  Entry(ThreadLocal k, Object v) {  
+    super(k);  
+    value = v;  
+  }  
 }
 
 ```
@@ -85,14 +85,14 @@ ThreadLocalMap的Entry继承了WeakReference，并且使用ThreadLocal作为键�
 
 ```
 private T setInitialValue() {  
-T value = initialValue();  
-Thread t = Thread.currentThread();  
-ThreadLocalMap map = getMap(t);  
-if (map != null)  
-map.set(this, value);  
-else  
-createMap(t, value);  
-return value;  
+  T value = initialValue();  
+  Thread t = Thread.currentThread();  
+  ThreadLocalMap map = getMap(t);  
+  if (map != null)  
+    map.set(this, value);  
+  else  
+    createMap(t, value);  
+  return value;  
 }
 
 ```
@@ -101,7 +101,7 @@ return value;
 
 ```
 void createMap(Thread t, T firstValue) {  
-t.threadLocals = new ThreadLocalMap(this, firstValue);  
+  t.threadLocals = new ThreadLocalMap(this, firstValue);  
 }
 
 ```

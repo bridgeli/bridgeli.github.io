@@ -144,7 +144,7 @@ http://127.0.0.1/#/admin/projects/
 到了这里只能说好了一半，如果你直接通过域名访问，会报一个认证失败的错误，错误就不贴了，大家自己看看就知道了  
 需要说明的是，以上这些配置，也可以通过修改：review/etc/gerrit.config 进行修改，修改之后重启就好了
 
-老夫把自己gerrit.config的配置贴出来如下（部分敏感信息用xxx进行了隐藏，该文件中\*就是\*，不是用于隐藏信息）：
+老夫把自己gerrit.config的配置贴出来如下（部分敏感信息用xxx进行了隐藏，该文件中*就是*，不是用于隐藏信息）：
 
 ```
 [gerrit]  
@@ -193,22 +193,21 @@ worker_processes 4;
 pid /run/nginx.pid;
 
 events {  
-worker_connentions 768;  
+  worker_connections 768;  
 }
 
 http {  
-server {  
-listen 80;  
-server_name gerrit.bridgeli.cn;  
-allow all;  
-deny all;  
-auth_basic "THSTACK INC. Review System Login";  
-auth_basic_user_file /data/apps/nginx/passwords;
+  server {  
+    listen 80;  
+    server_name gerrit.bridgeli.cn;  
+    allow all;  
+    deny all;  
+    auth_basic "THSTACK INC. Review System Login";  
+    auth_basic_user_file /data/apps/nginx/passwords;
 
-location / {  
-proxy_pass http://127.0.0.1:8081;  
-}  
-}  
+    location / {  
+      proxy_pass http://127.0.0.1:8081;  
+    }  
 }
 
 ```
@@ -271,111 +270,120 @@ git push origin HEAD:refs/for/master
 7. 附录
 
 ```
-#!/bin/sh  
-# From Gerrit Code Review 2.1.2.4  
-#  
-# Part of Gerrit Code Review (http://code.google.com/p/gerrit/)  
-#  
-# Copyright (C) 2009 The Android Open Source Project  
-#  
-# Licensed under the Apache License, Version 2.0 (the "License");  
-# you may not use this file except in compliance with the License.  
-# You may obtain a copy of the License at  
-#  
-# http://www.apache.org/licenses/LICENSE-2.0  
-#  
-# Unless required by applicable law or agreed to in writing, software  
-# distributed under the License is distributed on an "AS IS" BASIS,  
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  
-# See the License for the specific language governing permissions and  
-# limitations under the License.  
-#
+#!/bin/sh
 
-CHANGE_ID_AFTER="Bug|Issue"  
+# Gerrit Commit Message Hook
+# Part of Gerrit Code Review (http://code.google.com/p/gerrit/)
+# Licensed under Apache License, Version 2.0
+
+# --- 配置 ---
+# CHANGE_ID_AFTER: 定义 Change-Id 应插入在哪些关键字（如 Bug, Issue）之后
+CHANGE_ID_AFTER="Bug|Issue"
 MSG="$1"
 
-# Check for, and add if missing, a unique Change-Id  
-#  
-add_ChangeId() {  
-clean_message=$(sed -e '  
-/^diff -git a/.*/{  
-s///  
-q  
-}  
-/^Signed-off-by:/d  
-/^#/d  
-' "$MSG" | git stripspace)  
-if test -z "$clean_message"  
-then  
-return  
-fi
+# --- 函数定义 ---
 
-if grep -i '^Change-Id:' "$MSG" >/dev/null  
-then  
-return  
-fi
+# 检查并添加唯一的 Change-Id
+add_ChangeId() {
+    # 1. 清理消息：移除 diff、Signed-off-by、注释行，并去除多余空格
+    clean_message=$(sed -e '
+        /^diff -git a/{
+            s///
+            q
+        }
+        /^Signed-off-by:/d
+        /^#/d
+    ' "$MSG" | git stripspace)
 
-id=$(_gen_ChangeId)  
-perl -e '  
-$MSG = shift;  
-$id = shift;  
-$CHANGE_ID_AFTER = shift;
+    # 2. 如果消息为空，直接返回
+    if test -z "$clean_message"; then
+        return
+    fi
 
-undef $/;  
-open(I, $MSG); $_ = <I>; close I;  
-s|^diff -git a/.*||ms;  
-s|^#.*$||mg;  
-exit unless $_;
+    # 3. 如果已经存在 Change-Id，直接返回
+    if grep -i '^Change-Id:' "$MSG" >/dev/null; then
+        return
+    fi
 
-@message = split /n/;  
-$haveFooter = 0;  
-$startFooter = @message;  
-for($line = @message - 1; $line >= 0; $line-) {  
-$_ = $message[$line];
+    # 4. 生成新的 Change-Id
+    id=$(_gen_ChangeId)
 
-if (/^[a-zA-Z0-9-]+:/ && !m,^[a-z0-9-]+://,) {  
-$haveFooter++;  
-next;  
-}  
-next if /^[ []/;  
-$startFooter = $line if ($haveFooter && /^r?$/);  
-last;  
+    # 5. 使用 Perl 插入 Change-Id 到消息末尾（在 Footer 区域）
+    perl -e '
+        $MSG = shift;
+        $id = shift;
+        $CHANGE_ID_AFTER = shift;
+
+        # 读取文件内容
+        undef $/;
+        open(I, $MSG); $_ = <I>; close I;
+        
+        # 移除 diff 和注释
+        s|^diff -git a/.*||ms;
+        s|^#.*$||mg;
+        exit unless $_;
+
+        @message = split /\n/;
+        
+        # 寻找 Footer 开始位置
+        $haveFooter = 0;
+        $startFooter = @message;
+        for($line = @message - 1; $line >= 0; $line--) {
+            $_ = $message[$line];
+            # 检测 "Key: Value" 格式的行
+            if (/^[a-zA-Z0-9-]+:/ && !m,^[a-z0-9-]+://,) {
+                $haveFooter++;
+                next;
+            }
+            next if /^[ \[]/; # 跳过以空格或 [ 开头的行
+            # 如果在 Footer 区域且遇到空行，记录位置
+            $startFooter = $line if ($haveFooter && /^[\r]?$/);
+            last;
+        }
+
+        # 分割消息和 Footer
+        @footer = @message[$startFooter+1..$#message];
+        @message = @message[0..$startFooter];
+        
+        # 确保 Footer 以空行结尾
+        push(@footer, "") unless $footer[$#footer] eq "";
+
+        # 查找插入位置：在特定关键字（如 Bug, Issue）之后
+        for ($line = 0; $line < @footer; $line++) {
+            $_ = $footer[$line];
+            next if /^($CHANGE_ID_AFTER):/i;
+            last;
+        }
+        
+        # 插入 Change-Id
+        splice(@footer, $line, 0, "Change-Id: I$id");
+
+        # 重新组合并写入文件
+        $_ = join("\n", @message, @footer);
+        open(O, ">$MSG"); print O; close O;
+    ' "$MSG" "$id" "$CHANGE_ID_AFTER"
 }
 
-@footer = @message[$startFooter+1..@message];  
-@message = @message[0..$startFooter];  
-push(@footer, "") unless @footer;
-
-for ($line = 0; $line < @footer; $line++) {  
-$_ = $footer[$line];  
-next if /^($CHANGE_ID_AFTER):/i;  
-last;  
-}  
-splice(@footer, $line, 0, "Change-Id: I$id");
-
-$_ = join("n", @message, @footer);  
-open(O, ">$MSG"); print O; close O;  
-' "$MSG" "$id" "$CHANGE_ID_AFTER"  
-}  
-_gen_ChangeIdInput() {  
-echo "tree $(git write-tree)"  
-if parent=$(git rev-parse HEAD^0 2>/dev/null)  
-then  
-echo "parent $parent"  
-fi  
-echo "author $(git var GIT_AUTHOR_IDENT)"  
-echo "committer $(git var GIT_COMMITTER_IDENT)"  
-echo  
-printf '%s' "$clean_message"  
-}  
-_gen_ChangeId() {  
-_gen_ChangeIdInput |  
-git hash-object -t commit -stdin  
+# 生成 Change-Id 的输入内容
+_gen_ChangeIdInput() {
+    echo "tree $(git write-tree)"
+    if parent=$(git rev-parse HEAD^0 2>/dev/null); then
+        echo "parent $parent"
+    fi
+    echo "author $(git var GIT_AUTHOR_IDENT)"
+    echo "committer $(git var GIT_COMMITTER_IDENT)"
+    echo
+    printf '%s' "$clean_message"
 }
 
-export LC_ALL=C  
+# 生成 Change-Id (基于输入内容的 SHA1 哈希)
+_gen_ChangeId() {
+    _gen_ChangeIdInput | git hash-object -t commit -stdin
+}
+
+# --- 主流程 ---
+export LC_ALL=C
 add_ChangeId
-
 ```
 
 **2015.10.27 补充**

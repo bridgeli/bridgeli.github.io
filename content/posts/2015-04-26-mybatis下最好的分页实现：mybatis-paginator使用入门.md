@@ -18,9 +18,9 @@ tags:
 
 ```
 <dependency>  
-<groupId>com.github.miemiedev</groupId>  
-<artifactId>mybatis-paginator</artifactId>  
-<version>1.2.15</version>  
+  <groupId>com.github.miemiedev</groupId>  
+  <artifactId>mybatis-paginator</artifactId>  
+  <version>1.2.15</version>  
 </dependency>
 
 ```
@@ -34,20 +34,18 @@ tags:
 ```
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">  
-<configuration>  
-<settings>  
-<setting name="cacheEnabled" value="true" />  
-<setting name="lazyLoadingEnabled" value="true" />  
-</settings>
+  <configuration>  
+  <settings>  
+    <setting name="cacheEnabled" value="true" />  
+    <setting name="lazyLoadingEnabled" value="true" />  
+  </settings>
 
-<plugins>  
-<plugin  
-interceptor="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">  
-<property name="dialectClass"  
-value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect" />  
-<property name="asyncTotalCount" value="true" />  
-</plugin>  
-</plugins>
+  <plugins>  
+    <plugin interceptor="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">  
+      <property name="dialectClass" value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect" />  
+      <property name="asyncTotalCount" value="true" />  
+    </plugin>
+  </plugins>
 
 </configuration>
 
@@ -59,10 +57,10 @@ value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect" />
 ......
 
 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
-<property name="dataSource" ref="dataSource"></property>  
-<property name="configLocation" value="classpath:mybatis.xml" />  
-<property name="typeAliasesPackage" value="cn.bridgeli.demo.entity" />  
-<property name="mapperLocations" value="classpath:cn/bridgeli/demo/mapper/*.xml" />  
+  <property name="dataSource" ref="dataSource"></property>  
+  <property name="configLocation" value="classpath:mybatis.xml" />  
+  <property name="typeAliasesPackage" value="cn.bridgeli.demo.entity" />  
+  <property name="mapperLocations" value="classpath:cn/bridgeli/demo/mapper/*.xml" />  
 </bean>
 
 ......
@@ -88,52 +86,52 @@ import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 
 public class PagingUtil {
 
-public static PageBounds getPageBounds(Map<String, String> paramMap) {
+  public static PageBounds getPageBounds(Map<String, String> paramMap) {
 
-String paramPage = paramMap.get("page");  
-String paramPageSize = PropertiesUtil.getProperties("pageSize");
+    String paramPage = paramMap.get("page");  
+    String paramPageSize = PropertiesUtil.getProperties("pageSize");
 
-int page = NumberUtils.toInt(paramPage, 1); // 页号  
-int pageSize = NumberUtils.toInt(paramPageSize, 10); // 每页数据条数
+    int page = NumberUtils.toInt(paramPage, 1); // 页号  
+    int pageSize = NumberUtils.toInt(paramPageSize, 10); // 每页数据条数
 
-// String sortString = "age.asc,gender.desc";//如果你想排序的话逗号分隔可以排序多列  
-PageBounds pageBounds = new PageBounds(page, pageSize);
+    // String sortString = "age.asc,gender.desc";//如果你想排序的话逗号分隔可以排序多列  
+    PageBounds pageBounds = new PageBounds(page, pageSize);
 
-pageBounds.setAsyncTotalCount(true);  
-pageBounds.setContainsTotalCount(true);
+    pageBounds.setAsyncTotalCount(true);  
+    pageBounds.setContainsTotalCount(true);
 
-return pageBounds;  
-}
+    return pageBounds;  
+  }
 
-public static Map<String, Object> toPageInfo(List<Map<String, Object>> detailList) {
+  public static Map<String, Object> toPageInfo(List<Map<String, Object>> detailList) {
 
-PageList<Map<String, Object>> value = (PageList<Map<String, Object>>) detailList;
+    PageList<Map<String, Object>> value = (PageList<Map<String, Object>>) detailList;
 
-Map<String, Object> pageInfo = new HashMap<String, Object>();  
-Paginator paginator = value.getPaginator();  
-pageInfo.put("totalCount", paginator.getTotalCount());  
-pageInfo.put("totalPages", paginator.getTotalPages());  
-pageInfo.put("page", paginator.getPage());  
-pageInfo.put("limit", paginator.getLimit());  
-pageInfo.put("items", value);
+      Map<String, Object> pageInfo = new HashMap<String, Object>();  
+      Paginator paginator = value.getPaginator();  
+      pageInfo.put("totalCount", paginator.getTotalCount());  
+      pageInfo.put("totalPages", paginator.getTotalPages());  
+      pageInfo.put("page", paginator.getPage());  
+      pageInfo.put("limit", paginator.getLimit());  
+      pageInfo.put("items", value);
 
-pageInfo.put("startRow", paginator.getStartRow());  
-pageInfo.put("endRow", paginator.getEndRow());
+      pageInfo.put("startRow", paginator.getStartRow());  
+      pageInfo.put("endRow", paginator.getEndRow());
 
-pageInfo.put("offset", paginator.getOffset());
+      pageInfo.put("offset", paginator.getOffset());
 
-pageInfo.put("slider", paginator.getSlider());
+      pageInfo.put("slider", paginator.getSlider());
 
-pageInfo.put("prePage", paginator.getPrePage());  
-pageInfo.put("nextPage", paginator.getNextPage());
+      pageInfo.put("prePage", paginator.getPrePage());  
+      pageInfo.put("nextPage", paginator.getNextPage());
 
-pageInfo.put("firstPage", paginator.isFirstPage());  
-pageInfo.put("hasNextPage", paginator.isHasNextPage());  
-pageInfo.put("hasPrePage", paginator.isHasPrePage());  
-pageInfo.put("lastPage", paginator.isLastPage());
+      pageInfo.put("firstPage", paginator.isFirstPage());  
+      pageInfo.put("hasNextPage", paginator.isHasNextPage());  
+      pageInfo.put("hasPrePage", paginator.isHasPrePage());
+      pageInfo.put("lastPage", paginator.isLastPage());
 
-return pageInfo;  
-}
+      return pageInfo;  
+  }
 
 }
 

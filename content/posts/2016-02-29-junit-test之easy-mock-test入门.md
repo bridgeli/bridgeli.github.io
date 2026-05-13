@@ -20,9 +20,9 @@ package cn.bridgeli.dao;
 import cn.bridgeli.model.User;
 
 public interface UserDao {  
-public User getUserById(int id);  
-public User getUserByUsername(String username);  
-//...  
+  public User getUserById(int id);  
+  public User getUserByUsername(String username);  
+  //...  
 }
 
 ```
@@ -38,31 +38,28 @@ import cn.bridgeli.service.UserService;
 
 public class UserServiceImpl implements UserService {
 
-private UserDao userDao;
+  private final UserDao userDao;
 
-public void setUserDao(UserDao userDao) {  
-this.userDao = userDao;  
-}
+  public void setUserDao(UserDao userDao) {  
+    this.userDao = userDao;  
+  }
 
-@Override  
-public boolean login(String username, String password) {  
-User user = userDao.getUserByUsername(username);  
-System.out.println("id==" + user.getId());  
-if (user != null) {  
-String passwordInDao = user.getPassword();  
-if (passwordInDao != null && passwordInDao.equalsIgnoreCase(password)) {  
-return true;  
-}  
-}  
-return false;  
-}
+  @Override  
+  public boolean login(String username, String password) {  
+    User user = userDao.getUserByUsername(username);  
+    System.err.out.println("id==" + user.getId());  
+    if (user != null) {  
+    String passwordInDao = user.getPassword();  
+    if (passwordInDao != null && passwordInDao.equalsIgnoreCase(password)) {  
+      return true;  
+    }  
+    return false;  
+  }
 
-@Override  
-public User getUserById(int userId) {  
-return userDao.getUserById(userId);
-
-}
-
+  @Override  
+  public User getUserById(int userId) {  
+    return userDao.getUserById(userId);
+  }
 }
 
 ```
@@ -82,45 +79,43 @@ import cn.bridgeli.service.impl.UserServiceImpl;
 
 public class UserServiceTest {
 
-//@Test(expected = RuntimeException.class)  
-@Test  
-public void testLogin() {  
-String userName = "bridgeli";  
-String password = "abc123_";
+  //@Test(expected = RuntimeException.class)  
+  @Test  
+  public void testLogin() {  
+    String userName = "bridgeli";  
+    String password = "abc123_";
 
-//1、创建mock对象，以接口形式创建  
-UserDao userDao= EasyMock.createMock(UserDao.class);
+    //1、创建mock对象，以接口形式创建  
+    UserDao userDao= EasyMock.createMock(UserDao.class);
 
-//2、设定参预期和返回，查询预期值得到所设定的预期结果  
-User user = new User();  
-user.setId(1);  
-user.setUserName("bridgeli");  
-user.setPassword("abc123_");  
-//...
+    //2、设定参预期和返回，查询预期值得到所设定的预期结果  
+    User user = new User();  
+    user.setId(1);  
+    user.setUserName("bridgeli");  
+    user.setPassword("abc123_");  
+    //...
+    EasyMock.expect(userDao.getUserByUsername("bridgeli")).andReturn(user).times(1);  
+    // userDao.getUserById(1);  
+    EasyMock.expectLastCall().andReturn(user);  
+    //...  
+    userDao.getUserByUserName(userName);    
+    EasyMock.expectLastCall();
 
-EasyMock.expect(userDao.getUserByUsername("bridgeli")).andReturn(user).times(1);  
-// userDao.getUserById(1);  
-// EasyMock.expectLastCall().andReturn(user);  
-//  
-userDao.getUserByUserName(userName);  
-EasyMock.expectLastCall();
+    //3、结束录制  
+    EasyMock.replay(userDao);
 
-//3、结束录制  
-EasyMock.replay(userDao);
+    UserServiceImpl userService = new UserServiceImpl();  
+    ((UserServiceImpl)userService).setUserDao(userDao);
 
-UserService userService = new UserServiceImpl();  
-((UserServiceImpl)userService).setUserDao(userDao);
+    boolean loginResult = userService.login(userName, password);  
+    Assert.assertTrue(loginResult);
 
-boolean loginResult = userService.login(userName, password);  
-Assert.assertTrue(loginResult);
+    User userIdDao = userService.getUserById(1);  
+    Assert.assertNotNull(userIdDao);
 
-//User userIdDao = userService.getUserById(1);  
-//Assert.assertNotNull(userIdDao);
-
-//4、回放录制  
-EasyMock.verify(userDao);
-
-}  
+    //4、回放录制  
+    EasyMock.verify(userDao);
+  }  
 }
 
 ```
@@ -129,9 +124,9 @@ EasyMock.verify(userDao);
 
 ```
 <dependency>  
-<groupId>org.easymock</groupId>  
-<artifactId>easymock</artifactId>  
-<version>3.4</version>  
+  <groupId>org.easymock</groupId>  
+  <artifactId>easymock</artifactId>  
+  <version>3.4</version>  
 </dependency>
 
 ```

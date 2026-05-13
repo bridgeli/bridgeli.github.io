@@ -57,28 +57,31 @@ svnserve -d -r svnrepo
 我们在我们的仓库中的hooks文件夹中，找到pre-commit.tmpl文件，在windows下可以修改这个文件为pre-commit.bat，然后把里面的内容修改为如下：  
 ```  
 @echo off
-
 setlocal
 
+:: 获取 SVN 传入的参数
+:: %1 = 版本库路径 (REPOS)
+:: %2 = 事务名称 (TXN)
 set REPOS=%1
-
 set TXN=%2
 
-rem check that logmessage contains at least 10 characters
+:: ---------------------------------------------------------
+:: 检查提交日志长度是否至少为 10 个字符
+:: 使用 findstr 正则表达式 ".*" 匹配任意字符
+:: ---------------------------------------------------------
+svnlook log "%REPOS%" -t "%TXN%" | findstr /R ".*.*.*.*.*.*.*.*.*.*" > nul
 
-rem .....代表5个字符
-
-svnlook log "%REPOS%" -t "%TXN%" | findstr ".........." > nul
-
+:: 判断上一条命令的返回码
+:: errorlevel > 0 表示未找到匹配项（即日志太短或为空）
 if %errorlevel% gtr 0 goto err
 
+:: 检查通过，允许提交
 exit 0
 
 :err
-
+:: 检查失败，输出错误信息到标准错误流，并中止提交
 echo Empty log message not allowed. Commit aborted! 1>&2
-
-exit 1  
+exit 1
 ```
 
 修改为bat相信大家都知道让Windows知道是可执行文件，据说不加后缀也可以，关于这个我没有测试过，大家可以自己测试，在测试之前呢，为了避免库被破坏，我们可以自己先备份一下。

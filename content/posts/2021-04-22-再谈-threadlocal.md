@@ -17,12 +17,12 @@ tags:
 package cn.bridgeli.demo;
 
 /**  
-* @author BridgeLi  
-* @date 2021/4/21 11:02  
-*/  
+ * @author BridgeLi  
+ * @date 2021/4/21 11:02  
+ */  
 public class User {
 
-String name = "Denny";
+  String name = "Denny";
 
 }
 
@@ -36,32 +36,32 @@ package cn.bridgeli.demo;
 import org.junit.Test;
 
 /**  
-* @author BridgeLi  
-* @date 2021/4/21 10:28  
-*/  
+ * @author BridgeLi  
+ * @date 2021/4/21 10:28  
+ */  
 public class ThreadTest {
 
-private User user = new User();
+  private User user = new User();
 
-@Test  
-public void testThreadLocal() {  
-new Thread(() -> {  
-try {  
-Thread.sleep(1000);  
-} catch (InterruptedException e) {  
-e.printStackTrace();  
-}  
-System.out.println(user.name);  
-}).start();
+  @Test  
+  public void testThreadLocal() {  
+    new Thread(() -> {  
+      try {  
+        Thread.sleep(1000);  
+      } catch (InterruptedException e) {  
+        e.printStackTrace();  
+      }  
+      System.out.println(user.name);  
+    }).start();
 
-new Thread(() -> user.name = "BridgeLi").start();
+    new Thread(() -> user.name = "BridgeLi").start();
 
-try {  
-Thread.sleep(2000);  
-} catch (InterruptedException e) {  
-e.printStackTrace();  
-}  
-}  
+    try {  
+      Thread.sleep(2000);  
+    } catch (InterruptedException e) {  
+      e.printStackTrace();  
+    }  
+  } 
 }
 
 ```
@@ -74,32 +74,32 @@ package cn.bridgeli.demo.reference;
 import org.junit.Test;
 
 /**  
-* @author BridgeLi  
-* @date 2021/4/21 10:28  
-*/  
+ * @author BridgeLi  
+ * @date 2021/4/21 10:28  
+ */  
 public class ThreadLocalTest {
 
-private static ThreadLocal<User> threadLocal = new ThreadLocal<>();
+  private static ThreadLocal<User> threadLocal = new ThreadLocal<>();
 
-@Test  
-public void testThreadLocal() {  
-new Thread(() -> {  
-try {  
-Thread.sleep(1000);  
-} catch (InterruptedException e) {  
-e.printStackTrace();  
-}  
-System.out.println(threadLocal.get());  
-}).start();
+  @Test  
+  public void testThreadLocal() {  
+    new Thread(() -> {  
+      try {  
+        Thread.sleep(1000);  
+      } catch (InterruptedException e) {  
+        e.printStackTrace();  
+      }  
+      System.out.println(threadLocal.get());  
+    }).start();
 
-new Thread(() -> threadLocal.set(new User())).start();
+    new Thread(() -> threadLocal.set(new User())).start();
 
-try {  
-Thread.sleep(2000);  
-} catch (InterruptedException e) {  
-e.printStackTrace();  
-}  
-}  
+    try {  
+      Thread.sleep(2000);  
+    } catch (InterruptedException e) {  
+      e.printStackTrace();  
+    } 
+  } 
 }
 
 ```
@@ -111,9 +111,9 @@ public void set(T value) {
 Thread t = Thread.currentThread();  
 ThreadLocalMap map = getMap(t);  
 if (map != null)  
-map.set(this, value);  
+  map.set(this, value);  
 else  
-createMap(t, value);  
+  createMap(t, value);  
 }
 
 ```
@@ -122,17 +122,17 @@ createMap(t, value);
 
 ```
 public T get() {  
-Thread t = Thread.currentThread();  
-ThreadLocalMap map = getMap(t);  
-if (map != null) {  
-ThreadLocalMap.Entry e = map.getEntry(this);  
-if (e != null) {  
-@SuppressWarnings("unchecked")  
-T result = (T)e.value;  
-return result;  
-}  
-}  
-return setInitialValue();  
+  Thread t = Thread.currentThread();  
+  ThreadLocalMap map = getMap(t);  
+  if (map != null) {  
+    ThreadLocalMap.Entry e = map.getEntry(this);  
+    if (e != null) {  
+      @SuppressWarnings("unchecked")  
+      T result = (T)e.value;  
+      return result;  
+    }
+  }  
+  return setInitialValue();  
 }
 
 ```
@@ -165,11 +165,11 @@ t.threadLocals = new ThreadLocalMap(this, firstValue);
 
 ```
 ThreadLocalMap(ThreadLocal<?> firstKey, Object firstValue) {  
-table = new Entry[INITIAL_CAPACITY];  
-int i = firstKey.threadLocalHashCode & (INITIAL_CAPACITY - 1);  
-table[i] = new Entry(firstKey, firstValue);  
-size = 1;  
-setThreshold(INITIAL_CAPACITY);  
+  table = new Entry[INITIAL_CAPACITY];  
+  int i = firstKey.threadLocalHashCode & (INITIAL_CAPACITY - 1);  
+  table[i] = new Entry(firstKey, firstValue);  
+  size = 1;  
+  setThreshold(INITIAL_CAPACITY);  
 }
 
 ```
@@ -178,13 +178,13 @@ setThreshold(INITIAL_CAPACITY);
 
 ```
 static class Entry extends WeakReference<ThreadLocal<?>> {  
-/*\* The value associated with this ThreadLocal. \*/  
-Object value;
+  /** The value associated with this ThreadLocal. */
+  Object value;
 
-Entry(ThreadLocal<?> k, Object v) {  
-super(k);  
-value = v;  
-}  
+  Entry(ThreadLocal<?> k, Object v) {  
+    super(k);  
+    value = v;  
+  }
 }
 
 ```

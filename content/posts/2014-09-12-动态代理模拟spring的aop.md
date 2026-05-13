@@ -22,7 +22,6 @@ public interface UserService {
 package cn.bridgeli.aop;
 
 public class UserServiceImpl implements UserService {
-
     public void addUser() {
         System.out.println("User add...");
     }

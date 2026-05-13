@@ -20,18 +20,18 @@ tags:
 ```
 @Override  
 public Long geoAdd(String key, List<Entity> entities) {  
-redisTemplate.delete(key);  
-GeoOperations geoOperations = redisTemplate.opsForGeo();  
-Map<String, Point> map = new HashMap<>();  
-Point point = null;  
-for (Entity entity : entities) {  
-point = new Point(entity.getLongitude(), entity.getLatitude());  
-map.put(gson.toJson(entity), point);  
-}
+  redisTemplate.delete(key);  
+  GeoOperations geoOperations = redisTemplate.opsForGeo();  
+  Map<String, Point> map = new HashMap<>();  
+  Point point = null;  
+  for (Entity entity : entities) {  
+    point = new Point(entity.getLongitude(), entity.getLatitude());  
+    map.put(gson.toJson(entity), point);  
+  }
 
-Long add = geoOperations.geoAdd(key, map);
+  Long add = geoOperations.geoAdd(key, map);
 
-return add;
+  return add;
 
 }
 
@@ -48,50 +48,50 @@ return add;
 ```
 @Override  
 public Page<Entity> geoRadius(String key, Double latitude, Double longitude, Integer distance, String sort, Integer pageNo, Integer pageSize) {  
-GeoOperations geoOperations = redisTemplate.opsForGeo();  
-Circle circle = new Circle(new Point(latitude, longitude), new Distance(distance / 1000, RedisGeoCommands.DistanceUnit.KILOMETERS));  
-RedisGeoCommands.GeoRadiusCommandArgs geoRadiusCommandArgs = RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs();  
-geoRadiusCommandArgs = geoRadiusCommandArgs.includeCoordinates().includeDistance();  
-if ("DESC".equals(sort)) {  
-geoRadiusCommandArgs.sortDescending();  
-} else {  
-geoRadiusCommandArgs.sortAscending();  
-}
+  GeoOperations geoOperations = redisTemplate.opsForGeo();  
+  Circle circle = new Circle(new Point(latitude, longitude), new Distance(distance / 1000, RedisGeoCommands.DistanceUnit.KILOMETERS));  
+  RedisGeoCommands.GeoRadiusCommandArgs geoRadiusCommandArgs = RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs();  
+  geoRadiusCommandArgs = geoRadiusCommandArgs.includeCoordinates().includeDistance();  
+  if ("DESC".equals(sort)) {  
+    geoRadiusCommandArgs.sortDescending();  
+  } else {  
+    geoRadiusCommandArgs.sortAscending();  
+  }
 
-GeoResults<RedisGeoCommands.GeoLocation<String>> radiusGeo = geoOperations.geoRadius(key, circle, geoRadiusCommandArgs);  
-List<GeoResult<RedisGeoCommands.GeoLocation<String>>> list = radiusGeo.getContent();  
-List<Entity> entities = null;  
-Integer size = null;  
-if (CollectionUtils.isNotEmpty(list)) {
+  GeoResults<RedisGeoCommands.GeoLocation<String>> radiusGeo = geoOperations.geoRadius(key, circle, geoRadiusCommandArgs);  
+  List<GeoResult<RedisGeoCommands.GeoLocation<String>>> list = radiusGeo.getContent();  
+  List<Entity> entities = null;  
+  Integer size = null;  
+  if (CollectionUtils.isNotEmpty(list)) {
 
-int limit = pageNo * pageSize;  
-size = list.size();  
-if (limit > size) {  
-limit = size;  
-}
+    int limit = pageNo * pageSize;  
+    size = list.size();  
+    if (limit > size) {  
+      limit = size;  
+    }
 
-list = list.subList((pageNo - 1) * pageSize, limit);  
-entities = new ArrayList<>(pageSize);
+    list = list.subList((pageNo - 1) * pageSize, limit);  
+    entities = new ArrayList<>(pageSize);
 
-for (GeoResult<RedisGeoCommands.GeoLocation<String>> geoLocationGeoResult : list) {  
-RedisGeoCommands.GeoLocation<String> geoLocationGeoResultContent = geoLocationGeoResult.getContent();
+    for (GeoResult<RedisGeoCommands.GeoLocation<String>> geoLocationGeoResult : list) {  
+      RedisGeoCommands.GeoLocation<String> geoLocationGeoResultContent = geoLocationGeoResult.getContent();
 
-Distance distance1 = geoLocationGeoResult.getDistance();  
-double value = distance1.getValue();  
-value = (double) Math.round(value * 100) / 100;
+      Distance distance1 = geoLocationGeoResult.getDistance();  
+      double value = distance1.getValue();  
+      value = (double) Math.round(value * 100) / 100;
 
-String name = geoLocationGeoResultContent.getName();  
-Entity entity = gson.fromJson(name, Entity.class);  
-entity.setDistance(value);
+      String name = geoLocationGeoResultContent.getName();  
+      Entity entity = gson.fromJson(name, Entity.class);  
+      entity.setDistance(value);
 
-entities.add(entity);  
-}  
-}  
-Page<entity> page = new Page<>();  
-page.setData(entities);  
-page.setTotal(size);
+      entities.add(entity);  
+    }
 
-return page;  
+    Page<Entity> page = new Page<>();
+    page.setData(entities);  
+    page.setTotal(size);
+
+    return page;
 }
 
 ```

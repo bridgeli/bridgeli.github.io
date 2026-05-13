@@ -12,26 +12,26 @@ tags:
 前一段时间有一个需求，需要计数，理所当地的使用了 redis 的 incr 方法。代码大概如下：
 
 ```
-@Scheduled(cron = "0 0/10 \* \* * ?")  
+@Scheduled(cron = "0 0/10 * * * * ?")
 public void test() {
 
-long yellowInterval = 5L;  
-boolean isReachable = false;  
-// TODO  
-long delta = isReachable ? -1L : 1L;  
-ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();  
-String key = RFID_NETWORK_STATUS_PREFIX + rfDevice.getId();  
-Long increment = valueOperations.increment(key, delta);  
-if (increment == null || increment <= 0L) {
+  long yellowInterval = 5L;  
+  boolean isReachable = false;  
+  // TODO  
+  long delta = isReachable ? -1L : 1L;  
+  ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();  
+  String key = RFID_NETWORK_STATUS_PREFIX + rfDevice.getId();  
+  Long increment = valueOperations.increment(key, delta);  
+  if (increment == null || increment <= 0L) {
 
-}  
-} else if (increment >= yellowInterval) {  
-if (Constants.RFID_NETWORK_STATUS_GREEN.equals(rfDevice.getNetworkStatus())) {
+  }  else if (increment >= yellowInterval) {  
+    if (Constants.RFID_NETWORK_STATUS_GREEN.equals(rfDevice.getNetworkStatus())) {
 
-}  
-if (increment >= yellowInterval * 3) {  
-valueOperations.set(key, yellowInterval * 3);  
-}  
+    }  
+    if (increment >= yellowInterval * 3) {  
+      valueOperations.set(key, yellowInterval * 3);  
+    }  
+  }
 }
 
 ```

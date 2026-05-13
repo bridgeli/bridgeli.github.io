@@ -17,9 +17,9 @@ tags:
 
 ```
 <dependency>  
-<groupId>com.github.xiaoymin</groupId>  
-<artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>  
-<version>4.5.0</version>  
+  <groupId>com.github.xiaoymin</groupId>  
+  <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>  
+  <version>4.5.0</version>  
 </dependency>
 
 ```
@@ -28,13 +28,13 @@ tags:
 
 ```
 knife4j:  
-enable: true  
-basic:  
-enable: true  
-username: BridgeLi  
-password: BridgeLi  
-springdoc:  
-default-flat-param-object: true
+  enable: true  
+  basic:
+    enable: true  
+    username: BridgeLi  
+    password: BridgeLi  
+  springdoc:  
+    default-flat-param-object: true
 ```
 
 最后，使用 OpenAPI3 的规范注解，注释各个 Spring 的 Rest 接口。
@@ -60,18 +60,17 @@ import java.util.List;
 @RequestMapping("/ajlc")  
 public class AjlcController extends BaseController {
 
-@Resource  
-private AjlcService ajlcService;
+  @Resource  
+  private AjlcService ajlcService;
 
-@Operation(summary = "分页查询列表")  
-@GetMapping("/queryAjlcsPage")  
-public Result<TableDataInfo<Ajlc>> queryAjlcsPage(Ajlc ajlc) {  
-startPage();  
-List<Ajlc> ajlcs = ajlcService.queryAjlcs(ajlc);
+  @Operation(summary = "分页查询列表")  
+  @GetMapping("/queryAjlcsPage")  
+  public Result<TableDataInfo<Ajlc>> queryAjlcsPage(Ajlc ajlc) {  
+    startPage();  
+    List<Ajlc> ajlcs = ajlcService.queryAjlcs(ajlc);
 
-return Result.success(getDataTable(ajlcs));  
-}
-
+    return Result.success(getDataTable(ajlcs));  
+  }
 }
 
 ```
@@ -85,31 +84,31 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**  
-* 案件流程  
-* 表: ajlc 的 model 类  
-*  
-* @author BridgeLi  
-* @date 2024-05-25 11:23:13  
-*/  
+ * 案件流程  
+ * 表: ajlc 的 model 类  
+ *  
+ * @author BridgeLi  
+ * @date 2024-05-25 11:23:13  
+ */  
 @Schema(title = "案件流程")  
 @Data  
 public class Ajlc implements Serializable {  
-/**  
-* 类的 serial version id  
-*/  
-private static final long serialVersionUID = 1L;
+  /**  
+   * 类的 serial version id  
+   */  
+  private static final long serialVersionUID = 1L;
 
-/**  
-* 字段: id，主键  
-*/  
-@Schema(title = "主键")  
-private Integer id;
+  /**  
+   * 字段: id，主键  
+   */  
+  @Schema(title = "主键")  
+  private Integer id;
 
-/**  
-* 字段: ajlc_id，案件流程ID  
-*/  
-@Schema(title = "案件流程ID")  
-private String ajlcId;  
+  /**  
+   * 字段: ajlc_id，案件流程ID  
+   */  
+  @Schema(title = "案件流程ID")  
+  private String ajlcId;  
 }
 
 ```

@@ -23,7 +23,7 @@ tags:
 ```
 JAVA_DEBUG_OPTS=""  
 if [ "$1" = "debug" ]; then  
-JAVA_DEBUG_OPTS=" -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n "  
+  JAVA_DEBUG_OPTS=" -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n "  
 fi
 
 ```
@@ -41,6 +41,7 @@ goto end
 java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -classpath ..\conf;%LIB_JARS% com.alibaba.dubbo.container.Main  
 goto end
 
+:end
 ```
 
 也就是说，脚本已经支持远程debug，只需要的在启动的时候传入一个参数 debug 即可，其余的几乎不用做任何修改

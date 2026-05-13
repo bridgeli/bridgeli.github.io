@@ -18,41 +18,38 @@ tags:
 @RequestMapping(value = "/export", method = RequestMethod.GET)  
 public void export(HttpServletResponse response) {
 
-ServletOutputStream servletOutputStream = null;  
-String filename = "template.xlsx";  
-InputStream inputStream = ExcelHandleController.class.getClassLoader().getResourceAsStream(filename);  
-try {  
-byte[] b = new byte[inputStream.available()];  
-inputStream.read(b);  
-response.setCharacterEncoding(StandardCharsets.UTF_8.name());  
-response.setHeader("Content-Disposition", "attachment;filename=" + filename);  
-response.setContentType("application/octet-stream;charset=UTF-8");  
-//获取响应报文输出流对象  
-servletOutputStream = response.getOutputStream();  
-//输出  
-servletOutputStream.write(b);  
-} catch (IOException e) {  
-logger.error("文件下载出错", e);  
-} finally {  
-if (null != inputStream) {  
-try {  
-inputStream.close();  
-} catch (IOException e) {  
-logger.error("文件下载出错", e);  
-}  
-}  
-if (null != servletOutputStream) {  
-try {  
-servletOutputStream.flush();  
-servletOutputStream.close();  
-} catch (IOException e) {  
-logger.error("文件下载出错", e);  
-}
-
-}
-
-}
-
+  ServletOutputStream servletOutputStream = null;  
+  String filename = "template.xlsx";  
+  InputStream inputStream = ExcelHandleController.class.getClassLoader().getResourceAsStream(filename);  
+  try {  
+    byte[] b = new byte[inputStream.available()];  
+    inputStream.read(b);  
+    response.setCharacterEncoding(StandardCharsets.UTF_8.name());  
+    response.setHeader("Content-Disposition", "attachment;filename=" + filename);  
+    response.setContentType("application/octet-stream;charset=UTF-8");  
+    //获取响应报文输出流对象  
+    servletOutputStream = response.getOutputStream();  
+    //输出  
+    servletOutputStream.write(b);  
+  } catch (IOException e) {  
+    logger.error("文件下载出错", e);  
+  } finally {  
+    if (null != inputStream) {  
+      try {  
+        inputStream.close();  
+      } catch (IOException e) {  
+        logger.error("文件下载出错", e);  
+      }  
+    }  
+    if (null != servletOutputStream) {  
+      try {  
+        servletOutputStream.flush();  
+        servletOutputStream.close();  
+      } catch (IOException e) {  
+        logger.error("文件下载出错", e);  
+      }
+    }
+  }
 }
 
 ```
@@ -61,15 +58,15 @@ logger.error("文件下载出错", e);
 
 ```
 <plugin>  
-<groupId>org.apache.maven.plugins</groupId>  
-<artifactId>maven-resources-plugin</artifactId>  
-<version>3.1.0</version>  
-<configuration>  
-<nonFilteredFileExtensions>  
-<nonFilteredFileExtension>xlsx</nonFilteredFileExtension>  
-<nonFilteredFileExtension>xls</nonFilteredFileExtension>  
-</nonFilteredFileExtensions>  
-</configuration>  
+  <groupId>org.apache.maven.plugins</groupId>  
+  <artifactId>maven-resources-plugin</artifactId>  
+  <version>3.1.0</version>  
+  <configuration>  
+    <nonFilteredFileExtensions>  
+      <nonFilteredFileExtension>xlsx</nonFilteredFileExtension>  
+      <nonFilteredFileExtension>xls</nonFilteredFileExtension>  
+    </nonFilteredFileExtensions>  
+  </configuration>
 </plugin>
 
 ```
@@ -80,48 +77,45 @@ logger.error("文件下载出错", e);
 @RequestMapping(value = "/export", method = RequestMethod.GET)  
 public void export(HttpServletResponse response) {
 
-XSSFWorkbook workbook = new XSSFWorkbook();  
-XSSFSheet sheet = workbook.createSheet("模板");
+  XSSFWorkbook workbook = new XSSFWorkbook();  
+  XSSFSheet sheet = workbook.createSheet("模板");
 
-// 产生表格标题行  
-XSSFRow row = sheet.createRow(0);  
-XSSFCell cell = row.createCell(0);  
-cell.setCellValue("第零行第零列数据");  
-cell = row.createCell(1);  
-cell.setCellValue("第零行第一列数据");
+  // 产生表格标题行  
+  XSSFRow row = sheet.createRow(0);  
+  XSSFCell cell = row.createCell(0);  
+  cell.setCellValue("第零行第零列数据");  
+  cell = row.createCell(1);  
+  cell.setCellValue("第零行第一列数据");
 
-ServletOutputStream servletOutputStream = null;  
-String filename = "template.xlsx";  
-try {  
-response.setCharacterEncoding(StandardCharsets.UTF_8.name());  
-response.setHeader("Content-Disposition", "attachment;filename=" + filename);  
-response.setContentType("application/octet-stream;charset=UTF-8");  
-//获取响应报文输出流对象  
-servletOutputStream = response.getOutputStream();  
-//输出  
-workbook.write(servletOutputStream);  
-} catch (IOException e) {  
-logger.error("文件下载", e);  
-} finally {
-
-if (null != servletOutputStream) {  
-try {  
-servletOutputStream.flush();  
-servletOutputStream.close();  
-} catch (IOException e) {  
-logger.error("文件下载", e);  
-}  
-}  
-if (null != workbook) {  
-try {  
-workbook.close();  
-} catch (IOException e) {  
-logger.error("文件下载", e);  
-}  
-}
-
-}
-
+  ServletOutputStream servletOutputStream = null;  
+  String filename = "template.xlsx";  
+  try {  
+    response.setCharacterEncoding(StandardCharsets.UTF_8.name());  
+    response.setHeader("Content-Disposition", "attachment;filename=" + filename);  
+    response.setContentType("application/octet-stream;charset=UTF-8");  
+    //获取响应报文输出流对象  
+    servletOutputStream = response.getOutputStream();  
+    //输出  
+    workbook.write(servletOutputStream);  
+  } catch (IOException e) {  
+    logger.error("文件下载", e);  
+  } finally {  
+    if (null != servletOutputStream) {  
+      try {  
+        servletOutputStream.flush();  
+        servletOutputStream.close();  
+      } catch (IOException e) {  
+        logger.error("文件下载", e);  
+      }  
+    }  
+    if (null != workbook) {  
+      try {  
+        workbook.close();  
+      } catch (IOException e) {  
+        logger.error("文件下载", e);  
+      }  
+    }
+  }
 }
 
 ```

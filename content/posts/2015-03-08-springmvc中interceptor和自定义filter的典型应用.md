@@ -21,18 +21,18 @@ spring-servlet.xml核心代码如下：
 ```  
 <?xml version="1.0" encoding="UTF-8"?>  
 <beans xmlns="http://www.springframework.org/schema/beans"  
-xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"  
-xsi:schemaLocation="http://www.springframework.org/schema/beans  
-http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
-http://www.springframework.org/schema/context  
-http://www.springframework.org/schema/context/spring-context-4.0.xsd  
-http://www.springframework.org/schema/mvc  
-http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+    xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+    http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+    http://www.springframework.org/schema/mvc  
+    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
-<mvc:interceptors>  
-<bean id="permissionInterceptor" class="cn.bridgeli.demo.interceptor.PermissionInterceptor"></bean>  
-</mvc:interceptors>
+    <mvc:interceptors>  
+        <bean id="permissionInterceptor" class="cn.bridgeli.demo.interceptor.PermissionInterceptor"></bean>  
+    </mvc:interceptors>
 
 ......
 
@@ -128,15 +128,15 @@ public class SessionFilter implements Filter {
 
 ```  
 <filter>  
-<description>  
-</description>  
-<display-name>SessionFilter</display-name>  
-<filter-name>SessionFilter</filter-name>  
-<filter-class>cn.bridgeli.demo.filter.SessionFilter</filter-class>  
+    <description>  
+    </description>  
+    <display-name>SessionFilter</display-name>  
+    <filter-name>SessionFilter</filter-name>  
+    <filter-class>cn.bridgeli.demo.filter.SessionFilter</filter-class>  
 </filter>  
 <filter-mapping>  
-<filter-name>SessionFilter</filter-name>  
-<url-pattern>*.do</url-pattern>  
+    <filter-name>SessionFilter</filter-name>  
+    <url-pattern>*.do</url-pattern>  
 </filter-mapping>  
 ```
 

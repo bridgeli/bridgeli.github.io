@@ -30,21 +30,22 @@ SELECT * FROM t ORDER BY "id DESC";
 
 ```
 /**  
-* 开始页码  
-*/  
+ * 开始页码  
+ */  
 private String pageSize;  
 /**  
-* 分页量  
-*/  
+ * 分页量  
+ */  
 private String offset;
-
+```
+```
 <if test="pageSize != null">  
-<if test="offset != null">  
-limit #{offset}, #{pageSize}  
-</if>  
-<if test="offset == null">  
-limit #{pageSize}  
-</if>  
+  <if test="offset != null">  
+    limit #{offset}, #{pageSize}  
+  </if>  
+  <if test="offset == null">  
+    limit #{pageSize}   
+  </if>  
 </if>
 
 ```
@@ -74,6 +75,6 @@ UPDATE t SET username = ("BridgeLi" AND passwd = "BridgeLi") WHERE id = 1;
 
 所以在 order by ${name} 中，传入的直接是 name ，不带双引号，因为 order by 不是 = 赋值，如果直接 order by #{name}，结果是 order by "name"，自然就不行了
 
-总结，#{variable} 传入字符串，可以在日志查看到传入的参数，需要赋值后使用，可以有效防止 SQL 注入，${variable} 是直接传入变量，在日志查看不到传入的变量，直接在 SQL 中执行，无法防止 SQL 注入，所以，尽量用 #{variable} 格式，但如果不是类似 = 赋值后再使用的 SQL，需要使用 ${variable}。另外网上还说有内需要注意 # 与 $ 的区别，没有太在意过，一般都是和 大于小于 混用的时候，偶尔会写他，不写也不会报错，大家可以自己测试一下。
+总结，#{variable} 传入字符串，可以在日志查看到传入的参数，需要赋值后使用，可以有效防止 SQL 注入，`${variable}` 是直接传入变量，在日志查看不到传入的变量，直接在 SQL 中执行，无法防止 SQL 注入，所以，尽量用 #{variable} 格式，但如果不是类似 = 赋值后再使用的 SQL，需要使用 `${variable}`。另外网上还说有内需要注意 # 与 $ 的区别，没有太在意过，一般都是和 大于小于 混用的时候，偶尔会写他，不写也不会报错，大家可以自己测试一下。
 
 最后说一下，有同学提到 $ 有 SQL 注入问题啊，你上面也说，我个人的理解就是 SQL 注入都是使你的 WHERE 子句为真，ORDER BY 有什么影响吗？没有啊，所以这个问题并不需要考虑。

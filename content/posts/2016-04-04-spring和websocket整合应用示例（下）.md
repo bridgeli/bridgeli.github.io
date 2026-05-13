@@ -42,145 +42,145 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**  
-* @Description : 站内消息监听器实现  
-* @Date : 16-3-7  
-*/  
+ * @Description : 站内消息监听器实现  
+ * @Date : 16-3-7  
+ */  
 @Component  
 public class NewsListenerImpl implements NewsListener{  
-private static final Logger logger = LoggerFactory.getLogger(NewsListenerImpl.class);  
-Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+  private static final Logger logger = LoggerFactory.getLogger(NewsListenerImpl.class);  
+  Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
-//线程池  
-private ExecutorService executorService = Executors.newCachedThreadPool();
+  //线程池  
+  private ExecutorService executorService = Executors.newCachedThreadPool();
 
-//任务调度  
-private SchedulerFactory sf = new StdSchedulerFactory();
+  //任务调度  
+  private SchedulerFactory sf = new StdSchedulerFactory();
 
-@Autowired  
-private PlatNewsService platNewsService;
+  @Autowired  
+  private PlatNewsService platNewsService;
 
-@Override  
-public void afterPersist(PlatNewsVo platNewsVo) {  
-logger.info("监听到有新消息添加。。。");  
-logger.info("新消息为:"+gson.toJson(platNewsVo));  
-//启动线程  
-if(null != platNewsVo && !StringUtils.isBlank(platNewsVo.getCurrentoperatoremail())){  
-//如果是定时消息  
-if(platNewsVo.getNewsType() == PlatNewsCategoryType.TIMING_TIME.getCategoryId()){  
-startTimingTask(platNewsVo); //定时推送  
-}else{  
-//立即推送  
-executorService.execute(new AfterConnectionEstablishedTask(platNewsVo.getCurrentoperatoremail()));  
-}  
-}  
+  @Override  
+  public void afterPersist(PlatNewsVo platNewsVo) {  
+    logger.info("监听到有新消息添加。。。");  
+    logger.info("新消息为:"+gson.toJson(platNewsVo));  
+    //启动线程  
+    if(null != platNewsVo && !StringUtils.isBlank(platNewsVo.getCurrentoperatoremail())){  
+      //如果是定时消息  
+      if(platNewsVo.getNewsType() == PlatNewsCategoryType.TIMING_TIME.getCategoryId()){  
+        startTimingTask(platNewsVo); //定时推送  
+      }else{  
+        //立即推送  
+        executorService.execute(new AfterConnectionEstablishedTask(platNewsVo.getCurrentoperatoremail()));  
+      }  
+    }  
+  }
+
+  @Override  
+  public void afterConnectionEstablished(String email) {  
+    logger.info("建立websocket连接后推送新消息。。。");  
+    if(!StringUtils.isBlank(email)){  
+      executorService.execute(new AfterConnectionEstablishedTask(email));  
+    }  
+  }
+
+  /**  
+   * @Description ： 如果新添加了定时消息，启动定时消息任务  
+   * @param platNewsVo  
+   */  
+  private void startTimingTask(PlatNewsVo platNewsVo){  
+    logger.info("开始定时推送消息任务。。。");
+
+    Date timingTime = platNewsVo.getTimingTime();  
+    if(null == timingTime){  
+      logger.info("定时消息时间为null。");  
+      return;  
+    }  
+    logger.info("定时推送任务时间为："+DateUtil.date2String(timingTime));
+
+    JobDetail jobDetail= JobBuilder.newJob(TimingJob.class)  
+      .withIdentity(platNewsVo.getCurrentoperatoremail()+"定时消息"+platNewsVo.getId(), "站内消息")  
+      .build();
+
+    //传递参数  
+    jobDetail.getJobDataMap().put("platNewsService",platNewsService);  
+    jobDetail.getJobDataMap().put("userEmail",platNewsVo.getCurrentoperatoremail());
+
+    Trigger trigger= TriggerBuilder  
+      .newTrigger()  
+      .withIdentity("定时消息触发"+platNewsVo.getId(), "站内消息")  
+      .startAt(timingTime)  
+      .withSchedule(SimpleScheduleBuilder.simpleSchedule()  
+        .withIntervalInSeconds(0) //时间间隔  
+        .withRepeatCount(0) //重复次数  
+      )  
+      .build();
+
+    //启动定时任务  
+    try {  
+      Scheduler sched = sf.getScheduler();  
+      sched.scheduleJob(jobDetail,trigger);  
+      if(!sched.isShutdown()){  
+        sched.start();  
+      }
+    } catch (SchedulerException e) {  
+      logger.info(e.toString());  
+    }  
+    logger.info("完成开启定时推送消息任务。。。");
+  }
+
 }
-
-@Override  
-public void afterConnectionEstablished(String email) {  
-logger.info("建立websocket连接后推送新消息。。。");  
-if(!StringUtils.isBlank(email)){  
-executorService.execute(new AfterConnectionEstablishedTask(email));  
-}  
-}
-
+```
+```
 /**  
-* @Description ： 如果新添加了定时消息，启动定时消息任务  
-* @param platNewsVo  
-*/  
-private void startTimingTask(PlatNewsVo platNewsVo){  
-logger.info("开始定时推送消息任务。。。");
-
-Date timingTime = platNewsVo.getTimingTime();  
-if(null == timingTime){  
-logger.info("定时消息时间为null。");  
-return;  
-}  
-logger.info("定时推送任务时间为："+DateUtil.date2String(timingTime));
-
-JobDetail jobDetail= JobBuilder.newJob(TimingJob.class)  
-.withIdentity(platNewsVo.getCurrentoperatoremail()+"定时消息"+platNewsVo.getId(), "站内消息")  
-.build();
-
-//传递参数  
-jobDetail.getJobDataMap().put("platNewsService",platNewsService);  
-jobDetail.getJobDataMap().put("userEmail",platNewsVo.getCurrentoperatoremail());
-
-Trigger trigger= TriggerBuilder  
-.newTrigger()  
-.withIdentity("定时消息触发"+platNewsVo.getId(), "站内消息")  
-.startAt(timingTime)  
-.withSchedule(SimpleScheduleBuilder.simpleSchedule()  
-.withIntervalInSeconds(0) //时间间隔  
-.withRepeatCount(0) //重复次数  
-)  
-.build();
-
-//启动定时任务  
-try {  
-Scheduler sched = sf.getScheduler();  
-sched.scheduleJob(jobDetail,trigger);  
-if(!sched.isShutdown()){  
-sched.start();  
-}
-
-} catch (SchedulerException e) {  
-logger.info(e.toString());  
-}  
-logger.info("完成开启定时推送消息任务。。。");
-
-}
-
-/**  
-* @Description : 建立websocket链接后的推送线程  
-*/  
+ * @Description : 建立websocket链接后的推送线程  
+ */  
 class AfterConnectionEstablishedTask implements Runnable{
 
-String email ;  
-public AfterConnectionEstablishedTask(String email){  
-this.email = email;  
-}  
-@Override  
-public void run() {  
-logger.info("开始推送消息给用户:"+email+"。。。");
+  String email ;  
+  public AfterConnectionEstablishedTask(String email){  
+    this.email = email;  
+  }  
+  @Override  
+  public void run() {  
+    logger.info("开始推送消息给用户:"+email+"。。。");
 
-if(!StringUtils.isBlank(email)){  
-SearchCondition searchCondition = new SearchCondition();  
-searchCondition.setOperatorEmail(email);
+    if(!StringUtils.isBlank(email)){  
+      SearchCondition searchCondition = new SearchCondition();  
+      searchCondition.setOperatorEmail(email);
 
-JSONArray jsonArray = new JSONArray();
+      JSONArray jsonArray = new JSONArray();
 
-for(PlatNewsCategoryType type : PlatNewsCategoryType.values()){  
-searchCondition.setTypeId(type.getCategoryId());  
-int count = platNewsService.countPlatNewsByExample(searchCondition);  
-JSONObject object = new JSONObject();  
-object.put("name",type.name());  
-object.put("description",type.getDescription());  
-object.put("count",count);
+      for(PlatNewsCategoryType type : PlatNewsCategoryType.values()){  
+        searchCondition.setTypeId(type.getCategoryId());  
+        int count = platNewsService.countPlatNewsByExample(searchCondition);  
+        JSONObject object = new JSONObject();  
+        object.put("name",type.name());  
+        object.put("description",type.getDescription());  
+        object.put("count",count);
 
-jsonArray.add(object);  
-}  
-if(null != jsonArray && jsonArray.size()>0){  
-UserSocketVo userSocketVo = WSSessionLocalCache.get(email);  
-TextMessage reMessage = new TextMessage(gson.toJson(jsonArray));  
-try {  
-if(null != userSocketVo){  
-//推送消息  
-userSocketVo.getWebSocketSession().sendMessage(reMessage);  
-//更新推送时间  
-userSocketVo.setLastSendTime(DateUtil.getNowDate());  
-logger.info("完成推送新消息给用户:"+userSocketVo.getUserEmail()+"。。。");  
-}
+        jsonArray.add(object);  
+      }  
+      if(null != jsonArray && jsonArray.size()>0){  
+        UserSocketVo userSocketVo = WSSessionLocalCache.get(email);  
+        TextMessage reMessage = new TextMessage(gson.toJson(jsonArray));  
+        try {  
+          if(null != userSocketVo){  
+            //推送消息  
+            userSocketVo.getWebSocketSession().sendMessage(reMessage);  
+            //更新推送时间  
+            userSocketVo.setLastSendTime(DateUtil.getNowDate());    
+            logger.info("完成推送新消息给用户:"+userSocketVo.getUserEmail()+"。。。");  
+          }
 
-} catch (IOException e) {  
-logger.error(e.toString());  
-logger.info("站内消息推送失败。。。"+e.toString());  
-}  
-}  
-}  
-logger.info("结束推送消息给"+email+"。。。");
+        } catch (IOException e) {  
+          logger.error(e.toString());  
+          logger.info("站内消息推送失败。。。"+e.toString());  
+        }  
+      }  
+      logger.info("结束推送消息给"+email+"。。。"); 
 
-}  
-}  
+    }  
+  }
 }
 
 ```

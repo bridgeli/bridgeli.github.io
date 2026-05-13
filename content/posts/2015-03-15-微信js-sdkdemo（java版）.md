@@ -19,53 +19,53 @@ $('.share').tap(function(){
     $.ajax({
             type : "post",
             url : 'share.do',
-    data : {'urlCurrery':urlCurrery},
-    success : function(data) {
-        var dataObj = eval(data)[0];
-        var url =dataObj.url;
-        var jsapi_ticket =dataObj.jsapi_ticket;
-        var nonce_str =dataObj.nonceStr;
-        var timestamp =dataObj.timestamp;
-        var signature =dataObj.signature;
+        data : {'urlCurrery':urlCurrery},
+        success : function(data) {
+            var dataObj = eval(data)[0];
+            var url =dataObj.url;
+            var jsapi_ticket =dataObj.jsapi_ticket;
+            var nonce_str =dataObj.nonceStr;
+            var timestamp =dataObj.timestamp;
+            var signature =dataObj.signature;
 
-        wx.config({
+            wx.config({
                 debug: true,
                 appId: appId;,
-        timestamp: timestamp,
+            timestamp: timestamp,
                 nonceStr: nonce_str,
                 signature: signature,
                 jsApiList: [  
-'checkJsApi',  
-'onMenuShareTimeline',  
-'onMenuShareAppMessage'  
-]  
-});
+                    'checkJsApi',  
+                    'onMenuShareTimeline',  
+                    'onMenuShareAppMessage'  
+                ]  
+            });
 
-        wx.ready(function () {
-            wx.onMenuShareAppMessage({
+            wx.ready(function () {
+                wx.onMenuShareAppMessage({
                     title: '分享测试',
-            desc: '分享测试',
-            link: 'https://bridgeli.cn',  
-            imgUrl: ",
+                    desc: '分享测试',
+                    link: 'https://bridgeli.cn',  
+                    imgUrl: ",
 
-            success: function (res) {
-                alert('已分享');
-            }  
-});
-            wx.onMenuShareTimeline({
+                    success: function (res) {
+                        alert('已分享');
+                    }  
+                });
+                wx.onMenuShareTimeline({
                     title: '分享测试',
-            link: 'https://bridgeli.cn',  
-            imgUrl: ",
+                    link: 'https://bridgeli.cn',  
+                    imgUrl: ",
 
-            success: function (res) {
-                alert('已分享');
-            }  
-});
-            alert('已注册获取“发送给朋友”状态事件');
-            alert('已注册获取“分享到朋友圈”状态事件');
-        });
-    }  
-});
+                    success: function (res) {
+                        alert('已分享');
+                    }  
+                });
+                alert('已注册获取“发送给朋友”状态事件');
+                alert('已注册获取“分享到朋友圈”状态事件');
+            });
+        }  
+    });
 
 });  
 ```
@@ -121,7 +121,7 @@ public class Sign {
         String string1;
         String signature = "";
 
-// 注意这里参数名必须全部小写，且必须有序  
+        // 注意这里参数名必须全部小写，且必须有序  
         string1 = "jsapi_ticket=" + jsapi_ticket + "&noncestr=" + nonce_str + "&timestamp=" + timestamp + "&url=" + url;
         log.info("string1 ===> " + string1);
 

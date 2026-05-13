@@ -13,7 +13,7 @@ tags:
 
 这个错误通常是由于缺少信任证书或证书链不完整导致的。解决方法通常有两种：
 
-1. \*\*添加证书到信任库\*\*：获取正确的证书，并将其添加到 Java 的信任库中。可以使用 \`keytool\` 工具来完成此操作。具体步骤如下：
+1. **添加证书到信任库**：获取正确的证书，并将其添加到 Java 的信任库中。可以使用 `keytool` 工具来完成此操作。具体步骤如下：
 
 -- 首先，使用以下命令导出证书：  
 ```  
@@ -29,34 +29,34 @@ keytool -importcert -file <certificate-file> -keystore <path-to-truststore> -ali
 ```  
 其中 ```<certificate-file>``` 是你导出的证书文件，```<path-to-truststore>``` 是 Java 信任库的路径，```<alias>``` 是证书的别名。
 
-2. \*\*忽略证书验证\*\*：如果你确定你要连接的服务器是安全的，并且不需要严格的证书验证，你可以在 Java 代码中忽略证书验证。但这不是推荐的做法，因为可能会导致安全风险。你可以使用 \`TrustManager\` 接口实现自定义的信任管理器，然后将其应用于 SSL 连接。下面是一个简单的示例代码：
+2. **忽略证书验证**：如果你确定你要连接的服务器是安全的，并且不需要严格的证书验证，你可以在 Java 代码中忽略证书验证。但这不是推荐的做法，因为可能会导致安全风险。你可以使用 `TrustManager` 接口实现自定义的信任管理器，然后将其应用于 SSL 连接。下面是一个简单的示例代码：
 
 ```  
 import javax.net.ssl.*;  
 import java.security.cert.X509Certificate;
 
 public class SSLCertificateIgnore {  
-public static void main(String[] args) throws Exception {  
-// Create a trust manager that does not validate certificate chains  
-TrustManager[] trustAllCerts = new TrustManager[]{  
-new X509TrustManager() {  
-public X509Certificate[] getAcceptedIssuers() {  
-return null;  
-}  
-public void checkClientTrusted(X509Certificate[] certs, String authType) {  
-}  
-public void checkServerTrusted(X509Certificate[] certs, String authType) {  
-}  
-}  
-};
+  public static void main(String[] args) throws Exception {  
+    // Create a trust manager that does not validate certificate chains  
+    TrustManager[] trustAllCerts = new TrustManager[]{  
+      new X509TrustManager() {  
+        public X509Certificate[] getAcceptedIssuers() {  
+          return null;  
+        }  
+        public void checkClientTrusted(X509Certificate[] certs, String authType) {  
+        }  
+        public void checkServerTrusted(X509Certificate[] certs, String authType) {  
+        }  
+      }  
+    };
 
-// Install the all-trusting trust manager  
-SSLContext sc = SSLContext.getInstance("SSL");  
-sc.init(null, trustAllCerts, null);  
-HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+    // Install the all-trusting trust manager  
+    SSLContext sc = SSLContext.getInstance("SSL");  
+    sc.init(null, trustAllCerts, null);  
+    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
-// Now you can access the HTTPS endpoint without certificate validation  
-}  
+  // Now you can access the HTTPS endpoint without certificate validation  
+  }  
 }  
 ```
 

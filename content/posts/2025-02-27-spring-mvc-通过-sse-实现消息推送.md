@@ -33,69 +33,69 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service  
 public class SseService {
 
-private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
+  private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
 
-public SseEmitter stream(String usrId) {  
-SseEmitter emitter = emitters.computeIfAbsent(usrId, k -> new SseEmitter(Long.MAX_VALUE));
+  public SseEmitter stream(String usrId) {  
+    SseEmitter emitter = emitters.computeIfAbsent(usrId, k -> new SseEmitter(Long.MAX_VALUE));
 
-emitter.onCompletion(() -> {  
-log.info("SSE emitter completed");  
-emitters.remove(usrId);  
-});
+    emitter.onCompletion(() -> {  
+      log.info("SSE emitter completed");  
+      emitters.remove(usrId);  
+    });
 
-emitter.onError((throwable) -> {  
-log.error("Error occurred in SSE emitter", throwable);  
-emitter.complete();  
-emitters.remove(usrId);  
-});
+    emitter.onError((throwable) -> {  
+      log.error("Error occurred in SSE emitter", throwable);  
+      emitter.complete();  
+      emitters.remove(usrId);  
+    });
 
-emitter.onTimeout(() -> {  
-log.warn("SSE emitter timed out");  
-emitter.complete();  
-emitters.remove(usrId);  
-});  
-// 可选：连接成功时向客户端发送一个初始事件  
-try {  
-emitter.send(SseEmitter.event().name("connect").data("连接成功"));  
-} catch (IOException e) {  
-log.error("Error occurred while sending initial event", e);  
-emitter.completeWithError(e);  
-}
+    emitter.onTimeout(() -> {  
+      log.warn("SSE emitter timed out");  
+      emitter.complete();  
+      emitters.remove(usrId);  
+    });  
+    // 可选：连接成功时向客户端发送一个初始事件  
+    try {  
+      emitter.send(SseEmitter.event().name("connect").data("连接成功"));  
+    } catch (IOException e) {  
+      log.error("Error occurred while sending initial event", e);  
+      emitter.completeWithError(e);  
+    }
 
-return emitter;  
-}
+    return emitter;  
+  }
 
-public void send(List<String> userIds, String name, Object object) {  
-if (!emitters.isEmpty()) {  
-// 遍历所有用户的 SseEmitter，推送数据  
-if (CollectionUtils.isEmpty(userIds)) {  
-emitters.forEach((userId, emitter) -> {  
-try {  
-emitter.send(SseEmitter.event().name(name).data(object));  
-} catch (IOException e) {  
-// 如果发送失败，则移除该用户的 emitter  
-log.error("Error occurred while sending event to user {}", userId, e);  
-emitter.completeWithError(e);  
-emitters.remove(userId);  
-}  
-});  
-} else {  
-userIds.forEach(userId -> {  
-SseEmitter emitter = emitters.get(userId);  
-if (emitter != null) {  
-try {  
-emitter.send(SseEmitter.event().name(name).data(object));  
-} catch (IOException e) {  
-// 如果发送失败，则移除该用户的 emitter  
-log.error("Error occurred while sending event to user {}", userId, e);  
-emitter.completeWithError(e);  
-emitters.remove(userId);  
-}  
-}  
-});  
-}  
-}  
-}  
+  public void send(List<String> userIds, String name, Object object) {  
+    if (!emitters.isEmpty()) {  
+      // 遍历所有用户的 SseEmitter，推送数据  
+      if (CollectionUtils.isEmpty(userIds)) {  
+        emitters.forEach((userId, emitter) -> {  
+          try {  
+            emitter.send(SseEmitter.event().name(name).data(object));  
+          } catch (IOException e) {  
+            // 如果发送失败，则移除该用户的 emitter  
+            log.error("Error occurred while sending event to user {}", userId, e);  
+            emitter.completeWithError(e);  
+            emitters.remove(userId);  
+          }  
+        });  
+      } else {  
+        userIdIds.forEach(userId -> {
+          SseEmitter emitter = emitters.get(userId);  
+          if (emitter != null) {  
+            try {  
+              emitter.send(SseEmitter.event().name(name).data(object));  
+            } catch (IOException e) {  
+              // 如果发送失败，则移除该用户的 emitter  
+              log.error("Error occurred while sending event to user {}", userId, e);  
+              emitter.completeWithError(e);  
+              emitters.remove(userId);  
+            }  
+          }  
+        });  
+      }  
+    }  
+  }
 }
 
 ```
@@ -121,13 +121,13 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RequestMapping("/auth/common/sse")  
 public class SseController extends BaseAuthController {
 
-@Resource  
-private SseService sseService;
+  @Resource  
+  private SseService sseService;
 
-@GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)  
-public SseEmitter stream() {  
-return sseService.stream(getLoginUsr().getUsrId());  
-}  
+  @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)  
+  public SseEmitter stream() {  
+    return sseService.stream(getLoginUsr().getUsrId());
+  }
 }
 
 ```
@@ -152,26 +152,25 @@ import java.util.Map;
 @Slf4j  
 public class ScheduledTask {
 
-@Resource  
-private MonitorService monitorService;  
-@Resource  
-private SseService sseService;
+  @Resource  
+  private MonitorService monitorService;  
+  @Resource  
+  private SseService sseService;
 
-/**  
-* 每分钟执行一次  
-*/  
-@Scheduled(cron = "0 0/1 \* \* * ?")  
-public void updateOrderStatus() {  
-log.info("=============定时任务=============");  
-Map<String, SseEmitter> emitters = sseService.getEmitters();  
-if (null == emitters || emitters.isEmpty()) {  
-log.info("sse emitters is empty");  
-return;  
-}  
-CpuInfoVo cpuData = monitorService.getCpuData();  
-sseService.send(null, "cpu", cpuData);  
-}
-
+  /**  
+   * 每分钟执行一次  
+   */  
+  @Scheduled(cron = "0 0/1 * * * * ?")
+  public void updateOrderStatus() {  
+    log.info("=============定时任务=============");  
+    Map<String, SseEmitter> emitters = sseService.getEmitters();  
+    if (null == emitters || emitters.isEmpty()) {  
+      log.info("sse emitters is empty");  
+      return;  
+    }  
+    CpuInfoVo cpuData = monitorService.getCpuData();  
+    sseService.send(null, "cpu", cpuData);  
+  }
 }
 
 ```

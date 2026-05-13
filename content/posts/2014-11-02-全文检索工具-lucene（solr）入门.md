@@ -99,10 +99,10 @@ public class SolrTest {
             directory = FSDirectory.open(new File(getIndexDir()));
             reader = IndexReader.open(directory);
             IndexSearcher searcher = new IndexSearcher(reader);
-//这个question 就是以问题为索引去查找，和CreateIndex()中相对应  
+            // 这个question 就是以问题为索引去查找，和CreateIndex()中相对应  
             QueryParser queryParser = new QueryParser(Version.LUCENE_46, "question", new IKAnalyzer(true));
             Query query = queryParser.parse(QueryParser.escape(content));
-//这个1 的含义就是找出最相似度最高的一条  
+            // 这个1 的含义就是找出最相似度最高的一条  
             TopDocs topDocs = searcher.search(query, 1);
             if (topDocs.totalHits > 0) {
                 knowledge = new Knowledge();

@@ -43,11 +43,11 @@ public static JSONObject httpsRequest(String requestUrl, String requestMethod, S
     JSONObject jsonObject = null;
     StringBuffer buffer = new StringBuffer();
     try {
-// 创建SSLContext对象，并使用我们指定的信任管理器初始化  
+        // 创建SSLContext对象，并使用我们指定的信任管理器初始化  
         TrustManager[] tm = { new MyX509TrustManager() };
         SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
         sslContext.init(null, tm, new java.security.SecureRandom());
-// 从上述SSLContext对象中得到SSLSocketFactory对象  
+        // 从上述SSLContext对象中得到SSLSocketFactory对象  
         SSLSocketFactory ssf = sslContext.getSocketFactory();
 
         URL url = new URL(requestUrl);
@@ -57,22 +57,22 @@ public static JSONObject httpsRequest(String requestUrl, String requestMethod, S
         httpUrlConn.setDoOutput(true);
         httpUrlConn.setDoInput(true);
         httpUrlConn.setUseCaches(false);
-// 设置请求方式（GET/POST）  
+        // 设置请求方式（GET/POST）  
         httpUrlConn.setRequestMethod(requestMethod);
 
         if ("GET".equalsIgnoreCase(requestMethod)) {
             httpUrlConn.connect();
         }
 
-// 当有数据需要提交时  
+        // 当有数据需要提交时  
         if (null != outputStr) {
             OutputStream outputStream = httpUrlConn.getOutputStream();
-// 注意编码格式，防止中文乱码  
+            // 注意编码格式，防止中文乱码  
             outputStream.write(outputStr.getBytes("UTF-8"));
             outputStream.close();
         }
 
-// 将返回的输入流转换成字符串  
+        // 将返回的输入流转换成字符串  
         InputStream inputStream = httpUrlConn.getInputStream();
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -83,7 +83,7 @@ public static JSONObject httpsRequest(String requestUrl, String requestMethod, S
         }
         bufferedReader.close();
         inputStreamReader.close();
-// 释放资源  
+        // 释放资源  
         inputStream.close();
         inputStream = null;
         httpUrlConn.disconnect();
@@ -105,25 +105,25 @@ public static String httpRequest(String requestUrl) {
     StringBuffer buffer = null;
 
     try {
-// 建立连接  
+        // 建立连接  
         URL url = new URL(requestUrl);
         HttpURLConnection httpUrlConn = (HttpURLConnection) url.openConnection();
         httpUrlConn.setDoInput(true);
         httpUrlConn.setRequestMethod("GET");
 
-// 获取输入流  
+        // 获取输入流  
         InputStream inputStream = httpUrlConn.getInputStream();
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-// 读取返回结果  
+        // 读取返回结果  
         buffer = new StringBuffer();
         String str = null;
         while ((str = bufferedReader.readLine()) != null) {
             buffer.append(str);
         }
 
-// 释放资源  
+        // 释放资源  
         bufferedReader.close();
         inputStreamReader.close();
         inputStream.close();

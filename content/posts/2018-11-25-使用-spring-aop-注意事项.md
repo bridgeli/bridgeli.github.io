@@ -20,25 +20,25 @@ tags:
 
 ```
 <dependency>  
-<groupId>org.slf4j</groupId>  
-<artifactId>slf4j-log4j12</artifactId>  
-<version>1.7.7</version>  
+  <groupId>org.slf4j</groupId>  
+  <artifactId>slf4j-log4j12</artifactId>  
+  <version>1.7.7</version>  
 </dependency>  
 <dependency>  
-<groupId>org.springframework</groupId>  
-<artifactId>spring-context</artifactId>  
-<version>4.3.11.RELEASE</version>  
-<scope>test</scope>  
+  <groupId>org.springframework</groupId>  
+  <artifactId>spring-context</artifactId>  
+  <version>4.3.11.RELEASE</version>  
+  <scope>test</scope>  
 </dependency>  
 <dependency>  
-<groupId>org.aspectj</groupId>  
-<artifactId>aspectjweaver</artifactId>  
-<version>1.8.10</version>  
+  <groupId>org.aspectj</groupId>  
+  <artifactId>aspectjweaver</artifactId>  
+  <version>1.8.10</version>  
 </dependency>  
 <dependency>  
-<groupId>org.springframework</groupId>  
-<artifactId>spring-context</artifactId>  
-<version>4.3.11.RELEASE</version>  
+  <groupId>org.springframework</groupId>  
+  <artifactId>spring-context</artifactId>  
+  <version>4.3.11.RELEASE</version>  
 </dependency>
 
 ```
@@ -48,18 +48,18 @@ tags:
 ```
 <?xml version="1.0" encoding="UTF-8"?>  
 <beans xmlns="http://www.springframework.org/schema/beans"  
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-xmlns:context="http://www.springframework.org/schema/context"  
-xmlns:aop="http://www.springframework.org/schema/aop"  
-xsi:schemaLocation="http://www.springframework.org/schema/beans  
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
-http://www.springframework.org/schema/context  
-http://www.springframework.org/schema/context/spring-context-2.5.xsd  
-http://www.springframework.org/schema/aop  
-http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">  
-<context:annotation-config/>  
-<context:component-scan base-package="cn.bridgeli"/>  
-<aop:aspectj-autoproxy/>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+  xmlns:context="http://www.springframework.org/schema/context"  
+  xmlns:aop="http://www.springframework.org/schema/aop"  
+  xsi:schemaLocation="http://www.springframework.org/schema/beans  
+  http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
+  http://www.springframework.org/schema/context  
+  http://www.springframework.org/schema/context/spring-context-2.5.xsd  
+  http://www.springframework.org/schema/aop  
+  http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">  
+  <context:annotation-config/>  
+  <context:component-scan base-package="cn.bridgeli"/>  
+  <aop:aspectj-autoproxy/>
 
 </beans>
 
@@ -80,23 +80,22 @@ import org.springframework.stereotype.Component;
 @Aspect  
 @Component  
 public class LogInterceptor {  
-// @Pointcut("execution(\* \* com.bjsxt.service..*.add(..))")  
-@Pointcut("execution(\* cn.bridgeli.demo.service..\*.*(..))")  
-public void myMethod() {  
-}
+  // @Pointcut("execution(* * com.bjsxt.service..*.add(..))")
+  @Pointcut("execution(* cn.bridgeli.demo.service..*.*(..))")
+  public void myMethod() {  
+  }
 
-@Before("myMethod()")  
-public void before() {  
-System.out.println("method before");  
-}
+  @Before("myMethod()")  
+  public void before() {  
+    System.out.println("method before");  
+  }
 
-@Around("myMethod()")  
-public void aroundMethod(ProceedingJoinPoint pjp) throws Throwable {  
-System.out.println("method around start");  
-pjp.proceed();  
-System.out.println("method around end");  
-}
-
+  @Around("myMethod()")  
+  public void aroundMethod(ProceedingJoinPoint pjp) throws Throwable {  
+    System.out.println("method around start");  
+    pjp.proceed();  
+    System.out.println("method around end");  
+  }
 }
 
 ```
@@ -112,88 +111,88 @@ import org.springframework.stereotype.Service;
 @Service("userService")  
 public class UserService {
 
-/**  
-* private方法因为修饰符访问权限的控制，无法被子类覆盖  
-*/  
-private void method1() {  
-System.out.println("method1 executed");  
-}
+  /**  
+   * private方法因为修饰符访问权限的控制，无法被子类覆盖  
+   */  
+  void method1() {  
+    System.out.println("method1 executed");  
+  }
 
-/**  
-* final 方法无法被子类覆盖  
-*/  
-private final void method2() {  
-System.out.println("method2 executed");  
-}
+  /**  
+   * final 方法无法被子类覆盖  
+   */  
+  private final void method2() {  
+    System.out.println("method2 executed");  
+  }
 
-/**  
-* static 方法是类级别的方法，无法被子类覆盖  
-*/  
-private static void method3() {  
-System.out.println("method3 executed");  
-}
+  /**  
+   * static 方法是类级别的方法，无法被子类覆盖  
+   */  
+  private static void method3() {  
+    System.out.println("method3 executed");  
+  }
 
-/**  
-* public 方法可以被子类覆盖，因此可以被动态字节码增强  
-*/  
-public void method4() {  
-System.out.println("method4 executed");  
-}
+  /**  
+   * public 方法可以被子类覆盖，因此可以被动态字节码增强  
+   */  
+  public void method4() {  
+    System.out.println("method4 executed");  
+  }
 
-/**  
-* final 方法无法被子类覆盖  
-*/  
-public final void method5() {  
-System.out.println("method5 executed");  
-}
+  /**  
+   * final 方法无法被子类覆盖  
+   */  
+  public final void method5() {  
+    System.out.println("method5 executed");  
+  }
 
-/**  
-* protected 方法可以被子类覆盖，因此可以被动态字节码增强  
-*/  
-protected void method6() {  
-System.out.println("method6 executed");  
-}
+  /**  
+   * protected 方法可以被子类覆盖，因此可以被动态字节码增强  
+   */  
+  protected void method6() {  
+    System.out.println("method6 executed");  
+  }
 
-/**  
-* 测试  
-*  
-* @param args  
-*/  
-public static void main(String[] args) {
+  /**  
+   * 测试  
+   */  
+   /** @param args  
+   */  
+  public static void main(String[] args) {
 
-ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");  
-UserService userService = (UserService) ctx.getBean("userService");  
-System.out.println("initContext successfully");
+    ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");  
+    UserService userService = (UserService) ctx.getBean("userService");  
+    System.out.println("initContext successfully");
 
-System.out.println("before method1");  
-userService.method1();  
-System.out.println("after1 method1");
+    System.out.println("before method1");  
+    userService.method1();  
+    System.out.println("after1 method1");
 
-System.out.println("before method2");  
-userService.method2();  
-System.out.println("after1 method2");
+    System.out.println("before method2");  
+    userService.method2();  
+    System.out.println("after1 method2");
 
-System.out.println("before method3");  
-method3();  
-System.out.println("after1 method3");
+    System.out.println("before method3");  
+    method3();  
+    System.out.println("after1 method3");
 
-System.out.println("before method4");  
-userService.method4();  
-System.out.println("after1 method4");
+    System.out.println("before method4");  
+    userService.method4();  
+    System.out.println("after1 method4");
 
-System.out.println("before method5");  
-userService.method5();  
-System.out.println("after1 method5");
+    System.out.println("before method5");  
+    userService.method5();  
+    System.out.println("after1 method5");
 
-System.out.println("before method6");  
-userService.method6();  
-System.out.println("after1 method6");
+    System.out.println("before method6");  
+    userService.method6();  
+    System.out.println("after1 method6");
 
-if (ctx != null) {  
-ctx.close();  
-}  
-System.out.println("close context successfully");  
-}  
+    if (ctx != null) {  
+      ctx.close();  
+    }  
+    System.out.println("close context successfully");  
+  }
 }
 
 ```

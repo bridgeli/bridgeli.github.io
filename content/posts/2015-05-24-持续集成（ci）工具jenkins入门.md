@@ -78,8 +78,8 @@ Build periodically：周期进行项目构建（它不care源码是否发生变�
 
 ```
 <Connector port="8080" protocol="HTTP/1.1"  
-connectionTimeout="20000"  
-redirectPort="8443" URIEncoding="UTF-8" />
+  connectionTimeout="20000"  
+  redirectPort="8443" URIEncoding="UTF-8" />
 
 ```
 
@@ -94,7 +94,7 @@ redirectPort="8443" URIEncoding="UTF-8" />
 
 ```
 <properties>  
-<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
 </properties>
 
 ```

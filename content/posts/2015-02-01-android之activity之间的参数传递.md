@@ -70,35 +70,35 @@ public class MainActivity extends Activity {
 
 ```  
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
-xmlns:tools="http://schemas.android.com/tools"  
-android:layout_width="match_parent"  
-android:layout_height="match_parent"  
-android:orientation="vertical"  
-android:paddingBottom="@dimen/activity_vertical_margin"  
-android:paddingLeft="@dimen/activity_horizontal_margin"  
-android:paddingRight="@dimen/activity_horizontal_margin"  
-android:paddingTop="@dimen/activity_vertical_margin"  
-tools:context="cn.bridgeli.demo.MainActivity" >
+    xmlns:tools="http://schemas.android.com/tools"  
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent"  
+    android:orientation="vertical"  
+    android:paddingBottom="@dimen/activity_vertical_margin"  
+    android:paddingLeft="@dimen/activity_horizontal_margin"  
+    android:paddingRight="@dimen/activity_horizontal_margin"  
+    android:paddingTop="@dimen/activity_vertical_margin"  
+    tools:context="cn.bridgeli.demo.MainActivity" >
 
-<EditText  
-android:id="@+id/factorOne"  
-android:layout_width="fill_parent"  
-android:layout_height="wrap_content"/>
+    <EditText  
+        android:id="@+id/factorOne"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"/>
 
-<TextView  
-android:id="@+id/symbol"  
-android:layout_width="wrap_content"  
-android:layout_height="wrap_content"/>
+    <TextView  
+        android:id="@+id/symbol"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"/>
 
-<EditText  
-android:id="@+id/factorTwo"  
-android:layout_width="fill_parent"  
-android:layout_height="wrap_content"/>
+    <EditText  
+        android:id="@+id/factorTwo"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"/>
 
-<Button  
-android:id="@+id/calc"  
-android:layout_width="fill_parent"  
-android:layout_height="wrap_content"/>  
+    <Button  
+        android:id="@+id/calc"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"/>  
 </LinearLayout>  
 ```
 
@@ -137,55 +137,55 @@ public class ResultActivity extends Activity {
 
 ```  
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
-xmlns:tools="http://schemas.android.com/tools"  
-android:layout_width="match_parent"  
-android:layout_height="match_parent"  
-android:orientation="vertical"  
-android:paddingBottom="@dimen/activity_vertical_margin"  
-android:paddingLeft="@dimen/activity_horizontal_margin"  
-android:paddingRight="@dimen/activity_horizontal_margin"  
-android:paddingTop="@dimen/activity_vertical_margin"  
-tools:context="cn.bridgeli.demo.MainActivity" >
+    xmlns:tools="http://schemas.android.com/tools"  
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent"  
+    android:orientation="vertical"  
+    android:paddingBottom="@dimen/activity_vertical_margin"  
+    android:paddingLeft="@dimen/activity_horizontal_margin"  
+    android:paddingRight="@dimen/activity_horizontal_margin"  
+    android:paddingTop="@dimen/activity_vertical_margin"  
+    tools:context="cn.bridgeli.demo.ResultActivity" >
 
-<TextView  
-android:id="@+id/result"  
-android:layout_width="wrap_content"  
-android:layout_height="wrap_content"/>  
+    <TextView  
+        android:id="@+id/result"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"/>  
 </LinearLayout>  
 ```
 
 因为代码比较简单，老夫就不多啰嗦了，相信读者一看就明白了。需要说明白的是，每一个activity都需要在mainifest.xml中进行配置，配置文件如下：  
 ```  
 <?xml version="1.0" encoding="utf-8"?>  
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"  
-package="cn.bridgeli.demo"  
-android:versionCode="1"  
-android:versionName="1.0" >
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"  
+        package="cn.bridgeli.demo"  
+        android:versionCode="1"  
+        android:versionName="1.0" >
 
-<uses-sdk  
-android:minSdkVersion="8"  
-android:targetSdkVersion="21" />
+    <uses-sdk  
+        android:minSdkVersion="8"  
+        android:targetSdkVersion="21" />
 
-<application  
-android:allowBackup="true"  
-android:icon="@drawable/ic_launcher"  
-android:label="@string/app_name"  
-android:theme="@style/AppTheme" >  
-<activity  
-android:name=".MainActivity"  
-android:label="@string/app_name" >  
-<intent-filter>  
-<action android:name="android.intent.action.MAIN" />
+    <application  
+        android:allowBackup="true"  
+        android:icon="@drawable/ic_launcher"  
+        android:label="@string/app_name"  
+        android:theme="@style/AppTheme" >  
+        <activity  
+            android:name=".MainActivity"  
+            android:label="@string/app_name" >  
+            <intent-filter>  
+                <action android:name="android.intent.action.MAIN" />
 
-<category android:name="android.intent.category.LAUNCHER" />  
-</intent-filter>  
-</activity>
+                <category android:name="android.intent.category.LAUNCHER" />  
+            </intent-filter>  
+        </activity>
 
-<activity  
-android:name=".ResultActivity"  
-android:label="@string/app_name" >  
-</activity>  
-</application>
+        <activity  
+            android:name=".ResultActivity"  
+            android:label="@string/app_name" >  
+        </activity>  
+    </application>
 
 </manifest>  
 ```
@@ -194,9 +194,9 @@ android:label="@string/app_name" >
 
 ```  
 <intent-filter>  
-<action android:name="android.intent.action.MAIN" />
+    <action android:name="android.intent.action.MAIN" />
 
-<category android:name="android.intent.category.LAUNCHER" />  
+    <category android:name="android.intent.category.LAUNCHER" />  
 </intent-filter>  
 ```
 
@@ -258,25 +258,25 @@ public class MainActivity extends Activity {
 
 ```  
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
-xmlns:tools="http://schemas.android.com/tools"  
-android:layout_width="match_parent"  
-android:layout_height="match_parent"  
-android:orientation="vertical"  
-android:paddingBottom="@dimen/activity_vertical_margin"  
-android:paddingLeft="@dimen/activity_horizontal_margin"  
-android:paddingRight="@dimen/activity_horizontal_margin"  
-android:paddingTop="@dimen/activity_vertical_margin"  
-tools:context="cn.bridgeli.demo.MainActivity" >
+    xmlns:tools="http://schemas.android.com/tools"  
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent"  
+    android:orientation="vertical"  
+    android:paddingBottom="@dimen/activity_vertical_margin"  
+    android:paddingLeft="@dimen/activity_horizontal_margin"  
+    android:paddingRight="@dimen/activity_horizontal_margin"  
+    android:paddingTop="@dimen/activity_vertical_margin"  
+    tools:context="cn.bridgeli.demo.MainActivity" >
 
-<Button  
-android:id="@+id/start"  
-android:layout_width="fill_parent"  
-android:layout_height="wrap_content"/>
+    <Button  
+        android:id="@+id/start"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"/>
 
-<TextView  
-android:id="@+id/result"  
-android:layout_width="wrap_content"  
-android:layout_height="wrap_content"/>  
+    <TextView  
+        android:id="@+id/result"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"/>  
 </LinearLayout>  
 ```
 
@@ -329,34 +329,34 @@ public class RequestActivity extends Activity {
 
 ```  
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
-xmlns:tools="http://schemas.android.com/tools"  
-android:layout_width="match_parent"  
-android:layout_height="match_parent"  
-android:orientation="vertical"  
-android:paddingBottom="@dimen/activity_vertical_margin"  
-android:paddingLeft="@dimen/activity_horizontal_margin"  
-android:paddingRight="@dimen/activity_horizontal_margin"  
-android:paddingTop="@dimen/activity_vertical_margin"  
-tools:context="cn.bridgeli.demo.MainActivity" >
+    xmlns:tools="http://schemas.android.com/tools"  
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent"  
+    android:orientation="vertical"  
+    android:paddingBottom="@dimen/activity_vertical_margin"  
+    android:paddingLeft="@dimen/activity_horizontal_margin"  
+    android:paddingRight="@dimen/activity_horizontal_margin"  
+    android:paddingTop="@dimen/activity_vertical_margin"  
+    tools:context="cn.bridgeli.demo.MainActivity" >
 
-<EditText  
-android:id="@+id/username"  
-android:layout_width="fill_parent"  
-android:layout_height="wrap_content"  
-android:inputType="text"  
-android:hint="username"/>
+    <EditText  
+        android:id="@+id/username"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"  
+        android:inputType="text"  
+        android:hint="username"/>
 
-<EditText  
-android:id="@+id/password"  
-android:layout_width="fill_parent"  
-android:layout_height="wrap_content"  
-android:inputType="textPassword"  
-android:hint="password"/>
+    <EditText  
+        android:id="@+id/password"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"  
+        android:inputType="textPassword"  
+        android:hint="password"/>
 
-<Button  
-android:id="@+id/start"  
-android:layout_width="fill_parent"  
-android:layout_height="wrap_content"/>
+    <Button  
+        android:id="@+id/start"  
+        android:layout_width="fill_parent"  
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>  
 ```

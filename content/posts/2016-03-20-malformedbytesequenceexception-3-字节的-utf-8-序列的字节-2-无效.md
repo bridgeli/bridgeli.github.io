@@ -146,7 +146,7 @@ at java.lang.Thread.run(Thread.java:745)
 
 ```
 <properties>  
-<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
 </properties>
 
 ```

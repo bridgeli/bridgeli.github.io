@@ -63,84 +63,84 @@ Nexus 中仓库组的概念是Maven没有的，在Maven看来，不管你是host
 
 ```
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"  
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0  
-http://maven.apache.org/xsd/settings-1.0.0.xsd">  
-<!--  
-<localRepository>E:maven_repository</localRepository>  
--->  
-<localRepository>D:/J2EE/repo</localRepository>  
-<!--非官方插件命令行运行配置-->  
-<pluginGroups>  
-<pluginGroup>org.mortbay.jetty</pluginGroup>  
-</pluginGroups>  
-<servers>  
-<server>  
-<id>releases</id>  
-<username>XXX</username>  
-<password>XXXXXX</password>  
-</server>  
-<server>  
-<id>snapshots</id>  
-<username>XXX</username>  
-<password>XXXXXX</password>  
-</server>  
-<server>  
-<id>nexus</id>  
-<username>XXX</username>  
-<password>XXXXXX</password>  
-</server>  
-</servers>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0  
+  http://maven.apache.org/xsd/settings-1.0.0.xsd">  
+  <!--  
+    <localRepository>E:maven_repository</localRepository>  
+  -->  
+  <localRepository>D:/J2EE/repo</localRepository>  
+  <!--非官方插件命令行运行配置-->  
+  <pluginGroups>  
+    <pluginGroup>org.mortbay.jetty</pluginGroup>  
+  </pluginGroups>  
+  <servers>  
+    <server>  
+      <id>releases</id>  
+      <username>XXX</username>  
+      <password>XXXXXX</password>  
+    </server>  
+    <server>  
+      <id>snapshots</id>  
+      <username>XXX</username>  
+      <password>XXXXXX</password>  
+    </server>  
+    <server>  
+      <id>nexus</id>  
+      <username>XXX</username>  
+      <password>XXXXXX</password>  
+    </server>  
+  </servers>
 
-<mirrors>  
-<!--配置仓库镜像-->  
-<mirror>  
-<id>nexus</id>  
-<mirrorOf>*</mirrorOf>  
-<name>Human Readable Name for this Mirror.</name>  
-<url>http://nexus.lagou.com/content/groups/public/</url>  
-</mirror>
+  <mirrors>  
+    <!--配置仓库镜像-->  
+    <mirror>  
+      <id>nexus</id>  
+      <mirrorOf>*</mirrorOf>  
+      <name>Human Readable Name for this Mirror.</name>  
+      <url>http://nexus.lagou.com/content/groups/public/</url>  
+    </mirror>
 
-</mirrors>
+  </mirrors>
 
-<profiles>  
-<!--配置仓库和插件仓库-->  
-<profile>  
-<id>nexus</id>  
-<repositories>  
-<repository>  
-<id>central</id>  
-<name>central</name>  
-<url>http://central</url>  
-<releases>  
-<enabled>true</enabled>  
-</releases>  
-<snapshots>  
-<enabled>true</enabled>  
-</snapshots>  
-</repository>  
-</repositories>
+  <profiles>  
+    <!--配置仓库和插件仓库-->   
+    <profile>  
+      <id>nexus</id>  
+      <repositories>  
+        <repository>  
+          <id>central</id>  
+          <name>central</name>  
+          <url>http://central</url>  
+          <releases>  
+            <enabled>true</enabled>  
+          </releases>  
+          <snapshots>  
+            <enabled>true</enabled>  
+          </snapshots>  
+        </repository>  
+      </repositories>
 
-<pluginRepositories>  
-<pluginRepository>  
-<id>central</id>  
-<name>central</name>  
-<url>http://central</url>  
-<releases>  
-<enabled>true</enabled>  
-</releases>  
-<snapshots>  
-<enabled>true</enabled>  
-</snapshots>  
-</pluginRepository>  
-</pluginRepositories>  
-</profile>  
-</profiles> 
+      <pluginRepositories>  
+        <pluginRepository>  
+          <id>central</id>  
+          <name>central</name>  
+          <url>http://central</url>  
+          <releases>  
+            <enabled>true</enabled>  
+          </releases>  
+          <snapshots>  
+            <enabled>true</enabled>  
+          </snapshots>  
+        </pluginRepository>  
+      </pluginRepositories>  
+    </profile>  
+  </profiles> 
 
-<!--激活profile-->  
-<activeProfiles>  
-<activeProfile>nexus</activeProfile>  
-</activeProfiles>
+  <!--激活profile-->  
+  <activeProfiles>  
+    <activeProfile>nexus</activeProfile>  
+  </activeProfiles>
 
 </settings>
 
@@ -166,20 +166,20 @@ Nexus提供了两种方式来部署构件，你可以从UI直接上传，也可�
 
 ```
 <project>  
-...  
-<distributionManagement>  
-<repository>  
-<id>releases</id>  
-<name>Nexus Release Repository</name>  
-<url>http://127.0.0.1:8080/nexus/content/repositories/releases/</url>  
-</repository>  
-<snapshotRepository>  
-<id>snapshots</id>  
-<name>Nexus Snapshot Repository</name>  
-<url>http://127.0.0.1:8080/nexus/content/repositories/snapshots/</url>  
-</snapshotRepository>  
-</distributionManagement>  
-...  
+  ...  
+  <distributionManagement>  
+    <repository>  
+      <id>releases</id>  
+      <name>Nexus Release Repository</name>  
+      <url>http://127.0.0.1:8080/nexus/content/repositories/releases/</url>  
+    </repository>  
+    <snapshotRepository>  
+      <id>snapshots</id>  
+      <name>Nexus Snapshot Repository</name>  
+      <url>http://127.0.0.1:8080/nexus/content/repositories/snapshots/</url>  
+    </snapshotRepository>  
+  </distributionManagement>  
+  ...  
 </project>
 
 ```
@@ -193,18 +193,17 @@ Nexus提供了两种方式来部署构件，你可以从UI直接上传，也可�
 
 ```
 <plugin>  
-<artifactId>maven-source-plugin</artifactId>  
-<executions>  
-<execution>  
-<id>attach-sources</id>  
-<phase>deploy</phase>  
-<goals>  
-<goal>jar-no-fork</goal>  
-</goals>  
-</execution>  
-</executions>  
-</plugin>  
-<plugin>
+  <artifactId>maven-source-plugin</artifactId>  
+  <executions>  
+    <execution>  
+      <id>attach-sources</id>  
+      <phase>deploy</phase>  
+      <goals>  
+        <goal>jar-no-fork</goal>  
+      </goals>  
+    </execution>  
+  </executions>  
+</plugin>
 
 ```
 

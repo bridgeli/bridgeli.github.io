@@ -18,13 +18,12 @@ tags:
 
 ```
 <dependency>  
-<groupId>com.alibaba</groupId>  
-<artifactId>fastjson</artifactId>  
-<version>1.2.37</version>  
+  <groupId>com.alibaba</groupId>  
+  <artifactId>fastjson</artifactId>  
+  <version>1.2.37</version>  
 </dependency>
 ```
 ```
-
 package cn.bridgeli.demo;
 
 import com.alibaba.fastjson.JSON;  
@@ -36,30 +35,31 @@ import java.util.List;
 
 public class FastJsonTest {
 
-@Test  
-public void testFastJsonParseObject() {
+  @Test  
+  public void testFastJsonParseObject() {
 
-String jsonStr = "{\"USERNAME\":\"BridgeLi\"}";
+    String jsonStr = "{\"USERNAME\":\"BridgeLi\"}";
 
-User user = JSON.parseObject(jsonStr, User.class);  
-System.out.println(user.getUsername());
+    User user = JSON.parseObject(jsonStr, User.class);  
+    System.out.println(user.getUsername());
 
-}  
+  }  
 }
-
+```
+```
 class User implements Serializable {
 
-private static final long serialVersionUID = 4202834388700617773L;
+  private static final long serialVersionUID = 4202834388700617773L;
 
-private String username;
+  private String username;
 
-public String getUsername() {  
-return username;  
-}
+  public String getUsername() {  
+    return username;  
+  }
 
-public void setUsername(String username) {  
-this.username = username;  
-}  
+  public void setUsername(String username) {  
+    this.username = username;  
+  }
 }
 
 ```
@@ -82,34 +82,35 @@ import java.util.List;
 
 public class FastJsonTest {
 
-@Test  
-public void testFastJsonToString() {
+  @Test  
+  public void testFastJsonToString() {
 
-List<User> users = new ArrayList<>();  
-User user = new User();  
-user.setUsername("BridgeLi");
+    List<User> users = new ArrayList<>();  
+    User user = new User();  
+    user.setUsername("BridgeLi");
 
-users.add(user);  
-users.add(user);  
-String jsonStr = JSON.toJSONString(users);  
-System.out.println(jsonStr);
+    users.add(user);  
+    users.add(user);  
+    String jsonStr = JSON.toJSONString(users);  
+    System.out.println(jsonStr);
+
+  }
 
 }
-
-}
-
+```
+```
 class User implements Serializable {  
-private static final long serialVersionUID = 4202834388700617773L;
+  private static final long serialVersionUID = 4202834388700617773L;
 
-private String username;
+  private String username;
 
-public String getUsername() {  
-return username;  
-}
+  public String getUsername() {  
+    return username;  
+  }
 
-public void setUsername(String username) {  
-this.username = username;  
-}  
+  public void setUsername(String username) {  
+    this.username = username;  
+  }
 }
 
 ```

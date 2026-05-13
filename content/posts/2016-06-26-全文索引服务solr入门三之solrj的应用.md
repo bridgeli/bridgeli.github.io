@@ -28,42 +28,44 @@ tags:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns="http://www.springframework.org/schema/beans"  
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"  
-xmlns:context="http://www.springframework.org/schema/context"  
-xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"  
-xsi:schemaLocation="http://www.springframework.org/schema/beans  
-http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  
-http://www.springframework.org/schema/mvc  
-http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd  
-http://www.springframework.org/schema/context  
-http://www.springframework.org/schema/context/spring-context-3.1.xsd  
-http://www.springframework.org/schema/aop  
-http://www.springframework.org/schema/aop/spring-aop-3.1.xsd  
-http://www.springframework.org/schema/tx  
-http://www.springframework.org/schema/tx/spring-tx-3.1.xsd ">  
-<!-- 配置扫描包 -->  
-<context:component-scan base-package="cn.bridgeli"/>  
-<!-- 配置注解驱动 -->  
-<mvc:annotation-driven/>  
-<!-- jsp视图解析器 -->  
-<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >  
-<!-- 前缀 -->  
-<property name="prefix" value="/WEB-INF/jsp/"></property>  
-<!-- 后缀 -->  
-<property name="suffix" value=".jsp"></property>  
-</bean>  
-<!-- 单机版solr -->  
-<bean class="org.apache.solr.client.solrj.impl.HttpSolrServer">  
-<constructor-arg name="baseURL" value="http://localhost:8080/solr/"></constructor-arg>  
-</bean>  
-<!-- 集群版SolrCloud -->  
-<!--  
-<bean class="org.apache.solr.client.solrj.impl.CloudSolrServer">  
-<constructor-arg name="zkHost" value="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183"></constructor-arg>  
-<property name="defaultCollection" value="collection2"></property>  
-</bean>  
--->  
+  <beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  
+    http://www.springframework.org/schema/mvc  
+    http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd  
+    http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context-3.1.xsd  
+    http://www.springframework.org/schema/aop  
+    http://www.springframework.org/schema/aop/spring-aop-3.1.xsd  
+    http://www.springframework.org/schema/tx  
+    http://www.springframework.org/schema/tx/spring-tx-3.1.xsd ">  
+    <!-- 配置扫描包 -->  
+    <context:component-scan base-package="cn.bridgeli"/>  
+    <!-- 配置注解驱动 -->  
+    <mvc:annotation-driven/>  
+    <!-- 配置注解驱动 -->  
+    <tx:annotation-driven/>  
+    <!-- jsp视图解析器 -->  
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >  
+      <!-- 前缀 -->  
+      <property name="prefix" value="/WEB-INF/jsp/"></property>  
+      <!-- 后缀 -->  
+      <property name="suffix" value=".jsp"></property>  
+    </bean>  
+    <!-- 单机版solr -->  
+    <bean class="org.apache.solr.client.solrj.impl.HttpSolrServer">  
+      <constructor-arg name="baseURL" value="http://localhost:8080/solr/"></constructor-arg>  
+    </bean>  
+    <!-- 集群版SolrCloud -->  
+    <!--  
+      <bean class="org.apache.solr.client.solrj.impl.CloudSolrServer">  
+        <constructor-arg name="zkHost" value="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183"></constructor-arg>  
+        <property name="defaultCollection" value="collection2"></property>  
+      </bean>  
+    -->  
 </beans>
 
 ```
@@ -87,25 +89,24 @@ import cn.bridgeli.service.ProductService;
 @Controller  
 public class ProductController {
 
-@Autowired  
-private ProductService productService;
+  @Autowired  
+  private ProductService productService;
 
-@RequestMapping("/list")  
-public String queryProduct(String queryString, String catalog_name, String price,  
-String sort, Integer page, Model model) throws Exception {  
-//查询商品列表  
-ResultModel resultModel = productService.queryProduct(queryString, catalog_name, price, sort, page);  
-//列表传递给jsp  
-model.addAttribute("result", resultModel);  
-//参数回显  
-model.addAttribute("queryString", queryString);  
-model.addAttribute("caltalog_name", catalog_name);  
-model.addAttribute("price", price);  
-model.addAttribute("sort", sort);  
-model.addAttribute("page", page);
+  @RequestMapping("/list")  
+  public String queryProduct(String queryString, String catalog_name, String price, String sort, Integer page, Model model) throws Exception {  
+    //查询商品列表  
+    ResultModel resultModel = productService.queryProduct(queryString, catalog_name, price, sort, page);  
+    //列表传递给jsp  
+    model.addAttribute("result", resultModel);  
+    //参数回显  
+    model.addAttribute("queryString", queryString);  
+    model.addAttribute("caltalog_name", catalog_name);  
+    model.addAttribute("price", price);  
+    model.addAttribute("sort", sort);  
+    model.addAttribute("page", page);
 
-return "product_list";  
-}  
+    return "product_list";  
+  }  
 }
 
 ```
@@ -126,62 +127,61 @@ import cn.bridgeli.model.ResultModel;
 @Service  
 public class ProductServiceImpl implements ProductService {
 
-@Autowired  
-private ProductDao productDao;
+  @Autowired  
+  private ProductDao productDao;
 
-@Override  
-public ResultModel queryProduct(String queryString, String caltalog_name,  
-String price, String sort, Integer page) throws Exception {  
-//拼装查询条件  
-SolrQuery query = new SolrQuery();  
-//查询条件  
-if (null != queryString && !"".equals(queryString)) {  
-query.setQuery(queryString);  
-} else {  
-query.setQuery("\*:\*");  
-}  
-//商品分类名称过滤  
-if (null != caltalog_name && !"".equals(caltalog_name)) {  
-query.addFilterQuery("category:" + caltalog_name);  
-}  
-//价格区间过滤  
-if (null != price && !"".equals(price)) {  
-String[] strings = price.split("-");  
-query.addFilterQuery("price:["+strings[0]+" TO "+strings[1]+"]");  
-}  
-//排序条件  
-if ("1".equals(sort)) {  
-query.setSort("price", ORDER.desc);  
-} else {  
-query.setSort("price", ORDER.asc);  
-}  
-//分页处理  
-if (null == page) {  
-page = 1;  
-}  
-//start  
-int start = (page-1) * Commons.PAGE_SIZE;  
-query.setStart(start);  
-query.setRows(Commons.PAGE_SIZE);
+  @Override  
+  public ResultModel queryProduct(String queryString, String caltalog_name, String price, String sort, Integer page) throws Exception {  
+    //拼装查询条件  
+    SolrQuery query = new SolrQuery();  
+    //查询条件  
+    if (null != queryString && !"".equals(queryString)) {  
+      query.setQuery(queryString);  
+    } else {  
+      query.setQuery("*:*");
+    }  
+    //商品分类名称过滤  
+    if (null != caltalog_name && !"".equals(caltalog_name)) {  
+      query.addFilterQuery("category:" + caltalog_name);  
+    }  
+    //价格区间过滤  
+    if (null != price && !"".equals(price)) {  
+      String[] strings = price.split("-");  
+      query.addFilterQuery("price:["+strings[0]+" TO "+strings[1]+"]");  
+    }  
+    //排序条件  
+    if ("1".equals(sort)) {  
+      query.setSort("price", ORDER.desc);  
+    } else {  
+      query.setSort("price", ORDER.asc);  
+    }  
+    //分页处理  
+    if (null == page) {  
+      page = 1;  
+    }  
+    //start  
+    int start = (page-1) * Commons.PAGE_SIZE;  
+    query.setStart(start);  
+    query.setRows(Commons.PAGE_SIZE);
 
-//高亮设置  
-query.setHighlight(true);  
-query.addHighlightField("name");  
-query.setHighlightSimplePre("<span style="color:red">");  
-query.setHighlightSimplePost("</span>");
+    //高亮设置  
+    query.setHighlight(true);  
+    query.addHighlightField("name");  
+    query.setHighlightSimplePre("<span style="color:red">");  
+    query.setHighlightSimplePost("</span>");
 
-//查询商品列表  
-ResultModel resultModel = productDao.queryProduct(query);  
-//计算总页数  
-long recordCount = resultModel.getRecordCount();  
-int pages = (int) (recordCount/Commons.PAGE_SIZE);  
-if (recordCount % Commons.PAGE_SIZE > 0) {  
-pages ++;  
-}  
-resultModel.setPageCount(pages);  
-resultModel.setCurPage(page);  
-return resultModel;  
-}  
+    //查询商品列表  
+    ResultModel resultModel = productDao.queryProduct(query);  
+    //计算总页数  
+    long recordCount = resultModel.getRecordCount();  
+    int pages = (int) (recordCount/Commons.PAGE_SIZE);  
+    if (recordCount % Commons.PAGE_SIZE > 0) {  
+      pages ++;  
+    }  
+    resultModel.setPageCount(pages);  
+    resultModel.setCurPage(page);  
+    return resultModel;  
+  }  
 }
 
 ```
@@ -210,44 +210,44 @@ import cn.bridgeli.model.ResultModel;
 @Repository  
 public class ProductDaoImpl implements ProductDao {
 
-@Autowired  
-private SolrServer solrServer;
+  @Autowired  
+  private SolrServer solrServer;
 
-@Override  
-public ResultModel queryProduct(SolrQuery query) throws Exception {
+  @Override  
+  public ResultModel queryProduct(SolrQuery query) throws Exception {
 
-ResultModel resultModel = new ResultModel();  
-//根据query对象查询商品列表  
-QueryResponse queryResponse = solrServer.query(query);  
-SolrDocumentList solrDocumentList = queryResponse.getResults();  
-//取查询结果的总数量  
-resultModel.setRecordCount(solrDocumentList.getNumFound());  
-List<ProductModel> productList = new ArrayList<>();  
-//遍历查询结果  
-for (SolrDocument solrDocument : solrDocumentList) {  
-//取商品信息  
-ProductModel productModel = new ProductModel();  
-productModel.setId((String) solrDocument.get("id"));  
-//取高亮显示  
-String productName = "";  
-Map<String, Map<String, List<String>>> highlighting = queryResponse.getHighlighting();  
-List<String> list = highlighting.get(solrDocument.get("id")).get("name");  
-if (null != list) {  
-productName = list.get(0);  
-} else {  
-productName = (String) solrDocument.get("name");  
-}  
-productModel.setName(productName);  
-productModel.setPrice((float) solrDocument.get("price"));  
-productModel.setCategory((String) solrDocument.get("category"));  
-productModel.setUrl((String) solrDocument.get("url"));  
-//添加到商品列表  
-productList.add(productModel);  
-}  
-//商品列表添加到resultmodel中  
-resultModel.setProductList(productList);  
-return resultModel;  
-}
+    ResultModel resultModel = new ResultModel();  
+    //根据query对象查询商品列表  
+    QueryResponse queryResponse = solrServer.query(query);  
+    SolrDocumentList solrDocumentList = queryResponse.getResults();  
+    //取查询结果的总数量  
+    resultModel.setRecordCount(solrDocumentList.getNumFound());  
+    List<ProductModel> productList = new ArrayList<>();  
+    //遍历查询结果  
+    for (SolrDocument solrDocument : solrDocumentList) {  
+      //取商品信息  
+      ProductModel productModel = new ProductModel();  
+      productModel.setId((String) solrDocument.get("id"));  
+      //取高亮显示  
+      String productName = "";  
+      Map<String, Map<String, List<String>>> highlighting = queryResponse.getHighlighting();  
+      List<String> list = highlighting.get(solrDocument.get("id")).get("name");  
+      if (null != list) {  
+        productName = list.get(0);  
+      } else {  
+        productName = (String) solrDocument.get("name");  
+      }  
+      productModel.setName(productName);  
+      productModel.setPrice((float) solrDocument.get("price"));  
+      productModel.setCategory((String) solrDocument.get("category"));  
+      productModel.setUrl((String) solrDocument.get("url"));  
+      //添加到商品列表  
+      productList.add(productModel);  
+    }  
+    //商品列表添加到resultmodel中  
+    resultModel.setProductList(productList);  
+    return resultModel;  
+  }
 
 }
 
@@ -261,37 +261,38 @@ return resultModel;
 package cn.bridgeli.model;
 
 public class ProductModel {  
-// 商品编号  
-private String id;  
-// 商品名称  
-private String name;  
-// 商品分类名称  
-private String category;  
-// 价格  
-private float price;  
-// 商品描述  
-private String content;  
-// 图片名称  
-private String url;
+  // 商品编号  
+  private String id;  
+  // 商品名称  
+  private String name;  
+  // 商品分类名称  
+  private String category;  
+  // 价格  
+  private float price;  
+  // 商品描述  
+  private String content;  
+  // 图片名称  
+  private String url;
 
-//setXX and getXX  
+  //setXX and getXX  
 }
-
+```
+```
 package cn.bridgeli.model;
 
 import java.util.List;
 
 public class ResultModel {  
-// 商品列表  
-private List<ProductModel> productList;  
-// 商品总数  
-private Long recordCount;  
-// 总页数  
-private int pageCount;  
-// 当前页  
-private int curPage;
+  // 商品列表  
+  private List<ProductModel> productList;  
+  // 商品总数  
+  private Long recordCount;  
+  // 总页数  
+  private int pageCount;  
+  // 当前页  
+  private int curPage;
 
-//setXX and getXX  
+  //setXX and getXX  
 }
 
 ```

@@ -19,11 +19,11 @@ package demo;
 
 public class SynchronizedDemo1 {
 
-public synchronized static void foo1() {  
-}
+  public synchronized static void foo1() {  
+  }
 
-public synchronized static void foo2() {  
-}  
+  public synchronized static void foo2() {  
+  }  
 }
 
 ```
@@ -35,11 +35,11 @@ package demo;
 
 public class SynchronizedDemo2 {
 
-public synchronized void foo3() {  
-}
+  public synchronized void foo3() {  
+  }
 
-public synchronized void foo4() {  
-}  
+  public synchronized void foo4() {  
+  }  
 }
 
 ```
@@ -51,17 +51,17 @@ package demo;
 
 public class SynchronizedDemo3 {
 
-public void foo5() {  
-synchronized (this) {
+  public void foo5() {  
+    synchronized (this) {
 
-}  
-}
+    }  
+  }
 
-public void foo6() {  
-synchronized (SynchronizedDemo3.class) {
+  public void foo6() {  
+    synchronized (SynchronizedDemo3.class) {
 
-}  
-}  
+    }  
+  }
 }
 
 ```

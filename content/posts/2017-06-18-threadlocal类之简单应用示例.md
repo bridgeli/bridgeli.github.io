@@ -24,32 +24,32 @@ import java.util.Map;
 
 public class DateFormatFactory {
 
-private static final Map<DatePatternEnum, ThreadLocal<DateFormat>> pattern2ThreadLocal;
+  private static final Map<DatePatternEnum, ThreadLocal<DateFormat>> pattern2ThreadLocal;
 
-static {  
-DatePatternEnum[] patterns = DatePatternEnum.values();  
-int len = patterns.length;  
-pattern2ThreadLocal = new HashMap<DatePatternEnum, ThreadLocal<DateFormat>>(len);
+  static {  
+    DatePatternEnum[] patterns = DatePatternEnum.values();  
+    int len = patterns.length;  
+    pattern2ThreadLocal = new HashMap<DatePatternEnum, ThreadLocal<DateFormat>>(len);
 
-for (int i = 0; i < len; i++) {  
-DatePatternEnum datePatternEnum = patterns[i];  
-final String pattern = datePatternEnum.pattern;
+    for (int i = 0; i < len; i++) {  
+      DatePatternEnum datePatternEnum = patterns[i];  
+      final String pattern = datePatternEnum.pattern;
 
-pattern2ThreadLocal.put(datePatternEnum, new ThreadLocal<DateFormat>() {  
-@Override  
-protected DateFormat initialValue() {  
-return new SimpleDateFormat(pattern);  
-}  
-});  
-}  
-}
+      pattern2ThreadLocal.put(datePatternEnum, new ThreadLocal<DateFormat>() {  
+        @Override  
+        protected DateFormat initialValue() {  
+          return new SimpleDateFormat(pattern);  
+        }  
+      });  
+    }  
+  } 
 
-// 获取DateFormat  
-public static DateFormat getDateFormat(DatePatternEnum patternEnum) {  
-ThreadLocal<DateFormat> threadDateFormat = pattern2ThreadLocal.get(patternEnum);  
-// 不需要判断threadDateFormat是否为空  
-return threadDateFormat.get();  
-}  
+  // 获取DateFormat  
+  public static DateFormat getDateFormat(DatePatternEnum patternEnum) {  
+    ThreadLocal<DateFormat> threadDateFormat = pattern2ThreadLocal.get(patternEnum);  
+    // 不需要判断threadDateFormat是否为空  
+    return threadDateFormat.get();  
+  }  
 }
 
 ```
@@ -61,14 +61,14 @@ package cn.bridgeli.demo;
 
 public enum DatePatternEnum {
 
-TimePattern("yyyy-MM-dd HH:mm:ss"),  
-DatePattern("yyyy-MM-dd");
+  TimePattern("yyyy-MM-dd HH:mm:ss"),  
+  DatePattern("yyyy-MM-dd");
 
-public String pattern;
+  public final String pattern;
 
-private DatePatternEnum(String pattern) {  
-this.pattern = pattern;  
-}  
+  private DatePatternEnum(String pattern) {  
+    this.pattern = pattern;  
+  }
 }  
 ```
 

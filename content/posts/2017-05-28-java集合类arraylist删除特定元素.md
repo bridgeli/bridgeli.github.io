@@ -17,21 +17,21 @@ tags:
 ```
 @Test  
 public void testRemove1() {  
-List<String> list = new ArrayList<String>() {  
-private static final long serialVersionUID = 1L;
+  List<String> list = new ArrayList<String>() {  
+    private static final long serialVersionUID = 1L;
 
-{  
-add("cn");  
-add("bridgeli");  
-add("blog");  
-}  
-};  
-for (int i = 0, len = list.size(); i < len; i++) {  
-String str = list.get(i);  
-if ("cn".equals(str)) {  
-list.remove(str);  
-}  
-}  
+    {  
+      add("cn");  
+      add("bridgeli");  
+      add("blog");  
+    }  
+  };  
+  for (int i = 0, len = list.size(); i < len; i++) {  
+    String str = list.get(i);  
+    if ("cn".equals(str)) {  
+      list.remove(str);  
+    }  
+  }  
 }
 
 ```
@@ -41,20 +41,20 @@ list.remove(str);
 ```
 @Test  
 public void testRemove2() {  
-List<String> list = new ArrayList<String>() {  
-private static final long serialVersionUID = 1L;
+  List<String> list = new ArrayList<String>() {  
+    private static final long serialVersionUID = 1L;
 
-{  
-add("cn");  
-add("bridgeli");  
-add("blog");  
-}  
-};  
-for (String str : list) {  
-if ("cn".equals(str)) {  
-list.remove(str);  
-}  
-}  
+    {  
+      add("cn");  
+      add("bridgeli");  
+      add("blog");  
+    }  
+  };  
+  for (String str : list) {  
+    if ("cn".equals(str)) {  
+      list.remove(str);  
+    }  
+  }  
 }
 
 ```
@@ -67,15 +67,15 @@ jdk api文档中是这样描述Iterable接口的：实现这个接口允许对�
 ```
 @SuppressWarnings("unchecked")  
 public E next() {  
-checkForComodification();  
-int i = cursor;  
-if (i >= size)  
-throw new NoSuchElementException();  
-Object[] elementData = ArrayList.this.elementData;  
-if (i >= elementData.length)  
-throw new ConcurrentModificationException();  
-cursor = i + 1;  
-return (E) elementData[lastRet = i];  
+  checkForComodification();  
+  int i = cursor;  
+  if (i >= size)  
+    throw new NoSuchElementException();  
+  Object[] elementData = ArrayList.this.elementData;  
+  if (i >= elementData.length)  
+    throw new ConcurrentModificationException();  
+  cursor = i + 1;  
+  return (E) elementData[lastRet = i];  
 }
 
 ```
@@ -84,8 +84,8 @@ return (E) elementData[lastRet = i];
 
 ```
 final void checkForComodification() {  
-if (modCount != expectedModCount)  
-throw new ConcurrentModificationException();  
+  if (modCount != expectedModCount)  
+    throw new ConcurrentModificationException();  
 }
 
 ```
@@ -95,22 +95,22 @@ throw new ConcurrentModificationException();
 ```
 @Test  
 public void testRemove3() {  
-List<String> list = new ArrayList<String>() {  
-private static final long serialVersionUID = 1L;
+  List<String> list = new ArrayList<String>() {  
+    private static final long serialVersionUID = 1L;
 
-{  
-add("cn");  
-add("bridgeli");  
-add("blog");  
-}  
-};  
-Iterator<String> iterator = list.iterator();  
-while (iterator.hasNext()) {  
-String str = iterator.next();  
-if ("blog".equals(str)) {  
-iterator.remove();  
-}  
-}  
+    {  
+      add("cn");  
+      add("bridgeli");  
+      add("blog");  
+    }  
+  };  
+  Iterator<String> iterator = list.iterator();  
+  while (iterator.hasNext()) {  
+    String str = iterator.next();  
+    if ("blog".equals(str)) {  
+      iterator.remove();  
+    }  
+  }  
 }
 
 ```
