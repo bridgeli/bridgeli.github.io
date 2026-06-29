@@ -11,14 +11,14 @@ tags:
   - 加密
 
 ---
-前几天网上突然出现流言：某东发生数据泄露12G，最终某东在一篇声明中没有否认，还算是勉强承认了吧，这件事对于一般人有什么影响、应该怎么做已经有一堆人说了，所以就不凑热闹了，咱来点对程序猿来说实际点的，说一个个人认为目前比较安全的加密算法：Blowfish。  
+前几天网上突然出现流言：某东发生数据泄露12G，最终某东在一篇声明中没有否认，还算是勉强承认了吧，这件事对于一般人有什么影响、应该怎么做已经有一堆人说了，所以就不凑热闹了，咱来点对程序猿来说实际点的，说一个个人认为目前比较安全的加密算法：Blowfish。
 上代码之前，先说几点Blowfish加密算法的特点：
 
-1. 对称加密，即加密的密钥和解密的密钥是相同的；  
-2. 每次加密之后的结果是不同的（这也是老夫比较欣赏的一点）；  
-3. 可逆的，和老夫之前的文章介绍的md5等摘要算法不一样，他是可逆的；  
-4. 速度快，加密和解密的过程基本上由ADD和XOR指令运算组成；  
-5. 免费，任何人都可以免费使用不需要缴纳版权费；  
+1. 对称加密，即加密的密钥和解密的密钥是相同的；
+2. 每次加密之后的结果是不同的（这也是老夫比较欣赏的一点）；
+3. 可逆的，和老夫之前的文章介绍的md5等摘要算法不一样，他是可逆的；
+4. 速度快，加密和解密的过程基本上由ADD和XOR指令运算组成；
+5. 免费，任何人都可以免费使用不需要缴纳版权费；
 6. BlowFish 每次只能加密和解密8字节数据；
 
 接下来就是最重要的部分，Blowfish加密算法的实现：
@@ -47,7 +47,7 @@ public class BlowfishUtil {
     public static String encrypt(String plainText, String key) throws Exception {
         // 1. 根据密钥字符串生成密钥对象
         SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes("UTF-8"), ALGORITHM);
-        
+
         // 2. 生成随机的 8 字节 IV (Blowfish 的块大小是 64 位 = 8 字节)
         byte[] iv = new byte[8];
         new SecureRandom().nextBytes(iv);
@@ -106,7 +106,7 @@ public class BlowfishUtil {
             // 连续加密两次，你会发现输出的密文是完全不一样的
             String encrypted1 = encrypt(text, key);
             String encrypted2 = encrypt(text, key);
-            
+
             System.out.println("第一次加密结果: " + encrypted1);
             System.out.println("第二次加密结果: " + encrypted2);
 

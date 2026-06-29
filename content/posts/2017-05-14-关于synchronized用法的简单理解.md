@@ -11,7 +11,7 @@ tags:
   - 多线程
 
 ---
-synchronized 关键字既可以用于声明方法，也可以用于声明代码块，他们之间有什么区别呢？下面让我们逐一测试一下。  
+synchronized 关键字既可以用于声明方法，也可以用于声明代码块，他们之间有什么区别呢？下面让我们逐一测试一下。
 先看以第一个例子：
 
 ```
@@ -19,11 +19,11 @@ package demo;
 
 public class SynchronizedDemo1 {
 
-  public synchronized static void foo1() {  
+  public synchronized static void foo1() {
   }
 
-  public synchronized static void foo2() {  
-  }  
+  public synchronized static void foo2() {
+  }
 }
 
 ```
@@ -35,11 +35,11 @@ package demo;
 
 public class SynchronizedDemo2 {
 
-  public synchronized void foo3() {  
+  public synchronized void foo3() {
   }
 
-  public synchronized void foo4() {  
-  }  
+  public synchronized void foo4() {
+  }
 }
 
 ```
@@ -51,16 +51,16 @@ package demo;
 
 public class SynchronizedDemo3 {
 
-  public void foo5() {  
+  public void foo5() {
     synchronized (this) {
 
-    }  
+    }
   }
 
-  public void foo6() {  
+  public void foo6() {
     synchronized (SynchronizedDemo3.class) {
 
-    }  
+    }
   }
 }
 

@@ -26,8 +26,8 @@ SELECT COUNT(*) FROM t1 LEFT JOIN t2 ON t1.c1 = t2.c1 WHERE t2.c1 IS NULL OR t2.
 或者
 
 ```
-select COUNT(*) from t1 where t1.c1 not in (  
-  select t2.c1 from t2 where t2.c1 is not null AND t2.c1 != "  
+select COUNT(*) from t1 where t1.c1 not in (
+  select t2.c1 from t2 where t2.c1 is not null AND t2.c1 != "
 );
 
 ```
@@ -35,11 +35,11 @@ select COUNT(*) from t1 where t1.c1 not in (
 所以都是 null 引起的（为了避免错误我把空串也加上了），原因是 not in 的实现原理是，对每一个 t1.c1 和每一个 t2.c1 （括号内的查询结果）进行不相等比较（!=）。
 
 ```
-foreach c1 in t2:  
-  if t1.c1 != c1:  
-    continue;  
-  else:  
-    return false;  
+foreach c1 in t2:
+  if t1.c1 != c1:
+    continue;
+  else:
+    return false;
 return true;
 
 ```

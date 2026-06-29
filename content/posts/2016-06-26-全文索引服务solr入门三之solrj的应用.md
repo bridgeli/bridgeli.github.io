@@ -21,51 +21,51 @@ tags:
 
 直接上图片，就是图上的这些图片，当然大家可以自己找maven依赖（jar文件这个最简单了，没有的话一定会报classnotfoundException，加上就好了）
 
-[![solrJ1](https://www.bridgeli.cn/wp-content/uploads/2016/06/solrJ1-300x217.png)][3]  
+[![solrJ1](https://www.bridgeli.cn/wp-content/uploads/2016/06/solrJ1-300x217.png)][3]
 [![solrJ2](https://www.bridgeli.cn/wp-content/uploads/2016/06/solrJ2-300x131.png)][4]
 
 2. spring的配置
 
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-  <beans xmlns="http://www.springframework.org/schema/beans"  
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"  
-    xmlns:context="http://www.springframework.org/schema/context"  
-    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"  
-    xsi:schemaLocation="http://www.springframework.org/schema/beans  
-    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  
-    http://www.springframework.org/schema/mvc  
-    http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd  
-    http://www.springframework.org/schema/context  
-    http://www.springframework.org/schema/context/spring-context-3.1.xsd  
-    http://www.springframework.org/schema/aop  
-    http://www.springframework.org/schema/aop/spring-aop-3.1.xsd  
-    http://www.springframework.org/schema/tx  
-    http://www.springframework.org/schema/tx/spring-tx-3.1.xsd ">  
-    <!-- 配置扫描包 -->  
-    <context:component-scan base-package="cn.bridgeli"/>  
-    <!-- 配置注解驱动 -->  
-    <mvc:annotation-driven/>  
-    <!-- 配置注解驱动 -->  
-    <tx:annotation-driven/>  
-    <!-- jsp视图解析器 -->  
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >  
-      <!-- 前缀 -->  
-      <property name="prefix" value="/WEB-INF/jsp/"></property>  
-      <!-- 后缀 -->  
-      <property name="suffix" value=".jsp"></property>  
-    </bean>  
-    <!-- 单机版solr -->  
-    <bean class="org.apache.solr.client.solrj.impl.HttpSolrServer">  
-      <constructor-arg name="baseURL" value="http://localhost:8080/solr/"></constructor-arg>  
-    </bean>  
-    <!-- 集群版SolrCloud -->  
-    <!--  
-      <bean class="org.apache.solr.client.solrj.impl.CloudSolrServer">  
-        <constructor-arg name="zkHost" value="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183"></constructor-arg>  
-        <property name="defaultCollection" value="collection2"></property>  
-      </bean>  
-    -->  
+<?xml version="1.0" encoding="UTF-8"?>
+  <beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+      http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-3.1.xsd
+      http://www.springframework.org/schema/aop
+      http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+      http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx-3.1.xsd ">
+    <!-- 配置扫描包 -->
+    <context:component-scan base-package="cn.bridgeli"/>
+    <!-- 配置注解驱动 -->
+    <mvc:annotation-driven/>
+    <!-- 配置注解驱动 -->
+    <tx:annotation-driven/>
+    <!-- jsp视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+      <!-- 前缀 -->
+      <property name="prefix" value="/WEB-INF/jsp/"></property>
+      <!-- 后缀 -->
+      <property name="suffix" value=".jsp"></property>
+    </bean>
+    <!-- 单机版solr -->
+    <bean class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+      <constructor-arg name="baseURL" value="http://localhost:8080/solr/"></constructor-arg>
+    </bean>
+    <!-- 集群版SolrCloud -->
+    <!--
+      <bean class="org.apache.solr.client.solrj.impl.CloudSolrServer">
+        <constructor-arg name="zkHost" value="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183"></constructor-arg>
+        <property name="defaultCollection" value="collection2"></property>
+      </bean>
+    -->
 </beans>
 
 ```
@@ -79,34 +79,34 @@ tags:
 ```
 package cn.bridgeli.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;  
-import org.springframework.stereotype.Controller;  
-import org.springframework.ui.Model;  
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import cn.bridgeli.model.ResultModel;  
-import cn.bridgeli.service.ProductService;  
-@Controller  
+import cn.bridgeli.model.ResultModel;
+import cn.bridgeli.service.ProductService;
+@Controller
 public class ProductController {
 
-  @Autowired  
+  @Autowired
   private ProductService productService;
 
-  @RequestMapping("/list")  
-  public String queryProduct(String queryString, String catalog_name, String price, String sort, Integer page, Model model) throws Exception {  
-    //查询商品列表  
-    ResultModel resultModel = productService.queryProduct(queryString, catalog_name, price, sort, page);  
-    //列表传递给jsp  
-    model.addAttribute("result", resultModel);  
-    //参数回显  
-    model.addAttribute("queryString", queryString);  
-    model.addAttribute("caltalog_name", catalog_name);  
-    model.addAttribute("price", price);  
-    model.addAttribute("sort", sort);  
+  @RequestMapping("/list")
+  public String queryProduct(String queryString, String catalog_name, String price, String sort, Integer page, Model model) throws Exception {
+    //查询商品列表
+    ResultModel resultModel = productService.queryProduct(queryString, catalog_name, price, sort, page);
+    //列表传递给jsp
+    model.addAttribute("result", resultModel);
+    //参数回显
+    model.addAttribute("queryString", queryString);
+    model.addAttribute("caltalog_name", catalog_name);
+    model.addAttribute("price", price);
+    model.addAttribute("sort", sort);
     model.addAttribute("page", page);
 
-    return "product_list";  
-  }  
+    return "product_list";
+  }
 }
 
 ```
@@ -116,72 +116,72 @@ public class ProductController {
 ```
 package cn.bridgeli.service;
 
-import org.apache.solr.client.solrj.SolrQuery;  
-import org.apache.solr.client.solrj.SolrQuery.ORDER;  
-import org.springframework.beans.factory.annotation.Autowired;  
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrQuery.ORDER;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.bridgeli.common.Commons;  
-import cn.bridgeli.dao.ProductDao;  
-import cn.bridgeli.model.ResultModel;  
-@Service  
+import cn.bridgeli.common.Commons;
+import cn.bridgeli.dao.ProductDao;
+import cn.bridgeli.model.ResultModel;
+@Service
 public class ProductServiceImpl implements ProductService {
 
-  @Autowired  
+  @Autowired
   private ProductDao productDao;
 
-  @Override  
-  public ResultModel queryProduct(String queryString, String caltalog_name, String price, String sort, Integer page) throws Exception {  
-    //拼装查询条件  
-    SolrQuery query = new SolrQuery();  
-    //查询条件  
-    if (null != queryString && !"".equals(queryString)) {  
-      query.setQuery(queryString);  
-    } else {  
+  @Override
+  public ResultModel queryProduct(String queryString, String caltalog_name, String price, String sort, Integer page) throws Exception {
+    //拼装查询条件
+    SolrQuery query = new SolrQuery();
+    //查询条件
+    if (null != queryString && !"".equals(queryString)) {
+      query.setQuery(queryString);
+    } else {
       query.setQuery("*:*");
-    }  
-    //商品分类名称过滤  
-    if (null != caltalog_name && !"".equals(caltalog_name)) {  
-      query.addFilterQuery("category:" + caltalog_name);  
-    }  
-    //价格区间过滤  
-    if (null != price && !"".equals(price)) {  
-      String[] strings = price.split("-");  
-      query.addFilterQuery("price:["+strings[0]+" TO "+strings[1]+"]");  
-    }  
-    //排序条件  
-    if ("1".equals(sort)) {  
-      query.setSort("price", ORDER.desc);  
-    } else {  
-      query.setSort("price", ORDER.asc);  
-    }  
-    //分页处理  
-    if (null == page) {  
-      page = 1;  
-    }  
-    //start  
-    int start = (page-1) * Commons.PAGE_SIZE;  
-    query.setStart(start);  
+    }
+    //商品分类名称过滤
+    if (null != caltalog_name && !"".equals(caltalog_name)) {
+      query.addFilterQuery("category:" + caltalog_name);
+    }
+    //价格区间过滤
+    if (null != price && !"".equals(price)) {
+      String[] strings = price.split("-");
+      query.addFilterQuery("price:["+strings[0]+" TO "+strings[1]+"]");
+    }
+    //排序条件
+    if ("1".equals(sort)) {
+      query.setSort("price", ORDER.desc);
+    } else {
+      query.setSort("price", ORDER.asc);
+    }
+    //分页处理
+    if (null == page) {
+      page = 1;
+    }
+    //start
+    int start = (page-1) * Commons.PAGE_SIZE;
+    query.setStart(start);
     query.setRows(Commons.PAGE_SIZE);
 
-    //高亮设置  
-    query.setHighlight(true);  
-    query.addHighlightField("name");  
-    query.setHighlightSimplePre("<span style="color:red">");  
+    //高亮设置
+    query.setHighlight(true);
+    query.addHighlightField("name");
+    query.setHighlightSimplePre("<span style="color:red">");
     query.setHighlightSimplePost("</span>");
 
-    //查询商品列表  
-    ResultModel resultModel = productDao.queryProduct(query);  
-    //计算总页数  
-    long recordCount = resultModel.getRecordCount();  
-    int pages = (int) (recordCount/Commons.PAGE_SIZE);  
-    if (recordCount % Commons.PAGE_SIZE > 0) {  
-      pages ++;  
-    }  
-    resultModel.setPageCount(pages);  
-    resultModel.setCurPage(page);  
-    return resultModel;  
-  }  
+    //查询商品列表
+    ResultModel resultModel = productDao.queryProduct(query);
+    //计算总页数
+    long recordCount = resultModel.getRecordCount();
+    int pages = (int) (recordCount/Commons.PAGE_SIZE);
+    if (recordCount % Commons.PAGE_SIZE > 0) {
+      pages ++;
+    }
+    resultModel.setPageCount(pages);
+    resultModel.setCurPage(page);
+    return resultModel;
+  }
 }
 
 ```
@@ -193,60 +193,60 @@ public class ProductServiceImpl implements ProductService {
 ```
 package cn.bridgeli.dao;
 
-import java.util.ArrayList;  
-import java.util.List;  
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import org.apache.solr.client.solrj.SolrQuery;  
-import org.apache.solr.client.solrj.SolrServer;  
-import org.apache.solr.client.solrj.response.QueryResponse;  
-import org.apache.solr.common.SolrDocument;  
-import org.apache.solr.common.SolrDocumentList;  
-import org.springframework.beans.factory.annotation.Autowired;  
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import cn.bridgeli.model.ProductModel;  
-import cn.bridgeli.model.ResultModel;  
-@Repository  
+import cn.bridgeli.model.ProductModel;
+import cn.bridgeli.model.ResultModel;
+@Repository
 public class ProductDaoImpl implements ProductDao {
 
-  @Autowired  
+  @Autowired
   private SolrServer solrServer;
 
-  @Override  
+  @Override
   public ResultModel queryProduct(SolrQuery query) throws Exception {
 
-    ResultModel resultModel = new ResultModel();  
-    //根据query对象查询商品列表  
-    QueryResponse queryResponse = solrServer.query(query);  
-    SolrDocumentList solrDocumentList = queryResponse.getResults();  
-    //取查询结果的总数量  
-    resultModel.setRecordCount(solrDocumentList.getNumFound());  
-    List<ProductModel> productList = new ArrayList<>();  
-    //遍历查询结果  
-    for (SolrDocument solrDocument : solrDocumentList) {  
-      //取商品信息  
-      ProductModel productModel = new ProductModel();  
-      productModel.setId((String) solrDocument.get("id"));  
-      //取高亮显示  
-      String productName = "";  
-      Map<String, Map<String, List<String>>> highlighting = queryResponse.getHighlighting();  
-      List<String> list = highlighting.get(solrDocument.get("id")).get("name");  
-      if (null != list) {  
-        productName = list.get(0);  
-      } else {  
-        productName = (String) solrDocument.get("name");  
-      }  
-      productModel.setName(productName);  
-      productModel.setPrice((float) solrDocument.get("price"));  
-      productModel.setCategory((String) solrDocument.get("category"));  
-      productModel.setUrl((String) solrDocument.get("url"));  
-      //添加到商品列表  
-      productList.add(productModel);  
-    }  
-    //商品列表添加到resultmodel中  
-    resultModel.setProductList(productList);  
-    return resultModel;  
+    ResultModel resultModel = new ResultModel();
+    //根据query对象查询商品列表
+    QueryResponse queryResponse = solrServer.query(query);
+    SolrDocumentList solrDocumentList = queryResponse.getResults();
+    //取查询结果的总数量
+    resultModel.setRecordCount(solrDocumentList.getNumFound());
+    List<ProductModel> productList = new ArrayList<>();
+    //遍历查询结果
+    for (SolrDocument solrDocument : solrDocumentList) {
+      //取商品信息
+      ProductModel productModel = new ProductModel();
+      productModel.setId((String) solrDocument.get("id"));
+      //取高亮显示
+      String productName = "";
+      Map<String, Map<String, List<String>>> highlighting = queryResponse.getHighlighting();
+      List<String> list = highlighting.get(solrDocument.get("id")).get("name");
+      if (null != list) {
+        productName = list.get(0);
+      } else {
+        productName = (String) solrDocument.get("name");
+      }
+      productModel.setName(productName);
+      productModel.setPrice((float) solrDocument.get("price"));
+      productModel.setCategory((String) solrDocument.get("category"));
+      productModel.setUrl((String) solrDocument.get("url"));
+      //添加到商品列表
+      productList.add(productModel);
+    }
+    //商品列表添加到resultmodel中
+    resultModel.setProductList(productList);
+    return resultModel;
   }
 
 }
@@ -260,21 +260,21 @@ public class ProductDaoImpl implements ProductDao {
 ```
 package cn.bridgeli.model;
 
-public class ProductModel {  
-  // 商品编号  
-  private String id;  
-  // 商品名称  
-  private String name;  
-  // 商品分类名称  
-  private String category;  
-  // 价格  
-  private float price;  
-  // 商品描述  
-  private String content;  
-  // 图片名称  
+public class ProductModel {
+  // 商品编号
+  private String id;
+  // 商品名称
+  private String name;
+  // 商品分类名称
+  private String category;
+  // 价格
+  private float price;
+  // 商品描述
+  private String content;
+  // 图片名称
   private String url;
 
-  //setXX and getXX  
+  //setXX and getXX
 }
 ```
 ```
@@ -282,17 +282,17 @@ package cn.bridgeli.model;
 
 import java.util.List;
 
-public class ResultModel {  
-  // 商品列表  
-  private List<ProductModel> productList;  
-  // 商品总数  
-  private Long recordCount;  
-  // 总页数  
-  private int pageCount;  
-  // 当前页  
+public class ResultModel {
+  // 商品列表
+  private List<ProductModel> productList;
+  // 商品总数
+  private Long recordCount;
+  // 总页数
+  private int pageCount;
+  // 当前页
   private int curPage;
 
-  //setXX and getXX  
+  //setXX and getXX
 }
 
 ```
@@ -300,17 +300,17 @@ public class ResultModel {
 4. 数据库文件
 
 ```
-CREATE TABLE `products` (  
-`pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '商品编号',  
-`name` varchar(255) DEFAULT NULL COMMENT '商品名称',  
-`catalog` int(11) DEFAULT NULL COMMENT '商品分类ID',  
-`catalog_name` varchar(50) DEFAULT NULL COMMENT '商品分类名称',  
-`price` double DEFAULT NULL COMMENT '价格',  
-`number` int(11) DEFAULT NULL COMMENT '数量',  
-`description` longtext COMMENT '商品描述',  
-`picture` varchar(255) DEFAULT NULL COMMENT '图片名称',  
-`release_time` datetime DEFAULT NULL COMMENT '上架时间',  
-PRIMARY KEY (`pid`)  
+CREATE TABLE `products` (
+`pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '商品编号',
+`name` varchar(255) DEFAULT NULL COMMENT '商品名称',
+`catalog` int(11) DEFAULT NULL COMMENT '商品分类ID',
+`catalog_name` varchar(50) DEFAULT NULL COMMENT '商品分类名称',
+`price` double DEFAULT NULL COMMENT '价格',
+`number` int(11) DEFAULT NULL COMMENT '数量',
+`description` longtext COMMENT '商品描述',
+`picture` varchar(255) DEFAULT NULL COMMENT '图片名称',
+`release_time` datetime DEFAULT NULL COMMENT '上架时间',
+PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 ```

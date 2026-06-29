@@ -17,10 +17,10 @@ tags:
 1. 先引入maven依赖
 
 ```
-<dependency>  
-  <groupId>com.github.miemiedev</groupId>  
-  <artifactId>mybatis-paginator</artifactId>  
-  <version>1.2.15</version>  
+<dependency>
+  <groupId>com.github.miemiedev</groupId>
+  <artifactId>mybatis-paginator</artifactId>
+  <version>1.2.15</version>
 </dependency>
 
 ```
@@ -32,18 +32,18 @@ tags:
 ①. 新建一个mybatis.xml的配置文件，其内容如下：
 
 ```
-<?xml version="1.0" encoding="UTF-8" ?>  
-<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">  
-  <configuration>  
-  <settings>  
-    <setting name="cacheEnabled" value="true" />  
-    <setting name="lazyLoadingEnabled" value="true" />  
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  <configuration>
+  <settings>
+    <setting name="cacheEnabled" value="true" />
+    <setting name="lazyLoadingEnabled" value="true" />
   </settings>
 
-  <plugins>  
-    <plugin interceptor="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">  
-      <property name="dialectClass" value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect" />  
-      <property name="asyncTotalCount" value="true" />  
+  <plugins>
+    <plugin interceptor="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">
+      <property name="dialectClass" value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect" />
+      <property name="asyncTotalCount" value="true" />
     </plugin>
   </plugins>
 
@@ -56,11 +56,11 @@ tags:
 ```
 ......
 
-<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
-  <property name="dataSource" ref="dataSource"></property>  
-  <property name="configLocation" value="classpath:mybatis.xml" />  
-  <property name="typeAliasesPackage" value="cn.bridgeli.demo.entity" />  
-  <property name="mapperLocations" value="classpath:cn/bridgeli/demo/mapper/*.xml" />  
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+  <property name="dataSource" ref="dataSource"></property>
+  <property name="configLocation" value="classpath:mybatis.xml" />
+  <property name="typeAliasesPackage" value="cn.bridgeli.demo.entity" />
+  <property name="mapperLocations" value="classpath:cn/bridgeli/demo/mapper/*.xml" />
 </bean>
 
 ......
@@ -74,63 +74,63 @@ tags:
 ```
 package com.xmjr.mediastatis.util;
 
-import java.util.HashMap;  
-import java.util.List;  
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.math.NumberUtils;
 
-import com.github.miemiedev.mybatis.paginator.domain.PageBounds;  
-import com.github.miemiedev.mybatis.paginator.domain.PageList;  
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 
 public class PagingUtil {
 
   public static PageBounds getPageBounds(Map<String, String> paramMap) {
 
-    String paramPage = paramMap.get("page");  
+    String paramPage = paramMap.get("page");
     String paramPageSize = PropertiesUtil.getProperties("pageSize");
 
-    int page = NumberUtils.toInt(paramPage, 1); // 页号  
+    int page = NumberUtils.toInt(paramPage, 1); // 页号
     int pageSize = NumberUtils.toInt(paramPageSize, 10); // 每页数据条数
 
-    // String sortString = "age.asc,gender.desc";//如果你想排序的话逗号分隔可以排序多列  
+    // String sortString = "age.asc,gender.desc";//如果你想排序的话逗号分隔可以排序多列
     PageBounds pageBounds = new PageBounds(page, pageSize);
 
-    pageBounds.setAsyncTotalCount(true);  
+    pageBounds.setAsyncTotalCount(true);
     pageBounds.setContainsTotalCount(true);
 
-    return pageBounds;  
+    return pageBounds;
   }
 
   public static Map<String, Object> toPageInfo(List<Map<String, Object>> detailList) {
 
     PageList<Map<String, Object>> value = (PageList<Map<String, Object>>) detailList;
 
-      Map<String, Object> pageInfo = new HashMap<String, Object>();  
-      Paginator paginator = value.getPaginator();  
-      pageInfo.put("totalCount", paginator.getTotalCount());  
-      pageInfo.put("totalPages", paginator.getTotalPages());  
-      pageInfo.put("page", paginator.getPage());  
-      pageInfo.put("limit", paginator.getLimit());  
+      Map<String, Object> pageInfo = new HashMap<String, Object>();
+      Paginator paginator = value.getPaginator();
+      pageInfo.put("totalCount", paginator.getTotalCount());
+      pageInfo.put("totalPages", paginator.getTotalPages());
+      pageInfo.put("page", paginator.getPage());
+      pageInfo.put("limit", paginator.getLimit());
       pageInfo.put("items", value);
 
-      pageInfo.put("startRow", paginator.getStartRow());  
+      pageInfo.put("startRow", paginator.getStartRow());
       pageInfo.put("endRow", paginator.getEndRow());
 
       pageInfo.put("offset", paginator.getOffset());
 
       pageInfo.put("slider", paginator.getSlider());
 
-      pageInfo.put("prePage", paginator.getPrePage());  
+      pageInfo.put("prePage", paginator.getPrePage());
       pageInfo.put("nextPage", paginator.getNextPage());
 
-      pageInfo.put("firstPage", paginator.isFirstPage());  
-      pageInfo.put("hasNextPage", paginator.isHasNextPage());  
+      pageInfo.put("firstPage", paginator.isFirstPage());
+      pageInfo.put("hasNextPage", paginator.isHasNextPage());
       pageInfo.put("hasPrePage", paginator.isHasPrePage());
       pageInfo.put("lastPage", paginator.isLastPage());
 
-      return pageInfo;  
+      return pageInfo;
   }
 
 }
@@ -144,8 +144,8 @@ public class PagingUtil {
 其使用倒是非常简单，我们只需要在service层中构造我们的分页对象：PageBounds即可，然后把这个对象作为一个参数传到dao层，也就是说dao层除了以前的参数，再新加一个参数pageBounds，其余的mapper.xml等等文件该怎么写就怎么写，和以前可以说一点差别都没有，然后把返回值在封装成一个pageInfo对象，那么pageInfo对象里面就封装了所有我们分页所需要的数据，大家根据具体情况就可以做前端的分页了。例如老夫的实现：
 
 ```
-List<Map<String, Object>> itemInfos = itemMapper.getItems(param, pageBounds);  
-Map<String, Object> pageInfo = PagingUtil.toPageInfo(itemInfos);  
+List<Map<String, Object>> itemInfos = itemMapper.getItems(param, pageBounds);
+Map<String, Object> pageInfo = PagingUtil.toPageInfo(itemInfos);
 LOG.info("totalCount: " + pageInfo.get("totalCount"));
 
 ```

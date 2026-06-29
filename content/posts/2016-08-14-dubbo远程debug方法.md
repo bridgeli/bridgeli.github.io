@@ -21,9 +21,9 @@ tags:
 ①. start.sh
 
 ```
-JAVA_DEBUG_OPTS=""  
-if [ "$1" = "debug" ]; then  
-  JAVA_DEBUG_OPTS=" -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n "  
+JAVA_DEBUG_OPTS=""
+if [ "$1" = "debug" ]; then
+  JAVA_DEBUG_OPTS=" -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n "
 fi
 
 ```
@@ -31,14 +31,14 @@ fi
 ②. start.bat
 
 ```
-if ""%1"" == ""debug"" goto debug  
+if ""%1"" == ""debug"" goto debug
 if ""%1"" == ""jmx"" goto jmx
 
-java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -classpath ..\conf;%LIB_JARS% com.alibaba.dubbo.container.Main  
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -classpath ..\conf;%LIB_JARS% com.alibaba.dubbo.container.Main
 goto end
 
-:debug  
-java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -classpath ..\conf;%LIB_JARS% com.alibaba.dubbo.container.Main  
+:debug
+java -Xms64m -Xmx1024m -XX:MaxPermSize=64M -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -classpath ..\conf;%LIB_JARS% com.alibaba.dubbo.container.Main
 goto end
 
 :end
@@ -50,6 +50,6 @@ goto end
 
 当我们把远程的服务以支持debug的模式启动之后，就需要把本地的项目也起来了，否则怎么debug呢，本地的设置其实非常简单，一张图搞定
 
-![remote_debug-300x168](https://www.bridgeli.cn/wp-content/uploads/2016/08/remote_debug-300x168.png) 
+![remote_debug-300x168](https://www.bridgeli.cn/wp-content/uploads/2016/08/remote_debug-300x168.png)
 
 看了这张图，我相信不用我多说了，远程远程debug如此简单

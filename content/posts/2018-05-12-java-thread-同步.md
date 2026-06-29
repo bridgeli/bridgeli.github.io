@@ -24,19 +24,19 @@ package cn.bridgeli.demo;
 
 public class ThreadTest {
 
-  public static void main(String[] args) throws InterruptedException {  
-    ThreadJoinTest t1 = new ThreadJoinTest("bridgeli");  
-    ThreadJoinTest t2 = new ThreadJoinTest("liqiao");  
-    t1.start();  
-    /**  
-     * join的意思是使得放弃当前线程的执行，并返回对应的线程，例如下面代码的意思就是：  
-     * 程序在main线程中调用t1线程的join方法，则main线程放弃cpu控制权，并返回t1线程继续执行直到线程t1执行完毕  
-     * 所以结果是t1线程执行完后，才到主线程执行，相当于在main线程中同步t1线程，t1执行完了，main线程才有执行的机会  
-     * join方法可以传递参数，join(10000)表示main线程会等待t1线程10毫秒，10毫秒过去后，  
-     * main线程和t1线程之间执行顺序由串行执行变为普通的并行执行  
-     */  
-    t1.join(10000);  
-    t2.start();  
+  public static void main(String[] args) throws InterruptedException {
+    ThreadJoinTest t1 = new ThreadJoinTest("bridgeli");
+    ThreadJoinTest t2 = new ThreadJoinTest("liqiao");
+    t1.start();
+    /**
+     * join的意思是使得放弃当前线程的执行，并返回对应的线程，例如下面代码的意思就是：
+     * 程序在main线程中调用t1线程的join方法，则main线程放弃cpu控制权，并返回t1线程继续执行直到线程t1执行完毕
+     * 所以结果是t1线程执行完后，才到主线程执行，相当于在main线程中同步t1线程，t1执行完了，main线程才有执行的机会
+     * join方法可以传递参数，join(10000)表示main线程会等待t1线程10毫秒，10毫秒过去后，
+     * main线程和t1线程之间执行顺序由串行执行变为普通的并行执行
+     */
+    t1.join(10000);
+    t2.start();
   }
 
 }
@@ -44,20 +44,20 @@ public class ThreadTest {
 ```
 package cn.bridgeli.demo;
 
-public class ThreadJoinTest extends Thread {  
-  public ThreadJoinTest(String name) {  
-  super(name);  
+public class ThreadJoinTest extends Thread {
+  public ThreadJoinTest(String name) {
+  super(name);
   }
 
-  @Override  
-  public void run() {  
-    for (int i = 0; i < 100; i++) {  
-      System.out.println(this.getName() + ":" + i);  
-      try {  
-        Thread.sleep(1000);  
-      } catch (InterruptedException e) {  
-        e.printStackTrace();  
-      }  
+  @Override
+  public void run() {
+    for (int i = 0; i < 100; i++) {
+      System.out.println(this.getName() + ":" + i);
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
     }
   }
 }
@@ -73,69 +73,69 @@ public class ThreadJoinTest extends Thread {
 3. join 方法实现原理
 
 ```
-/**  
- * Waits for this thread to die.  
- *  
- * <p> An invocation of this method behaves in exactly the same  
- * way as the invocation  
- *  
- * <blockquote>  
- * {@linkplain #join(long) join}{@code (0)}  
- * </blockquote>  
- *  
- * @throws InterruptedException  
- * if any thread has interrupted the current thread. The  
- * <i>interrupted status</i> of the current thread is  
- * cleared when this exception is thrown.  
- */  
-public final void join() throws InterruptedException {  
-  join(0);  
+/**
+ * Waits for this thread to die.
+ *
+ * <p> An invocation of this method behaves in exactly the same
+ * way as the invocation
+ *
+ * <blockquote>
+ * {@linkplain #join(long) join}{@code (0)}
+ * </blockquote>
+ *
+ * @throws InterruptedException
+ * if any thread has interrupted the current thread. The
+ * <i>interrupted status</i> of the current thread is
+ * cleared when this exception is thrown.
+ */
+public final void join() throws InterruptedException {
+  join(0);
 }
 
-/**  
- * Waits at most {@code millis} milliseconds for this thread to  
- * die. A timeout of {@code 0} means to wait forever.  
- *  
- * <p> This implementation uses a loop of {@code this.wait} calls  
- * conditioned on {@code this.isAlive}. As a thread terminates the  
- * conditioned on {@code this.isAlive}. As a thread terminates the  
- * {@code this.notifyAll} method is invoked. It is recommended that  
- * applications not use {@code wait}, {@code notify}, or  
- * {@code notifyAll} on {@code Thread} instances.  
- *  
- * @param millis  
- * the time to wait in milliseconds  
- *  
- * @throws IllegalArgumentException  
- * if the value of {@code millis} is negative  
- *  
- * @throws InterruptedException  
- * if any thread has interrupted the current thread. The  
- * <i>interrupted status</i> of the current thread is  
- * cleared when this exception is thrown.  
- */  
-public final synchronized void join(long millis)throws InterruptedException {  
-  long base = System.currentTimeMillis();  
+/**
+ * Waits at most {@code millis} milliseconds for this thread to
+ * die. A timeout of {@code 0} means to wait forever.
+ *
+ * <p> This implementation uses a loop of {@code this.wait} calls
+ * conditioned on {@code this.isAlive}. As a thread terminates the
+ * conditioned on {@code this.isAlive}. As a thread terminates the
+ * {@code this.notifyAll} method is invoked. It is recommended that
+ * applications not use {@code wait}, {@code notify}, or
+ * {@code notifyAll} on {@code Thread} instances.
+ *
+ * @param millis
+ * the time to wait in milliseconds
+ *
+ * @throws IllegalArgumentException
+ * if the value of {@code millis} is negative
+ *
+ * @throws InterruptedException
+ * if any thread has interrupted the current thread. The
+ * <i>interrupted status</i> of the current thread is
+ * cleared when this exception is thrown.
+ */
+public final synchronized void join(long millis)throws InterruptedException {
+  long base = System.currentTimeMillis();
   long now = 0;
 
-  if (millis < 0) {  
-    throw new IllegalArgumentException("timeout value is negative");  
+  if (millis < 0) {
+    throw new IllegalArgumentException("timeout value is negative");
   }
 
-  if (millis == 0) {  
-    while (isAlive()) {  
-      wait(0);  
-    }  
-  } else {  
-    while (isAlive()) {  
-      long delay = millis - now;  
-      if (delay <= 0) {  
-        break;  
-      }  
-      wait(delay);  
-      now = System.currentTimeMillis() - base;  
-    }  
-  }  
+  if (millis == 0) {
+    while (isAlive()) {
+      wait(0);
+    }
+  } else {
+    while (isAlive()) {
+      long delay = millis - now;
+      if (delay <= 0) {
+        break;
+      }
+      wait(delay);
+      now = System.currentTimeMillis() - base;
+    }
+  }
 }
 
 ```

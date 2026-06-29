@@ -20,24 +20,24 @@ import java.lang.reflect.Field;
 
 public class Magic {
 
-  public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {  
-    Class<?> cache = Integer.class.getDeclaredClasses()[0];  
-    Field c = cache.getDeclaredField("cache");  
-    c.setAccessible(true);  
-    Integer[] array = (Integer[]) c.get(cache);  
-    // array[129] is 1  
-    array[130] = array[129];  
-    // Set 2 to be 1  
-    array[131] = array[129];  
-    // Set 3 to be 1  
-    Integer a = 1;  
-    if (a == (Integer) 1 && a == (Integer) 2 && a == (Integer) 3) {  
-      System.out.println(true);  
-    } else {  
-      System.out.println(false);  
+  public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
+    Class<?> cache = Integer.class.getDeclaredClasses()[0];
+    Field c = cache.getDeclaredField("cache");
+    c.setAccessible(true);
+    Integer[] array = (Integer[]) c.get(cache);
+    // array[129] is 1
+    array[130] = array[129];
+    // Set 2 to be 1
+    array[131] = array[129];
+    // Set 3 to be 1
+    Integer a = 1;
+    if (a == (Integer) 1 && a == (Integer) 2 && a == (Integer) 3) {
+      System.out.println(true);
+    } else {
+      System.out.println(false);
     }
 
-  }  
+  }
 }
 
 ```
@@ -49,9 +49,9 @@ public class Magic {
 很多人可能感觉这还不简单，自动装箱呗，对象类型的 1，还有啥？其实这行代码经过编译之后，调用的是 Integer 的 valueOf 方法，实现如下：
 
 ```
-public static Integer valueOf(int i) {  
-  if (i >= IntegerCache.low && i <= IntegerCache.high)  
-    return IntegerCache.cache[i + (-IntegerCache.low)];  
+public static Integer valueOf(int i) {
+  if (i >= IntegerCache.low && i <= IntegerCache.high)
+    return IntegerCache.cache[i + (-IntegerCache.low)];
   return new Integer(i);
 }
 
@@ -75,6 +75,6 @@ public static Integer valueOf(int i) {
 
 其实这道题也挺无聊的，完全就是一个炫技的题，工作中一点用途都没有，但是通过这道题：
 
-1. 可以看出我们的发散思维能力，是否一开始就认为不可能？是真的不可能，还是我们对自己使用的编程语言不熟悉，懒于思考；  
-2. 也能看出我们对源码的熟悉程度，甚至对编辑器的理解，是否知道你写下的这行代码被编译成了什么？是否知道 Integer 类底层是什么实现的？是否知道自动装箱拆箱是怎么做的？源码也是面试考察中的一个重点。  
+1. 可以看出我们的发散思维能力，是否一开始就认为不可能？是真的不可能，还是我们对自己使用的编程语言不熟悉，懒于思考；
+2. 也能看出我们对源码的熟悉程度，甚至对编辑器的理解，是否知道你写下的这行代码被编译成了什么？是否知道 Integer 类底层是什么实现的？是否知道自动装箱拆箱是怎么做的？源码也是面试考察中的一个重点。
 3. 最后也能看出我们对反射是否熟悉，Java 因为有了反射，所以才出现了 Spring 这个强大的生态型的框架，大大拓展了 Java 语言的生命力，所以反射也是我们 Java 程序员必须掌握的一个东西，也是面试中必考察的一个重点。

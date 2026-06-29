@@ -16,10 +16,10 @@ tags:
 ```
 package cn.bridgeli.demo;
 
-/**  
- * @author BridgeLi  
- * @date 2021/4/21 11:02  
- */  
+/**
+ * @author BridgeLi
+ * @date 2021/4/21 11:02
+ */
 public class User {
 
   String name = "Denny";
@@ -35,33 +35,33 @@ package cn.bridgeli.demo;
 
 import org.junit.Test;
 
-/**  
- * @author BridgeLi  
- * @date 2021/4/21 10:28  
- */  
+/**
+ * @author BridgeLi
+ * @date 2021/4/21 10:28
+ */
 public class ThreadTest {
 
   private User user = new User();
 
-  @Test  
-  public void testThreadLocal() {  
-    new Thread(() -> {  
-      try {  
-        Thread.sleep(1000);  
-      } catch (InterruptedException e) {  
-        e.printStackTrace();  
-      }  
-      System.out.println(user.name);  
+  @Test
+  public void testThreadLocal() {
+    new Thread(() -> {
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      System.out.println(user.name);
     }).start();
 
     new Thread(() -> user.name = "BridgeLi").start();
 
-    try {  
-      Thread.sleep(2000);  
-    } catch (InterruptedException e) {  
-      e.printStackTrace();  
-    }  
-  } 
+    try {
+      Thread.sleep(2000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
 }
 
 ```
@@ -73,33 +73,33 @@ package cn.bridgeli.demo.reference;
 
 import org.junit.Test;
 
-/**  
- * @author BridgeLi  
- * @date 2021/4/21 10:28  
- */  
+/**
+ * @author BridgeLi
+ * @date 2021/4/21 10:28
+ */
 public class ThreadLocalTest {
 
   private static ThreadLocal<User> threadLocal = new ThreadLocal<>();
 
-  @Test  
-  public void testThreadLocal() {  
-    new Thread(() -> {  
-      try {  
-        Thread.sleep(1000);  
-      } catch (InterruptedException e) {  
-        e.printStackTrace();  
-      }  
-      System.out.println(threadLocal.get());  
+  @Test
+  public void testThreadLocal() {
+    new Thread(() -> {
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      System.out.println(threadLocal.get());
     }).start();
 
     new Thread(() -> threadLocal.set(new User())).start();
 
-    try {  
-      Thread.sleep(2000);  
-    } catch (InterruptedException e) {  
-      e.printStackTrace();  
-    } 
-  } 
+    try {
+      Thread.sleep(2000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
 }
 
 ```
@@ -107,13 +107,13 @@ public class ThreadLocalTest {
 这个时候我们发现，一个线程里面放入的对象，我们在另一个线程拿不到，就这样解决了线程安全问题，那么这个又是如何做到的呢？我们通过源码分析，我们首先看 set 方法：
 
 ```
-public void set(T value) {  
-Thread t = Thread.currentThread();  
-ThreadLocalMap map = getMap(t);  
-if (map != null)  
-  map.set(this, value);  
-else  
-  createMap(t, value);  
+public void set(T value) {
+Thread t = Thread.currentThread();
+ThreadLocalMap map = getMap(t);
+if (map != null)
+  map.set(this, value);
+else
+  createMap(t, value);
 }
 
 ```
@@ -121,18 +121,18 @@ else
 第一步先获取 当前线程，第二步获取当前线程的一个属性：threadLocals，类型是 ThreadLocalMap，这一步也就是说，在不同的线程里面，获取到的 t 对象肯定不是同一个，那么我们的 map 对象当然也就不是同一个了，所以下一步 set 的时候，不同的线程，也就 set 到了不同的对象里面去了，那么我们 get 的时候：
 
 ```
-public T get() {  
-  Thread t = Thread.currentThread();  
-  ThreadLocalMap map = getMap(t);  
-  if (map != null) {  
-    ThreadLocalMap.Entry e = map.getEntry(this);  
-    if (e != null) {  
-      @SuppressWarnings("unchecked")  
-      T result = (T)e.value;  
-      return result;  
+public T get() {
+  Thread t = Thread.currentThread();
+  ThreadLocalMap map = getMap(t);
+  if (map != null) {
+    ThreadLocalMap.Entry e = map.getEntry(this);
+    if (e != null) {
+      @SuppressWarnings("unchecked")
+      T result = (T)e.value;
+      return result;
     }
-  }  
-  return setInitialValue();  
+  }
+  return setInitialValue();
 }
 
 ```
@@ -150,7 +150,7 @@ public T get() {
 我们通过源码可以看到，我们初始化线程的时候有一行代码：
 
 ```
-ThreadLocal.ThreadLocalMap threadLocals = null; 
+ThreadLocal.ThreadLocalMap threadLocals = null;
 
 ```
 
@@ -164,12 +164,12 @@ t.threadLocals = new ThreadLocalMap(this, firstValue);
 也就是 new 了一个 ThreadLocalMap 对象，赋值给了当前线程的 threadLocals 属性，所以我们要看 ThreadLocalMap 的构造方法：
 
 ```
-ThreadLocalMap(ThreadLocal<?> firstKey, Object firstValue) {  
-  table = new Entry[INITIAL_CAPACITY];  
-  int i = firstKey.threadLocalHashCode & (INITIAL_CAPACITY - 1);  
-  table[i] = new Entry(firstKey, firstValue);  
-  size = 1;  
-  setThreshold(INITIAL_CAPACITY);  
+ThreadLocalMap(ThreadLocal<?> firstKey, Object firstValue) {
+  table = new Entry[INITIAL_CAPACITY];
+  int i = firstKey.threadLocalHashCode & (INITIAL_CAPACITY - 1);
+  table[i] = new Entry(firstKey, firstValue);
+  size = 1;
+  setThreshold(INITIAL_CAPACITY);
 }
 
 ```
@@ -177,13 +177,13 @@ ThreadLocalMap(ThreadLocal<?> firstKey, Object firstValue) {
 也很简单 new 了一个 Entry 对象，这个我们都很熟了，和 HashMap 很类似，那么他和 HashMap 的 Entry 是不是一样的呢？我们接着看一下：
 
 ```
-static class Entry extends WeakReference<ThreadLocal<?>> {  
+static class Entry extends WeakReference<ThreadLocal<?>> {
   /** The value associated with this ThreadLocal. */
   Object value;
 
-  Entry(ThreadLocal<?> k, Object v) {  
-    super(k);  
-    value = v;  
+  Entry(ThreadLocal<?> k, Object v) {
+    super(k);
+    value = v;
   }
 }
 

@@ -17,39 +17,39 @@ tags:
 ```
 package cn.bridgeli.demo;
 
-import java.text.DateFormat;  
-import java.text.SimpleDateFormat;  
-import java.util.HashMap;  
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DateFormatFactory {
 
   private static final Map<DatePatternEnum, ThreadLocal<DateFormat>> pattern2ThreadLocal;
 
-  static {  
-    DatePatternEnum[] patterns = DatePatternEnum.values();  
-    int len = patterns.length;  
+  static {
+    DatePatternEnum[] patterns = DatePatternEnum.values();
+    int len = patterns.length;
     pattern2ThreadLocal = new HashMap<DatePatternEnum, ThreadLocal<DateFormat>>(len);
 
-    for (int i = 0; i < len; i++) {  
-      DatePatternEnum datePatternEnum = patterns[i];  
+    for (int i = 0; i < len; i++) {
+      DatePatternEnum datePatternEnum = patterns[i];
       final String pattern = datePatternEnum.pattern;
 
-      pattern2ThreadLocal.put(datePatternEnum, new ThreadLocal<DateFormat>() {  
-        @Override  
-        protected DateFormat initialValue() {  
-          return new SimpleDateFormat(pattern);  
-        }  
-      });  
-    }  
-  } 
+      pattern2ThreadLocal.put(datePatternEnum, new ThreadLocal<DateFormat>() {
+        @Override
+        protected DateFormat initialValue() {
+          return new SimpleDateFormat(pattern);
+        }
+      });
+    }
+  }
 
-  // 获取DateFormat  
-  public static DateFormat getDateFormat(DatePatternEnum patternEnum) {  
-    ThreadLocal<DateFormat> threadDateFormat = pattern2ThreadLocal.get(patternEnum);  
-    // 不需要判断threadDateFormat是否为空  
-    return threadDateFormat.get();  
-  }  
+  // 获取DateFormat
+  public static DateFormat getDateFormat(DatePatternEnum patternEnum) {
+    ThreadLocal<DateFormat> threadDateFormat = pattern2ThreadLocal.get(patternEnum);
+    // 不需要判断threadDateFormat是否为空
+    return threadDateFormat.get();
+  }
 }
 
 ```
@@ -61,15 +61,15 @@ package cn.bridgeli.demo;
 
 public enum DatePatternEnum {
 
-  TimePattern("yyyy-MM-dd HH:mm:ss"),  
+  TimePattern("yyyy-MM-dd HH:mm:ss"),
   DatePattern("yyyy-MM-dd");
 
   public final String pattern;
 
-  private DatePatternEnum(String pattern) {  
-    this.pattern = pattern;  
+  private DatePatternEnum(String pattern) {
+    this.pattern = pattern;
   }
-}  
+}
 ```
 
 这样我们就可以每次调用DateFormatFactory.getDateFormat获取到对应的时间格式化类了。之前我们提到使用ThreadLocal同时可以避免参数传递。假如某个类的某个方法要调用到其他类的方法，而且方法内需要使用时间格式化类。按照正常情况下我们把该时间格式化类作为参数进行传递，但如果有了ThreadLocal这个类，我们可以不需要作为参数传递了，直接在方法类通过ThreadLocal得到时间格式化类。

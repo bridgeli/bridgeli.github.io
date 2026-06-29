@@ -12,7 +12,7 @@ tags:
   - spring
 
 ---
-前一段时间 JVM 群有人遇到了一个 stackoverflow 的问题，引发了一个关于 Autowired 的讨论，由于我做的项目可能比较小，并没有遇到过，但感觉这也许就是一个坑，记录下来  
+前一段时间 JVM 群有人遇到了一个 stackoverflow 的问题，引发了一个关于 Autowired 的讨论，由于我做的项目可能比较小，并没有遇到过，但感觉这也许就是一个坑，记录下来
 ，如果谁有遇到这个问题，说不定就有帮助。
 
 下面我会贴出来群里面的讨论，如果不想看，直接看我的得出的结论，所以 TL;DR 版：
@@ -21,27 +21,27 @@ spring 中依赖注入有两个注解：Autowired 和 Resource。Resource 的注
 
 原版群里的详细讨论如下图（至于深层次的原因，大家可以根据源码自己跟进看一下）：
 
-![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource1-768x1451.png) 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource1-768x1451.png)
 
-![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource2-768x1451.png) 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource2-768x1451.png)
 
-![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource3-768x1451.png) 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource3-768x1451.png)
 
-![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource4-768x1451.png) 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource4-768x1451.png)
 
-![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource5-768x1451.png) 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource5-768x1451.png)
 
-![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource6-768x1451.png) 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource6-768x1451.png)
 
-![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource7-768x1451.png) 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource7-768x1451.png)
 
-![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource8-768x1451.png) 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource8-768x1451.png)
 
-![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource9-768x1451.png) 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/Autowired_Resource9-768x1451.png)
 
 里面 深圳-随缘-颉 贴出的一张图：
 
-![](https://www.bridgeli.cn/wp-content/uploads/2018/07/spring_papulateBean-768x445.jpeg) 
+![](https://www.bridgeli.cn/wp-content/uploads/2018/07/spring_papulateBean-768x445.jpeg)
 
 感谢这一群小伙伴，如果有信息泄漏，很抱歉。
 

@@ -17,51 +17,51 @@ tags:
 ```
 package cn.bridgeli.demo;
 
-import org.slf4j.Logger;  
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.security.MessageDigest;  
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**  
- * Created by bridgeli on 2019/7/12.  
- */  
+/**
+ * Created by bridgeli on 2019/7/12.
+ */
 public class EncryptUtils {
 
   private static Logger logger = LoggerFactory.getLogger(EncryptUtils.class);
 
-  private EncryptUtils() {  
+  private EncryptUtils() {
   }
 
   public static String getMD5(String content) {
 
-    if (null == content) {  
-      return "";  
+    if (null == content) {
+      return "";
     }
 
-    MessageDigest messageDigest = null;  
-    try {  
-      messageDigest = MessageDigest.getInstance("md5");  
-    } catch (NoSuchAlgorithmException e) {  
-      logger.error("md5 error", e);  
-    }  
-    if (null == messageDigest) {  
-      return "";  
-    }  
-    messageDigest.update(content.getBytes());  
-    byte[] bytes = messageDigest.digest();  
-    StringBuilder stringBuilder = new StringBuilder();  
-    for (byte b : bytes) {  
-      String str = Integer.toHexString(b & 0xFF);  
-      if (str.length() == 1) {  
-        stringBuilder.append("0");  
-      }  
-      stringBuilder.append(str);  
-    }  
+    MessageDigest messageDigest = null;
+    try {
+      messageDigest = MessageDigest.getInstance("md5");
+    } catch (NoSuchAlgorithmException e) {
+      logger.error("md5 error", e);
+    }
+    if (null == messageDigest) {
+      return "";
+    }
+    messageDigest.update(content.getBytes());
+    byte[] bytes = messageDigest.digest();
+    StringBuilder stringBuilder = new StringBuilder();
+    for (byte b : bytes) {
+      String str = Integer.toHexString(b & 0xFF);
+      if (str.length() == 1) {
+        stringBuilder.append("0");
+      }
+      stringBuilder.append(str);
+    }
     String result = stringBuilder.toString();
 
-    return result; 
-  } 
+    return result;
+  }
 }
 
 ```
@@ -71,10 +71,10 @@ public class EncryptUtils {
 先引入依赖
 
 ```
-<dependency>  
-  <artifactId>commons-codec</artifactId>  
-  <groupId>org.apache.commons</groupId>  
-  <version>1.9</version>  
+<dependency>
+  <artifactId>commons-codec</artifactId>
+  <groupId>org.apache.commons</groupId>
+  <version>1.9</version>
 </dependency>
 
 ```
@@ -84,67 +84,67 @@ public class EncryptUtils {
 ```
 package cn.bridgeli.demo;
 
-import org.apache.commons.codec.binary.Base64;  
-import org.apache.commons.codec.binary.Hex;  
-import org.apache.commons.codec.digest.DigestUtils;  
-import org.junit.Test;  
-import sun.misc.BASE64Decoder;  
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.junit.Test;
+import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-import java.io.IOException;  
-import java.security.MessageDigest;  
+import java.io.IOException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**  
- * Created by bridgeli on 2019/9/22.  
- */  
+/**
+ * Created by bridgeli on 2019/9/22.
+ */
 public class DigestUtilsTest {
 
-  @Test  
-  public void testMd5() {  
-    String string = DigestUtils.md5Hex("test");  
+  @Test
+  public void testMd5() {
+    String string = DigestUtils.md5Hex("test");
     System.out.println(string);
 
-    MessageDigest md = null;  
-    try {  
-      md = MessageDigest.getInstance("MD5");  
-    } catch (NoSuchAlgorithmException e) {  
-      logger.error("md5 error", e);  
-    }  
-    byte[] md5Bytes = md.digest("test".getBytes());  
+    MessageDigest md = null;
+    try {
+      md = MessageDigest.getInstance("MD5");
+    } catch (NoSuchAlgorithmException e) {
+      logger.error("md5 error", e);
+    }
+    byte[] md5Bytes = md.digest("test".getBytes());
     System.out.println(Hex.encodeHex(md5Bytes));
 
   }
 
-  @Test  
-  public void testSHA256() {  
-    MessageDigest md = null;  
-    try {  
-      md = MessageDigest.getInstance("SHA-256");  
-    } catch (NoSuchAlgorithmException e) {  
-      logger.error("sha256 error", e);  
-    }  
-    byte[] md5Bytes = md.digest("test".getBytes());  
+  @Test
+  public void testSHA256() {
+    MessageDigest md = null;
+    try {
+      md = MessageDigest.getInstance("SHA-256");
+    } catch (NoSuchAlgorithmException e) {
+      logger.error("sha256 error", e);
+    }
+    byte[] md5Bytes = md.digest("test".getBytes());
     System.out.println(Hex.encodeHex(md5Bytes));
 
     System.out.println(DigestUtils.sha256Hex("test"));
 
   }
 
-  @Test  
-  public void testBASE64() {  
-    BASE64Encoder encoder = new BASE64Encoder();  
-    String enStr = encoder.encode("test".getBytes());  
-    System.out.println(enStr);  
-    BASE64Decoder decoder = new BASE64Decoder();  
-    try {  
-      System.out.println(new String(decoder.decodeBuffer(enStr)));  
-    } catch (IOException e) {  
-      logger.error("base64 error", e);  
+  @Test
+  public void testBASE64() {
+    BASE64Encoder encoder = new BASE64Encoder();
+    String enStr = encoder.encode("test".getBytes());
+    System.out.println(enStr);
+    BASE64Decoder decoder = new BASE64Decoder();
+    try {
+      System.out.println(new String(decoder.decodeBuffer(enStr)));
+    } catch (IOException e) {
+      logger.error("base64 error", e);
     }
 
-    byte[] result = Base64.encodeBase64("test".getBytes());  
-    System.out.println(new String(result));  
+    byte[] result = Base64.encodeBase64("test".getBytes());
+    System.out.println(new String(result));
     System.out.println(new String(Base64.decodeBase64(result)));
 
   }

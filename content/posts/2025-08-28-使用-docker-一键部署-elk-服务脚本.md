@@ -104,8 +104,8 @@ input {
     jdbc_default_timezone => "Asia/Shanghai"
 
     statement => "
-      SELECT * FROM article 
-      WHERE updated_at >= :sql_last_value 
+      SELECT * FROM article
+      WHERE updated_at >= :sql_last_value
       ORDER BY updated_at ASC
     "
 
@@ -335,26 +335,26 @@ curl -X POST "http://localhost:9200/_security/user/kibana_system/_password"     
 另 Ubuntu 安装 docker 命令：
 
 ```
-# 关防火墙（可选）  
-sudo systemctl disable ufw  
-sudo apt-get update  
-sudo apt-get install apt-transport-https ca-certificates curl software-properties-common  
-# 下载并添加 Docker 的 GPG 密钥  
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg -dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg  
-# 添加 Docker 的 APT 软件源  
+# 关防火墙（可选）
+sudo systemctl disable ufw
+sudo apt-get update
+sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
+# 下载并添加 Docker 的 GPG 密钥
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg -dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+# 添加 Docker 的 APT 软件源
 echo "deb [arch=$(dpkg -print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-# 添加阿里云的 Docker GPG 密钥（可选，信任源）  
-curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo gpg -dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg  
-# 使用阿里云镜像源  
+# 添加阿里云的 Docker GPG 密钥（可选，信任源）
+curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo gpg -dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+# 使用阿里云镜像源
 echo "deb [arch=$(dpkg -print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-sudo apt-get update  
-sudo apt-get install docker-ce docker-ce-cli containerd.io  
-docker -version  
-sudo systemctl is-enabled docker  
-sudo systemctl enable docker  
-sudo systemctl start docker  
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+docker -version
+sudo systemctl is-enabled docker
+sudo systemctl enable docker
+sudo systemctl start docker
 sudo docker ps
 
 ```

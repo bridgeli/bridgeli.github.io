@@ -8,10 +8,10 @@ categories:
   - Java
 ---
 前几天在公司分割一个很简单字符串，结果却怎么测都不对，最后查了一下资料，终于发现了端倪：
-``` 
+```
 split(regex);
-replace(target, replacement);  
-replace(oldChar, newChar); 
+replace(target, replacement);
+replace(oldChar, newChar);
 replaceFirst(regex, replacement);
 replaceAll(regex, replacement)
 ```
@@ -31,11 +31,11 @@ public class StringTest {
             System.out.println(string);
         }
 
-        // String str = "111|222|333|444";  
-        // String[] result = str.split("\|");  
-        // for (String string : result) {  
-        // System.out.println(string);  
-        // }  
+        // String str = "111|222|333|444";
+        // String[] result = str.split("\|");
+        // for (String string : result) {
+        // System.out.println(string);
+        // }
     }
 
     @Test
@@ -46,25 +46,25 @@ public class StringTest {
             System.out.println(string);
         }
 
-        // String str = "111\222\333\444";  
-        // String[] result = str.split("\\");  
-        // for (String string : result) {  
-        // System.out.println(string);  
+        // String str = "111\222\333\444";
+        // String[] result = str.split("\\");
+        // for (String string : result) {
+        // System.out.println(string);
         // }
     }
 
     @Test
     public void testSplit3() {
         String str = "111222333444";
-        String[] result = str.split("\");  
+        String[] result = str.split("\");
         for (String string : result) {
             System.out.println(string);
         }
 
-        // String str = "111\222\333\444";  
-        // String[] result = str.split("\\");  
-        // for (String string : result) {  
-        // System.out.println(string);  
+        // String str = "111\222\333\444";
+        // String[] result = str.split("\\");
+        // for (String string : result) {
+        // System.out.println(string);
         // }
     }
 
@@ -74,8 +74,8 @@ public class StringTest {
         String result = str.replaceAll(",", "$");
         System.out.println(result);
 
-        // String str = "111,222,333,444";  
-        // String result = str.replaceAll(",", "\$");  
+        // String str = "111,222,333,444";
+        // String result = str.replaceAll(",", "\$");
         // System.out.println(result);
     }
 

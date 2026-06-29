@@ -17,33 +17,33 @@ tags:
 在工作中，我个人经常使用的 json 的工具类是 Google 的 gson，前几天做一个需求的也自然而然的使用这个，但是在和其他部门联调的时候，发现他的属性全是小写，而不是刚开始约定的小驼峰，所以导致他传过来的字符串，我这边转不成 Java bean，在和他讨论的时候，他说他一直就这么写，而且别人使用的时候是没有问题的，然后就找到其他的使用的同学，他竟然说他没在意过这个问题，线上测试了一下，确实没有问题，然后就看一下怎么实现的，然后突然发现，他使用的是 alibaba 的 fastjson 转 Java bean，然后测试了一下，发现 alibaba fastjson 转 Java bean 竟然是大小写不敏感的，特此记录一下，测试代码入校:
 
 ```
-<dependency>  
-  <groupId>com.alibaba</groupId>  
-  <artifactId>fastjson</artifactId>  
-  <version>1.2.37</version>  
+<dependency>
+  <groupId>com.alibaba</groupId>
+  <artifactId>fastjson</artifactId>
+  <version>1.2.37</version>
 </dependency>
 ```
 ```
 package cn.bridgeli.demo;
 
-import com.alibaba.fastjson.JSON;  
+import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 
-import java.io.Serializable;  
-import java.util.ArrayList;  
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FastJsonTest {
 
-  @Test  
+  @Test
   public void testFastJsonParseObject() {
 
     String jsonStr = "{\"USERNAME\":\"BridgeLi\"}";
 
-    User user = JSON.parseObject(jsonStr, User.class);  
+    User user = JSON.parseObject(jsonStr, User.class);
     System.out.println(user.getUsername());
 
-  }  
+  }
 }
 ```
 ```
@@ -53,12 +53,12 @@ class User implements Serializable {
 
   private String username;
 
-  public String getUsername() {  
-    return username;  
+  public String getUsername() {
+    return username;
   }
 
-  public void setUsername(String username) {  
-    this.username = username;  
+  public void setUsername(String username) {
+    this.username = username;
   }
 }
 
@@ -73,25 +73,25 @@ class User implements Serializable {
 ```
 package cn.bridgeli.demo;
 
-import com.alibaba.fastjson.JSON;  
+import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 
-import java.io.Serializable;  
-import java.util.ArrayList;  
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FastJsonTest {
 
-  @Test  
+  @Test
   public void testFastJsonToString() {
 
-    List<User> users = new ArrayList<>();  
-    User user = new User();  
+    List<User> users = new ArrayList<>();
+    User user = new User();
     user.setUsername("BridgeLi");
 
-    users.add(user);  
-    users.add(user);  
-    String jsonStr = JSON.toJSONString(users);  
+    users.add(user);
+    users.add(user);
+    String jsonStr = JSON.toJSONString(users);
     System.out.println(jsonStr);
 
   }
@@ -99,17 +99,17 @@ public class FastJsonTest {
 }
 ```
 ```
-class User implements Serializable {  
+class User implements Serializable {
   private static final long serialVersionUID = 4202834388700617773L;
 
   private String username;
 
-  public String getUsername() {  
-    return username;  
+  public String getUsername() {
+    return username;
   }
 
-  public void setUsername(String username) {  
-    this.username = username;  
+  public void setUsername(String username) {
+    this.username = username;
   }
 }
 

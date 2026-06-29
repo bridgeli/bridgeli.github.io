@@ -6,7 +6,7 @@ date: 2014-08-22T06:47:12+00:00
 ---
 ### 博主简介
 
-**Bridge Li** — 一个平凡普通，水平有限，却不愿放弃的码农。
+**Bridge Li** 一个平凡普通，水平有限，却不愿放弃的码农。
 
 2014年大学毕业，也结束了人生中十七载求学生涯，把人生中最好的青春年华献给了学校，从此与学校天人两隔，但仍在学习的路上默默地探索着。。。
 
@@ -24,7 +24,7 @@ date: 2014-08-22T06:47:12+00:00
 
 ### 联系方式
 
-Github：[https://github.com/bridgeli](https://github.com/bridgeli)  
+Github：[https://github.com/bridgeli](https://github.com/bridgeli)
 Email：bridgeli.dev(at)gmail.com
 
 ### 补充说明

@@ -11,15 +11,15 @@ tags:
   - 四大组件
 
 ---
-今天记录一下老夫对Service的理解，先看一下Service的概念，即Service是什么不是什么，那Service是什么呢？  
-1. Service是Android的四大组件之一，可以长时间在后台运行；  
-2. Service不提供界面交互，即Service不像activity一样，有一个界面做展示；  
-3. 即便用户跳转至另一个应用后，Service仍旧在后台运行；  
-4. 任意应用组件都可以绑定一个服务，甚至可以用来完成进程间通讯的任务；  
+今天记录一下老夫对Service的理解，先看一下Service的概念，即Service是什么不是什么，那Service是什么呢？
+1. Service是Android的四大组件之一，可以长时间在后台运行；
+2. Service不提供界面交互，即Service不像activity一样，有一个界面做展示；
+3. 即便用户跳转至另一个应用后，Service仍旧在后台运行；
+4. 任意应用组件都可以绑定一个服务，甚至可以用来完成进程间通讯的任务；
 5. 可以使用Service更新ContentProvider，发送Intent以及启动系统的通知等等；
 
-那Service不是什么呢？  
-1. Service不是一个单独的进程；  
+那Service不是什么呢？
+1. Service不是一个单独的进程；
 2. Service不是一个线程！！！（即Service运行于主线程中，根据Service的概念，这个应该有很多人怀疑，持怀疑态度的可以打一下线程号，比较简单，老夫就不多做赘述了）
 
 看完Service是什么和不是什么之后，我们来看看什么时候需要用Service呢？Service一般是在后台做一些费力费时的任务（老夫窃以为和西游记中的沙僧差不多，默默无闻，任劳任怨），例如：下载文件、播放音乐、文件I/O等。
@@ -36,7 +36,7 @@ tags:
 
 MainActivity用来启动一个Service，
 
-```  
+```
 package cn.bridgeli.demo;
 
 import android.app.Activity;
@@ -85,38 +85,38 @@ public class MainActivity extends Activity implements OnClickListener {
                 break;
         }
     }
-} 
+}
 ```
 
-对应的布局文件activity_main：  
-```  
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
-    xmlns:tools="http://schemas.android.com/tools"  
-    android:layout_width="match_parent"  
-    android:layout_height="match_parent"  
-    android:orientation="vertical"  
-    android:paddingBottom="@dimen/activity_vertical_margin"  
-    android:paddingLeft="@dimen/activity_horizontal_margin"  
-    android:paddingRight="@dimen/activity_horizontal_margin"  
-    android:paddingTop="@dimen/activity_vertical_margin"  
+对应的布局文件activity_main：
+```
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cn.bridgeli.demo.MainActivity" >
 
-    <Button  
-        android:id="@+id/start"  
-        android:layout_width="fill_parent"  
+    <Button
+        android:id="@+id/start"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
 
-    <Button  
-        android:id="@+id/stop"  
-        android:layout_width="fill_parent"  
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
 
-</LinearLayout>  
+</LinearLayout>
 ```
 
 MainService被启动的Service：
 
-```  
+```
 package cn.bridgeli.demo;
 
 import android.app.Service;
@@ -148,49 +148,49 @@ public class MainService extends Service {
         super.onDestroy();
         System.out.println("onDestroy");
     }
-}  
+}
 ```
 
 需要说明的组件都需要在AndroidMainifest.xml中进行注册：
 
-```  
-<?xml version="1.0" encoding="utf-8"?>  
-    <manifest xmlns:android="http://schemas.android.com/apk/res/android"  
-        package="cn.bridgeli.demo"  
-        android:versionCode="1"  
+```
+<?xml version="1.0" encoding="utf-8"?>
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="cn.bridgeli.demo"
+        android:versionCode="1"
         android:versionName="1.0" >
 
-    <uses-sdk  
-        android:minSdkVersion="8"  
+    <uses-sdk
+        android:minSdkVersion="8"
         android:targetSdkVersion="21" />
 
-    <application  
-        android:allowBackup="true"  
-        android:icon="@drawable/ic_launcher"  
-        android:label="@string/app_name"  
-        android:theme="@style/AppTheme" >  
-        <activity  
-            android:name=".MainActivity"  
-            android:label="@string/app_name" >  
-            <intent-filter>  
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />  
-            </intent-filter>  
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
-        <service android:name=".MainService" ></service>  
+        <service android:name=".MainService" ></service>
     </application>
 
-</manifest>  
+</manifest>
 ```
 
 当我们第一次点击Start Service时，Service中的onCreate()方法和onStartCommand()方法都会被调用，onCreate()方法一般用来做一些准备数据的工作，onStartCommand()方法一般就用来执行Service的逻辑了，当我们以后再点击Start Service时，因为Service已经被创建，所以只有onStartCommand()方法被调用了（大家可以自己做实验，验证），当我们点击Stop Service时，onDestroy()方法就会被调用，相信大家一看名字就知道了这个方法是干嘛的了，如果我们此时，再点击Start Service，就相当于第一次点击Start Service；那么另外一个方法什么时候调用呢？那我们就来接着看启动Service的第二种方法。
 
-二、bindService()，代码如下：  
+二、bindService()，代码如下：
 MainActivity同样是用来启动Service
 
-```  
+```
 package cn.bridgeli.demo1;
 
 import android.app.Activity;
@@ -252,12 +252,12 @@ public class MainActivity extends Activity implements OnClickListener, ServiceCo
 
     }
 
-}  
+}
 ```
 
 布局文件和上一个例子一样，就不在重复了，被启动的Service：
 
-```  
+```
 package cn.bridgeli.demo1;
 
 import android.app.Service;
@@ -295,27 +295,27 @@ public class MainService extends Service {
     class MyBinder extends Binder {
 
     }
-}  
+}
 ```
 
 注册Service也一样，也不多重复了，这个Service和上一个Service差不多，唯一的区别就是onBind()方法返回了一个IBinder对象，那么这个对象返回给谁了呢？我们仔细看一看MainActivity，会发现其多实现了一个接口：ServiceConnection，这个接口有两个方法：onServiceConnected()和onServiceDisconnected()，相信大家一看这两个方法名就知道他们用来做什么了，其中onServiceConnected()有一个参数Ibinder，这个参数就是onBind()的返回值，我们可以通过强转，把其转化为我们需要的类型，然后调用其方法，就是本例中中的MyBinder中任意方法，最后在activity中展示出来就行了，至于另一个方法相信不用老夫多赘述啦，大家做一个实验即知其用法。
 
 PS：Service作为Android的四大组件之一，用法肯定不会是如此之简单，老夫是第一次写Android的东西，既是初学还是自学，也没做过项目，所以不免有错误的地方和有点抓不住重点，还请大家能留言交流，谢谢
 
-**2015-02-09 10:10补记，**  
-经朋友George提醒，Service既然既不是一个单独的进程，也不是一个线程，如果实际开发中这么用的话，例如下载，会导致UI阻塞，有可能会报：ANR (“Application Not Responding”)，意思是“应用没有响应”，这显然不是我们想要的，一个下载操作应该在后台让他默默下载，不影响UI，解决这个问题老夫窃以为其实很简单，开线程吗，也就是说新开一个线程用于下载等操作，不影响主线程的UI交互，那么开线程有几种方法呢？  
-1. 继承Thread类；  
-2. 实现Runnable接口；  
-3. 使用线程池java.util.concurrent.ExecutorService。  
+**2015-02-09 10:10补记，**
+经朋友George提醒，Service既然既不是一个单独的进程，也不是一个线程，如果实际开发中这么用的话，例如下载，会导致UI阻塞，有可能会报：ANR (“Application Not Responding”)，意思是“应用没有响应”，这显然不是我们想要的，一个下载操作应该在后台让他默默下载，不影响UI，解决这个问题老夫窃以为其实很简单，开线程吗，也就是说新开一个线程用于下载等操作，不影响主线程的UI交互，那么开线程有几种方法呢？
+1. 继承Thread类；
+2. 实现Runnable接口；
+3. 使用线程池java.util.concurrent.ExecutorService。
 至于是使用继承还是实现接口以及怎么用，这个相信会Java的都会知道(不知道的请用谷歌百度一下)，老夫不在赘述，这里说一下ExecutorService线程池，其初始化可以通过executorService = java.util.concurrent.Executors.newCachedThreadPool();初始化，初始化之后我们就可以在后面的代码中直接：
 
-```  
+```
 mExecutorService.execute(new Runnable() {
     @Override
     public void run() {
 
     }
-});  
+});
 ```
 
 然后在run()方法中对业务逻辑进行处理，和继承Thread类或者实现Runnable接口没啥两样。

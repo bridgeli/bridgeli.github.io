@@ -24,23 +24,23 @@ tags:
 ```
 package cn.bridgeli.demo.annotation;
 
-import java.lang.annotation.ElementType;  
-import java.lang.annotation.Retention;  
-import java.lang.annotation.RetentionPolicy;  
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**  
- * @author bridgeli  
- */  
-@Target(ElementType.METHOD)  
-@Retention(RetentionPolicy.RUNTIME)  
-public @interface MyLog {  
-  /**  
-   * 方法描述  
-   *  
-   * @return  
-   */  
-  String desc() default "";  
+/**
+ * @author bridgeli
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface MyLog {
+  /**
+   * 方法描述
+   *
+   * @return
+   */
+  String desc() default "";
 }
 
 ```
@@ -50,65 +50,65 @@ public @interface MyLog {
 ```
 package cn.bridgeli.demo.annotation;
 
-import cn.bridgeli.utils.AuthorizeUtil;  
-import cn.bridgeli.entity.Principal;  
-import lombok.extern.slf4j.Slf4j;  
-import org.apache.commons.lang3.StringUtils;  
-import org.aspectj.lang.ProceedingJoinPoint;  
-import org.aspectj.lang.annotation.Around;  
-import org.aspectj.lang.annotation.Aspect;  
-import org.aspectj.lang.annotation.Pointcut;  
+import cn.bridgeli.utils.AuthorizeUtil;
+import cn.bridgeli.entity.Principal;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
-/**  
- * @author bridgeli  
- * 1. 这是一个切面类  
- */  
-@Aspect  
-@Component  
-@Slf4j  
+/**
+ * @author bridgeli
+ * 1. 这是一个切面类
+ */
+@Aspect
+@Component
+@Slf4j
 public class MyLogAspect {
 
-  /**  
-   * 2. PointCut表示这是一个切点，@annotation表示这个切点切到一个注解上，后面带该注解的全类名  
-   * 切面最主要的就是切点，所有的故事都围绕切点发生  
-   * logPointCut()代表切点名称  
-   */  
-  @Pointcut("@annotation(cn.bridgeli.demo.annotation.MyLog)")  
-    public void logPointCut() {  
+  /**
+   * 2. PointCut表示这是一个切点，@annotation表示这个切点切到一个注解上，后面带该注解的全类名
+   * 切面最主要的就是切点，所有的故事都围绕切点发生
+   * logPointCut()代表切点名称
+   */
+  @Pointcut("@annotation(cn.bridgeli.demo.annotation.MyLog)")
+    public void logPointCut() {
   }
 
-  /**  
-   * 3. 环绕通知  
-   *  
-   * @param joinPoint  
-   * @param myLog  
-   * @return  
-   */  
-  @Around(value = "logPointCut() && @annotation(myLog)", argNames = "joinPoint,myLog")  
-  public Object logAround(ProceedingJoinPoint joinPoint, MyLog myLog) {  
-    // 获取方法名  
+  /**
+   * 3. 环绕通知
+   *
+   * @param joinPoint
+   * @param myLog
+   * @return
+   */
+  @Around(value = "logPointCut() && @annotation(myLog)", argNames = "joinPoint,myLog")
+  public Object logAround(ProceedingJoinPoint joinPoint, MyLog myLog) {
+    // 获取方法名
     String methodFullPathName = joinPoint.getTarget().getClass().getName() + "#" + joinPoint.getSignature().getName();
 
-    // 获取参数  
+    // 获取参数
     String params = StringUtils.join(joinPoint.getArgs(), ";");
 
-    Principal currentUser = AuthorizeUtil.getCurrentUser();  
+    Principal currentUser = AuthorizeUtil.getCurrentUser();
     log.info("当前登陆用户：" + (null == currentUser ? "" : currentUser.toString()) + "，进入 [ " + methodFullPathName + " ] 方法, 方法的描述：" + myLog.desc() + "，参数为:" + params);
 
-    // 继续执行方法  
-    long startTime = System.currentTimeMillis();  
-    Object result = null;  
-    try {  
-      result = joinPoint.proceed();  
-    } catch (Throwable e) {  
-      log.error("切面执行报错，参数：" + params, e);  
-    }  
+    // 继续执行方法
+    long startTime = System.currentTimeMillis();
+    Object result = null;
+    try {
+      result = joinPoint.proceed();
+    } catch (Throwable e) {
+      log.error("切面执行报错，参数：" + params, e);
+    }
     long elapsed = System.currentTimeMillis() - startTime;
 
     log.info("[ " + methodFullPathName + " ] 方法执行结束，返回值为：" + (null == result ? "" : result.toString()) + "，用时：" + elapsed);
 
-    return result;  
+    return result;
   }
 }
 

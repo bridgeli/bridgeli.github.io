@@ -151,7 +151,7 @@ spring:
     url: jdbc:mysql://localhost:3306/mydb?useSSL=false
     # 认证信息独立配置，清晰且安全
     username: root
-    password: "MyComplex@Password" 
+    password: "MyComplex@Password"
 ```
 
 #### 总结

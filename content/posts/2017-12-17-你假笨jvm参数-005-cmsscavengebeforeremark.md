@@ -13,18 +13,18 @@ tags:
 ---
 你假笨的第五次分享：
 
-序号：005  
-时间：2017-07-24  
-参数：-XX:CMSScavengeBeforeRemark  
-含义：  
-Enable scavenging attempts before the CMS remark step.  
-开启或关闭在CMS重新标记阶段之前的清除（YGC）尝试  
-CMS并发标记阶段与用户线程并发进行，此阶段会产生已经被标记了的对象又发生变化的情况，若打开此开关，可在一定程度上降低CMS重新标记阶段对上述“又发生变化”对象的扫描时间，当然，“清除尝试”也会消耗一些时间  
+序号：005
+时间：2017-07-24
+参数：-XX:CMSScavengeBeforeRemark
+含义：
+Enable scavenging attempts before the CMS remark step.
+开启或关闭在CMS重新标记阶段之前的清除（YGC）尝试
+CMS并发标记阶段与用户线程并发进行，此阶段会产生已经被标记了的对象又发生变化的情况，若打开此开关，可在一定程度上降低CMS重新标记阶段对上述“又发生变化”对象的扫描时间，当然，“清除尝试”也会消耗一些时间
 注，开启此开关并不会保证在标记阶段前一定会进行清除操作
 
 小程序截图：
 
-![](https://www.bridgeli.cn/wp-content/uploads/2017/12/CMSScavengeBeforeRemark_JVMPocket-334x1024.png) 
+![](https://www.bridgeli.cn/wp-content/uploads/2017/12/CMSScavengeBeforeRemark_JVMPocket-334x1024.png)
 
 分享记录：
 

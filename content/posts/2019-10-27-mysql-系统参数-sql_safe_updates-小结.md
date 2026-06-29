@@ -16,10 +16,10 @@ tags:
 1. 查看 sql_safe_updates 的值和修改
 
 ```
-show variables like 'sql_safe_updates'; -- 会话  
+show variables like 'sql_safe_updates'; -- 会话
 show global variables like 'sql_safe_updates'; -- 全局
 
-set sql_safe_updates=1; -- 会话  
+set sql_safe_updates=1; -- 会话
 set global sql_safe_updates=1; -- 全局
 
 ```

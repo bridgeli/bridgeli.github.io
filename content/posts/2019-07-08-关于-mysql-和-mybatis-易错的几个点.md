@@ -29,23 +29,23 @@ SELECT * FROM t ORDER BY "id DESC";
 代码如下：
 
 ```
-/**  
- * 开始页码  
- */  
-private String pageSize;  
-/**  
- * 分页量  
- */  
+/**
+ * 开始页码
+ */
+private String pageSize;
+/**
+ * 分页量
+ */
 private String offset;
 ```
 ```
-<if test="pageSize != null">  
-  <if test="offset != null">  
-    limit #{offset}, #{pageSize}  
-  </if>  
-  <if test="offset == null">  
-    limit #{pageSize}   
-  </if>  
+<if test="pageSize != null">
+  <if test="offset != null">
+    limit #{offset}, #{pageSize}
+  </if>
+  <if test="offset == null">
+    limit #{pageSize}
+  </if>
 </if>
 
 ```
@@ -70,7 +70,7 @@ UPDATE t SET username = ("BridgeLi" AND passwd = "BridgeLi") WHERE id = 1;
 
 说完了，这三个报错，说一下为什么会出现这些问题，其实 3 很简单，就是脑子一抽写错了，这个没啥说的；1 和 2 也其实是一个问题，就是对 mybatis 不熟啊，简单说一下。
 
-1. 对于 #{variable} 的变量，mybatis 会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号："variable"；  
+1. 对于 #{variable} 的变量，mybatis 会将其视为字符串值，在变量替换成功后，缺省地给变量值加上引号："variable"；
 2. 对于 ${variable} 的变量，mybatis 会将其视作直接变量，即在变量替换成功后，不会再给其加上引号：variable
 
 所以在 order by ${name} 中，传入的直接是 name ，不带双引号，因为 order by 不是 = 赋值，如果直接 order by #{name}，结果是 order by "name"，自然就不行了

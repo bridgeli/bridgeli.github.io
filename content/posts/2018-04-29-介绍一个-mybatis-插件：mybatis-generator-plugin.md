@@ -26,30 +26,30 @@ https://github.com/bridgeli/mybatis-generator-plugin
 1. 在 pom 文件中添加如下内容：
 
 ```
-<properties>  
-  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
+<properties>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 </properties>
 
-<build>  
-  <plugins>  
-    <plugin>  
-      <groupId>org.mybatis.generator</groupId>  
-      <artifactId>mybatis-generator-maven-plugin</artifactId>  
-      <version>1.3.5</version>  
-      <dependencies>  
-        <dependency>  
-          <groupId>cn.bridgeli</groupId>  
-          <artifactId>mybatis-generator-plugin</artifactId>  
-          <version>0.0.1-SNAPSHOT</version>  
-        </dependency>  
-      </dependencies>  
-      <configuration>  
-        <verbose>true</verbose>  
-        <overwrite>true</overwrite>  
-        <configurationFile>src/main/resources/generatorConfig.xml</configurationFile>  
-      </configuration>  
-    </plugin>  
-  </plugins>  
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.mybatis.generator</groupId>
+      <artifactId>mybatis-generator-maven-plugin</artifactId>
+      <version>1.3.5</version>
+      <dependencies>
+        <dependency>
+          <groupId>cn.bridgeli</groupId>
+          <artifactId>mybatis-generator-plugin</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+      </dependencies>
+      <configuration>
+        <verbose>true</verbose>
+        <overwrite>true</overwrite>
+        <configurationFile>src/main/resources/generatorConfig.xml</configurationFile>
+      </configuration>
+    </plugin>
+  </plugins>
 </build>
 
 ```
@@ -59,72 +59,72 @@ https://github.com/bridgeli/mybatis-generator-plugin
 2. 在对应的文件下添加该文件，它的模板如下：
 
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<!DOCTYPE generatorConfiguration  
-  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
     "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
   <generatorConfiguration>
 
-  <!-- 请替换本地jar路径 此文件不要上传 -->  
-  <classPathEntry  
+  <!-- 请替换本地jar路径 此文件不要上传 -->
+  <classPathEntry
     location="/Users/bridgeli/.m2/repository/mysql/mysql-connector-java/5.1.33/mysql-connector-java-5.1.33.jar" />
 
-  <!-- mvn mybatis-generator:generate -->  
-  <context id="oneHour"  
-    targetRuntime="cn.bridgeli.plugin.IntrospectedTableMyBatis3ImplExt">  
-    <property name="suppressAllComments" value="true" />  
-    <property name="useActualColumnNames" value="false" />  
-    <!-- 格式化java代码 -->  
-    <property name="javaFormatter"  
-      value="org.mybatis.generator.api.dom.DefaultJavaFormatter" />  
-    <!-- 格式化XML代码 -->  
-    <property name="xmlFormatter"  
+  <!-- mvn mybatis-generator:generate -->
+  <context id="oneHour"
+    targetRuntime="cn.bridgeli.plugin.IntrospectedTableMyBatis3ImplExt">
+    <property name="suppressAllComments" value="true" />
+    <property name="useActualColumnNames" value="false" />
+    <!-- 格式化java代码 -->
+    <property name="javaFormatter"
+      value="org.mybatis.generator.api.dom.DefaultJavaFormatter" />
+    <!-- 格式化XML代码 -->
+    <property name="xmlFormatter"
       value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
 
-    <!-- 配置插件 -->  
+    <!-- 配置插件 -->
     <plugin type="cn.bridgeli.mybatis.MySQLLimitPlugin"></plugin>
 
-    <commentGenerator>  
-      <!-- 是否去除自动生成的注释 true：是 ： false:否 -->  
-      <property name="suppressAllComments" value="true" />  
-    </commentGenerator>  
-    <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->  
-    <jdbcConnection driverClass="com.mysql.jdbc.Driver"  
-      connectionURL="jdbc:mysql://ip:port/databasename" userId="username"  
-      password="password">  
+    <commentGenerator>
+      <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+      <property name="suppressAllComments" value="true" />
+    </commentGenerator>
+    <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+      connectionURL="jdbc:mysql://ip:port/databasename" userId="username"
+      password="password">
     </jdbcConnection>
 
-    <javaTypeResolver>  
-      <property name="forceBigDecimals" value="false" />  
-    </javaTypeResolver> 
+    <javaTypeResolver>
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
 
-    <!-- 配置model生成位置 -->  
-    <javaModelGenerator targetPackage="cn.bridgeli.entity"  
-      targetProject="src/main/java">  
-      <property name="enableSubPackages" value="true" />  
-      <property name="trimStrings" value="true" />  
+    <!-- 配置model生成位置 -->
+    <javaModelGenerator targetPackage="cn.bridgeli.entity"
+      targetProject="src/main/java">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
     </javaModelGenerator>
 
-    <!-- 配置sqlmap生成位置 -->  
-    <sqlMapGenerator targetPackage="cn/bridgeli/mapper"  
-      targetProject="src/main/resources">  
-      <property name="enableSubPackages" value="true" />  
+    <!-- 配置sqlmap生成位置 -->
+    <sqlMapGenerator targetPackage="cn/bridgeli/mapper"
+      targetProject="src/main/resources">
+      <property name="enableSubPackages" value="true" />
     </sqlMapGenerator>
 
-    <!-- 配置mapper接口生成位置 -->  
-    <javaClientGenerator type="XMLMAPPER"  
-      targetPackage="cn.bridgeli.mapper" targetProject="src/main/java">  
-      <property name="enableSubPackages" value="true" />  
+    <!-- 配置mapper接口生成位置 -->
+    <javaClientGenerator type="XMLMAPPER"
+      targetPackage="cn.bridgeli.mapper" targetProject="src/main/java">
+      <property name="enableSubPackages" value="true" />
     </javaClientGenerator>
 
-    <!-- 配置表信息 -->  
-    <table tableName="table_name" enableCountByExample="true"  
-      domainObjectName="DomainObjectName" enableDeleteByExample="false"  
-      enableSelectByExample="true" enableUpdateByExample="true">  
-      <generatedKey column="ID" sqlStatement="MySQL"  
-        identity="true" />  
-    </table>  
+    <!-- 配置表信息 -->
+    <table tableName="table_name" enableCountByExample="true"
+      domainObjectName="DomainObjectName" enableDeleteByExample="false"
+      enableSelectByExample="true" enableUpdateByExample="true">
+      <generatedKey column="ID" sqlStatement="MySQL"
+        identity="true" />
+    </table>
   </context>
 
 </generatorConfiguration>
@@ -152,10 +152,10 @@ mvn mybatis-generator:generate
 5. 具体的使用方法，这就很简单了，方法一：
 
 ```
-XxxExample example = new XxxExample();  
-...  
-example.setLimit(10); // page size limit  
-example.setOffset(20); // offset  
+XxxExample example = new XxxExample();
+...
+example.setLimit(10); // page size limit
+example.setOffset(20); // offset
 List<Xxx> list = xxxMapper.selectByExample(example);
 
 ```
@@ -170,9 +170,9 @@ select ... limit 20, 10
 方法二：
 
 ```
-XxxExample example = new XxxExample();  
-...  
-example.setLimit(10); // limit  
+XxxExample example = new XxxExample();
+...
+example.setLimit(10); // limit
 List<Xxx> list = xxxMapper.selectByExample(example);
 
 ```
@@ -188,7 +188,7 @@ select ... limit 10
 
 https://github.com/bridgeli
 
-参考链接：  
-1. http://www.mybatis.org/generator/  
-2. http://www.cnblogs.com/coderland/p/5902882.html  
+参考链接：
+1. http://www.mybatis.org/generator/
+2. http://www.cnblogs.com/coderland/p/5902882.html
 3. https://blog.csdn.net/xiao__gui/article/details/51333693

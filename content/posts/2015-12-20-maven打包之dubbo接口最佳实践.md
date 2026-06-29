@@ -17,20 +17,20 @@ tags:
 1. 首先在pom文件中，添加maven-assembly-plugin插件
 
 ```
-<plugin>  
-  <artifactId>maven-assembly-plugin</artifactId>  
-  <configuration>  
-    <descriptor>src/main/assembly/assembly.xml</descriptor>  
+<plugin>
+  <artifactId>maven-assembly-plugin</artifactId>
+  <configuration>
+    <descriptor>src/main/assembly/assembly.xml</descriptor>
   </configuration>
-  <executions>  
-    <execution>  
-      <id>make-assembly</id>  
-      <phase>package</phase>  
-      <goals>  
-        <goal>single </goal>  
-      </goals>  
+  <executions>
+    <execution>
+      <id>make-assembly</id>
+      <phase>package</phase>
+      <goals>
+        <goal>single </goal>
+      </goals>
     </execution>
-  </executions>  
+  </executions>
 </plugin>
 
 ```
@@ -40,29 +40,29 @@ tags:
 2. assembly.xml文件
 
 ```
-<assembly>  
-  <id>assembly</id>  
-  <formats>  
-    <format>tar.gz</format>  
+<assembly>
+  <id>assembly</id>
+  <formats>
+    <format>tar.gz</format>
   </formats>
-  <includeBaseDirectory>true</includeBaseDirectory>  
-  <fileSets>  
-    <fileSet>  
-      <outputDirectory>/</outputDirectory>  
-      <includes>  
-        <include>README.txt</include>  
-      </includes>  
-    </fileSet>  
-    <fileSet>  
-      <directory>src/main/scripts</directory>  
-      <outputDirectory>/bin</outputDirectory>  
-    </fileSet>  
-  </fileSets>  
-  <dependencySets>  
-    <dependencySet>  
-      <useProjectArtifact>true</useProjectArtifact>  
-      <outputDirectory>lib</outputDirectory>  
-    </dependencySet>  
+  <includeBaseDirectory>true</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>README.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/scripts</directory>
+      <outputDirectory>/bin</outputDirectory>
+    </fileSet>
+  </fileSets>
+  <dependencySets>
+    <dependencySet>
+      <useProjectArtifact>true</useProjectArtifact>
+      <outputDirectory>lib</outputDirectory>
+    </dependencySet>
   </dependencySets>
 </assembly>
 
@@ -210,7 +210,7 @@ COUNT=0
 while [ $COUNT -lt 1 ]; do
     echo -e ".\c"
     sleep 1
-    
+
     # 检查逻辑：优先检查端口，其次检查进程
     if [ -n "$SERVER_PORT" ]; then
         if [ "$SERVER_PROTOCOL" == "dubbo" ]; then
@@ -224,7 +224,7 @@ while [ $COUNT -lt 1 ]; do
         # 无端口信息时检查进程数
         COUNT=$(ps -f | grep java | grep "$DEPLOY_DIR" | awk '{print $2}' | wc -l)
     fi
-    
+
     if [ "$COUNT" -gt 0 ]; then
         break
     fi
@@ -283,7 +283,7 @@ while [ $COUNT -lt 1 ]; do
     echo -e ".\c"
     sleep 1
     COUNT=1 # 假设所有进程已停止
-    
+
     for PID in $PIDS; do
         # 检查该 PID 是否还存在
         PID_EXIST=$(ps -f -p "$PID" | grep java)
@@ -341,7 +341,7 @@ elif [ "$1" = "dump" ]; then
 else
     echo "ERROR: Please input argument: start or stop or debug or restart or dump"
     exit 1
-fi  
+fi
 ```
 
 ⑥. dump.sh
@@ -402,31 +402,31 @@ for PID in $PIDS; do
     # JVM 线程堆栈
     jstack "$PID" > "$DATE_DIR/jstack-$PID.dump" 2>&1
     echo -e ".\c"
-    
+
     # JVM 配置信息
     jinfo "$PID" > "$DATE_DIR/jinfo-$PID.dump" 2>&1
     echo -e ".\c"
-    
+
     # GC 统计信息
     jstat -gcutil "$PID" > "$DATE_DIR/jstat-gcutil-$PID.dump" 2>&1
     echo -e ".\c"
-    
+
     # GC 容量信息
     jstat -gccapacity "$PID" > "$DATE_DIR/jstat-gccapacity-$PID.dump" 2>&1
     echo -e ".\c"
-    
+
     # 堆内存快照 (注意：原脚本使用的是 jmap <pid>，通常用于生成 dump 文件需加 -dump 参数，此处保持原脚本逻辑)
     jmap "$PID" > "$DATE_DIR/jmap-$PID.dump" 2>&1
     echo -e ".\c"
-    
+
     # 堆内存详细信息
     jmap -heap "$PID" > "$DATE_DIR/jmap-heap-$PID.dump" 2>&1
     echo -e ".\c"
-    
+
     # 堆对象直方图
     jmap -histo "$PID" > "$DATE_DIR/jmap-histo-$PID.dump" 2>&1
     echo -e ".\c"
-    
+
     # 进程打开的文件句柄
     if [ -r /usr/sbin/lsof ]; then
         /usr/sbin/lsof -p "$PID" > "$DATE_DIR/lsof-$PID.dump"

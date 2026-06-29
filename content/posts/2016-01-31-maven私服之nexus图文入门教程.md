@@ -15,7 +15,7 @@ tags:
 
 1. 下载安装
 
-大家可以直接从这个链接[http://www.sonatype.org/nexus/go/](http://www.sonatype.org/nexus/go/)下载系统，下载完成之后解压到系统的任何文件夹下就可以了，老夫下载是：nexus-2.8.1-01，然后可就是安装了。  
+大家可以直接从这个链接[http://www.sonatype.org/nexus/go/](http://www.sonatype.org/nexus/go/)下载系统，下载完成之后解压到系统的任何文件夹下就可以了，老夫下载是：nexus-2.8.1-01，然后可就是安装了。
 解压一路进到nexus-2.8.1-01/bin/jsw。然后选择适合自己的系统的文件夹进去，老夫的电脑是win32，所以进去之后是这个样子
 
 [![1](https://www.bridgeli.cn/wp-content/uploads/2016/01/1-300x87.png)][1]
@@ -48,98 +48,98 @@ tags:
 
 4. 管理宿主仓库
 
-Nexus预定义了3个本地仓库，分别为Releases，Snapshots，和3rd Party。这三个仓库都有各自明确的目的。Releases用于部署我们自己的release构件，Snapshots用于部署我们自己的snapshot构件，而3rd Party用于部署第三方构件，有些构件如Oracle的JDBC驱动，我们不能从公共仓库下载到，我们就需要将其部署到自己的仓库中。  
+Nexus预定义了3个本地仓库，分别为Releases，Snapshots，和3rd Party。这三个仓库都有各自明确的目的。Releases用于部署我们自己的release构件，Snapshots用于部署我们自己的snapshot构件，而3rd Party用于部署第三方构件，有些构件如Oracle的JDBC驱动，我们不能从公共仓库下载到，我们就需要将其部署到自己的仓库中。
 当然你也可以创建自己的本地仓库，步骤和创建代理仓库类似，点击Repository面板上方的Add按钮，然后选择Hosted Repository，然后在下方的配置面板中输入id和name，注意这里我们不再需要填写远程仓库地址，Repository Type则为不可修改的hosted，而关于Repository Policy，你可以根据自己的需要选择Release或者Snapshot。
 
 5. 管理Maven仓库组
 
-Nexus 中仓库组的概念是Maven没有的，在Maven看来，不管你是hosted也好，proxy也好，或者group也好，对我都是一样的，我只管根据 groupId，artifactId，version等信息向你要构件。为了方便Maven的配置，Nexus能够将多个仓库，hosted或者 proxy合并成一个group，这样，Maven只需要依赖于一个group，便能使用所有该group包含的仓库的内容。  
+Nexus 中仓库组的概念是Maven没有的，在Maven看来，不管你是hosted也好，proxy也好，或者group也好，对我都是一样的，我只管根据 groupId，artifactId，version等信息向你要构件。为了方便Maven的配置，Nexus能够将多个仓库，hosted或者 proxy合并成一个group，这样，Maven只需要依赖于一个group，便能使用所有该group包含的仓库的内容。
 最新neuxs默认自带了一个名为“Public Repositories”组，点击该组可以对他保护的仓库进行调整，把刚才建立的仓库Sonatype Repository加入其中，这样就不需要再在maven中明确指定仓库的地址了。同时创建一个Group ID为public-snapshots、Group Name为Public Snapshots Repositories的组，把Apache Snapshots、Codehaus Snapshots、Snapshots和Sonatype Repository也加入其中。
 
 6. 配置Maven使用Nexus
 
-默认情况下，Maven依赖于中央仓库，这是为了能让Maven开箱即用，但仅仅这么做明显是错误的，这不仅会造成大量的时间及带宽的浪费，而且也不能使用公司自己的jar文件。既然本文的前面已经介绍了如何安装和配置Nexus，现在我们就要配置Maven来使用本地的Nexus来解决这个问题。  
+默认情况下，Maven依赖于中央仓库，这是为了能让Maven开箱即用，但仅仅这么做明显是错误的，这不仅会造成大量的时间及带宽的浪费，而且也不能使用公司自己的jar文件。既然本文的前面已经介绍了如何安装和配置Nexus，现在我们就要配置Maven来使用本地的Nexus来解决这个问题。
 其实我们可以将Repository配置到POM中，但一般来说这不是很好的做法，原因很简单，你需要为所有的Maven项目重复该配置。因此，这里我们将Repository的配置放到$user_home/.m2/settings.xml中，放一个老夫在公司里面的完整的settings.xml的完整文件:
 
 ```
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"  
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0  
-  http://maven.apache.org/xsd/settings-1.0.0.xsd">  
-  <!--  
-    <localRepository>E:maven_repository</localRepository>  
-  -->  
-  <localRepository>D:/J2EE/repo</localRepository>  
-  <!--非官方插件命令行运行配置-->  
-  <pluginGroups>  
-    <pluginGroup>org.mortbay.jetty</pluginGroup>  
-  </pluginGroups>  
-  <servers>  
-    <server>  
-      <id>releases</id>  
-      <username>XXX</username>  
-      <password>XXXXXX</password>  
-    </server>  
-    <server>  
-      <id>snapshots</id>  
-      <username>XXX</username>  
-      <password>XXXXXX</password>  
-    </server>  
-    <server>  
-      <id>nexus</id>  
-      <username>XXX</username>  
-      <password>XXXXXX</password>  
-    </server>  
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+  http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <!--
+    <localRepository>E:maven_repository</localRepository>
+  -->
+  <localRepository>D:/J2EE/repo</localRepository>
+  <!--非官方插件命令行运行配置-->
+  <pluginGroups>
+    <pluginGroup>org.mortbay.jetty</pluginGroup>
+  </pluginGroups>
+  <servers>
+    <server>
+      <id>releases</id>
+      <username>XXX</username>
+      <password>XXXXXX</password>
+    </server>
+    <server>
+      <id>snapshots</id>
+      <username>XXX</username>
+      <password>XXXXXX</password>
+    </server>
+    <server>
+      <id>nexus</id>
+      <username>XXX</username>
+      <password>XXXXXX</password>
+    </server>
   </servers>
 
-  <mirrors>  
-    <!--配置仓库镜像-->  
-    <mirror>  
-      <id>nexus</id>  
-      <mirrorOf>*</mirrorOf>  
-      <name>Human Readable Name for this Mirror.</name>  
-      <url>http://nexus.lagou.com/content/groups/public/</url>  
+  <mirrors>
+    <!--配置仓库镜像-->
+    <mirror>
+      <id>nexus</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Human Readable Name for this Mirror.</name>
+      <url>http://nexus.lagou.com/content/groups/public/</url>
     </mirror>
 
   </mirrors>
 
-  <profiles>  
-    <!--配置仓库和插件仓库-->   
-    <profile>  
-      <id>nexus</id>  
-      <repositories>  
-        <repository>  
-          <id>central</id>  
-          <name>central</name>  
-          <url>http://central</url>  
-          <releases>  
-            <enabled>true</enabled>  
-          </releases>  
-          <snapshots>  
-            <enabled>true</enabled>  
-          </snapshots>  
-        </repository>  
+  <profiles>
+    <!--配置仓库和插件仓库-->
+    <profile>
+      <id>nexus</id>
+      <repositories>
+        <repository>
+          <id>central</id>
+          <name>central</name>
+          <url>http://central</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
       </repositories>
 
-      <pluginRepositories>  
-        <pluginRepository>  
-          <id>central</id>  
-          <name>central</name>  
-          <url>http://central</url>  
-          <releases>  
-            <enabled>true</enabled>  
-          </releases>  
-          <snapshots>  
-            <enabled>true</enabled>  
-          </snapshots>  
-        </pluginRepository>  
-      </pluginRepositories>  
-    </profile>  
-  </profiles> 
+      <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <name>central</name>
+          <url>http://central</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
 
-  <!--激活profile-->  
-  <activeProfiles>  
-    <activeProfile>nexus</activeProfile>  
+  <!--激活profile-->
+  <activeProfiles>
+    <activeProfile>nexus</activeProfile>
   </activeProfiles>
 
 </settings>
@@ -154,37 +154,37 @@ Nexus提供了两种方式来部署构件，你可以从UI直接上传，也可�
 
 ①. 通过Nexus UI部署
 
-有时候有个jar文件你无法从公共Maven仓库找到，但是你能从其它得到这个jar文件（甚至是POM），那么你完全可以将这个文件部署到Nexus中，使其成为标准流程的一部分。步骤如下：  
+有时候有个jar文件你无法从公共Maven仓库找到，但是你能从其它得到这个jar文件（甚至是POM），那么你完全可以将这个文件部署到Nexus中，使其成为标准流程的一部分。步骤如下：
 点击左边导航栏的"Repository"，在右边的仓库列表中选择一个仓库，如“3rd Party”，然后会看到页面下方有7个tab，选择最后一个“Artifact Upload”，你会看到构件上传界面。选择你要上传的构件，并指定POM，（或者手工编写GAV等信息），之后选择add artifact，最后点击Upload Artifact，该构件就直接被部署到了Nexus的"3rd Party"仓库中，具体就不多说了，大家可以自己操作几次就明白了，可以参考下图（由于图片所限，最后这个button截图没有截出来）。
 
 [![6](https://www.bridgeli.cn/wp-content/uploads/2016/01/6-300x115.png)][6]
 
 ②. 通过Maven部署
 
-更常见的用例是：团队在开发一个项目的各个模块，为了让自己开发的模块能够快速让其他人使用，你会想要将snapshot版本的构件部署到Maven仓库中，其他人只需要在POM添加一个对于你开发模块的依赖，就能随时拿到最新的snapshot。  
+更常见的用例是：团队在开发一个项目的各个模块，为了让自己开发的模块能够快速让其他人使用，你会想要将snapshot版本的构件部署到Maven仓库中，其他人只需要在POM添加一个对于你开发模块的依赖，就能随时拿到最新的snapshot。
 以下的pom.xml配置就能让你通过Maven自动化部署构件：
 
 ```
-<project>  
-  ...  
-  <distributionManagement>  
-    <repository>  
-      <id>releases</id>  
-      <name>Nexus Release Repository</name>  
-      <url>http://127.0.0.1:8080/nexus/content/repositories/releases/</url>  
-    </repository>  
-    <snapshotRepository>  
-      <id>snapshots</id>  
-      <name>Nexus Snapshot Repository</name>  
-      <url>http://127.0.0.1:8080/nexus/content/repositories/snapshots/</url>  
-    </snapshotRepository>  
-  </distributionManagement>  
-  ...  
+<project>
+  ...
+  <distributionManagement>
+    <repository>
+      <id>releases</id>
+      <name>Nexus Release Repository</name>
+      <url>http://127.0.0.1:8080/nexus/content/repositories/releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>Nexus Snapshot Repository</name>
+      <url>http://127.0.0.1:8080/nexus/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+  ...
 </project>
 
 ```
 
-这里我们配置所有的snapshot版本构件部署到Nexus的Snapshots仓库中，所有的release构件部署到Nexus的Releases仓库中。但是这么配置还没有完，因为部署文件到系统里面肯定需要权限验证，那么此时我们我们在settings.xml中配置的service就派上用场了，因为我们配置了对应Repository id的用户名和密码。  
+这里我们配置所有的snapshot版本构件部署到Nexus的Snapshots仓库中，所有的release构件部署到Nexus的Releases仓库中。但是这么配置还没有完，因为部署文件到系统里面肯定需要权限验证，那么此时我们我们在settings.xml中配置的service就派上用场了，因为我们配置了对应Repository id的用户名和密码。
 然后，在项目目录中执行mvn deploy ，你会看到maven将项目构件部署到Nexus中，浏览Nexus对应的仓库，就可以看到刚才部署的构件。当其他人构建其项目时，Maven就会从Nexus寻找依赖并下载。
 
 8. Maven常用插件
@@ -192,26 +192,26 @@ Nexus提供了两种方式来部署构件，你可以从UI直接上传，也可�
 在实际使用中，maven有非常多的使用查看，老夫之前的blog曾介绍过一个[Maven项目如何生成测试报告][7]，今天在介绍一个打包的时候用到的plugin：maven-source-plugin，他的作用是，在上传到Nexus时，会同步上传一个-sorce.jar的源码包，配置如下：
 
 ```
-<plugin>  
-  <artifactId>maven-source-plugin</artifactId>  
-  <executions>  
-    <execution>  
-      <id>attach-sources</id>  
-      <phase>deploy</phase>  
-      <goals>  
-        <goal>jar-no-fork</goal>  
-      </goals>  
-    </execution>  
-  </executions>  
+<plugin>
+  <artifactId>maven-source-plugin</artifactId>
+  <executions>
+    <execution>
+      <id>attach-sources</id>
+      <phase>deploy</phase>
+      <goals>
+        <goal>jar-no-fork</goal>
+      </goals>
+    </execution>
+  </executions>
 </plugin>
 
 ```
 
-最后，其实Nexus还有很多其它的特性，如用户管理，角色权限管理等等，但因为本文仅仅是一个入门教程，所以就不对其做过多讲解了，用户可以在自己的使用中慢慢去了解探索，另外Nexus的OSS版本是完全开源的，如果你有兴趣，你可以学习其源码，甚至自己实现一个REST客户端。  
+最后，其实Nexus还有很多其它的特性，如用户管理，角色权限管理等等，但因为本文仅仅是一个入门教程，所以就不对其做过多讲解了，用户可以在自己的使用中慢慢去了解探索，另外Nexus的OSS版本是完全开源的，如果你有兴趣，你可以学习其源码，甚至自己实现一个REST客户端。
 马上拥抱Nexus吧，它是免费的！
 
-参考资料：  
-1. http://juvenshun.iteye.com/blog/349534  
+参考资料：
+1. http://juvenshun.iteye.com/blog/349534
 2. http://blog.csdn.net/fanyuna/article/details/40145827
 
  [1]: https://www.bridgeli.cn/wp-content/uploads/2016/01/1.png

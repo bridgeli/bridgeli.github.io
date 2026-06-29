@@ -23,77 +23,77 @@ package cn.bridgeli.demo;
 
 import org.junit.Test;
 
-import java.io.BufferedReader;  
-import java.io.IOException;  
-import java.io.InputStream;  
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
-/**  
- * @author Bridge Li  
- * @date 2020/2/29 15:40  
- */  
+/**
+ * @author Bridge Li
+ * @date 2020/2/29 15:40
+ */
 public class FfmpegTest {
 
-  private static final String OS = System.getProperty("os.name").toLowerCase();  
+  private static final String OS = System.getProperty("os.name").toLowerCase();
   private static final String FFMPEG_PATH = "/Users/bridgeli/ffmpeg-20200216-8578433-macos64-static/bin/ffmpeg";
 
-  @Test  
+  @Test
   public void testFfmpeg() {
 
-    String inputWavFile = "/Users/bridgeli/inputWavFile.wav";  
-    String inputMp3File = "/Users/bridgeli/inputMp3File.mp3";  
-    String inputMp4File = "/Users/bridgeli/inputMp4File.mp4";  
-    String outMergeMp3File = "/Users/bridgeli/outMergeMp3File.mp3";  
-    String outMergeMp3AndMp4File = "/Users/bridgeli/outMergeMp3AndMp4File.mp4";  
+    String inputWavFile = "/Users/bridgeli/inputWavFile.wav";
+    String inputMp3File = "/Users/bridgeli/inputMp3File.mp3";
+    String inputMp4File = "/Users/bridgeli/inputMp4File.mp4";
+    String outMergeMp3File = "/Users/bridgeli/outMergeMp3File.mp3";
+    String outMergeMp3AndMp4File = "/Users/bridgeli/outMergeMp3AndMp4File.mp4";
     String outConcatMp3File = "/Users/bridgeli/outConcatMp3File.mp3";
 
-    // 拼接  
-    String command = null;  
-    if (OS.contains("mac") || OS.contains("linux")) {  
-        command = FFMPEG_PATH + " -i " + inputMp3File + " -i " + inputWavFile + " -filter_complex \[0:0\]\[1:0\]concat=n=2:v=0:a=1[a] -map [a] " + outConcatMp3File;  
-    } else if (OS.contains("windows")) {  
-        command = FFMPEG_PATH + " -i " + inputMp3File + " -i " + inputWavFile + " -filter_complex \"\[0:0\]\[1:0\]concat=n=2:v=0:a=1[a]\" -map \"[a]\" " + outConcatMp3File;  
-    }  
-    // 合并（视频和音频）  
-    // String command = FFMPEG_PATH + " -i " + inputMp4File + " -i " + outConcatMp3File + " -c:v copy -c:a aac -strict experimental " + outMergeMp3AndMp4File;  
-    // 合并  
-    // String command = FFMPEG_PATH + " -i " + inputMp3File + " -i " + inputWavFile + " -filter_complex amerge -ac 2 -c:a libmp3lame -q:a 4 " + outMergeMp3File;  
+    // 拼接
+    String command = null;
+    if (OS.contains("mac") || OS.contains("linux")) {
+        command = FFMPEG_PATH + " -i " + inputMp3File + " -i " + inputWavFile + " -filter_complex \[0:0\]\[1:0\]concat=n=2:v=0:a=1[a] -map [a] " + outConcatMp3File;
+    } else if (OS.contains("windows")) {
+        command = FFMPEG_PATH + " -i " + inputMp3File + " -i " + inputWavFile + " -filter_complex \"\[0:0\]\[1:0\]concat=n=2:v=0:a=1[a]\" -map \"[a]\" " + outConcatMp3File;
+    }
+    // 合并（视频和音频）
+    // String command = FFMPEG_PATH + " -i " + inputMp4File + " -i " + outConcatMp3File + " -c:v copy -c:a aac -strict experimental " + outMergeMp3AndMp4File;
+    // 合并
+    // String command = FFMPEG_PATH + " -i " + inputMp3File + " -i " + inputWavFile + " -filter_complex amerge -ac 2 -c:a libmp3lame -q:a 4 " + outMergeMp3File;
     System.out.println(command);
 
-    Process process = null;  
-    try {  
-      process = Runtime.getRuntime().exec(command);  
-    } catch (IOException e) {  
-      e.printStackTrace();  
+    Process process = null;
+    try {
+      process = Runtime.getRuntime().exec(command);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    if (null == process) {  
-      return;  
+    if (null == process) {
+      return;
     }
 
-    try {  
-      process.waitFor();  
-    } catch (InterruptedException e) {  
-      e.printStackTrace();  
+    try {
+      process.waitFor();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
 
-    try (InputStream errorStream = process.getErrorStream();  
-      InputStreamReader inputStreamReader = new InputStreamReader(errorStream);  
+    try (InputStream errorStream = process.getErrorStream();
+      InputStreamReader inputStreamReader = new InputStreamReader(errorStream);
       BufferedReader br = new BufferedReader(inputStreamReader)) {
 
-      String line = null;  
-      StringBuffer context = new StringBuffer();    
-      while ((line = br.readLine()) != null) {  
-        context.append(line);  
+      String line = null;
+      StringBuffer context = new StringBuffer();
+      while ((line = br.readLine()) != null) {
+        context.append(line);
       }
 
-      System.out.println("error message: " + context);  
-    } catch (IOException e) {  
-      e.printStackTrace();  
+      System.out.println("error message: " + context);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    process.destroy(); 
-  } 
+    process.destroy();
+  }
 }
 
 ```

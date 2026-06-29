@@ -16,7 +16,7 @@ tags:
 
 今天这篇文章呢，不难，其实是解答我一直以来心里的一个疑问。是这样的，之前看五八技术委员会主席沈剑老师的公众号架构师之路的一篇文章：http 如何像 tcp 一样实时的收消息，里面其中的一个方案是用 http 短连接轮询的方式实现“伪长连接”。但是对于轮询，我们的第一反应肯定是有延时，但是标题不是说的是实时吗？当然我们可以把轮询的时长缩短一些，先不说这样大部分时间的轮询调用，可能都没消息返回，造成服务器资源浪费，轮询时间再短也是有延时啊，所以难道是伪实时？反正一般消息延时个三五秒，甚至十秒八秒一分钟，大家也不会在意，只会认为对方返回慢，对不起，这是我们程序员的锅，但是 http 真的不能实现实时吗？沈剑老师提出了一种方法：首选 webim 和 webserver 之间建立一条 http 连接，专门用作消息通道，这条连接叫 http 消息连接。然后会有如下处理：
 
-1. 没有消息到达的时候，这个 http 消息连接将被夯住，不返回，由于 http 是短连接，这个 http 消息连接最多被夯住 90 秒，就会被断开（这是浏览器或者 webserver 的行为）；  
+1. 没有消息到达的时候，这个 http 消息连接将被夯住，不返回，由于 http 是短连接，这个 http 消息连接最多被夯住 90 秒，就会被断开（这是浏览器或者 webserver 的行为）；
 2. 在 1 的情况下，如果 http 消息连接被断开，立马再发起一个 http 消息连接；
 
 此时在在 1 和 2 的配合下，浏览器与 webserver 之间将永远有一条消息连接在，然后还有一种情况
@@ -34,29 +34,29 @@ tags:
 ```
 package cn.bridgeli.deferredresulttest.entity;
 
-import lombok.Data;  
+import lombok.Data;
 import lombok.Getter;
 
-/**  
- * @author bridgeli  
- */  
-@Data  
-public class DeferredResultResponse {  
-  private Integer code;  
+/**
+ * @author bridgeli
+ */
+@Data
+public class DeferredResultResponse {
+  private Integer code;
   private String msg;
 
-  public enum Msg {  
-    TIMEOUT("超时"),  
-    FAILED("失败"),  
+  public enum Msg {
+    TIMEOUT("超时"),
+    FAILED("失败"),
     SUCCESS("成功");
 
-    @Getter  
+    @Getter
     private final String desc;
 
-    Msg(String desc) {  
-      this.desc = desc;  
-    } 
-  } 
+    Msg(String desc) {
+      this.desc = desc;
+    }
+  }
 }
 
 ```
@@ -66,61 +66,61 @@ public class DeferredResultResponse {
 ```
 package cn.bridgeli.deferredresulttest.controller;
 
-import cn.bridgeli.deferredresulttest.entity.DeferredResultResponse;  
-import cn.bridgeli.deferredresulttest.service.DeferredResultService;  
-import org.springframework.http.HttpStatus;  
-import org.springframework.web.bind.annotation.GetMapping;  
-import org.springframework.web.bind.annotation.RequestMapping;  
-import org.springframework.web.bind.annotation.RequestParam;  
-import org.springframework.web.bind.annotation.RestController;  
+import cn.bridgeli.deferredresulttest.entity.DeferredResultResponse;
+import cn.bridgeli.deferredresulttest.service.DeferredResultService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import javax.annotation.Resource;
 
-/**  
- * @author bridgeli  
- */  
-@RestController  
-@RequestMapping(value = "/deferred-result")  
+/**
+ * @author bridgeli
+ */
+@RestController
+@RequestMapping(value = "/deferred-result")
 public class DeferredResultController {
 
-  @Resource  
+  @Resource
   private DeferredResultService deferredResultService;
 
-  /**  
-   * 为了方便测试，简单模拟一个  
-   * 多个请求用同一个requestId会出问题  
-   */  
+  /**
+   * 为了方便测试，简单模拟一个
+   * 多个请求用同一个requestId会出问题
+   */
   private final String requestId = "test";
 
-  @GetMapping(value = "/get")  
-  public DeferredResult<DeferredResultResponse> get(@RequestParam(value = "timeout", required = false, defaultValue = "10000") Long timeout) {  
+  @GetMapping(value = "/get")
+  public DeferredResult<DeferredResultResponse> get(@RequestParam(value = "timeout", required = false, defaultValue = "10000") Long timeout) {
     DeferredResult<DeferredResultResponse> deferredResult = new DeferredResult<>(timeout);
 
     deferredResultService.process(requestId, deferredResult);
 
-    return deferredResult;  
+    return deferredResult;
   }
 
-  /**  
-   * 设置DeferredResult对象的result属性，模拟异步操作  
-   *  
-   * @param desired  
-   * @return  
-   */  
-  @GetMapping(value = "/result")  
-  public String settingResult(@RequestParam(value = "desired", required = false, defaultValue = "成功") String desired) {  
-    DeferredResultResponse deferredResultResponse = new DeferredResultResponse();  
-    if (DeferredResultResponse.Msg.SUCCESS.getDesc().equals(desired)) {  
-      deferredResultResponse.setCode(HttpStatus.OK.value());  
-      deferredResultResponse.setMsg(desired);  
-    } else {  
-      deferredResultResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());  
-      deferredResultResponse.setMsg(DeferredResultResponse.Msg.FAILED.getDesc());  
-    }  
+  /**
+   * 设置DeferredResult对象的result属性，模拟异步操作
+   *
+   * @param desired
+   * @return
+   */
+  @GetMapping(value = "/result")
+  public String settingResult(@RequestParam(value = "desired", required = false, defaultValue = "成功") String desired) {
+    DeferredResultResponse deferredResultResponse = new DeferredResultResponse();
+    if (DeferredResultResponse.Msg.SUCCESS.getDesc().equals(desired)) {
+      deferredResultResponse.setCode(HttpStatus.OK.value());
+      deferredResultResponse.setMsg(desired);
+    } else {
+      deferredResultResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+      deferredResultResponse.setMsg(DeferredResultResponse.Msg.FAILED.getDesc());
+    }
     deferredResultService.settingResult(requestId, deferredResultResponse);
 
-    return "Done";  
+    return "Done";
   }
 }
 
@@ -133,65 +133,65 @@ public class DeferredResultController {
 ```
 package cn.bridgeli.deferredresulttest.service;
 
-import cn.bridgeli.deferredresulttest.entity.DeferredResultResponse;  
-import org.springframework.http.HttpStatus;  
-import org.springframework.stereotype.Service;  
+import cn.bridgeli.deferredresulttest.entity.DeferredResultResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
-import java.util.Map;  
-import java.util.Optional;  
-import java.util.concurrent.ConcurrentHashMap;  
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-/**  
- * @author bridgeli  
- */  
-@Service  
+/**
+ * @author bridgeli
+ */
+@Service
 public class DeferredResultService {
 
   private Map<String, Consumer<DeferredResultResponse>> taskMap;
 
-  public DeferredResultService() {  
-    taskMap = new ConcurrentHashMap<>();  
+  public DeferredResultService() {
+    taskMap = new ConcurrentHashMap<>();
   }
 
-  /**  
-   * 将请求id与setResult映射  
-   *  
-   * @param requestId  
-   * @param deferredResult  
-   */  
-  public void process(String requestId, DeferredResult<DeferredResultResponse> deferredResult) {  
-    // 请求超时的回调函数  
-    deferredResult.onTimeout(() -> {  
-      taskMap.remove(requestId);  
-      DeferredResultResponse deferredResultResponse = new DeferredResultResponse();  
-      deferredResultResponse.setCode(HttpStatus.REQUEST_TIMEOUT.value());  
-      deferredResultResponse.setMsg(DeferredResultResponse.Msg.TIMEOUT.getDesc());  
-      deferredResult.setResult(deferredResultResponse);  
+  /**
+   * 将请求id与setResult映射
+   *
+   * @param requestId
+   * @param deferredResult
+   */
+  public void process(String requestId, DeferredResult<DeferredResultResponse> deferredResult) {
+    // 请求超时的回调函数
+    deferredResult.onTimeout(() -> {
+      taskMap.remove(requestId);
+      DeferredResultResponse deferredResultResponse = new DeferredResultResponse();
+      deferredResultResponse.setCode(HttpStatus.REQUEST_TIMEOUT.value());
+      deferredResultResponse.setMsg(DeferredResultResponse.Msg.TIMEOUT.getDesc());
+      deferredResult.setResult(deferredResultResponse);
     });
 
-    Optional.ofNullable(taskMap)  
-      .filter(t -> !t.containsKey(requestId))  
+    Optional.ofNullable(taskMap)
+      .filter(t -> !t.containsKey(requestId))
       .orElseThrow(() -> new IllegalArgumentException(String.format("requestId=%s is existing", requestId)));
 
-    taskMap.putIfAbsent(requestId, deferredResult::setResult);  
+    taskMap.putIfAbsent(requestId, deferredResult::setResult);
   }
 
-  /**  
-   * 这里相当于异步的操作方法  
-   * 设置DeferredResult对象的setResult方法  
-   *  
-   * @param requestId  
-   * @param deferredResultResponse  
-   */  
-  public void settingResult(String requestId, DeferredResultResponse deferredResultResponse) {  
-    if (taskMap.containsKey(requestId)) {  
-      Consumer<DeferredResultResponse> deferredResultResponseConsumer = taskMap.get(requestId);  
-      // 这里相当于DeferredResult对象的setResult方法  
-      deferredResultResponseConsumer.accept(deferredResultResponse);  
-      taskMap.remove(requestId);  
-    }  
+  /**
+   * 这里相当于异步的操作方法
+   * 设置DeferredResult对象的setResult方法
+   *
+   * @param requestId
+   * @param deferredResultResponse
+   */
+  public void settingResult(String requestId, DeferredResultResponse deferredResultResponse) {
+    if (taskMap.containsKey(requestId)) {
+      Consumer<DeferredResultResponse> deferredResultResponseConsumer = taskMap.get(requestId);
+      // 这里相当于DeferredResult对象的setResult方法
+      deferredResultResponseConsumer.accept(deferredResultResponse);
+      taskMap.remove(requestId);
+    }
   }
 
 }
